@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار الترويح عن النفس - Тест: Отдых</title>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-hover: #1b5e20;
+            --bg-color: #f4f9f4;
+            --section-bg: #ffffff;
+            --text-color: #333;
+            --correct: #c8e6c9;
+            --incorrect: #ffcdd2;
+            --highlight: #FFE4B5;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1, h2, h3 { text-align: center; color: var(--primary); }
+        .ru-title { font-size: 0.8em; color: #666; display: block; text-align: center; margin-bottom: 20px;}
+        
+        .section {
+            background: var(--section-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .question-card {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+            margin-bottom: 10px;
+        }
+        .question-text { font-weight: bold; margin-bottom: 15px; color: #1565c0; font-size: 1.15em;}
+        
+        .options-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+        .btn-option {
+            background-color: #e3f2fd;
+            border: 2px solid #bbdefb;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-family: inherit;
+            transition: all 0.2s;
+            flex-grow: 1;
+            text-align: center;
+        }
+        .btn-option:hover:not(:disabled) { background-color: #bbdefb; }
+        .btn-option:disabled { cursor: not-allowed; opacity: 0.8; color: #333;}
+        
+        .correct { background-color: var(--correct) !important; border-color: #81c784 !important; }
+        .incorrect { background-color: var(--incorrect) !important; border-color: #e57373 !important; }
+        
+        /* Story and Vocab Table Layout */
+        .story-container { display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px; }
+        .story-text { background: #fffde7; padding: 25px; border-radius: 8px; font-size: 1.25em; line-height: 2.2; border: 1px solid #fff59d; text-align: justify;}
+        .highlight { background-color: var(--highlight); padding: 0 5px; border-radius: 4px; font-weight: bold; display: inline-block; color: #d84315;}
+        
+        details { background: #e8f5e9; padding: 15px; border-radius: 8px; border: 1px solid #c8e6c9; cursor: pointer; }
+        summary { font-weight: bold; color: #2e7d32; font-size: 1.1em; outline: none; }
+        
+        .vocab-table { width: 100%; border-collapse: collapse; font-size: 0.95em; margin-top: 15px; background: #fff;}
+        .vocab-table th, .vocab-table td { border: 1px solid #ddd; padding: 12px; text-align: right; }
+        .vocab-table th { background-color: #c8e6c9; color: #1b5e20; font-weight: bold; text-align: center;}
+        
+        /* Select Dropdowns */
+        select.blank-select {
+            padding: 5px; font-size: 1em; font-family: inherit; margin: 0 5px;
+            border: 2px solid #ccc; border-radius: 5px; outline: none;
+            transition: 0.3s background-color;
+        }
+
+        /* Order sentences */
+        .order-pool { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; min-height: 40px; padding: 10px; background: #fafafa; border-radius: 5px;}
+        .order-answer { display: flex; gap: 10px; flex-wrap: wrap; min-height: 50px; padding: 10px; background: #e8eaf6; border: 2px dashed #9fa8da; border-radius: 5px; margin-bottom: 10px;}
+        .order-word { background: #fff; border: 1px solid #ccc; padding: 8px 15px; border-radius: 5px; cursor: pointer; user-select: none; font-weight: bold;}
+        .order-word:hover { background: #f0f0f0; }
+
+        /* General UI Elements */
+        .btn-main {
+            display: block; width: 100%; max-width: 300px; margin: 20px auto;
+            background-color: var(--primary); color: white; border: none;
+            padding: 15px 20px; font-size: 1.2em; border-radius: 30px;
+            cursor: pointer; transition: 0.3s; text-align: center; font-weight: bold;
+        }
+        .btn-main:hover { background-color: var(--primary-hover); }
+        
+        .ru-sub { display: block; font-size: 0.7em; color: #e8f5e9; margin-top: 5px; font-weight: normal;}
+        
+        textarea.composition {
+            width: 100%; height: 80px; padding: 10px; box-sizing: border-box;
+            border-radius: 5px; border: 1px solid #ccc; font-family: inherit; font-size: 1.1em;
+            resize: vertical;
+        }
+        
+        #result-screen { text-align: center; }
+        .score-display { font-size: 3em; color: #2e7d32; font-weight: bold; margin: 20px 0; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>اختبار الترويح عن النفس</h1>
+    <span class="ru-title">Тест по теме: Отдых и здоровье (Уровень A2 - B1)</span>
+
+    <div id="quiz-container"></div>
+</div>
+
+<script>
+    // --- Data Arrays Generation ---
+
+    const storyText = `
+        فِي مَدِينَةٍ كَبِيرَةٍ وَمُزْدَحِمَةٍ، كَانَتْ تَعِيشُ طَالِبَةٌ مُجْتَهِدَةٌ اسْمُهَا "فَاطِمَةُ". تَدْرُسُ فَاطِمَةُ فِي كُلِّيَّةِ الطِّبِّ، وَتَقْضِي وَقْتَهَا كُلَّهُ بَيْنَ الْكُتُبِ. فِي نِهَايَةِ الْعَامِ، وَبَعْدَ الِامْتِحَانَاتِ الصَّعْبَةِ، شَعَرَتْ فَاطِمَةُ بِـ <span class="highlight">غَايَةِ الْإِرْهَاقِ</span>. أَهْمَلَتْ طَعَامَهَا، حَتَّى <span class="highlight">أُغْمِيَ عَلَيْهَا</span> يَوْماً دَاخِلَ الْمُخْتَبَرِ. عِنْدَمَا عَادَتْ إِلَى الْبَيْتِ، قَالَ لَهَا وَالِدُهَا: "يَا فَاطِمَةُ، إِنَّ <span class="highlight">عَنَاءَ</span> الدِّرَاسَةِ شَدِيدٌ. <span class="highlight">لَا تَقْتُلِي وَقْتَكِ</span> بِدُونِ رَاحَةٍ. الْعُطْلَةُ الصَّيْفِيَّةُ <span class="highlight">عَلَى الْأَبْوَابِ</span>، فَهَيَّا بِنَا نُسَافِرُ لِـ <span class="highlight">التَّرْوِيحِ</span> عَنِ النَّفْسِ".<br><br>
+        سَافَرَتِ الْأُسْرَةُ إِلَى مَكَانٍ جَمِيلٍ يَجْمَعُ بَيْنَ الْغَابَةِ وَالنَّهْرِ. هُنَاكَ، <span class="highlight">نَصَبَ</span> الْأَبُ خَيْمَةً وَاسِعَةً، وَكَانَ الْهَوَاءُ <span class="highlight">نَقِيًّا</span> جِدّاً. قَالَ الْأَبُ مُحَذِّراً أَخَاهَا أَحْمَدَ: "يَا أَحْمَدُ، لَا تَسْبَحْ فِي النَّهْرِ لِأَنَّهُ عَمِيقٌ". فَضَّلَ أَحْمَدُ الْجُلُوسَ لِـ <span class="highlight">صَيْدِ السَّمَكِ</span>، بَيْنَمَا فَضَّلَتْ فَاطِمَةُ <span class="highlight">التَّجَوُّلَ</span> فِي الْغَابَةِ، لِأَنَّ الْمَشْيَ يُعْطِي <span class="highlight">اللِّيَاقَةَ</span> لِلْجِسْمِ.<br><br>
+        بَعْدَ يَوْمَيْنِ، عَلِمُوا أَنَّ الْعَمَّ "سَالِماً" يَرْقُدُ مَرِيضاً فِي <span class="highlight">الْمُسْتَشْفَى</span>. أَسْرَعُوا لِزِيَارَتِهِ، وَدَخَلُوا <span class="highlight">غُرْفَةَ الْفَحْصِ</span>، فَرَأَوْا الطَّبِيبَ يَقْرَأُ <span class="highlight">التَّقْرِيرَ الطِّبِّيَّ</span>. قَالَ الطَّبِيبُ: "يَا عَمُّ سَالِمٌ، أَنْتَ <span class="highlight">تُعَانِي</span> مِنْ <span class="highlight">الضَّغْطِ</span> وَالسُّكَّرِيِّ. يَجِبُ أَنْ تَتَّبِعَ <span class="highlight">حِمْيَةً</span>. لَا تَأْكُلْ خُبْزاً أَبْيَضَ، وَلَا تَتَنَاوَلْ طَعَاماً كَثِيراً قَبْلَ النَّوْمِ، وَابْتَعِدْ عَنِ <span class="highlight">السُّكَّرِيَّاتِ</span>". قَالَ الْعَمُّ: "سَأَسْتَمِعُ إِلَى نَصِيحَتِكَ كَيْ أَسْتَعِيدَ صِحَّتِي".<br><br>
+        فِي آخِرِ الْعُطْلَةِ، زَارَتِ الْأُسْرَةُ بَعْضَ <span class="highlight">الْمَتَاحِفِ</span> التَّارِيخِيَّةِ، لِأَنَّ التَّرْوِيحَ لَيْسَ لِلْجِسْمِ فَقَطْ، بَلْ لِلْعَقْلِ أَيْضاً. عَادَتْ فَاطِمَةُ نَشِيطَةً وَأَدْرَكَتْ أَنَّ تَنْظِيمَ الْوَقْتِ وَالْعِنَايَةَ بِالصِّحَّةِ هُمَا أَسَاسُ الْحَيَاةِ السَّعِيدَةِ.
+    `;
+
+    const vocabData = [
+        ["غَايَةِ الْإِرْهَاقِ", "أَقْصَى دَرَجَاتِ التَّعَبِ وَالْمَشَقَّةِ", "بَعْدَ الْعَمَلِ لِسَاعَاتٍ، شَعَرْتُ بِغَايَةِ الْإِرْهَاقِ.", "Крайняя усталость"],
+        ["أُغْمِيَ عَلَيْهَا", "فَقَدَتِ الْوَعْيَ وَسَقَطَتْ", "مِنْ شِدَّةِ الْحَرِّ وَالتَّعَبِ أُغْمِيَ عَلَى الْعَامِلِ.", "Упала в обморок"],
+        ["عَنَاءَ", "التَّعَبَ وَالْجُهْدَ الشَّدِيدَ", "عَنَاءُ السَّفَرِ الطَّوِيلِ يَحْتَاجُ إِلَى رَاحَةٍ.", "Трудность / Тяжесть"],
+        ["لَا تَقْتُلِي وَقْتَكِ", "لَا تُضَيِّعِيهِ دُونَ فَائِدَةٍ أَوِ اسْتِمْتَاعٍ", "لَا تَقْتُلْ وَقْتَكَ فِي أَلْعَابِ الْحَاسُوبِ دَائِماً.", "Не трать время впустую"],
+        ["عَلَى الْأَبْوَابِ", "قَرِيبَةٌ جِدّاً (سَتَبْدَأُ قَرِيباً)", "اسْتَعِدُّوا لِلِامْتِحَانِ، فَهُوَ عَلَى الْأَبْوَابِ.", "На пороге (скоро)"],
+        ["التَّرْوِيحِ", "الرَّاحَةِ وَالتَّسْلِيَةِ وَتَجْدِيدِ النَّشَاطِ", "التَّرْوِيحُ عَنِ النَّفْسِ ضَرُورِيٌّ لِلصِّحَّةِ النَّفْسِيَّةِ.", "Отдых / Развлечение"],
+        ["نَصَبَ", "أَقَامَ، ثَبَّتَ، وَرَفَعَ الشَّيْءَ", "نَصَبَ الْكَشَّافَةُ خَيْمَةً فِي الصَّحْرَاءِ.", "Установил / Разбил (палатку)"],
+        ["نَقِيًّا", "صَافِيًا وَنَظِيفًا خَالِيًا مِنَ التَّلَوُّثِ", "مَاءُ النَّهْرِ نَقِيٌّ، وَالْهَوَاءُ فِي الْغَابَةِ نَقِيٌّ.", "Чистый / Свежий"],
+        ["صَيْدِ السَّمَكِ", "إِمْسَاكُ وَاسْتِخْرَاجُ السَّمَكِ مِنَ الْمَاءِ", "صَيْدُ السَّمَكِ هِوَايَةٌ تُعَلِّمُ الْإِنْسَانَ الصَّبْرَ.", "Рыбалка"],
+        ["التَّجَوُّلَ", "الْمَشْيَ هُنَا وَهُنَاكَ لِلِاسْتِمْتَاعِ", "أُحِبُّ التَّجَوُّلَ فِي الْأَسْوَاقِ الْقَدِيمَةِ.", "Прогулка / Бродить"],
+        ["اللِّيَاقَةَ", "الْقُوَّةَ وَالصِّحَّةَ الْبَدَنِيَّةَ الْجَيِّدَةَ", "الرِّيَاضِيُّ يَمْتَلِكُ لِيَاقَةً بَدَنِيَّةً تَحْمِيهِ مِنَ الْمَرَضِ.", "Фитнес / Физическая форма"],
+        ["الْمُسْتَشْفَى", "مَكَانٌ يُعَالَجُ فِيهِ النَّاسُ", "يَعْمَلُ الْأَطِبَّاءُ لَيْلًا وَنَهَارًا فِي الْمُسْتَشْفَى.", "Больница"],
+        ["غُرْفَةَ الْفَحْصِ", "مَكَانٌ يَكْشِفُ فِيهِ الطَّبِيبُ عَلَى الْمَرِيضِ", "انْتَظَرَ الْمَرِيضُ طَبِيبَهُ دَاخِلَ غُرْفَةِ الْفَحْصِ.", "Кабинет осмотра"],
+        ["التَّقْرِيرَ الطِّبِّيَّ", "وَرَقَةٌ يَكْتُبُهَا الطَّبِيبُ تَشْرَحُ حَالَةَ الْمَرِيضِ", "أَعْطَانِي الطَّبِيبُ التَّقْرِيرَ الطِّبِّيَّ لِعَمَلِ إِجَازَةٍ.", "Медицинское заключение"],
+        ["تُعَانِي", "تَشْعُرُ بِالْأَلَمِ أَوِ التَّعَبِ مِنْ شَيْءٍ", "جَدِّي يُعَانِي مِنْ أَلَمٍ فِي ظَهْرِهِ مُنْذُ شَهْرٍ.", "Страдаешь (болен)"],
+        ["الضَّغْطِ", "قُوَّةُ دَفْعِ الدَّمِ دَاخِلَ الْجِسْمِ (مَرَضٌ)", "مَرَضُ ارْتِفَاعِ الضَّغْطِ مُنْتَشِرٌ بَيْنَ كِبَارِ السِّنِّ.", "Давление"],
+        ["حِمْيَةً", "نِظَامٌ غِذَائِيٌّ صَارِمٌ لِلْعِلَاجِ", "وَصَفَ الطَّبِيبُ حِمْيَةً لِلْمَرِيضِ السَّمِينِ.", "Диета"],
+        ["السُّكَّرِيَّاتِ", "الْأَطْعِمَةَ الْحُلْوَةَ الَّتِي تَحْتَوِي عَلَى سُكَّرٍ", "أَكْلُ السُّكَّرِيَّاتِ بِكَثْرَةٍ يُسَبِّبُ زِيَادَةَ الْوَزْنِ.", "Сладости"],
+        ["الْمَتَاحِفِ", "أَمَاكِنُ لِعَرْضِ الْآثَارِ وَالْأَشْيَاءِ الْقَدِيمَةِ", "تَزْخَرُ الْعَاصِمَةُ بِالْمَتَاحِفِ الَّتِي تَحْكِي التَّارِيخَ.", "Музеи"]
+    ];
+
+    let globalScore = 0;
+    const TOTAL_AUTO_QUESTIONS = 95;
+
+    // S1 MCQ Format: [ "Question", ["Op1", "Op2", "Op3"], CorrectIndex ]
+    const s1_mcq = [
+        ["مَا الَّذِي حَدَثَ لِفَاطِمَةَ دَاخِلَ الْمُخْتَبَرِ بِسَبَبِ الْإِرْهَاقِ؟", ["نَجَحَتْ بِتَفَوُّقٍ", "أُغْمِيَ عَلَيْهَا", "تَشَاجَرَتْ مَعَ صَدِيقَتِهَا"], 1],
+        ["أَيْنَ قَرَّرَتِ الْأُسْرَةُ قَضَاءَ الْعُطْلَةِ لِلتَّرْوِيحِ عَنِ النَّفْسِ؟", ["فِي فُنْدُقٍ دَاخِلَ الْعَاصِمَةِ", "فِي مَدِينَةِ مَلَاهٍ", "فِي مَكَانٍ بَعِيدٍ يَجْمَعُ بَيْنَ الْغَابَةِ وَالنَّهْرِ"], 2],
+        ["لِمَاذَا حَذَّرَ الْأَبُ ابْنَهُ أَحْمَدَ مِنْ السِّبَاحَةِ فِي النَّهْرِ؟", ["لِأَنَّ الْمَاءَ بَارِدٌ جِدّاً", "لِأَنَّ النَّهْرَ عَمِيقٌ وَخَطِيرٌ", "لِأَنَّ فِيهِ أَسْمَاكاً كَثِيرَةً"], 1],
+        ["مَا هِيَ الْهِوَايَةُ الَّتِي فَضَّلَهَا أَحْمَدُ عِنْدَ النَّهْرِ؟", ["التَّجَوُّلُ فِي الْغَابَةِ", "صَيْدُ السَّمَكِ", "رُكُوبُ الْخَيْلِ"], 1],
+        ["لِمَاذَا اخْتَارَتْ فَاطِمَةُ التَّجَوُّلَ وَالْمَشْيَ فِي الْغَابَةِ؟", ["لِأَنَّ الْمَشْيَ يُعْطِي اللِّيَاقَةَ وَالْقُوَّةَ لِلْجِسْمِ", "لِأَنَّهَا لَا تُحِبُّ الْجُلُوسَ مَعَ عَائِلَتِهَا", "لِتَبْحَثَ عَنْ مَطْعَمٍ لِلْأَكْلِ"], 0],
+        ["مَنْ هُوَ الشَّخْصُ الَّذِي رَقَدَ مَرِيضاً فِي الْمُسْتَشْفَى؟", ["وَالِدُ فَاطِمَةَ", "الْعَمُّ سَالِمٌ", "طَبِيبُ الْأُسْرَةِ"], 1],
+        ["مَا هِيَ الْأَمْرَاضُ الَّتِي يُعَانِي مِنْهَا الْعَمُّ كَمَا كُتِبَ فِي التَّقْرِيرِ الطِّبِّيِّ؟", ["مُشْكِلَةٌ فِي الضَّغْطِ وَمَرَضُ السُّكَّرِيِّ", "أَلَمٌ فِي الْأَسْنَانِ وَصُدَاعٌ", "كَسْرٌ فِي الْيَدِ"], 0],
+        ["بِمَاذَا نَصَحَ الطَّبِيبُ الْعَمَّ سَالِمًا (بِاسْتِخْدَامِ لَا النَّاهِيَة)؟", ["لَا تَنَمْ طِوَالَ الْيَوْمِ", "لَا تَتَنَاوَلْ طَعَاماً كَثِيراً قَبْلَ النَّوْمِ", "لَا تَشْرَبِ الْمَاءَ أَبَداً"], 1],
+        ["أَيُّ نَوْعٍ مِنَ الْخُبْزِ طَلَبَ الطَّبِيبُ مِنَ الْمَرِيضِ أَلَّا يَأْكُلَهُ؟", ["الْخُبْزَ الْأَبْيَضَ", "الْخُبْزَ الْأَسْمَرَ", "الْخُبْزَ الْمَقْلِيَّ"], 0],
+        ["مَا الْفَائِدَةُ مِنْ زِيَارَةِ الْمَتَاحِفِ التَّارِيخِيَّةِ كَمَا وَرَدَ فِي الْقِصَّةِ؟", ["التَّرْوِيحُ عَنِ الْعَقْلِ بِالْمَعْرِفَةِ", "شِرَاءُ الْهَدَايَا وَالْأَلْعَابِ", "تَحْسِينُ اللِّيَاقَةِ الْبَدَنِيَّةِ"], 0]
+    ];
+
+    // S1 TF Format: [ "Statement text", CorrectBoolean ]
+    const s1_tf = [
+        ["قَبْلَ الْعُطْلَةِ، كَانَتْ فَاطِمَةُ تُعْطِي نَفْسَهَا وَقْتاً كَافِياً لِلرَّاحَةِ وَتَتَنَاوَلُ طَعَامَهَا جَيِّدًا.", false],
+        ["نَصِيحَةُ الْأَبِ لِفَاطِمَةَ (لَا تَقْتُلِي وَقْتَكِ) تَعْنِي أَلَّا تُضَيِّعَ وَقْتَهَا كُلَّهُ فِي الدِّرَاسَةِ دُونَ تَجْدِيدٍ لِلنَّشَاطِ.", true],
+        ["الْهَوَاءُ فِي الْغَابَةِ بَعِيداً عَنِ الْمَدِينَةِ كَانَ نَقِيّاً جِدّاً وَخَالِياً مِنَ التَّلَوُّثِ.", true],
+        ["قَامَ الْأَبُ بِنَصْبِ الْخَيْمَةِ الْوَاسِعَةِ دَاخِلَ الْمَدِينَةِ الْمُزْدَحِمَةِ.", false],
+        ["سَمِعَ أَحْمَدُ كَلَامَ وَالِدِهِ وَلَمْ يَسْبَحْ فِي النَّهْرِ الْعَمِيقِ.", true],
+        ["كَانَ الطَّبِيبُ يَقْرَأُ التَّقْرِيرَ الطِّبِّيَّ دَاخِلَ الْمُخَيَّمِ وَلَيْسَ فِي الْمُسْتَشْفَى.", false],
+        ["الطَّبِيبُ نَصَحَ الْعَمَّ سَالِمًا أَلَّا يَأْكُلَ طَعَاماً كَثِيراً قَبْلَ أَنْ يَنَامَ.", true],
+        ["الْعَمُّ سَالِمٌ كَانَ يَهْتَمُّ بِصِحَّتِهِ جَيِّدًا طِوَالَ حَيَاتِهِ الْمَاضِيَةِ فَهُوَ لَا يَحْتَاجُ لِحِمْيَةٍ.", false],
+        ["زِيَارَةُ الْمَتَاحِفِ الْأَثَرِيَّةِ هِيَ شَكْلٌ مِنْ أَشْكَالِ التَّرْوِيحِ النَّافِعِ لِلْعَقْلِ.", true],
+        ["عَادَتْ فَاطِمَةُ إِلَى كُلِّيَّتِهَا بِنَشَاطٍ بَعْدَ أَنْ تَعَلَّمَتْ أَهَمِّيَّةَ الْمُوَازَنَةِ بَيْنَ الْعَمَلِ وَالرَّاحَةِ.", true]
+    ];
+
+    // S2 MCQ Format: [ "Question", ["Op1", "Op2", "Op3"], CorrectIndex ]
+    const s2_mcq = [
+        ["مَا مُرَادِفُ كَلِمَةِ (يُرَوِّحُ)؟", ["يَتْعَبُ وَيَشْقَى", "يَسْتَرِيحُ وَيُجَدِّدُ نَشَاطَهُ", "يَمْرَضُ وَيَتَأَلَّمُ"], 1],
+        ["مَا مُضَادُّ كَلِمَةِ (نَقِيّ) فِي وَصْفِ الْهَوَاءِ؟", ["مُلَوَّثٌ / مُتَّسِخٌ", "نَظِيفٌ / صَافٍ", "بَارِدٌ / مُثْلِجٌ"], 0],
+        ["مَا مَعْنَى تَعْبِير (غَايَةُ الإِرْهَاقِ)؟", ["الرَّاحَةُ التَّامَّةُ", "أَقْصَى دَرَجَاتِ التَّعَبِ وَالْمَشَقَّةِ", "السَّعَادَةُ وَالْفَرَحُ"], 1],
+        ["مَا هِيَ (اللِّيَاقَة) فِي السَّيَاقِ الرِّيَاضِيِّ؟", ["الضَّعْفُ وَالْكَسَلُ", "الْمَرَضُ الْمُزْمِنُ", "الْقُوَّةُ وَالصِّحَّةُ الْبَدَنِيَّةُ"], 2],
+        ["مَا مُضَادُّ فِعْلِ (يَبْتَعِدُ)؟", ["يَقْتَرِبُ", "يُسَافِرُ", "يَسْتَرِيحُ"], 0],
+        ["مَا مَعْنَى كَلِمَةِ (شِفَاء)؟", ["عِلاجٌ وَبُرْءٌ مِنَ الْمَرَضِ", "أَلَمٌ شَدِيدٌ فِي الرَّأْسِ", "بُكَاءٌ وَحُزْنٌ"], 0],
+        ["مَا مُضَادُّ صِفَةِ (سَمِين)؟", ["طَوِيلٌ جِدًّا", "نَحِيفٌ / نَحِيلٌ", "قَوِيُّ الْعَضَلَاتِ"], 1],
+        ["مَا مَعْنَى كَلِمَةِ (يَنْصَحُ) فِي جُمْلَةِ: يَنْصَحُ الطَّبِيبُ الْمَرِيضَ؟", ["يَضْرِبُهُ وَيَطْرُدُهُ", "يُوَجِّهُهُ وَيُرْشِدُهُ إِلَى الْخَيْرِ", "يَأْخُذُ مِنْهُ الْمَالَ"], 1],
+        ["مَا مُضَادُّ كَلِمَةِ (مُفِيد)؟", ["نَافِعٌ وَجَيِّدٌ", "ضَارٌّ وَمُؤْذٍ", "سَهْلٌ وَيَسِيرٌ"], 1],
+        ["مَا مَعْنَى كَلِمَةِ (الْحِمْيَة)؟", ["مَكَانٌ مُخَصَّصٌ لِلنَّوْمِ", "نِظَامٌ صَارِمٌ لِتَنَاوُلِ الطَّعَامِ لِلْعِلَاجِ", "رِيَاضَةٌ عَنِيفَةٌ بَدَنِيّاً"], 1],
+        ["مَا مُرَادِفُ فِعْلِ (نَصَبَ) فِي جُمْلَةِ: نَصَبَ الْخَيْمَةَ؟", ["هَدَمَ وَكَسَّرَ أَعْمِدَتَهَا", "أَقَامَهَا وَثَبَّتَهَا وَرَفَعَهَا", "أَحْرَقَهَا بِالنَّارِ"], 1],
+        ["مَا مُضَادُّ كَلِمَةِ (قَوِيّ)؟", ["صَغِيرُ الْحَجْمِ", "ضَعِيفُ الْبُنْيَةِ", "سَرِيعُ الْجَرْيِ"], 1],
+        ["مَا مُضَادُّ كَلِمَةِ (الرَّاحَة)؟", ["الْعَنَاءُ وَالتَّعَبُ وَالْمَشَقَّةُ", "النَّوْمُ الْعَمِيقُ", "السُّكُوتُ وَالْهُدُوءُ"], 0],
+        ["مَا مَعْنَى عِبَارَةِ (يَقْتُلُ وَقْتَهُ)؟", ["يَسْتَثْمِرُهُ فِي قِرَاءَةِ الْكُتُبِ", "يُضَيِّعُهُ فِي أَشْيَاءَ دُونَ أَيِّ فَائِدَةٍ", "يُسَافِرُ بِسُرْعَةٍ لِيَكْسَبَ الْوَقْتَ"], 1],
+        ["كَيْفَ نَطْلُبُ مِنْ شَخْصٍ أَلَّا يَلْعَبَ (بِاسْتِخْدَامِ لَا النَّاهِيَة)؟", ["لَمْ يَلْعَبْ", "لَنْ يَلْعَبَ", "لَا تَلْعَبْ"], 2]
+    ];
+
+    // S3 TF Format: [ "Statement text", CorrectBoolean ]
+    const s3_tf = [
+        ["يَرَى بَعْضُ النَّاسِ أَنَّ الْعَمَلَ الْمُسْتَمِرَّ دُونَ أَيِّ رَاحَةٍ هُوَ الطَّرِيقُ الْوَحِيدُ لِلنَّجَاحِ دَائِماً.", false],
+        ["التَّرْوِيحُ عَنِ النَّفْسِ ضَرُورَةٌ لِإِعَادَةِ شَحْنِ الطَّاقَةِ بَعْدَ فَتَرَاتِ الْجُهْدِ وَعَنَاءِ الْعَمَلِ.", true],
+        ["الرِّمَايَةُ وَالسِّبَاحَةُ وَرُكُوبُ الْخَيْلِ هِيَ أَمْثِلَةٌ عَلَى أَنْوَاعِ التَّرْوِيحِ الْمُفِيدَةِ لِلْجِسْمِ.", true],
+        ["إِذَا شَعَرَ الْإِنْسَانُ بِأَلَمٍ شَدِيدٍ، فَمِنَ الصَّوَابِ أَنْ يَتَنَاوَلَ أَيَّ دَوَاءٍ يَرَاهُ أَمَامَهُ دُونَ اسْتِشَارَةِ الطَّبِيبِ.", false],
+        ["الْجُلُوسُ لِسَاعَاتٍ طَوِيلَةٍ أَمَامَ أَلْعَابِ الْحَاسُوبِ يُعْتَبَرُ تَرْوِيحاً ضَارّاً يُؤْذِي الْعَيْنَ وَالْبَدَنَ.", true],
+        ["يُفَضِّلُ كَثِيرٌ مِنَ النَّاسِ السَّفَرَ وَالتَّجَوُّلَ فِي الْغَابَاتِ وَعَلَى الشَّوَاطِئِ لِقَضَاءِ عُطْلَةٍ مُفِيدَةٍ.", true],
+        ["السَّهَرُ طِوَالَ اللَّيْلِ وَقِلَّةُ النَّوْمِ هُمَا سِرُّ اللِّيَاقَةِ الْبَدَنِيَّةِ وَالْقُوَّةِ.", false],
+        ["الْإِسْلَامُ حَثَّ عَلَى مُمَارَسَةِ الرِّيَاضَةِ لِأَنَّ الْمُؤْمِنَ الْقَوِيَّ خَيْرٌ وَأَحَبُّ إِلَى اللَّهِ مِنَ الْمُؤْمِنِ الضَّعِيفِ.", true],
+        ["يَجِبُ عَلَى الْمَرِيضِ الْمُصَابِ بِالسُّكَّرِيِّ أَنْ يَتَجَاهَلَ الْحِمْيَةَ وَيَأْكُلَ الْحَلْوَى وَالسُّكَّرِيَّاتِ كَمَا يَشَاءُ.", false],
+        ["رِيَاضَةُ صَيْدِ السَّمَكِ تُسَاعِدُ الْإِنْسَانَ عَلَى تَعَلُّمِ الصَّبْرِ وَالْهُدُوءِ.", true],
+        ["نَصْبُ الْخِيَامِ فِي الْمُخَيَّمَاتِ وَتَحْضِيرُ الطَّعَامِ مَعَ الْأَصْدِقَاءِ نَوْعٌ مِنَ التَّرْوِيحِ الْمُمْتِعِ.", true],
+        ["الْهَوَاءُ دَاخِلَ الْمُدُنِ الْمُزْدَحِمَةِ بِالسَّيَّارَاتِ أَنْقَى بِكَثِيرٍ مِنَ الْهَوَاءِ فِي الْغَابَاتِ وَالْقُرَى.", false],
+        ["قِرَاءَةُ الْكُتُبِ وَالْقِصَصِ النَّافِعَةِ هِيَ إِحْدَى صُوَرِ التَّرْوِيحِ الْمُفِيدَةِ لِلْعَقْلِ.", true],
+        ["يَقُومُ الطَّبِيبُ بِفَحْصِ الْمَرِيضِ وَكِتَابَةِ التَّقْرِيرِ الطِّبِّيِّ بَعْدَ التَّشْخِيصِ دَاخِلَ غُرْفَةِ الْفَحْصِ.", true],
+        ["يَنْصَحُ الْأَطِبَّاءُ دَائِماً بِتَنَاوُلِ الْخُبْزِ الْأَسْمَرِ لِأَنَّهُ خِيَارٌ صِحِّيٌّ أَكْثَرُ مِنَ الْخُبْزِ الْأَبْيَضِ.", true]
+    ];
+
+    // S4 MCQ Format: [ "Question", ["Op1", "Op2", "Op3"], CorrectIndex ]
+    const s4_mcq = [
+        ["مَا جَمْعُ كَلِمَةِ (مَرِيض)؟", ["مَرَاضَى", "مَرْضَى", "مَرِيضُونَ"], 1],
+        ["مَا جَمْعُ كَلِمَةِ (دَوَاء)؟", ["أَدْوِيَة", "دَوَاءَات", "أَدْوَاء"], 0],
+        ["مَا مُفْرَدُ كَلِمَةِ (آلَام)؟", ["أَلَم", "لَوْم", "أَلِيم"], 0],
+        ["مَا مُفْرَدُ كَلِمَةِ (أَسْنَان)؟", ["سَنّ", "سِنّ", "سُنَّة"], 1],
+        ["مَا مُضَادُّ كَلِمَةِ (سَلِيم) فِي السَّيَاقِ الصِّحِّيِّ؟", ["قَوِيّ", "نَائِم", "مَرِيض / مُصَاب"], 2],
+        ["مَا جَمْعُ كَلِمَةِ (عُطْلَة)؟", ["عَطَلات", "عُطَل / عُطْلَات", "مُعَطَّلَات"], 1],
+        ["مَا مُفْرَدُ كَلِمَةِ (أَطِبَّاء)؟", ["طِبّ", "طَبِيب", "مُطَبِّب"], 1],
+        ["مَا مُضَادُّ كَلِمَةِ (كَثِير)؟", ["طَوِيل", "قَلِيل", "صَغِير"], 1],
+        ["مَا مُفْرَدُ كَلِمَةِ (مُخَيَّمَات)؟", ["خَيْمَة", "خَام", "مُخَيَّم"], 2],
+        ["مَا جَمْعُ كَلِمَةِ (نَفْس)؟", ["أَنْفَاس", "نُفُوس / أَنْفُس", "مُنَافِسُونَ"], 1],
+        ["مَا جَمْعُ كَلِمَةِ (مَتْحَف)؟", ["مَتَاحِف", "تُحَف", "مُتْحَفَات"], 0],
+        ["مَا مُفْرَدُ كَلِمَةِ (أَوْقَات)؟", ["وَقْت", "مَوْقُوت", "مِيقَات"], 0],
+        ["مَا جَمْعُ كَلِمَةِ (بَحْر)؟", ["أَبْحَار / بِحَار", "بَحَّارَة", "بُحَيْرَة"], 0],
+        ["مَا جَمْعُ كَلِمَةِ (غَابَة)؟", ["غَابُونَ", "غَابَات", "غَوَائِب"], 1],
+        ["مَا مُضَادُّ فِعْلِ (يَبْدَأُ)؟", ["يَذْهَبُ", "يَنْقُصُ", "يَنْتَهِي"], 2]
+    ];
+
+    // S5 Fills Format: [ "Part1", "Part2", "CorrectWord" ]
+    const s5_words = ["الرِّيَاضَةَ", "الطَّبِيبُ", "الْمُسْتَشْفَى", "دَوَاءً", "مُخَيَّمًا", "نَحِيفٌ", "الْخَيْلِ", "عَجِيبٍ", "السِّبَاحَةَ", "الْغَابَةِ", "الْقِصَّةَ", "مُفِيدٌ", "الْإِرْهَاقِ", "الْحِمْيَةَ", "نَشِيطٌ"];
+    const s5_fills = [
+        ["يَقُومُ", "بِفَحْصِ الْمَرِيضِ بِدِقَّةٍ دَاخِلَ غُرْفَةِ الْفَحْصِ بَعْدَ ظُهْرِ الْيَوْمِ.", "الطَّبِيبُ"],
+        ["يَذْهَبُ الشَّخْصُ الْمَرِيضُ إِلَى", "لِيَتَلَقَّى الْعِلاجَ الْمُنَاسِبَ مِنْ قِبَلِ الْمُمَرِّضِينَ هُنَاكَ.", "الْمُسْتَشْفَى"],
+        ["تَنَاوَلَ الْمَرِيضُ", "مَرَّتَيْنِ فِي الْيَوْمِ حَسَبَ وَصْفَةِ الطَّبِيبِ الْمُعَالِجِ لِحَالَتِهِ.", "دَوَاءً"],
+        ["يَنْصَحُ الْخُبَرَاءُ بِأَنْ تُمَارِسَ", "يَوْمِيّاً لِتُحَافِظَ عَلَى لِيَاقَتِكَ الْبَدَنِيَّةِ وَصِحَّتِكَ دَائِماً.", "الرِّيَاضَةَ"],
+        ["نَصَبْنَا", "كَبِيرًا بَيْنَ الْأَشْجَارِ لِنَبِيتَ فِيهِ خِلَالَ رِحْلَتِنَا الْجَبَلِيَّةِ الْجَمِيلَةِ.", "مُخَيَّمًا"],
+        ["صَدِيقِي لَا يَأْكُلُ كَثِيرًا وَيَتَحَرَّكُ دَائِماً، لِذَلِكَ فَإِنَّ جِسْمَهُ", "جِدّاً.", "نَحِيفٌ"],
+        ["يُحِبُّ أَخِي رُكُوبَ", "فِي الْمَزْرَعَةِ كُلَّ نِهَايَةِ أُسْبُوعٍ وَيُعْتَنِي بِهَا كَثِيراً.", "الْخَيْلِ"],
+        ["يَا لَهُ مِنْ أَمْرٍ", "أَنْ نَرَى هَذِهِ الْمَنَاظِرَ الطَّبِيعِيَّةَ السَّاحِرَةَ بَعْدَ طُولِ غِيَابٍ عَنِ الْقَرْيَةِ!", "عَجِيبٍ"],
+        ["نَزَلَ أَحْمَدُ إِلَى الشَّاطِئِ لِيُمَارِسَ", "مَعَ أَصْدِقَائِهِ فِي الْمَاءِ الصَّافِي وَالْبَارِدِ.", "السِّبَاحَةَ"],
+        ["الْهَوَاءُ نَقِيٌّ جِدّاً بَيْنَ أَشْجَارِ", "الْكَثِيفَةِ، بَعِيداً عَنْ دُخَانِ الْمَصَانِعِ وَالسَّيَّارَاتِ.", "الْغَابَةِ"],
+        ["يَقْرَأُ الطَّالِبُ", "الْخَيَالِيَّةَ لِيَسْتَمْتِعَ بِوَقْتِهِ قَبْلَ أَنْ يَخْلُدَ إِلَى النَّوْمِ كُلَّ مَسَاءٍ.", "الْقِصَّةَ"],
+        ["التَّرْوِيحُ عَنِ النَّفْسِ بَعْدَ الْعَمَلِ الطَّوِيلِ هُوَ أَمْرٌ", "لِلصِّحَّةِ الْعَقْلِيَّةِ وَالْبَدَنِيَّةِ مَعاً.", "مُفِيدٌ"],
+        ["الْعَامِلُ بَعْدَ نِهَايَةِ يَوْمٍ شَاقٍّ يَشْعُرُ بِغَايَةِ", "وَتَكُونُ لَدَيْهِ رَغْبَةٌ شَدِيدَةٌ فِي النَّوْمِ.", "الْإِرْهَاقِ"],
+        ["نَصَحَ الطَّبِيبُ مَرِيضَ السُّكَّرِيِّ بِأَنْ يَتَّبِعَ", "غِذَائِيَّةً صَارِمَةً خَالِيَةً مِنَ السُّكَّرِ لِيَتَحَسَّنَ.", "الْحِمْيَةَ"],
+        ["أَحَسَّ الرَّجُلُ بِنَشَاطٍ بَعْدَ قَضَاءِ الْعُطْلَةِ الطَّوِيلَةِ وَأَصْبَحَ", "وَمُسْتَعِدّاً لِلْعَوْدَةِ إِلَى الْعَمَلِ بِطَاقَةٍ كَبِيرَةٍ.", "نَشِيطٌ"]
+    ];
+
+    // S6 Orders Format: [ ["Word1", "Word2", ...] ]
+    const s6_orders = [
+        ["التَّرْوِيحُ", "عَنِ", "النَّفْسِ", "يُجَدِّدُ", "نَشَاطَ", "الْإِنْسَانِ"],
+        ["لَا", "تَقْتُلْ", "وَقْتَكَ", "فِي", "أُمُورٍ", "بِلَا", "فَائِدَةٍ"],
+        ["الْعُطْلَةُ", "الصَّيْفِيَّةُ", "عَلَى", "الْأَبْوَابِ", "فَاسْتَعِدَّ", "لَهَا"],
+        ["أَشْعُرُ", "بِغَايَةِ", "الْإِرْهَاقِ", "مِنْ", "عَنَاءِ", "الْعَمَلِ"],
+        ["يَفْحَصُ", "الطَّبِيبُ", "الْمَرِيضَ", "وَيَكْتُبُ", "التَّقْرِيرَ", "الطِّبِّيَّ"],
+        ["تَنَاوَلِ", "الدَّوَاءَ", "بِانْتِظَامٍ", "لِتَحْصُلَ", "عَلَى", "الشِّفَاءِ"],
+        ["نَصَحَ", "الطَّبِيبُ", "مَرِيضَ", "السُّكَّرِيِّ", "بِاتِّبَاعِ", "الْحِمْيَةِ"],
+        ["السِّبَاحَةُ", "رِيَاضَةٌ", "مُفِيدَةٌ", "تُعْطِي", "الْجِسْمَ", "اللِّيَاقَةَ"],
+        ["نَصَبَتِ", "الْأُسْرَةُ", "مُخَيَّمًا", "قُرْبَ", "شَاطِئِ", "الْبَحْرِ"],
+        ["لَا", "تَتَنَاوَلْ", "طَعَاماً", "كَثِيراً", "قَبْلَ", "النَّوْمِ"],
+        ["الْهَوَاءُ", "فِي", "الْغَابَةِ", "نَقِيٌّ", "وَخَالٍ", "مِنَ", "التَّلَوُّثِ"],
+        ["يُفَضِّلُ", "الْبَعْضُ", "التَّجَوُّلَ", "وَزِيَارَةَ", "الْمَتَاحِفِ", "الْقَدِيمَةِ"],
+        ["رُكُوبُ", "الْخَيْلِ", "يُعْتَبَرُ", "مِنَ", "الرِّيَاضَاتِ", "الْمَشْهُورَةِ"],
+        ["الْخُبْزُ", "الْأَسْمَرُ", "أَفْضَلُ", "صِحِّيًّا", "مِنَ", "الْأَبْيَضِ"],
+        ["لَا", "تَأْكُلْ", "خُبْزاً", "أَبْيَضَ", "وَكُلْ", "أَسْمَرَ"]
+    ];
+
+    // S7 Comps Format: [ "Word" ]
+    const s7_comps = ["التَّرْوِيحُ", "عَنَاءُ", "الْإِرْهَاقُ", "مُخَيَّمٌ", "التَّجَوُّلُ", "اللِّيَاقَةُ", "حِمْيَةٌ", "التَّقْرِيرُ", "السُّكَّرِيَّاتُ", "يَصْطَادُ", "الْمَتَاحِفُ", "نَقِيٌّ", "نَصَبَ", "يُعَانِي", "يَبْتَعِدُ"];
+
+
+    // --- Rendering Engine ---
+    
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
+
+    function createMCQ(container, questionsArray, sectionId) {
+        questionsArray.forEach((qArr, idx) => {
+            // FIX (Array Destructuring): Ensure complete separation of variables
+            const [qText, options, correctIndex] = qArr;
+
+            let div = document.createElement('div');
+            div.className = 'question-card';
+            // Print strictly ONLY the qText string
+            div.innerHTML = `<div class="question-text">${idx + 1}. ${qText}</div><div class="options-grid" id="${sectionId}_q${idx}"></div>`;
+            container.appendChild(div);
+            
+            let optionsContainer = div.querySelector('.options-grid');
+            options.forEach((optText, optIdx) => {
+                let btn = document.createElement('button');
+                btn.className = 'btn-option';
+                btn.textContent = optText;
+                btn.onclick = function() {
+                    let allBtns = optionsContainer.querySelectorAll('.btn-option');
+                    allBtns.forEach(b => b.disabled = true);
+                    if (optIdx === correctIndex) { 
+                        btn.classList.add('correct');
+                        globalScore++;
+                    } else {
+                        btn.classList.add('incorrect');
+                        allBtns[correctIndex].classList.add('correct');
+                    }
+                };
+                optionsContainer.appendChild(btn);
+            });
+        });
+    }
+
+    function createTF(container, questionsArray, sectionId) {
+        questionsArray.forEach((qArr, idx) => {
+            // FIX (Array Destructuring): Isolates the string text from the boolean value
+            const [qText, correctBool] = qArr;
+
+            let div = document.createElement('div');
+            div.className = 'question-card';
+            // Print strictly ONLY the qText string (Never the correctBool)
+            div.innerHTML = `<div class="question-text">${idx + 1}. ${qText}</div><div class="options-grid" id="${sectionId}_q${idx}"></div>`;
+            container.appendChild(div);
+            
+            let optionsContainer = div.querySelector('.options-grid');
+            let ops = [{t: "صَحِيح (Верно)", v: true}, {t: "خَطَأ (Неверно)", v: false}];
+            
+            ops.forEach(opt => {
+                let btn = document.createElement('button');
+                btn.className = 'btn-option';
+                btn.textContent = opt.t;
+                btn.onclick = function() {
+                    let allBtns = optionsContainer.querySelectorAll('.btn-option');
+                    allBtns.forEach(b => b.disabled = true);
+                    if (opt.v === correctBool) { 
+                        btn.classList.add('correct');
+                        globalScore++;
+                    } else {
+                        btn.classList.add('incorrect');
+                        let correctBtn = Array.from(allBtns).find(b => (b.textContent.includes('صَحِيح') && correctBool === true) || (b.textContent.includes('خَطَأ') && correctBool === false));
+                        if(correctBtn) correctBtn.classList.add('correct');
+                    }
+                };
+                optionsContainer.appendChild(btn);
+            });
+        });
+    }
+
+    function buildQuiz() {
+        const container = document.getElementById('quiz-container');
+        
+        // Section 1: Reading
+        let s1 = document.createElement('div');
+        s1.className = 'section active';
+        s1.id = 'sec0';
+        
+        // Render Vocab Table using Safe Array Destructuring
+        let vocabRows = vocabData.map(row => {
+            const [w, m, e, t] = row;
+            return `<tr>
+                        <td><strong style="color:#d84315;">${w}</strong></td>
+                        <td>${m}</td>
+                        <td>${e}</td>
+                        <td><strong style="color:#1565c0;">${t}</strong></td>
+                    </tr>`;
+        }).join('');
+
+        s1.innerHTML = `<h2>الْقِسْمُ الْأَوَّل: الْقِرَاءَةُ وَالاسْتِيعَابُ <span class="ru-sub">(Чтение и понимание)</span></h2>
+                        <div class="story-container">
+                            <div class="story-text">${storyText}</div>
+                            <details>
+                                <summary>جَدْوَلُ الْمُفْرَدَاتِ (Словарь) - اضْغَطْ هُنَا لِلْعَرْضِ</summary>
+                                <table class="vocab-table">
+                                    <tr>
+                                        <th>الْكَلِمَة<br><small>Слово</small></th>
+                                        <th>مَعْنَاهَا فِي اللُّغَةِ<br><small>Значение</small></th>
+                                        <th>مِثَالٌ لِلتَّوْضِيحِ<br><small>Пример</small></th>
+                                        <th>التَّرْجَمَة<br><small>Перевод</small></th>
+                                    </tr>
+                                    ${vocabRows}
+                                </table>
+                            </details>
+                        </div>
+                        <h3>اخْتَرْ الْإِجَابَةَ الصَّحِيحَةَ:</h3><div id="s1_mcq_box"></div>
+                        <h3 style="margin-top:30px;">ضَعْ (صَحِيح) أَوْ (خَطَأ):</h3><div id="s1_tf_box"></div>
+                        <button class="btn-main" onclick="nextSection(0)">الْقِسْمُ التَّالِي <span class="ru-sub">Следующий раздел</span></button>`;
+        container.appendChild(s1);
+        
+        createMCQ(document.getElementById('s1_mcq_box'), s1_mcq, 's1mcq');
+        createTF(document.getElementById('s1_tf_box'), s1_tf, 's1tf');
+
+        // Section 2: Vocab
+        let s2 = document.createElement('div');
+        s2.className = 'section';
+        s2.id = 'sec1';
+        s2.innerHTML = `<h2>الْقِسْمُ الثَّانِي: الْمُفْرَدَاتُ وَالتَّعْبِيرَاتُ <span class="ru-sub">(Лексика и выражения)</span></h2><div id="s2_box"></div><button class="btn-main" onclick="nextSection(1)">الْقِسْمُ التَّالِي <span class="ru-sub">Следующий раздел</span></button>`;
+        container.appendChild(s2);
+        createMCQ(document.getElementById('s2_box'), s2_mcq, 's2');
+
+        // Section 3: True/False
+        let s3 = document.createElement('div');
+        s3.className = 'section';
+        s3.id = 'sec2';
+        s3.innerHTML = `<h2>الْقِسْمُ الثَّالِث: صَحِيح أَمْ خَطَأ <span class="ru-sub">(Правда или ложь)</span></h2><div id="s3_box"></div><button class="btn-main" onclick="nextSection(2)">الْقِسْمُ التَّالِي <span class="ru-sub">Следующий раздел</span></button>`;
+        container.appendChild(s3);
+        createTF(document.getElementById('s3_box'), s3_tf, 's3');
+
+        // Section 4: Singular/Plural/Antonyms
+        let s4 = document.createElement('div');
+        s4.className = 'section';
+        s4.id = 'sec3';
+        s4.innerHTML = `<h2>الْقِسْمُ الرَّابِع: الْمُفْرَدُ وَالْجَمْعُ وَالْمُضَادُّ <span class="ru-sub">(Единственное, множественное и антонимы)</span></h2><div id="s4_box"></div><button class="btn-main" onclick="nextSection(3)">الْقِسْمُ التَّالِي <span class="ru-sub">Следующий раздел</span></button>`;
+        container.appendChild(s4);
+        createMCQ(document.getElementById('s4_box'), s4_mcq, 's4');
+
+        // Section 5: Fill in the blanks
+        let s5 = document.createElement('div');
+        s5.className = 'section';
+        s5.id = 'sec4';
+        s5.innerHTML = `<h2>الْقِسْمُ الْخَامِس: امْلَأ الْفَرَاغَ <span class="ru-sub">(Заполните пропуски)</span></h2><div id="s5_box"></div><button class="btn-main" onclick="nextSection(4)">الْقِسْمُ التَّالِي <span class="ru-sub">Следующий раздел</span></button>`;
+        container.appendChild(s5);
+        let s5_box = document.getElementById('s5_box');
+        
+        s5_fills.forEach((fillArr, idx) => {
+            // FIX (Array Destructuring)
+            const [part1, part2, correctAns] = fillArr;
+
+            let div = document.createElement('div');
+            div.className = 'question-card';
+            let selectHTML = `<select class="blank-select" id="s5_sel_${idx}">
+                <option value="">-- اخْتَرْ --</option>
+                ${s5_words.map(w => `<option value="${w}">${w}</option>`).join('')}
+            </select>`;
+            div.innerHTML = `<div class="question-text">${idx+1}. ${part1} ${selectHTML} ${part2}</div>`;
+            s5_box.appendChild(div);
+            
+            let sel = document.getElementById(`s5_sel_${idx}`);
+            sel.addEventListener('change', function() {
+                if(this.value === correctAns) {
+                    this.style.backgroundColor = 'var(--correct)';
+                    this.style.borderColor = '#81c784';
+                    this.disabled = true;
+                    globalScore++;
+                } else if(this.value !== "") {
+                    this.style.backgroundColor = 'var(--incorrect)';
+                    this.style.borderColor = '#e57373';
+                    setTimeout(() => {
+                        this.style.backgroundColor = '';
+                        this.style.borderColor = '#ccc';
+                        this.value = '';
+                    }, 1000);
+                }
+            });
+        });
+
+        // Section 6: Order Sentences
+        let s6 = document.createElement('div');
+        s6.className = 'section';
+        s6.id = 'sec5';
+        s6.innerHTML = `<h2>الْقِسْمُ السَّادِس: تَرْتِيبُ الْجُمَلِ <span class="ru-sub">(Составьте предложения)</span></h2><div id="s6_box"></div><button class="btn-main" onclick="nextSection(5)">الْقِسْمُ التَّالِي <span class="ru-sub">Следующий раздел</span></button>`;
+        container.appendChild(s6);
+        let s6_box = document.getElementById('s6_box');
+        s6_orders.forEach((qArray, idx) => {
+            let div = document.createElement('div');
+            div.className = 'question-card';
+            div.innerHTML = `<div class="question-text">${idx+1}. رَتِّبِ الْكَلِمَاتِ الْمُبَعْثَرَةَ لِتُكَوِّنَ جُمْلَةً صَحِيحَةً:</div>
+                             <div class="order-answer" id="ans_${idx}"></div>
+                             <div class="order-pool" id="pool_${idx}"></div>`;
+            s6_box.appendChild(div);
+            
+            let pool = document.getElementById(`pool_${idx}`);
+            let ansArea = document.getElementById(`ans_${idx}`);
+            let shuffled = shuffle([...qArray]);
+            let currentIndex = 0;
+            let solved = false;
+
+            shuffled.forEach((w, wIdx) => {
+                let btn = document.createElement('div');
+                btn.className = 'order-word';
+                btn.textContent = w;
+                btn.onclick = function() {
+                    if(solved) return;
+                    if(w === qArray[currentIndex]) {
+                        ansArea.appendChild(btn);
+                        currentIndex++;
+                        if(currentIndex === qArray.length) {
+                            solved = true;
+                            globalScore++;
+                            ansArea.style.backgroundColor = 'var(--correct)';
+                            ansArea.style.borderColor = '#81c784';
+                        }
+                    } else {
+                        btn.style.backgroundColor = 'var(--incorrect)';
+                        btn.style.color = '#fff';
+                        setTimeout(() => { btn.style.backgroundColor = '#fff'; btn.style.color = '#333'; }, 800);
+                    }
+                };
+                pool.appendChild(btn);
+            });
+        });
+
+        // Section 7: Composition
+        let s7 = document.createElement('div');
+        s7.className = 'section';
+        s7.id = 'sec6';
+        s7.innerHTML = `<h2>الْقِسْمُ السَّابِع: الْإِنْشَاءُ وَالتَّعْبِيرُ <span class="ru-sub">(Сочинение)</span></h2>
+                        <p style="color:#d32f2f; font-size:0.95em; text-align:center; font-weight:bold;">مُلاحَظَة: هَذَا الْقِسْمُ يُصَحَّحُ يَدَوِيّاً مِنَ الْمُعَلِّمِ، وَلا يَدْخُلُ فِي النَّتِيجَةِ الآلِيَّةِ لِلِاخْتِبَارِ.<br><span class="ru-sub">Примечание: этот раздел проверяется преподавателем вручную и не входит в автоматическую оценку.</span></p>
+                        <div id="s7_box"></div>
+                        <button class="btn-main" onclick="showResults()">إِنْهَاءُ الِاخْتِبَارِ <span class="ru-sub">Завершить тест</span></button>`;
+        container.appendChild(s7);
+        let s7_box = document.getElementById('s7_box');
+        s7_comps.forEach((wordText, idx) => {
+            let div = document.createElement('div');
+            div.className = 'question-card';
+            div.innerHTML = `<div class="question-text">${idx+1}. ضَعْ كَلِمَةَ <strong style="color:#d84315;">(${wordText})</strong> فِي جُمْلَةٍ مُفِيدَةٍ مِنْ إِنْشَائِكَ:</div>
+                             <textarea class="composition" placeholder="اكْتُبْ جُمْلَتَكَ هُنَا... (Напишите ваше предложение здесь)"></textarea>`;
+            s7_box.appendChild(div);
+        });
+
+        // Result Screen
+        let res = document.createElement('div');
+        res.className = 'section';
+        res.id = 'sec_result';
+        res.innerHTML = `<div id="result-screen">
+                            <h2>نَتِيجَةُ الِاخْتِبَارِ <span class="ru-sub">(Результаты теста)</span></h2>
+                            <div class="score-display"><span id="final-score">0</span> / ${TOTAL_AUTO_QUESTIONS}</div>
+                            <button class="btn-main" onclick="location.reload()">إِعَادَةُ الِاخْتِبَارِ <span class="ru-sub">Повторить тест</span></button>
+                         </div>`;
+        container.appendChild(res);
+    }
+
+    function nextSection(currentIdx) {
+        document.getElementById(`sec${currentIdx}`).classList.remove('active');
+        document.getElementById(`sec${currentIdx + 1}`).classList.add('active');
+        window.scrollTo(0, 0);
+    }
+
+    function showResults() {
+        document.getElementById(`sec6`).classList.remove('active');
+        document.getElementById('final-score').textContent = globalScore;
+        document.getElementById(`sec_result`).classList.add('active');
+        window.scrollTo(0, 0);
+    }
+
+    // Initialize Quiz on load
+    window.onload = buildQuiz;
+
+</script>
+</body>
+</html>
