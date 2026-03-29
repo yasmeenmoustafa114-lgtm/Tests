@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اِخْتِبَارُ اللُّغَةِ الْعَرَبِيَّةِ</title>
+    <style>
+        /* التنسيقات العامة والتصميم البصري */
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;900&display=swap');
+        
+        body {
+            font-family: 'Tajawal', Tahoma, Arial, sans-serif;
+            background-color: #ffe6f2; /* لون وردي فاتح مبهج طفولي */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        #app-container {
+            width: 95%;
+            max-width: 900px;
+            background: #ffffff;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.5s ease;
+        }
+
+        /* خلفيات متغيرة لكسر الملل */
+        .bg-color-0 { background-color: #ffffff !important; }
+        .bg-color-1 { background-color: #f0f8ff !important; }
+        .bg-color-2 { background-color: #fdf5e6 !important; }
+        .bg-color-3 { background-color: #f0fff0 !important; }
+
+        h1 { font-size: 3.5rem; color: #ff4757; font-weight: 900; margin-bottom: 20px;}
+        
+        #counter {
+            font-size: 1.8rem;
+            color: #576574;
+            font-weight: bold;
+            margin-bottom: 30px;
+            background: #eee;
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 20px;
+        }
+
+        .question-text {
+            font-size: 3.5rem; /* خط ضخم جداً */
+            margin-bottom: 35px;
+            font-weight: 900;
+            color: #2f3542;
+            line-height: 1.4;
+        }
+
+        .emoji-img {
+            font-size: 7rem;
+            margin: 20px 0;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .option-btn {
+            font-size: 2.5rem; /* خط ضخم للخيارات */
+            padding: 20px 30px;
+            border: 3px solid #dfe4ea;
+            border-radius: 20px;
+            background-color: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            font-weight: 700;
+            color: #2f3542;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background-color: #f1f2f6;
+            transform: scale(1.02);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.9;
+        }
+
+        /* الألوان الخاصة بالتصويب */
+        .correct-ans {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724 !important;
+        }
+
+        .wrong-ans {
+            background-color: #fff3cd !important;
+            border-color: #ffc107 !important;
+            color: #856404 !important;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+        }
+
+        .nav-btn {
+            font-size: 2rem;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 15px;
+            background-color: #1e90ff;
+            color: white;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(30, 144, 255, 0.3);
+            transition: 0.3s;
+        }
+
+        .nav-btn:disabled {
+            background-color: #ced6e0;
+            box-shadow: none;
+            cursor: not-allowed;
+            color: #747d8c;
+        }
+
+        /* شاشات الاختبار */
+        #quiz-screen, #result-screen { display: none; }
+
+        /* حركات النجوم للنتيجة */
+        .stars-container {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            animation: bounce 1.5s infinite alternate;
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-25px); }
+        }
+
+        .result-text { font-size: 3.5rem; font-weight: bold; color: #2ed573; line-height: 1.5;}
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <!-- شاشة البداية -->
+        <div id="start-screen">
+            <h1>مَرْحَباً بِكِ يَا بَطَلَةُ!</h1>
+            <p style="font-size: 2rem; color: #555; margin-bottom: 40px;">اِخْتِبَارُ اللُّغَةِ الْعَرَبِيَّةِ الشَّامِل</p>
+            <button class="nav-btn" style="background-color: #2ed573;" onclick="startQuiz()">اِبْدَئِي الاِخْتِبَارَ</button>
+        </div>
+
+        <!-- شاشة الأسئلة -->
+        <div id="quiz-screen">
+            <div id="counter">السُّؤَالُ 1 مِنْ 80</div>
+            <div id="question-content">
+                <!-- المحتوى يتولد ديناميكياً هنا -->
+            </div>
+            <div class="controls">
+                <button id="prev-btn" class="nav-btn" onclick="goPrev()">السَّابِق</button>
+                <button id="next-btn" class="nav-btn" onclick="goNext()" disabled>التَّالِي</button>
+            </div>
+        </div>
+
+        <!-- شاشة النتيجة -->
+        <div id="result-screen">
+            <div class="stars-container">⭐⭐⭐</div>
+            <div class="result-text" id="final-score-text"></div>
+        </div>
+    </div>
+
+    <script>
+        // مصفوفة الأسئلة: 80 سؤال (بدون أسئلة استماع، تركيز من الباء للطاء، مفردات منوعة)
+        const questions = [
+            // القسم الأول: اكتشف شكل الحرف الناقص (10 أسئلة)
+            { type: "text", q: "اِخْتَارِي الْحَرْفَ النَّاقِصَ: ...ـيْت", o: ["ب", "بـ", "ـبـ"], a: 1 },
+            { type: "text", q: "اِخْتَارِي الْحَرْفَ النَّاقِصَ: بُـ...ـتَان", o: ["س", "سـ", "ـسـ"], a: 2 },
+            { type: "text", q: "اِخْتَارِي الْحَرْفَ النَّاقِصَ: ...ـعْلَب", o: ["ث", "ثـ", "ـثـ"], a: 1 },
+            { type: "text", q: "اِخْتَارِي الْحَرْفَ النَّاقِصَ: دَجَا...ـة", o: ["جـ", "ج", "ـجـ"], a: 2 },
+            { type: "text", q: "اِخْتَارِي الْحَرْفَ النَّاقِصَ: بَـ...ـر", o: ["ح", "حـ", "ـحـ"], a: 2 },
+            { type: "text", q: "اِخْتَارِي الْحَرْفَ النَّاقِصَ: ...ـرُوف", o: ["خ", "خـ", "ـخـ"], a: 1 },
+            { type: "text", q: "اِخْتَارِي الْحَرْفَ النَّاقِصَ: صُنْـ...ـوق", o: ["د", "دـ", "ـد"], a: 2 },
+            { type: "text", q: "اِخْتَارِي الْحَرْفَ النَّاقِصَ: ...ـئْب", o: ["ذ", "ذـ", "ـذ"], a: 0 },
+            { type: "text", q: "اِخْتَارِي الْحَرْفَ النَّاقِصَ: سَـ...ـِير", o: ["ر", "رـ", "ـر"], a: 2 },
+            { type: "text", q: "اِخْتَارِي الْحَرْفَ النَّاقِصَ: جَـ...ـَر", o: ["ز", "زـ", "ـز"], a: 2 },
+
+            // القسم الثاني: الصورة والكلمة (10 أسئلة)
+            { type: "image", img: "🦆", q: "مَا هَذِهِ؟", o: ["بَطَّة", "بَصَل", "بَقَرَة"], a: 0 },
+            { type: "image", img: "👑", q: "مَا هَذَا؟", o: ["تُوت", "تَاج", "تَلّ"], a: 1 },
+            { type: "image", img: "🧄", q: "مَا هَذَا؟", o: ["ثُوم", "ثَلْج", "ثَوْب"], a: 0 },
+            { type: "image", img: "🧀", q: "مَا هَذَا؟", o: ["جُبْن", "جَبَل", "جَدّ"], a: 0 },
+            { type: "image", img: "👟", q: "مَا هَذَا؟", o: ["حَبْل", "حِذَاء", "حَجَر"], a: 1 },
+            { type: "image", img: "⛺", q: "مَا هَذِهِ؟", o: ["خَيْط", "خَوْخ", "خَيْمَة"], a: 2 },
+            { type: "image", img: "🐻", q: "مَا هَذَا؟", o: ["دُبّ", "دَلْو", "دَار"], a: 0 },
+            { type: "image", img: "🪰", q: "مَا هَذِهِ؟", o: ["ذُبَابَة", "ذُرَة", "ذَيْل"], a: 0 },
+            { type: "image", img: "🪶", q: "مَا هَذِهِ؟", o: ["رَجُل", "رِيشَة", "رَمْل"], a: 1 },
+            { type: "image", img: "🦒", q: "مَا هَذِهِ؟", o: ["زَرَافَة", "زَهْرَة", "زِرّ"], a: 0 },
+
+            // القسم الثالث: تراكيب الإشارة مقروءة (10 أسئلة)
+            { type: "image", img: "🛏️", q: "اِقْرَئِي ثُمَّ اخْتَارِي:", o: ["هَذَا سَرِير", "هَذِهِ سَفِينَة", "هَذَا سَيْف"], a: 0 },
+            { type: "image", img: "🚗", q: "اِقْرَئِي ثُمَّ اخْتَارِي:", o: ["هَذَا سَرِير", "هَذِهِ سَيَّارَة", "هَذِهِ سَحَابَة"], a: 1 },
+            { type: "image", img: "🌞", q: "اِقْرَئِي ثُمَّ اخْتَارِي:", o: ["هَذَا شَارِع", "هَذِهِ شَمْس", "هَذِهِ شَجَرَة"], a: 1 },
+            { type: "image", img: "🕯️", q: "اِقْرَئِي ثُمَّ اخْتَارِي:", o: ["هَذَا شَاي", "هَذِهِ شَمْعَة", "هَذَا شُبَّاك"], a: 1 },
+            { type: "image", img: "🦅", q: "اِقْرَئِي ثُمَّ اخْتَارِي:", o: ["هَذَا صَقْر", "هَذِهِ صُورَة", "هَذَا صَحْن"], a: 0 },
+            { type: "image", img: "📦", q: "اِقْرَئِي ثُمَّ اخْتَارِي:", o: ["هَذَا صَابُون", "هَذِهِ صُورَة", "هَذَا صُنْدُوق"], a: 2 },
+            { type: "image", img: "🐸", q: "اِقْرَئِي ثُمَّ اخْتَارِي:", o: ["هَذَا ضِفْدَع", "هَذِهِ ضَبْع", "هَذَا ضِرْس"], a: 0 },
+            { type: "image", img: "👮", q: "اِقْرَئِي ثُمَّ اخْتَارِي:", o: ["هَذِهِ ضَابِط", "هَذَا ضَابِط", "هَذَا ضَوْء"], a: 1 },
+            { type: "image", img: "✈️", q: "اِقْرَئِي ثُمَّ اخْتَارِي:", o: ["هَذِهِ طَائِرَة", "هَذَا طَبِيب", "هَذِهِ طَاوِلَة"], a: 0 },
+            { type: "image", img: "🍅", q: "اِقْرَئِي ثُمَّ اخْتَارِي:", o: ["هَذِهِ طَمَاطِم", "هَذَا طَرِيق", "هَذَا طِفْل"], a: 0 },
+
+            // القسم الرابع: ما أو مَنْ؟ (10 أسئلة)
+            { type: "image", img: "👧", q: "بِنْت", o: ["مَنْ هَذِهِ؟", "مَا هَذِهِ؟", "مَا هَذَا؟"], a: 0 },
+            { type: "image", img: "🍉", q: "بِطِّيخ", o: ["مَنْ هَذَا؟", "مَا هَذَا؟", "مَا هَذِهِ؟"], a: 1 },
+            { type: "image", img: "👴", q: "جَدّ", o: ["مَنْ هَذَا؟", "مَا هَذَا؟", "مَنْ هَذِهِ؟"], a: 0 },
+            { type: "image", img: "🐎", q: "حِصَان", o: ["مَنْ هَذَا؟", "مَا هَذَا؟", "مَا هَذِهِ؟"], a: 1 },
+            { type: "image", img: "🍞", q: "خُبْز", o: ["مَنْ هَذَا؟", "مَا هَذَا؟", "مَا هَذِهِ؟"], a: 1 },
+            { type: "image", img: "👨‍⚕️", q: "طَبِيب", o: ["مَنْ هَذَا؟", "مَا هَذَا؟", "مَا هَذِهِ؟"], a: 0 },
+            { type: "image", img: "🛣️", q: "طَرِيق", o: ["مَنْ هَذَا؟", "مَا هَذَا؟", "مَنْ هَذِهِ؟"], a: 1 },
+            { type: "image", img: "👶", q: "طِفْل", o: ["مَنْ هَذَا؟", "مَا هَذَا؟", "مَنْ هَذِهِ؟"], a: 0 },
+            { type: "image", img: "💂", q: "حَارِس", o: ["مَنْ هَذِهِ؟", "مَا هَذَا؟", "مَنْ هَذَا؟"], a: 2 },
+            { type: "image", img: "🏡", q: "بَيْت", o: ["مَنْ هَذَا؟", "مَا هَذَا؟", "مَا هَذِهِ؟"], a: 1 },
+
+            // القسم الخامس: صح أم خطأ (10 أسئلة)
+            { type: "image", img: "🧅", q: "هَذَا بَصَل", o: ["صَح ✔️", "خَطَأ ❌"], a: 0 },
+            { type: "image", img: "🍎", q: "هَذِهِ تِين", o: ["صَح ✔️", "خَطَأ ❌"], a: 1 },
+            { type: "image", img: "🐍", q: "هَذَا ثُعْبَان", o: ["صَح ✔️", "خَطَأ ❌"], a: 0 },
+            { type: "image", img: "🌉", q: "هَذَا جَرَس", o: ["صَح ✔️", "خَطَأ ❌"], a: 1 },
+            { type: "image", img: "🐋", q: "هَذَا حُوت", o: ["صَح ✔️", "خَطَأ ❌"], a: 0 },
+            { type: "image", img: "🥒", q: "هَذَا خَشَب", o: ["صَح ✔️", "خَطَأ ❌"], a: 1 },
+            { type: "image", img: "🐓", q: "هَذَا دِيك", o: ["صَح ✔️", "خَطَأ ❌"], a: 0 },
+            { type: "image", img: "🌽", q: "هَذِهِ ذَهَب", o: ["صَح ✔️", "خَطَأ ❌"], a: 1 },
+            { type: "image", img: "🌊", q: "هَذَا بَحْر", o: ["صَح ✔️", "خَطَأ ❌"], a: 0 },
+            { type: "image", img: "🫒", q: "هَذِهِ زُجَاج", o: ["صَح ✔️", "خَطَأ ❌"], a: 1 },
+
+            // القسم السادس: الإملاء الصحيح (10 أسئلة)
+            { type: "text", q: "اِخْتَارِي الْإِمْلَاءَ الصَّحِيحَ:", o: ["ثَعْلَب", "سَعْلَب", "صَعْلَب"], a: 0 },
+            { type: "text", q: "اِخْتَارِي الْإِمْلَاءَ الصَّحِيحَ:", o: ["سَيَّارَة", "صَيَّارَة", "ثَيَّارَة"], a: 0 },
+            { type: "text", q: "اِخْتَارِي الْإِمْلَاءَ الصَّحِيحَ:", o: ["ضِفْدَع", "ظِفْدَع", "دِفْدَع"], a: 0 },
+            { type: "text", q: "اِخْتَارِي الْإِمْلَاءَ الصَّحِيحَ:", o: ["طَائِرَة", "تَائِرَة", "طَاهِرَة"], a: 0 },
+            { type: "text", q: "اِخْتَارِي الْإِمْلَاءَ الصَّحِيحَ:", o: ["صُورَة", "سُورَة", "ثُورَة"], a: 0 },
+            { type: "text", q: "اِخْتَارِي الْإِمْلَاءَ الصَّحِيحَ:", o: ["خَرُوف", "حَرُوف", "غَرُوف"], a: 0 },
+            { type: "text", q: "اِخْتَارِي الْإِمْلَاءَ الصَّحِيحَ:", o: ["حِصَان", "هِصَان", "حِسَان"], a: 0 },
+            { type: "text", q: "اِخْتَارِي الْإِمْلَاءَ الصَّحِيحَ:", o: ["دَجَاجَة", "ذَجَاجَة", "ضَجَاجَة"], a: 0 },
+            { type: "text", q: "اِخْتَارِي الْإِمْلَاءَ الصَّحِيحَ:", o: ["ذِئْب", "زِئْب", "ظِئْب"], a: 0 },
+            { type: "text", q: "اِخْتَارِي الْإِمْلَاءَ الصَّحِيحَ:", o: ["زَرَافَة", "ذَرَافَة", "ظَرَافَة"], a: 0 },
+
+            // القسم السابع: ترتيب الحروف (10 أسئلة)
+            { type: "text", q: "رَتِّبِي الْحُرُوفَ (ر - ب - ح):", o: ["بَحْر", "حَبَر", "رَبَح"], a: 0 },
+            { type: "text", q: "رَتِّبِي الْحُرُوفَ (ش - ر - ج - ة):", o: ["شَجَرَة", "رَجَشَة", "جَرَشَة"], a: 0 },
+            { type: "text", q: "رَتِّبِي الْحُرُوفَ (م - س - ش):", o: ["شَمْس", "مَشَس", "سَمَش"], a: 0 },
+            { type: "text", q: "رَتِّبِي الْحُرُوفَ (ق - ر - ص):", o: ["صَقْر", "رَقَص", "قَصَر"], a: 0 },
+            { type: "text", q: "رَتِّبِي الْحُرُوفَ (ب - ض - ا - ط):", o: ["ضَابِط", "بَاضِط", "طَابِض"], a: 0 },
+            { type: "text", q: "رَتِّبِي الْحُرُوفَ (ل - ف - ط):", o: ["طِفْل", "لَطَف", "فَلَط"], a: 0 },
+            { type: "text", q: "رَتِّبِي الْحُرُوفَ (ر - م - ت):", o: ["تَمْر", "مَرَت", "رَمَت"], a: 0 },
+            { type: "text", q: "رَتِّبِي الْحُرُوفَ (ل - ب - ج):", o: ["جَبَل", "بَجَل", "لَجَب"], a: 0 },
+            { type: "text", q: "رَتِّبِي الْحُرُوفَ (د - ح - ي - ق - ة):", o: ["حَدِيقَة", "قَدِيحَة", "دَحِيقَة"], a: 0 },
+            { type: "text", q: "رَتِّبِي الْحُرُوفَ (ز - ب - خ):", o: ["خُبْز", "زُبْخ", "بَخْز"], a: 0 },
+
+            // القسم الثامن: المدود وأسئلة الفهم (10 أسئلة)
+            { type: "text", q: "أَيُّ كَلِمَةٍ بِهَا مَدٌّ بِالْأَلِفِ؟", o: ["بَاب", "بَيْت", "بِنْت"], a: 0 },
+            { type: "text", q: "أَيُّ كَلِمَةٍ بِهَا مَدٌّ بِالْوَاوِ؟", o: ["تُوت", "تِين", "تَمْر"], a: 0 },
+            { type: "text", q: "أَيُّ كَلِمَةٍ بِهَا مَدٌّ بِالْيَاءِ؟", o: ["حَلِيب", "حُوت", "حَبْل"], a: 0 },
+            { type: "text", q: "أَيُّ كَلِمَةٍ بِهَا مَدٌّ بِالْأَلِفِ؟", o: ["دَار", "دِرْع", "دُبّ"], a: 0 },
+            { type: "text", q: "أَيُّ كَلِمَةٍ بِهَا مَدٌّ بِالْيَاءِ؟", o: ["سَرِير", "سُور", "سَمَك"], a: 0 },
+            { type: "text", q: "حَيَوَانٌ يَعِيشُ فِي الْبَحْرِ؟", o: ["سَمَكَة", "صَقْر", "ضَبْع"], a: 0 },
+            { type: "text", q: "طَائِرٌ جَمِيلٌ يَبْدَأُ بِحَرْفِ الطَّاءِ؟", o: ["طَاوُوس", "بَطَّة", "دَجَاجَة"], a: 0 },
+            { type: "text", q: "شَيْءٌ نَجْلِسُ عَلَيْهِ يَبْدَأُ بِحَرْفِ السِّينِ؟", o: ["سَرِير", "سَفِينَة", "سَيْف"], a: 0 },
+            { type: "text", q: "نَبَاتٌ لَوْنُهُ أَحْمَرُ يَبْدَأُ بِحَرْفِ الطَّاءِ؟", o: ["طَمَاطِم", "تُفَّاح", "بَصَل"], a: 0 },
+            { type: "text", q: "حَيَوَانٌ يُعْطِينَا الْحَلِيبَ يَبْدَأُ بِحَرْفِ الْبَاءِ؟", o: ["بَقَرَة", "بَطَّة", "بَاب"], a: 0 }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function startQuiz() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('quiz-screen').style.display = 'block';
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = questions[currentIndex];
+            const appContainer = document.getElementById('app-container');
+            const qContent = document.getElementById('question-content');
+            
+            // تغيير لون الخلفية لكسر الملل
+            appContainer.className = `bg-color-${currentIndex % 4}`;
+            document.getElementById('counter').innerText = `السُّؤَالُ ${currentIndex + 1} مِنْ ${questions.length}`;
+
+            let html = '';
+
+            // عرض الصور (الإيموجي)
+            if (q.type === 'image') {
+                html += `<div class="emoji-img">${q.img}</div>`;
+            }
+
+            // نص السؤال
+            html += `<div class="question-text">${q.q}</div>`;
+
+            // الخيارات
+            html += `<div class="options-container">`;
+            q.o.forEach((opt, index) => {
+                html += `<button class="option-btn" id="opt-${index}" onclick="selectAnswer(${index})">${opt}</button>`;
+            });
+            html += `</div>`;
+
+            qContent.innerHTML = html;
+
+            // التحكم بالأزرار بناءً على حالة الإجابة السابقة
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            prevBtn.disabled = currentIndex === 0;
+
+            if (userAnswers[currentIndex] !== null) {
+                // إذا كان مجاباً مسبقاً، نظلل الألوان الصحيحة ونعطل الأزرار
+                const selected = userAnswers[currentIndex];
+                const btns = document.querySelectorAll('.option-btn');
+                btns.forEach(b => b.disabled = true);
+                
+                if (selected === q.a) {
+                    document.getElementById(`opt-${selected}`).classList.add('correct-ans');
+                } else {
+                    document.getElementById(`opt-${selected}`).classList.add('wrong-ans');
+                    document.getElementById(`opt-${q.a}`).classList.add('correct-ans');
+                }
+                nextBtn.disabled = false;
+                nextBtn.innerText = currentIndex === questions.length - 1 ? 'الـنَّـتِـيـجَـة' : 'التَّالِي';
+            } else {
+                nextBtn.disabled = true;
+                nextBtn.innerText = 'التَّالِي';
+            }
+        }
+
+        function selectAnswer(selectedIndex) {
+            const q = questions[currentIndex];
+            if (userAnswers[currentIndex] !== null) return; // منع تغيير الإجابة نهائياً
+
+            userAnswers[currentIndex] = selectedIndex;
+            const btns = document.querySelectorAll('.option-btn');
+            btns.forEach(b => b.disabled = true); // تعطيل كل الأزرار فوراً
+
+            // التصويب اللوني الفوري
+            if (selectedIndex === q.a) {
+                document.getElementById(`opt-${selectedIndex}`).classList.add('correct-ans');
+                score++;
+            } else {
+                document.getElementById(`opt-${selectedIndex}`).classList.add('wrong-ans');
+                document.getElementById(`opt-${q.a}`).classList.add('correct-ans');
+            }
+
+            // تفعيل زر التالي
+            const nextBtn = document.getElementById('next-btn');
+            nextBtn.disabled = false;
+            if (currentIndex === questions.length - 1) {
+                nextBtn.innerText = 'الـنَّـتِـيـجَـة';
+            }
+        }
+
+        function goNext() {
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                renderQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function goPrev() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderQuestion();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('quiz-screen').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+            document.getElementById('app-container').className = ''; // إعادة الخلفية
+            
+            const resultText = document.getElementById('final-score-text');
+            resultText.innerText = `اكتمل الاختبار! الدرجة: ${score} / ${questions.length}. أحسنت إتمام الاختبار التجريبي.`;
+        }
+    </script>
+</body>
+</html>
