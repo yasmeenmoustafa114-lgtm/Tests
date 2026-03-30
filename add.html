@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سجل العضويات — أكاديمية خِلّ القرآن</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    background: #f0f4f9;
+    direction: rtl;
+    min-height: 100vh;
+  }
+
+  .page-header {
+    background: linear-gradient(135deg, #0B1D3A 0%, #1A3F7A 100%);
+    padding: 20px 28px 14px;
+    border-bottom: 4px solid #C49A22;
+  }
+  .page-header h1 {
+    color: #FFD700;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .page-header p {
+    color: #8899AA;
+    font-size: 0.82rem;
+    margin-top: 4px;
+  }
+
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: #fff;
+    border-bottom: 1px solid #e2e8f2;
+    flex-wrap: wrap;
+  }
+  .toolbar label {
+    font-size: 0.82rem;
+    color: #445566;
+    font-weight: 600;
+  }
+  .toolbar input[type=text] {
+    border: 1px solid #CBD5E0;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 0.82rem;
+    direction: rtl;
+    width: 180px;
+    outline: none;
+  }
+  .toolbar input[type=text]:focus { border-color: #2980B9; }
+
+  .btn {
+    padding: 6px 16px;
+    border-radius: 6px;
+    border: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .btn-csv {
+    background: #1A7A4A; color: #fff;
+  }
+  .btn-csv:hover { background: #146038; }
+  .btn-reset {
+    background: #e2e8f2; color: #445566;
+  }
+  .btn-reset:hover { background: #CBD5E0; }
+
+  .badge {
+    background: #EFF3F9;
+    border: 1px solid #CBD5E0;
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 0.78rem;
+    color: #3D4F65;
+    margin-right: auto;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    padding: 16px 20px;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 900px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  thead tr:first-child th {
+    background: #0B1D3A;
+    color: #FFD700;
+    font-size: 0.75rem;
+    letter-spacing: 0.3px;
+    padding: 0;
+  }
+  thead tr:first-child th .th-inner {
+    padding: 10px 10px 8px;
+    border-left: 1px solid #1A3F7A;
+    display: block;
+  }
+  thead tr:first-child th:last-child .th-inner {
+    border-left: none;
+  }
+  th.col-email {
+    background: #1A5E36 !important;
+    color: #D4EDDA !important;
+  }
+  th.col-email .th-inner {
+    border-left-color: #145A32 !important;
+  }
+
+  tbody tr {
+    transition: background 0.12s;
+  }
+  tbody tr:nth-child(odd)  { background: #F5F8FC; }
+  tbody tr:nth-child(even) { background: #FFFFFF; }
+  tbody tr:hover { background: #EBF3FF !important; }
+  tbody tr.hidden { display: none; }
+
+  td {
+    padding: 0;
+    border-bottom: 1px solid #E8ECF2;
+    border-left: 1px solid #E8ECF2;
+    vertical-align: middle;
+    font-size: 0.83rem;
+  }
+  td:last-child { border-left: none; }
+
+  td input, td select {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 7px 9px;
+    font-size: 0.83rem;
+    font-family: inherit;
+    direction: rtl;
+    outline: none;
+    color: #2D3748;
+  }
+  td input:focus, td select:focus {
+    background: #EBF3FF;
+    border-radius: 4px;
+  }
+  td.col-email-cell input {
+    background: #F0FFF4;
+    color: #1A5E36;
+    font-weight: 600;
+  }
+  td.col-email-cell input:focus {
+    background: #D4EDDA;
+  }
+  td.col-code input {
+    font-weight: 700;
+    color: #0B1D3A;
+    font-size: 0.8rem;
+  }
+
+  /* Category badges */
+  .badge-cat {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .cat-6m    { background: #D4EDDA; color: #1A5E36; }
+  .cat-kafil { background: #D0E4F7; color: #1A4A80; }
+  .cat-makful{ background: #FFF3CD; color: #856404; }
+  .cat-monthly{ background: #E8ECF2; color: #3D4F65; }
+
+  /* Row number */
+  .row-num {
+    text-align: center;
+    color: #8899AA;
+    font-size: 0.72rem;
+    padding: 7px 6px;
+    min-width: 32px;
+    border-left: 2px solid #CBD5E0;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 32px;
+    color: #8899AA;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .footer-bar {
+    background: #0B1D3A;
+    color: #8899AA;
+    font-size: 0.75rem;
+    text-align: center;
+    padding: 10px;
+    border-top: 3px solid #C49A22;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>📋 سجل العضويات الموحد  ·  أكاديمية خِلّ القرآن</h1>
+  <p>المصدر الرئيسي لبيانات الطلاب — جميع الحقول قابلة للتعديل المباشر</p>
+</div>
+
+<div class="toolbar">
+  <label>🔍 بحث:</label>
+  <input type="text" id="searchBox" placeholder="ابحث بالاسم أو الكود..." oninput="filterTable()">
+  <select id="catFilter" onchange="filterTable()" style="border:1px solid #CBD5E0;border-radius:6px;padding:5px 10px;font-size:0.82rem;direction:rtl;outline:none;">
+    <option value="">كل الفئات</option>
+    <option value="دفع 6 أشهر">دفع 6 أشهر</option>
+    <option value="كافل">كافل</option>
+    <option value="مكفول">مكفول</option>
+    <option value="دفع شهري">دفع شهري</option>
+  </select>
+  <button class="btn btn-csv" onclick="exportCSV()">⬇ تحميل CSV</button>
+  <button class="btn btn-reset" onclick="resetFilters()">↺ إعادة ضبط</button>
+  <span class="badge" id="countBadge">عدد الصفوف: 26</span>
+</div>
+
+<div class="table-wrap">
+<table id="mainTable">
+  <thead>
+    <tr>
+      <th><div class="th-inner">#</div></th>
+      <th><div class="th-inner">كود العضوية</div></th>
+      <th><div class="th-inner">الاسم الأول</div></th>
+      <th><div class="th-inner">الاسم الأوسط</div></th>
+      <th><div class="th-inner">الاسم الأخير</div></th>
+      <th><div class="th-inner">نوع الفئة</div></th>
+      <th><div class="th-inner">رقم التواصل / معرف تلغرام</div></th>
+      <th><div class="th-inner">تاريخ التسجيل</div></th>
+      <th><div class="th-inner">طريقة الدفع</div></th>
+      <th><div class="th-inner">ملاحظات</div></th>
+      <th class="col-email"><div class="th-inner">📧 البريد الإلكتروني</div></th>
+    </tr>
+  </thead>
+  <tbody id="tableBody"></tbody>
+</table>
+<div class="empty-state" id="emptyState">لا توجد نتائج مطابقة للبحث</div>
+</div>
+
+<div class="footer-bar">
+  أكاديمية خِلّ القرآن  ·  نظام إدارة العضويات  ·  جميع البيانات قابلة للتعديل المباشر
+</div>
+
+<script>
+const CATEGORIES = ["دفع 6 أشهر","كافل","مكفول","دفع شهري",""];
+const PAY_METHODS = ["PayPal","Instapay","تحويل بنكي","فودافون كاش","وسترن يونيون",""];
+
+const RAW = [
+  [18005,"عبدالرحمن","مجدي","احمد","دفع 6 أشهر","@Bo0Mg","","",""],
+  [18004,"رشيدة","أحمد","العرفاوي","دفع 6 أشهر","RE7691@","","",""],
+  ["KQ-003","زينب","محمد","الصافي","دفع 6 أشهر","zainebsaf@","","",""],
+  ["KQ-004","محمد","جمال","السيد","كافل","","","",""],
+  ["KQ-005","نورين","احمد","شبانه","دفع 6 أشهر","","","",""],
+  ["KQ-006","","","","كافل","","","",""],
+  ["KQ-007","","","","مكفول","","","",""],
+  ["KQ-008","","","","دفع شهري","","","",""],
+  ["KQ-009","","","","دفع 6 أشهر","","","",""],
+  ["KQ-010","","","","دفع شهري","","","",""],
+  ["KQ-011","","","","","","","",""],
+  ["KQ-012","","","","","","","",""],
+  ["KQ-013","","","","","","","",""],
+  ["KQ-014","","","","","","","",""],
+  ["KQ-015","","","","","","","",""],
+  ["KQ-016","","","","","","","",""],
+  ["KQ-017","","","","","","","",""],
+  ["KQ-018","","","","","","","",""],
+  ["KQ-019","","","","","","","",""],
+  ["KQ-020","","","","","","","",""],
+  ["KQ-021","","","","","","","",""],
+  ["KQ-022","","","","","","","",""],
+  ["KQ-023","","","","","","","",""],
+  ["KQ-024","","","","","","","",""],
+  ["KQ-025","","","","","","","",""],
+  ["KQ-026","","","","","","","",""],
+];
+
+// data[i] = [code, f, m, l, cat, contact, date(empty), pay(empty), note, email]
+let data = RAW.map(r => [r[0], r[1], r[2], r[3], r[4], r[5], "", "", r[8] || "", ""]);
+
+function catClass(cat) {
+  if (cat === "دفع 6 أشهر")  return "cat-6m";
+  if (cat === "كافل")         return "cat-kafil";
+  if (cat === "مكفول")        return "cat-makful";
+  if (cat === "دفع شهري")    return "cat-monthly";
+  return "";
+}
+
+function buildSelect(options, val, col, row) {
+  let s = `<select onchange="updateData(${row},${col},this.value)">`;
+  options.forEach(o => {
+    s += `<option value="${o}" ${o===val?"selected":""}>${o||"— اختر —"}</option>`;
+  });
+  s += "</select>";
+  return s;
+}
+
+function renderTable() {
+  const tbody = document.getElementById("tableBody");
+  tbody.innerHTML = "";
+  let visible = 0;
+
+  data.forEach((row, i) => {
+    const [code, f, m, l, cat, contact, date_, pay, note, email] = row;
+    const tr = document.createElement("tr");
+    tr.dataset.index = i;
+    tr.dataset.searchkey = `${code} ${f} ${m} ${l} ${cat}`.toLowerCase();
+    tr.dataset.cat = cat;
+
+    const catBadge = cat
+      ? `<span class="badge-cat ${catClass(cat)}">${cat}</span>`
+      : `<select onchange="updateData(${i},4,this.value)" style="border:none;background:transparent;font-size:0.8rem;direction:rtl;outline:none;">
+          ${CATEGORIES.map(o=>`<option value="${o}" ${o===cat?"selected":""}>${o||"— اختر —"}</option>`).join("")}
+         </select>`;
+
+    tr.innerHTML = `
+      <td class="row-num">${i+1}</td>
+      <td class="col-code"><input value="${code}" onchange="updateData(${i},0,this.value)" placeholder="KQ-XXX"></td>
+      <td><input value="${f}" onchange="updateData(${i},1,this.value)" placeholder="الاسم الأول"></td>
+      <td><input value="${m}" onchange="updateData(${i},2,this.value)" placeholder="الأوسط"></td>
+      <td><input value="${l}" onchange="updateData(${i},3,this.value)" placeholder="الأخير"></td>
+      <td style="text-align:center">${cat
+        ? `<span class="badge-cat ${catClass(cat)}" style="cursor:pointer" onclick="this.outerHTML=buildSelectInline(${i},4,'${cat}')">${cat}</span>`
+        : buildSelectInlineStr(i,4,cat)}</td>
+      <td><input value="${contact}" onchange="updateData(${i},5,this.value)" placeholder="@معرف أو رقم"></td>
+      <td><input value="${date_}" onchange="updateData(${i},6,this.value)" placeholder="DD/MM/YYYY" type="text"></td>
+      <td>${buildSelectStr(PAY_METHODS, pay, i, 7)}</td>
+      <td><input value="${note}" onchange="updateData(${i},8,this.value)" placeholder="ملاحظة..."></td>
+      <td class="col-email-cell"><input value="${email}" onchange="updateData(${i},9,this.value)" placeholder="example@email.com" dir="ltr" style="text-align:right"></td>
+    `;
+    tbody.appendChild(tr);
+    visible++;
+  });
+
+  updateCount();
+}
+
+function buildSelectStr(options, val, row, col) {
+  let s = `<select onchange="updateData(${row},${col},this.value)" style="width:100%;border:none;background:transparent;padding:7px 9px;font-size:0.83rem;direction:rtl;outline:none;">`;
+  options.forEach(o => {
+    s += `<option value="${o}" ${o===val?"selected":""}>${o||"— اختر —"}</option>`;
+  });
+  return s + "</select>";
+}
+function buildSelectInlineStr(row, col, val) {
+  return buildSelectStr(CATEGORIES, val, row, col);
+}
+
+function updateData(row, col, val) {
+  data[row][col] = val;
+  // Re-render only the category cell if cat changed
+  if (col === 4) renderTable();
+}
+
+function filterTable() {
+  const q = document.getElementById("searchBox").value.trim().toLowerCase();
+  const catF = document.getElementById("catFilter").value;
+  let visible = 0;
+  document.querySelectorAll("#tableBody tr").forEach(tr => {
+    const matchQ = !q || tr.dataset.searchkey.includes(q);
+    const matchC = !catF || tr.dataset.cat === catF;
+    const show = matchQ && matchC;
+    tr.classList.toggle("hidden", !show);
+    if (show) visible++;
+  });
+  document.getElementById("emptyState").style.display = visible === 0 ? "block" : "none";
+  document.getElementById("countBadge").textContent = `عدد الصفوف: ${visible}`;
+}
+
+function updateCount() {
+  document.getElementById("countBadge").textContent = `عدد الصفوف: ${data.length}`;
+}
+
+function resetFilters() {
+  document.getElementById("searchBox").value = "";
+  document.getElementById("catFilter").value = "";
+  filterTable();
+}
+
+function exportCSV() {
+  const headers = ["كود العضوية","الاسم الأول","الاسم الأوسط","الاسم الأخير",
+                   "نوع الفئة","رقم التواصل","تاريخ التسجيل","طريقة الدفع","ملاحظات","البريد الإلكتروني"];
+  const bom = "\uFEFF";
+  const rows = [headers, ...data].map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(","));
+  const csv = bom + rows.join("\n");
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "سجل_العضويات_أكاديمية_خل_القرآن.csv";
+  a.click();
+}
+
+renderTable();
+</script>
+</body>
+</html>
