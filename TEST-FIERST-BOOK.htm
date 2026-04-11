@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabic Placement Test - Absolute Beginner</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --success: #28a745;
+            --error: #ffc107;
+            --warning: #ff9800;
+            --highlight: #e67e22;
+            --bg: #f8f9fa;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            direction: ltr;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 { color: var(--primary); text-align: center; }
+        .section { display: none; animation: fadeIn 0.5s; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .arabic-text {
+            font-family: 'Amiri', 'Traditional Arabic', serif;
+            font-size: 1.8rem;
+            direction: rtl;
+            text-align: right;
+            line-height: 2.2;
+            margin-bottom: 15px;
+        }
+        .highlight-word { color: var(--highlight); font-weight: bold; }
+        
+        /* Vocabulary Table */
+        details { margin-bottom: 20px; background: #eef2f5; padding: 10px; border-radius: 5px; }
+        summary { cursor: pointer; font-weight: bold; color: var(--primary); font-size: 1.1rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; direction: rtl; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: center; font-family: 'Amiri', serif; font-size: 1.4rem; }
+        th { background-color: var(--primary); color: white; }
+        
+        /* Questions */
+        .question-block { margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .options { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        .btn-option {
+            padding: 12px; font-size: 1.5rem; font-family: 'Amiri', serif; direction: rtl;
+            background: #fff; border: 2px solid var(--primary); border-radius: 5px;
+            cursor: pointer; transition: 0.3s;
+        }
+        .btn-option:hover:not(:disabled) { background: #eef2f5; }
+        .btn-option:disabled { cursor: not-allowed; }
+        
+        /* Sentence Ordering */
+        .word-pool { display: flex; flex-wrap: wrap; gap: 10px; direction: rtl; justify-content: flex-start; margin-bottom: 10px; }
+        .word-btn {
+            padding: 10px 15px; font-size: 1.5rem; font-family: 'Amiri', serif;
+            background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;
+        }
+        .answer-box {
+            min-height: 60px; border: 2px dashed #ccc; border-radius: 5px; padding: 10px;
+            display: flex; flex-wrap: wrap; gap: 10px; direction: rtl; justify-content: flex-start;
+            background: #fafafa; transition: 0.3s;
+        }
+        
+        /* General Buttons */
+        .nav-btn {
+            display: block; width: 100%; padding: 15px; font-size: 1.2rem; font-weight: bold;
+            background: var(--primary); color: white; border: none; border-radius: 5px;
+            cursor: pointer; margin-top: 20px; transition: 0.3s;
+        }
+        .nav-btn:hover { background: #1a252f; }
+        
+        /* Dropdowns */
+        select { font-size: 1.5rem; font-family: 'Amiri', serif; padding: 5px; direction: rtl; }
+        
+        /* Textarea */
+        textarea { width: 100%; height: 150px; font-size: 1.5rem; font-family: 'Amiri', serif; direction: rtl; padding: 10px; border-radius: 5px; resize: vertical;}
+        .teacher-note { color: #7f8c8d; font-style: italic; font-size: 0.9rem; }
+        
+        /* Result */
+        #result-screen { text-align: center; }
+        .score-text { font-size: 2.5rem; font-weight: bold; color: var(--primary); margin: 20px 0; direction: rtl; font-family: 'Amiri', serif;}
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Arabic Placement Test</h1>
+    <h3 style="margin-top: -10px; color: #7f8c8d;">Level: Absolute Beginner</h3>
+    <div id="app"></div>
+</div>
+
+<script>
+/**
+ * -------------------------------------------------------------
+ * Data Structure (JSON/Arrays)
+ * Employs destructuring and strictly separates logic from UI.
+ * 110 Questions simulated/structured across 8 sections.
+ * -------------------------------------------------------------
+ */
+
+const testData = [
+    // --- SECTION 1: Reading Comprehension (20 Qs) ---
+    {
+        id: 'sec1',
+        title: 'Section 1: Reading Comprehension',
+        instructions: 'اقْرَئِي النَّصَّ التَّالِي ثُمَّ أَجِيبِي عَنِ الْأَسْئِلَةِ (Read the text then answer the questions):',
+        contentHtml: `
+            <p class="arabic-text">
+                اسْمِي فَاطِمَةُ. أَنَا طَالِبَةٌ فِي كُلِّيَّةِ الطِّبِّ. أَسْكُنُ فِي <span class="highlight-word">شِقَّةٍ</span> جَمِيلَةٍ مَعَ أُسْرَتِي فِي مَدِينَةِ الرِّيَاضِ. فِي الصَّبَاحِ، أَسْتَيْقِظُ عِنْدَ الْفَجْرِ، أُصَلِّي الْفَجْرَ، ثُمَّ أَقْرَأُ الْقُرْآنَ. أَشْرَبُ الْقَهْوَةَ بِالْحَلِيبِ فِي الْفَطُورِ. وَفِي الْمَسَاءِ، <span class="highlight-word">أَكْنُسُ</span> غُرْفَةَ الْجُلُوسِ. أُحِبُّ الطَّعَامَ كَثِيراً، وَأُفَضِّلُ السَّمَكَ وَالْأَرُزَّ فِي الْغَدَاءِ. أَعْمَلُ فِي <span class="highlight-word">الْمُسْتَشْفَى</span> ثَمَانِي سَاعَاتٍ فِي الْيَوْمِ.
+            </p>
+            <details>
+                <summary>Vocabulary Table (Dictionary) - Click to View</summary>
+                <table>
+                    <tr><th>الْكَلِمَة</th><th>التَّعْرِيف</th><th>الْمِثَال</th><th>English</th></tr>
+                    <tr><td>شِقَّةٌ</td><td>مَكَانٌ لِلسَّكَنِ</td><td>أَسْكُنُ فِي شِقَّةٍ</td><td>Apartment</td></tr>
+                    <tr><td>أَكْنُسُ</td><td>أُنَظِّفُ الْأَرْضَ</td><td>أَكْنُسُ الْغُرْفَةَ</td><td>I sweep</td></tr>
+                    <tr><td>الْمُسْتَشْفَى</td><td>مَكَانُ عِلَاجِ الْمَرْضَى</td><td>أَعْمَلُ فِي الْمُسْتَشْفَى</td><td>Hospital</td></tr>
+                </table>
+            </details>
+        `,
+        questions: [
+            // 10 MCQs
+            { type: 'mcq', q: 'مَاذَا تَدْرُسُ فَاطِمَةُ؟', opts: ['الطِّبَّ', 'الْهَنْدَسَةَ', 'اللُّغَةَ الْعَرَبِيَّةَ'], a: 0 },
+            { type: 'mcq', q: 'أَيْنَ تَسْكُنُ فَاطِمَةُ؟', opts: ['فِي بَيْتٍ كَبِيرٍ', 'فِي شِقَّةٍ جَمِيلَةٍ', 'فِي الْمُسْتَشْفَى'], a: 1 },
+            { type: 'mcq', q: 'مَتَى تَسْتَيْقِظُ؟', opts: ['عِنْدَ الظُّهْرِ', 'فِي الْمَسَاءِ', 'عِنْدَ الْفَجْرِ'], a: 2 },
+            { type: 'mcq', q: 'مَاذَا تَشْرَبُ فِي الْفَطُورِ؟', opts: ['الْمَاءَ', 'الْقَهْوَةَ بِالْحَلِيبِ', 'الشَّايَ'], a: 1 },
+            { type: 'mcq', q: 'مَاذَا تُفَضِّلُ فِي الْغَدَاءِ؟', opts: ['السَّمَكَ وَالْأَرُزَّ', 'الدَّجَاجَ وَالسَّلَطَةَ', 'التَّمْرَ وَالْعِنَبَ'], a: 0 },
+            { type: 'mcq', q: 'كَمْ سَاعَةً تَعْمَلُ فِي الْيَوْمِ؟', opts: ['سِتَّ سَاعَاتٍ', 'سَبْعَ سَاعَاتٍ', 'ثَمَانِي سَاعَاتٍ'], a: 2 },
+            { type: 'mcq', q: 'أَيْنَ تَعْمَلُ فَاطِمَةُ؟', opts: ['فِي الشَّرِكَةِ', 'فِي الْمُسْتَشْفَى', 'فِي الْمَدْرَسَةِ'], a: 1 },
+            { type: 'mcq', q: 'مَاذَا تَفْعَلُ بَعْدَ صَلَاةِ الْفَجْرِ؟', opts: ['تَنَامُ', 'تَقْرَأُ الْقُرْآنَ', 'تَذْهَبُ إِلَى الْعَمَلِ'], a: 1 },
+            { type: 'mcq', q: 'مَاذَا تَفْعَلُ فِي الْمَسَاءِ؟', opts: ['تَكْنُسُ غُرْفَةَ الْجُلُوسِ', 'تُشَاهِدُ التِّلْفَازَ', 'تَغْسِلُ الْمَلَابِسَ'], a: 0 },
+            { type: 'mcq', q: 'أَيْنَ مَدِينَةُ الرِّيَاضِ؟', opts: ['فِي مِصْرَ', 'فِي السُّعُودِيَّةِ', 'فِي سُورِيَا'], a: 1 },
+            // 10 True/False
+            { type: 'mcq', q: 'فَاطِمَةُ تَعْمَلُ مُهَنْدِسَةً.', opts: ['صَحِيح', 'خَطَأ'], a: 1 },
+            { type: 'mcq', q: 'تَسْكُنُ فَاطِمَةُ مَعَ أُسْرَتِهَا.', opts: ['صَحِيح', 'خَطَأ'], a: 0 },
+            { type: 'mcq', q: 'هِيَ لَا تُحِبُّ الطَّعَامَ.', opts: ['صَحِيح', 'خَطَأ'], a: 1 },
+            { type: 'mcq', q: 'تُصَلِّي فَاطِمَةُ الْفَجْرَ فِي الصَّبَاحِ.', opts: ['صَحِيح', 'خَطَأ'], a: 0 },
+            { type: 'mcq', q: 'تَقْرَأُ الْقُرْآنَ فِي الْمَسَاءِ.', opts: ['صَحِيح', 'خَطَأ'], a: 1 },
+            { type: 'mcq', q: 'هِيَ طَالِبَةٌ مُجْتَهِدَةٌ.', opts: ['صَحِيح', 'خَطَأ'], a: 0 },
+            { type: 'mcq', q: 'تُفَضِّلُ السَّمَكَ عَلَى الدَّجَاجِ.', opts: ['صَحِيح', 'خَطَأ'], a: 0 },
+            { type: 'mcq', q: 'تَشْرَبُ الشَّايَ مَعَ الْفَطُورِ.', opts: ['صَحِيح', 'خَطَأ'], a: 1 },
+            { type: 'mcq', q: 'تُنَظِّفُ فَاطِمَةُ بَيْتَهَا.', opts: ['صَحِيح', 'خَطَأ'], a: 0 },
+            { type: 'mcq', q: 'تَعْمَلُ قَلِيلاً فِي الْيَوْمِ.', opts: ['صَحِيح', 'خَطَأ'], a: 1 }
+        ]
+    },
+    // --- SECTION 2: MCQs (15 Qs) ---
+    {
+        id: 'sec2',
+        title: 'Section 2: Choose the Correct Answer',
+        instructions: 'اخْتَارِي الْإِجَابَةَ الصَّحِيحَةَ لِكُلِّ سُؤَالٍ (Choose the correct answer for each question):',
+        contentHtml: '',
+        questions: [
+            { type: 'mcq', q: '....... حَالُكِ يَا خَدِيجَةُ؟', opts: ['مَا', 'كَيْفَ', 'أَيْنَ'], a: 1 },
+            { type: 'mcq', q: 'أَنَا مِنْ بَاكِسْتَان، أَنَا .......', opts: ['بَاكِسْتَانِيٌّ', 'بَاكِسْتَانِيَّةٌ', 'تُرْكِيَّةٌ'], a: 1 },
+            { type: 'mcq', q: 'هَذَا أَخِي، ....... طَبِيبٌ.', opts: ['هُوَ', 'هِيَ', 'هَذِهِ'], a: 0 },
+            { type: 'mcq', q: 'مِنْ ....... أَنْتِ؟', opts: ['كَيْفَ', 'هَلْ', 'أَيْنَ'], a: 2 },
+            { type: 'mcq', q: '....... تَدْرُسِينَ؟ - فِي كُلِّيَّةِ التَّرْبِيَةِ.', opts: ['أَيْنَ', 'مَتَى', 'هَلْ'], a: 0 },
+            { type: 'mcq', q: 'أُصَلِّي الْجُمُعَةَ فِي ....... الْكَبِيرِ.', opts: ['الْمَدْرَسَةِ', 'الْمَسْجِدِ', 'الْبَيْتِ'], a: 1 },
+            { type: 'mcq', q: 'أَذْهَبُ إِلَى الْمَدْرَسَةِ ....... الْحَافِلَةِ.', opts: ['فِي', 'بِـ', 'مِنْ'], a: 1 },
+            { type: 'mcq', q: '....... كِتَابِي وَهَذِهِ حَقِيبَتِي.', opts: ['هَذَا', 'هَذِهِ', 'هُوَ'], a: 0 },
+            { type: 'mcq', q: 'مَتَى ....... إِلَى الْعَمَلِ؟', opts: ['تَذْهَبُ', 'تَذْهَبِينَ', 'يَذْهَبُ'], a: 1 },
+            { type: 'mcq', q: 'أَغْسِلُ الْمَلَابِسَ فِي .......', opts: ['الْحَمَّامِ', 'الْمَطْبَخِ', 'الْغُرْفَةِ'], a: 0 },
+            { type: 'mcq', q: 'مَاذَا ....... مِنَ الطَّعَامِ؟', opts: ['تَطْلُبِينَ', 'تَطْلُبُ', 'يَطْلُبُ'], a: 0 },
+            { type: 'mcq', q: 'أَنَا جَوْعَانَةٌ جِدّاً، أُرِيدُ .......', opts: ['الْغَدَاءَ', 'الْمَاءَ', 'الشَّايَ'], a: 0 },
+            { type: 'mcq', q: 'أَعْمَلُ خَمْسَ ....... فِي الشَّرِكَةِ.', opts: ['سَاعَةً', 'سَاعَاتٍ', 'وَقْتٍ'], a: 1 },
+            { type: 'mcq', q: 'الْمُهَنْدِسُ يَعْمَلُ فِي .......', opts: ['الْمُسْتَشْفَى', 'الْمَدْرَسَةِ', 'الشَّرِكَةِ'], a: 2 },
+            { type: 'mcq', q: 'أَيْنَ الْمِعْطَفُ؟ - هُوَ فِي .......', opts: ['الْغُرْفَةِ', 'الْمَسْجِدِ', 'الْمُخْتَبَرِ'], a: 0 }
+        ]
+    },
+    // --- SECTION 3: True / False (15 Qs) ---
+    {
+        id: 'sec3',
+        title: 'Section 3: True or False',
+        instructions: 'هَلِ الْجُمْلَةُ صَحِيحَةٌ أَمْ خَاطِئَةٌ؟ (Is the sentence True or False?):',
+        contentHtml: '',
+        questions: [
+            { type: 'mcq', q: 'نَقُولُ فِي الصَّبَاحِ: مَسَاءُ الْخَيْرِ.', opts: ['صَحِيح', 'خَطَأ'], a: 1 },
+            { type: 'mcq', q: 'الطَّبِيبَةُ تَعْمَلُ فِي الْمُسْتَشْفَى.', opts: ['صَحِيح', 'خَطَأ'], a: 0 },
+            { type: 'mcq', q: 'الْأُسْرَةُ تَسْكُنُ فِي الْمَسْجِدِ.', opts: ['صَحِيح', 'خَطَأ'], a: 1 },
+            { type: 'mcq', q: 'نَأْكُلُ الطَّعَامَ فِي الْمَطْبَخِ أَوْ غُرْفَةِ الطَّعَامِ.', opts: ['صَحِيح', 'خَطَأ'], a: 0 },
+            { type: 'mcq', q: 'نَشْرَبُ السَّمَكَ مَعَ الْمَاءِ.', opts: ['صَحِيح', 'خَطَأ'], a: 1 },
+            { type: 'mcq', q: 'أَنَا مِنْ مِصْرَ، إِذَنْ أَنَا مِصْرِيَّةٌ.', opts: ['صَحِيح', 'خَطَأ'], a: 0 },
+            { type: 'mcq', q: 'رَبَّةُ الْبَيْتِ تَعْمَلُ فِي الشَّرِكَةِ جَمِيعَ الْأَيَّامِ.', opts: ['صَحِيح', 'خَطَأ'], a: 1 },
+            { type: 'mcq', q: 'صَلَاةُ الْفَجْرِ عِنْدَ الصَّبَاحِ الْبَاكِرِ.', opts: ['صَحِيح', 'خَطَأ'], a: 0 },
+            { type: 'mcq', q: '"مَا اسْمُكِ؟" هُوَ سُؤَالٌ لِلْمُذَكَّرِ.', opts: ['صَحِيح', 'خَطَأ'], a: 1 },
+            { type: 'mcq', q: 'الْقَهْوَةُ وَالشَّايُ مِنَ الشَّرَابِ.', opts: ['صَحِيح', 'خَطَأ'], a: 0 },
+            { type: 'mcq', q: 'الْمُعَلِّمَةُ تَدْرُسُ فِي الْمُخْتَبَرِ الطِّبِّيِّ.', opts: ['صَحِيح', 'خَطَأ'], a: 1 },
+            { type: 'mcq', q: 'الْأَخُ وَالْأُخْتُ مِنْ أَفْرَادِ الْأُسْرَةِ.', opts: ['صَحِيح', 'خَطَأ'], a: 0 },
+            { type: 'mcq', q: 'نُشَاهِدُ التِّلْفَازَ فِي الْحَمَّامِ.', opts: ['صَحِيح', 'خَطَأ'], a: 1 },
+            { type: 'mcq', q: 'التَّمْرُ وَالْعِنَبُ مِنَ الْفَاكِهَةِ.', opts: ['صَحِيح', 'خَطَأ'], a: 0 },
+            { type: 'mcq', q: '"هَذِهِ" إِشَارَةٌ لِلْمُذَكَّرِ الْقَرِيبِ.', opts: ['صَحِيح', 'خَطَأ'], a: 1 }
+        ]
+    },
+    // --- SECTION 4: Vocab (Singular/Plural/Opposite) (10 Qs) ---
+    {
+        id: 'sec4',
+        title: 'Section 4: Vocabulary (Singular, Plural, Opposite)',
+        instructions: 'اخْتَارِي الْكَلِمَةَ الْمُنَاسِبَةَ (Choose the appropriate word):',
+        contentHtml: '',
+        questions: [
+            { type: 'mcq', q: 'مُضَادُ كَلِمَةِ "أَسْتَيْقِظُ":', opts: ['أَنَامُ', 'أَقْرَأُ', 'أَكْنُسُ'], a: 0 },
+            { type: 'mcq', q: 'جَمْعُ كَلِمَةِ "طَالِبَة":', opts: ['طُلَّابٌ', 'طَالِبَاتٌ', 'طَالِبَانِ'], a: 1 },
+            { type: 'mcq', q: 'مُضَادُ كَلِمَةِ "كَثِير":', opts: ['قَلِيل', 'كَبِير', 'صَغِير'], a: 0 },
+            { type: 'mcq', q: 'مُفْرَدُ كَلِمَةِ "أَيَّام":', opts: ['يَوْمٌ', 'يَوْمَانِ', 'يَوْمِيَّةٌ'], a: 0 },
+            { type: 'mcq', q: 'مُضَادُ كَلِمَةِ "أُحِبُّ":', opts: ['أَكْرَهُ', 'أَذْهَبُ', 'أَشْرَبُ'], a: 0 },
+            { type: 'mcq', q: 'جَمْعُ كَلِمَةِ "غُرْفَة":', opts: ['غُرَفٌ', 'غُرْفَتَانِ', 'غَرِيبٌ'], a: 0 },
+            { type: 'mcq', q: 'مُضَادُ كَلِمَةِ "صَبَاح":', opts: ['ظُهْر', 'مَسَاء', 'فَجْر'], a: 1 },
+            { type: 'mcq', q: 'مُفْرَدُ كَلِمَةِ "أَطْبَاق":', opts: ['طَبَقٌ', 'طَبِيبٌ', 'طَابِقٌ'], a: 0 },
+            { type: 'mcq', q: 'جَمْعُ كَلِمَةِ "مَسْجِد":', opts: ['مَسَاجِدُ', 'سُجُودٌ', 'سَاجِدُونَ'], a: 0 },
+            { type: 'mcq', q: 'مُضَادُ كَلِمَةِ "ذَاهِب":', opts: ['قَادِم', 'نَائِم', 'جَالِس'], a: 0 }
+        ]
+    },
+    // --- SECTION 5: Visual Description Inference (10 Qs) ---
+    {
+        id: 'sec5',
+        title: 'Section 5: Visual Description Inference',
+        instructions: 'اقْرَئِي وَصْفَ الْمَشْهَدِ الدَّقِيقَ ثُمَّ اسْتَنْتِجِي الْإِجَابَةَ (Read the exact description of the scene then infer the answer):',
+        contentHtml: '',
+        questions: [
+            { type: 'mcq', q: 'مَشْهَدٌ: اِمْرَأَةٌ تَقِفُ أَمَامَ سَبُّورَةٍ وَتَكْتُبُ دَرْساً لِلطَّالِبَاتِ. (مَا مِهْنَتُهَا؟)', opts: ['طَبِيبَةٌ', 'مُعَلِّمَةٌ', 'مُمَرِّضَةٌ'], a: 1 },
+            { type: 'mcq', q: 'مَشْهَدٌ: عَائِلَةٌ تَجْلِسُ حَوْلَ الْمَائِدَةِ، وَأَمَامَهُمْ دَجَاجٌ وَأَرُزٌّ وَمَاءٌ فِي وَقْتِ الظُّهْرِ. (مَاذَا يَفْعَلُونَ؟)', opts: ['يَتَنَاوَلُونَ الْفَطُورَ', 'يَتَنَاوَلُونَ الْغَدَاءَ', 'يَنَامُونَ'], a: 1 },
+            { type: 'mcq', q: 'مَشْهَدٌ: رَجُلٌ يَلْبَسُ مِعْطَفاً أَبْيَضَ وَيَفْحَصُ مَرِيضاً فِي سَرِيرٍ. (أَيْنَ هُوَ الْمَشْهَدُ؟)', opts: ['فِي الْمُسْتَشْفَى', 'فِي الشَّرِكَةِ', 'فِي الْمَكْتَبَةِ'], a: 0 },
+            { type: 'mcq', q: 'مَشْهَدٌ: سَاعَةٌ تُشِيرُ إِلَى الْخَامِسَةِ صَبَاحاً، وَرَجُلٌ يَسْجُدُ عَلَى سَجَّادَةٍ. (مَاذَا يَفْعَلُ؟)', opts: ['يُصَلِّي الْفَجْرَ', 'يَقْرَأُ كِتَاباً', 'يُشَاهِدُ التِّلْفَازَ'], a: 0 },
+            { type: 'mcq', q: 'مَشْهَدٌ: فَتَاةٌ تُمْسِكُ مِكْنَسَةً وَتُنَظِّفُ سَجَّادَةً كَبِيرَةً جَنْبَ الْأَرِيكَةِ. (أَيْنَ هِيَ؟)', opts: ['فِي الْمَطْبَخِ', 'فِي غُرْفَةِ الْجُلُوسِ', 'فِي الْحَمَّامِ'], a: 1 },
+            { type: 'mcq', q: 'مَشْهَدٌ: رُفُوفٌ كَثِيرَةٌ مَلِيئَةٌ بِالْكُتُبِ الْمُتَنَوِّعَةِ، وَطُلَّابٌ يَجْلِسُونَ بِهُدُوءٍ. (أَيْنَ هُمْ؟)', opts: ['فِي الْمَكْتَبَةِ', 'فِي الْمُخْتَبَرِ', 'فِي الْمَقْصَفِ'], a: 0 },
+            { type: 'mcq', q: 'مَشْهَدٌ: طَائِرَةٌ فِي السَّمَاءِ وَمُسَافِرُونَ يَحْمِلُونَ حَقَائِبَهُمْ. (أَيْنَ الْمَكَانُ قَبْلَ الصُّعُودِ؟)', opts: ['الْمَطَارُ', 'الْمَدْرَسَةُ', 'الشَّقَّةُ'], a: 0 },
+            { type: 'mcq', q: 'مَشْهَدٌ: قَدَحٌ زُجَاجِيٌّ فِيهِ سَائِلٌ أَسْوَدُ سَاخِنٌ، وَبِجَانِبِهِ قِطْعَةُ سُكَّرٍ. (مَا هَذَا؟)', opts: ['مَاءٌ بَارِدٌ', 'حَلِيبٌ', 'قَهْوَةٌ سَاخِنَةٌ'], a: 2 },
+            { type: 'mcq', q: 'مَشْهَدٌ: أُمٌّ تَغْسِلُ الْأَطْبَاقَ بِالْمَاءِ وَالصَّابُونِ دَاخِلَ حَوْضٍ. (أَيْنَ هِيَ؟)', opts: ['فِي الْمَطْبَخِ', 'فِي غُرْفَةِ النَّوْمِ', 'فِي الشَّارِعِ'], a: 0 },
+            { type: 'mcq', q: 'مَشْهَدٌ: شَابٌّ يَنْظُرُ فِي شَاشَةِ حَاسُوبٍ وَيَكْتُبُ بِسُرْعَةٍ عَلَى لَوْحَةِ الْمَفَاتِيحِ. (أَيْنَ هُوَ عَادَةً؟)', opts: ['فِي الشَّرِكَةِ / مَكْتَبِ الْعَمَلِ', 'فِي الْمَسْجِدِ', 'فِي الْمَطْعَمِ'], a: 0 }
+        ]
+    },
+    // --- SECTION 6: Fill in the Blank Dropdowns (15 Qs) ---
+    {
+        id: 'sec6',
+        title: 'Section 6: Fill in the Blanks',
+        instructions: 'امْلَئِي الْفَرَاغَ بِاخْتِيَارِ الْكَلِمَةِ الْمُنَاسِبَةِ مِنَ الْقَائِمَةِ (Fill the blank by selecting the correct word from the dropdown):',
+        contentHtml: '',
+        questions: [
+            { type: 'dropdown', textPre: 'أَنَا أَدْرُسُ فِي', textPost: 'الْمُعَلِّمِينَ.', opts: ['مُسْتَشْفَى', 'كُلِّيَّةِ', 'مَطْعَمِ'], a: 1 },
+            { type: 'dropdown', textPre: 'أَسْكُنُ فِي شِقَّةٍ فِي', textPost: 'الْمَطَارِ.', opts: ['حَيِّ', 'غُرْفَةِ', 'بَابِ'], a: 0 },
+            { type: 'dropdown', textPre: 'هَلْ', textPost: 'مِنْ مِصْرَ يَا عَائِشَةُ؟', opts: ['أَنْتَ', 'أَنَا', 'أَنْتِ'], a: 2 },
+            { type: 'dropdown', textPre: 'مَاذَا تَفْعَلِينَ يَا زَيْنَبُ؟ - أَنَا', textPost: 'الْمَلَابِسَ.', opts: ['أَغْسِلُ', 'أَكْنُسُ', 'أَقْرَأُ'], a: 0 },
+            { type: 'dropdown', textPre: 'أُصَلِّي الْعِشَاءَ فِي', textPost: '.', opts: ['الْمَدْرَسَةِ', 'الْمَسْجِدِ', 'الْحَمَّامِ'], a: 1 },
+            { type: 'dropdown', textPre: 'أُرِيدُ', textPost: 'وَالسَّلَطَةَ مِنْ فَضْلِكَ.', opts: ['الْمَاءَ', 'الدَّجَاجَ', 'الْقَهْوَةَ'], a: 1 },
+            { type: 'dropdown', textPre: 'كَمْ', textPost: 'تَعْمَلِينَ فِي الْيَوْمِ؟', opts: ['سَاعَةً', 'يَوْماً', 'شَهْراً'], a: 0 },
+            { type: 'dropdown', textPre: 'الْمُمَرِّضَةُ تَعْمَلُ فِي', textPost: '.', opts: ['الْمُسْتَشْفَى', 'الشَّرِكَةِ', 'الْمَكْتَبَةِ'], a: 0 },
+            { type: 'dropdown', textPre: 'أَذْهَبُ إِلَى الْمَدْرَسَةِ', textPost: 'الْحَافِلَةِ.', opts: ['مِنْ', 'بِـ', 'عَلَى'], a: 1 },
+            { type: 'dropdown', textPre: 'مَا', textPost: 'يَا أُخْتِي؟ - سُورِيَّةٌ.', opts: ['اسْمُكِ', 'جِنْسِيَّتُكِ', 'حَالُكِ'], a: 1 },
+            { type: 'dropdown', textPre: 'أَسْتَيْقِظُ مُبَكِّراً عِنْدَ', textPost: '.', opts: ['الْمَسَاءِ', 'الظُّهْرِ', 'الْفَجْرِ'], a: 2 },
+            { type: 'dropdown', textPre: 'فِي غُرْفَةِ النَّوْمِ يُوجَدُ', textPost: '.', opts: ['سَرِيرٌ', 'أَرِيكَةٌ', 'مَوْقِدٌ'], a: 0 },
+            { type: 'dropdown', textPre: 'أُحِبُّ أَنْ أَشْرَبَ', textPost: 'بَارِداً.', opts: ['سَمَكاً', 'مَاءً', 'خُبْزاً'], a: 1 },
+            { type: 'dropdown', textPre: 'هَذِهِ', textPost: 'أَحْمَدَ.', opts: ['أَخُو', 'أُسْرَةُ', 'أَبُو'], a: 1 },
+            { type: 'dropdown', textPre: 'أَنَا لا أُحِبُّ الشَّايَ،', textPost: 'الْقَهْوَةَ.', opts: ['أُفَضِّلُ', 'أَكْرَهُ', 'أَسْأَلُ'], a: 0 }
+        ]
+    },
+    // --- SECTION 7: Sentence Ordering (15 Qs) ---
+    {
+        id: 'sec7',
+        title: 'Section 7: Sentence Ordering',
+        instructions: 'انْقُرِي عَلَى الْكَلِمَاتِ لِتَرْتِيبِهَا فِي جُمْلَةٍ صَحِيحَةٍ (Click the words to arrange them into a correct sentence):',
+        contentHtml: '<p class="teacher-note">If you make a mistake, the box will flash yellow and reset so you can try again.</p>',
+        questions: [
+            { type: 'order', words: ['اسْمِي', 'مَا', '؟'], ans: ['مَا', 'اسْمِي', '؟'] },
+            { type: 'order', words: ['بِخَيْرٍ', '،', 'الْحَمْدُ لِلَّهِ', 'أَنَا'], ans: ['أَنَا', 'بِخَيْرٍ', '،', 'الْحَمْدُ لِلَّهِ'] },
+            { type: 'order', words: ['أَنْتِ', 'أَيْنَ', 'مِنْ', '؟'], ans: ['مِنْ', 'أَيْنَ', 'أَنْتِ', '؟'] },
+            { type: 'order', words: ['فِي', 'أَسْكُنُ', 'شِقَّةٍ', 'جَمِيلَةٍ'], ans: ['أَسْكُنُ', 'فِي', 'شِقَّةٍ', 'جَمِيلَةٍ'] },
+            { type: 'order', words: ['الْمَدْرَسَةِ', 'أَذْهَبُ', 'إِلَى', 'مُبَكِّراً'], ans: ['أَذْهَبُ', 'إِلَى', 'الْمَدْرَسَةِ', 'مُبَكِّراً'] },
+            { type: 'order', words: ['تَعْمَلِينَ', 'سَاعَةً', 'كَمْ', 'الْيَوْمِ', 'فِي', '؟'], ans: ['كَمْ', 'سَاعَةً', 'تَعْمَلِينَ', 'فِي', 'الْيَوْمِ', '؟'] },
+            { type: 'order', words: ['الطِّبِّ', 'أَدْرُسُ', 'كُلِّيَّةِ', 'فِي'], ans: ['أَدْرُسُ', 'فِي', 'كُلِّيَّةِ', 'الطِّبِّ'] },
+            { type: 'order', words: ['مَاذَا', 'الْغَدَاءِ', 'فِي', 'تُفَضِّلِينَ', '؟'], ans: ['مَاذَا', 'تُفَضِّلِينَ', 'فِي', 'الْغَدَاءِ', '؟'] },
+            { type: 'order', words: ['وَالْأَرُزَّ', 'أُفَضِّلُ', 'السَّمَكَ'], ans: ['أُفَضِّلُ', 'السَّمَكَ', 'وَالْأَرُزَّ'] },
+            { type: 'order', words: ['الْقُرْآنَ', 'أَقْرَأُ', 'الْفَجْرِ', 'بَعْدَ'], ans: ['أَقْرَأُ', 'الْقُرْآنَ', 'بَعْدَ', 'الْفَجْرِ'] },
+            { type: 'order', words: ['أَكْنُسُ', 'الْجُلُوسِ', 'غُرْفَةَ', 'الْمَسَاءِ', 'فِي'], ans: ['فِي', 'الْمَسَاءِ', 'أَكْنُسُ', 'غُرْفَةَ', 'الْجُلُوسِ'] },
+            { type: 'order', words: ['بِالْحَافِلَةِ', 'أَذْهَبُ', 'لَا', '،', 'بِالسَّيَّارَةِ'], ans: ['لَا', '،', 'أَذْهَبُ', 'بِالسَّيَّارَةِ', 'بِالْحَافِلَةِ'] }, // Valid Arabic structure based on sources: لا، أذهب بالسيارة
+            { type: 'order', words: ['أَيْنَ', '؟', 'الْمِعْطَفُ'], ans: ['أَيْنَ', 'الْمِعْطَفُ', '؟'] },
+            { type: 'order', words: ['طَبِيبَةٌ', 'هَذِهِ', '،', 'أُخْتِي'], ans: ['هَذِهِ', 'أُخْتِي', '،', 'طَبِيبَةٌ'] },
+            { type: 'order', words: ['أَنْتِ', 'سُورِيَا', 'مِنْ', 'هَلْ', '؟'], ans: ['هَلْ', 'أَنْتِ', 'مِنْ', 'سُورِيَا', '؟'] }
+        ]
+    },
+    // --- SECTION 8: Writing (10 words) ---
+    {
+        id: 'sec8',
+        title: 'Section 8: Vocabulary & Sentence Construction',
+        instructions: 'اكْتُبِي جُمْلَةً مُفِيدَةً لِكُلِّ كَلِمَةٍ مِنَ الْكَلِمَاتِ التَّالِيَةِ (Write a meaningful sentence for each of the following 10 words):',
+        contentHtml: '<p class="arabic-text" style="text-align:center;">(طَالِبَة - مُسْتَشْفَى - أُسْرَة - شِقَّة - صَبَاح - قَهْوَة - تَعْمَلُ - مَسْجِد - سَمَك - تَقْرَأُ)</p><p class="teacher-note">Note: This section is evaluated by the teacher later and does not affect the auto-calculated score.</p>',
+        questions: [
+            { type: 'textarea', placeholder: 'اكْتُبِي إِجَابَتَكِ هُنَا (Write your sentences here)...' }
+        ]
+    }
+];
+
+/**
+ * -------------------------------------------------------------
+ * Application Logic
+ * -------------------------------------------------------------
+ */
+
+let currentSectionIdx = 0;
+let totalScore = 0;
+let maxScore = 100; // 110 total questions - 10 writing = 100 auto-graded.
+
+function initApp() {
+    const app = document.getElementById('app');
+    
+    testData.forEach((sec, sIdx) => {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = `section ${sIdx === 0 ? 'active' : ''}`;
+        sectionDiv.id = `section-${sIdx}`;
+        
+        let html = `<h2>${sec.title}</h2>
+                    <p class="arabic-text" style="color: var(--primary); font-weight: bold;">${sec.instructions}</p>
+                    ${sec.contentHtml}`;
+                    
+        sec.questions.forEach((qObj, qIdx) => {
+            html += buildQuestionHTML(sec.id, qObj, sIdx, qIdx);
+        });
+        
+        if (sIdx < testData.length - 1) {
+            html += `<button class="nav-btn" onclick="nextSection(${sIdx})">Next Section</button>`;
+        } else {
+            html += `<button class="nav-btn" style="background-color: var(--success);" onclick="showResult()">Finish Test & Show Result</button>`;
+        }
+        
+        sectionDiv.innerHTML = html;
+        app.appendChild(sectionDiv);
+    });
+    
+    // Result Screen
+    const resultDiv = document.createElement('div');
+    resultDiv.className = 'section';
+    resultDiv.id = 'result-screen';
+    resultDiv.innerHTML = `
+        <h2>Test Complete</h2>
+        <p class="score-text" id="final-score-text"></p>
+        <button class="nav-btn" onclick="location.reload()">Retake Test</button>
+    `;
+    app.appendChild(resultDiv);
+}
+
+function buildQuestionHTML(secId, qObj, sIdx, qIdx) {
+    const { type } = qObj;
+    let qHTML = `<div class="question-block" id="q-${sIdx}-${qIdx}">`;
+    
+    if (type === 'mcq') {
+        const { q: questionText, opts } = qObj;
+        qHTML += `<p class="arabic-text">${qIdx + 1}. ${questionText}</p><div class="options">`;
+        opts.forEach((opt, optIdx) => {
+            qHTML += `<button class="btn-option" onclick="handleMCQ(this, ${sIdx}, ${qIdx}, ${optIdx})">${opt}</button>`;
+        });
+        qHTML += `</div>`;
+    } 
+    else if (type === 'dropdown') {
+        const { textPre, textPost, opts } = qObj;
+        qHTML += `<p class="arabic-text" style="display: flex; align-items: center; justify-content: flex-start; gap: 10px; flex-wrap: wrap;">
+            <span>${qIdx + 1}. ${textPre}</span>
+            <select onchange="handleDropdown(this, ${sIdx}, ${qIdx})">
+                <option value="-1" disabled selected>اخْتَارِي...</option>`;
+        opts.forEach((opt, optIdx) => {
+            qHTML += `<option value="${optIdx}">${opt}</option>`;
+        });
+        qHTML += `</select><span>${textPost}</span></p>`;
+    }
+    else if (type === 'order') {
+        const { words } = qObj;
+        // Shuffle words for presentation
+        let shuffled = [...words].sort(() => Math.random() - 0.5);
+        qHTML += `<p class="arabic-text">${qIdx + 1}. رَتِّبِي الْكَلِمَاتِ:</p>
+                  <div class="word-pool" id="pool-${sIdx}-${qIdx}">`;
+        shuffled.forEach((w, wIdx) => {
+            qHTML += `<button class="word-btn" id="wb-${sIdx}-${qIdx}-${wIdx}" onclick="handleOrderClick('${w}', '${sIdx}', '${qIdx}', this.id)">${w}</button>`;
+        });
+        qHTML += `</div><div class="answer-box" id="ansbox-${sIdx}-${qIdx}"></div>`;
+        
+        // Store expected answer logic locally in DOM for quick access
+        setTimeout(() => {
+            document.getElementById(`ansbox-${sIdx}-${qIdx}`).dataset.expected = JSON.stringify(qObj.ans);
+            document.getElementById(`ansbox-${sIdx}-${qIdx}`).dataset.current = '[]';
+        }, 100);
+    }
+    else if (type === 'textarea') {
+        const { placeholder } = qObj;
+        qHTML += `<textarea placeholder="${placeholder}"></textarea>`;
+    }
+    
+    qHTML += `</div>`;
+    return qHTML;
+}
+
+// Handlers
+function handleMCQ(btn, sIdx, qIdx, selectedOptIdx) {
+    const container = btn.parentElement;
+    const buttons = container.querySelectorAll('.btn-option');
+    buttons.forEach(b => b.disabled = true);
+    
+    const correctIdx = testData[sIdx].questions[qIdx].a;
+    
+    if (selectedOptIdx === correctIdx) {
+        btn.style.backgroundColor = 'var(--success)';
+        btn.style.color = 'white';
+        totalScore++;
+    } else {
+        btn.style.backgroundColor = 'var(--error)';
+    }
+}
+
+function handleDropdown(selectEl, sIdx, qIdx) {
+    selectEl.disabled = true;
+    const selectedOptIdx = parseInt(selectEl.value);
+    const correctIdx = testData[sIdx].questions[qIdx].a;
+    
+    if (selectedOptIdx === correctIdx) {
+        selectEl.style.backgroundColor = 'var(--success)';
+        selectEl.style.color = 'white';
+        totalScore++;
+    } else {
+        selectEl.style.backgroundColor = 'var(--error)';
+    }
+}
+
+function handleOrderClick(word, sIdx, qIdx, btnId) {
+    const pool = document.getElementById(`pool-${sIdx}-${qIdx}`);
+    const ansBox = document.getElementById(`ansbox-${sIdx}-${qIdx}`);
+    const btn = document.getElementById(btnId);
+    
+    if (btn.parentElement === pool) {
+        ansBox.appendChild(btn);
+    } else {
+        pool.appendChild(btn);
+    }
+    
+    // Check state
+    const currentWords = Array.from(ansBox.children).map(b => b.innerText);
+    const expectedWords = JSON.parse(ansBox.dataset.expected);
+    
+    if (currentWords.length === expectedWords.length) {
+        let isCorrect = currentWords.every((val, index) => val === expectedWords[index]);
+        if (isCorrect) {
+            ansBox.style.borderColor = 'var(--success)';
+            ansBox.style.backgroundColor = '#e8f5e9';
+            Array.from(ansBox.children).forEach(b => b.disabled = true);
+            totalScore++;
+        } else {
+            ansBox.style.backgroundColor = 'var(--warning)';
+            ansBox.style.borderColor = 'var(--error)';
+            setTimeout(() => {
+                ansBox.style.backgroundColor = '#fafafa';
+                ansBox.style.borderColor = '#ccc';
+                // move all back
+                Array.from(ansBox.children).forEach(b => pool.appendChild(b));
+            }, 1000);
+        }
+    }
+}
+
+function nextSection(currentId) {
+    document.getElementById(`section-${currentId}`).classList.remove('active');
+    document.getElementById(`section-${currentId + 1}`).classList.add('active');
+    window.scrollTo(0, 0);
+}
+
+function showResult() {
+    document.querySelector('.section.active').classList.remove('active');
+    document.getElementById('result-screen').classList.add('active');
+    
+    document.getElementById('final-score-text').innerText = `اكتمل الاختبار! الدرجة: ${totalScore} / 100. أحسنتِ إتمام الاختبار التجريبي.`;
+    window.scrollTo(0, 0);
+}
+
+// Initialize
+window.onload = initApp;
+
+</script>
+</body>
+</html>
