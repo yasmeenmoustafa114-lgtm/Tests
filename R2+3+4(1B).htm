@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz: Family, Housing, and Daily Life</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #3498db;
+            --bg: #f4f7f6;
+            --correct: #d4edda;
+            --wrong: #f8d7da;
+            --warning: #fff3cd;
+            --highlight: #ffe0b2;
+            --text-dark: #333;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.8;
+        }
+
+        .app-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+
+        h1, h2 { text-align: center; color: var(--primary); }
+        .section-title { border-bottom: 3px solid var(--accent); padding-bottom: 10px; margin-bottom: 30px; }
+
+        /* Story & Dictionary */
+        .reading-box {
+            background-color: #fdfdfd;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            font-size: 1.4rem;
+            text-align: justify;
+            margin-bottom: 25px;
+            line-height: 2.2;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
+        }
+        .vocab-highlight {
+            background-color: var(--highlight);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            border-bottom: 2px dashed #f39c12;
+        }
+
+        details {
+            background: #fff; border: 2px solid var(--accent); border-radius: 8px; margin-bottom: 40px;
+        }
+        summary {
+            font-weight: bold; cursor: pointer; color: var(--primary); font-size: 1.25rem; padding: 15px; background: #eaf4fc;
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 1.15rem; }
+        th, td { border: 1px solid #ddd; padding: 15px; text-align: center; }
+        th { background-color: var(--primary); color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+
+        /* Questions General */
+        .q-block { margin-bottom: 25px; padding: 25px; background: #fafafa; border-radius: 8px; border: 1px solid #eaeaea; }
+        .q-text { font-size: 1.3rem; font-weight: bold; margin-bottom: 15px; color: var(--primary); }
+        
+        /* MCQ Buttons */
+        .mcq-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .mcq-btn {
+            padding: 15px 20px; font-size: 1.2rem; background: #fff; border: 2px solid #bdc3c7;
+            color: var(--primary); border-radius: 8px; cursor: pointer; text-align: right; font-family: inherit; transition: all 0.3s ease;
+        }
+        .mcq-btn:hover { background: #ecf0f1; border-color: #95a5a6; }
+        .mcq-btn.correct { background: var(--correct) !important; border-color: #28a745 !important; color: #155724 !important; pointer-events: none; }
+        .mcq-btn.wrong { background: var(--wrong) !important; border-color: #dc3545 !important; color: #721c24 !important; pointer-events: none; }
+
+        /* Select / Input */
+        select, textarea {
+            width: 100%; padding: 15px; font-size: 1.2rem; border: 2px solid #bdc3c7;
+            border-radius: 8px; font-family: inherit; transition: border-color 0.3s;
+        }
+        select:focus, textarea:focus { border-color: var(--accent); outline: none; }
+        textarea { resize: vertical; min-height: 120px; }
+
+        /* Sentence Ordering */
+        .pool-area { display: flex; flex-wrap: wrap; gap: 10px; padding: 20px; background: #f1f2f6; border-radius: 8px; min-height: 60px; margin-top:15px; }
+        .answer-area { display: flex; flex-wrap: wrap; gap: 10px; padding: 20px; background: #fff; border: 2px dashed var(--accent); border-radius: 8px; min-height: 60px; margin-bottom: 15px; }
+        .word-btn { padding: 12px 18px; background: white; border: 1px solid #95a5a6; border-radius: 6px; cursor: pointer; font-size: 1.25rem; font-family: inherit; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: transform 0.1s;}
+        .word-btn:active { transform: scale(0.95); }
+        
+        /* Animations & States */
+        .flash-wrong { background-color: var(--warning) !important; border-color: #ffc107 !important; transition: 0.3s; }
+        .flash-correct { background-color: var(--correct) !important; border-color: #28a745 !important; pointer-events: none; transition: 0.3s; }
+        .section { display: none; animation: fadeIn 0.5s ease-in-out; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Nav Buttons */
+        .nav-wrap { display: flex; justify-content: space-between; margin-top: 40px; }
+        .nav-btn {
+            background-color: var(--accent); color: white; padding: 15px 35px; border: none;
+            border-radius: 8px; font-size: 1.3rem; cursor: pointer; font-weight: bold; font-family: inherit; transition: 0.3s;
+        }
+        .nav-btn:hover { background-color: #2980b9; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        
+        .score-display { text-align: center; font-size: 5rem; color: var(--accent); font-weight: bold; margin: 30px 0; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    
+    <!-- Welcome -->
+    <div id="sec-welcome" class="section active">
+        <h1>الِاخْتِبَارُ الشَّامِلُ: الْأُسْرَةُ وَالسَّكَنُ وَالْحَيَاةُ الْيَوْمِيَّةُ</h1>
+        <h2>(Comprehensive Quiz: Family, Housing, and Daily Life)</h2>
+        <p style="text-align: center; font-size: 1.3rem; color: #555; margin-top: 20px;">
+            يَتَكَوَّنُ الِاخْتِبَارُ مِنْ 7 أَقْسَامٍ. أَمَامَكِ 110 أَسْئِلَةٍ لِقِيَاسِ مُسْتَوَاكِ (A2).<br>
+            اقْرَئِي الْفَقْرَةَ بِتَرْكِيزٍ ثُمَّ أَجِيبِي عَنِ الْأَسْئِلَةِ.
+        </p>
+        <div style="text-align: center; margin-top: 50px;">
+            <button class="nav-btn" onclick="goToSection(1)">Start Quiz (ابْدَأِ الِاخْتِبَارَ)</button>
+        </div>
+    </div>
+
+    <!-- Section 1: Reading -->
+    <div id="sec-1" class="section">
+        <h2 class="section-title">الْقِسْمُ الْأَوَّلُ: الْقِرَاءَةُ وَالِاسْتِيعَابُ (Reading & Comprehension) - 20 سُؤَالاً</h2>
+        
+        <!-- Long Reading Passage -->
+        <div class="reading-box">
+            فِي مَدِينَةٍ كَبِيرَةٍ وَجَمِيلَةٍ، تَسْكُنُ <span class="vocab-highlight">أُسْرَةُ طَارِقٍ</span> فِي <span class="vocab-highlight">حَيِّ الْجَامِعَةِ</span>. الْأُسْرَةُ تَعِيشُ فِي <span class="vocab-highlight">شَقَّةٍ وَاسِعَةٍ</span> تَقَعُ فِي <span class="vocab-highlight">الدَّوْرِ الْخَامِسِ</span> مِنْ عِمَارَةٍ حَدِيثَةٍ. هَذِهِ الشَّقَّةُ مُرِيحَةٌ جِدّاً وَفِيهَا خَمْسُ غُرَفٍ: غُرْفَةُ نَوْمٍ، وَغُرْفَةُ جُلُوسٍ، وَمَطْبَخٌ مُجَهَّزٌ، وَحَمَّامٌ نَظِيفٌ، وَصَالَةٌ كَبِيرَةٌ لِلِاسْتِقْبَالِ. <br><br>
+            يَسْتَيْقِظُ طَارِقٌ <span class="vocab-highlight">مُبَكِّراً</span> كُلَّ يَوْمٍ عِنْدَ سَمَاعِ أَذَانِ صَلَاةِ الْفَجْرِ. هُوَ يَتَوَضَّأُ فِي الْحَمَّامِ ثُمَّ يَذْهَبُ إِلَى <span class="vocab-highlight">الْمَسْجِدِ</span> لِيُصَلِّيَ. طَارِقٌ طَالِبٌ نَشِيطٌ؛ لِذَلِكَ هُوَ لَا يَنَامُ بَعْدَ الصَّلَاةِ أَبَداً، بَلْ يَجْلِسُ فِي غُرْفَةِ الْجُلُوسِ وَ<span class="vocab-highlight">يَقْرَأُ الْقُرْآنَ</span> الْكَرِيمَ. تَقُولُ لَهُ الْأُمُّ دَائِماً قَبْلَ خُرُوجِهِ: "يَا بُنَيَّ، <span class="vocab-highlight">لَا تَتَأَخَّرْ</span> عَنِ الْمَدْرَسَةِ!"، فَيُجِيبُ طَارِقٌ مُبْتَسِماً: "لَا تَقْلَقِي يَا أُمِّي الْعَزِيزَةَ، أَنَا أَرْكَبُ <span class="vocab-highlight">الْحَافِلَةَ</span> فِي السَّاعَةِ السَّابِعَةِ تَمَاماً، وَأَصِلُ فِي الْمَوْعِدِ".<br><br>
+            فِي الصَّبَاحِ، يَذْهَبُ الْأَبُ إِلَى عَمَلِهِ فِي الشَّرِكَةِ، وَتَبْدَأُ الْأُمُّ فِي تَرْتِيبِ الْبَيْتِ وَتَنْظِيفِهِ. الشَّقَّةُ فِيهَا <span class="vocab-highlight">أَثَاثٌ</span> كَثِيرٌ وَمُرَتَّبٌ؛ فَفِي غُرْفَةِ الْجُلُوسِ تُوجَدُ <span class="vocab-highlight">أَرِيكَةٌ</span> حَمْرَاءُ وَمُرِيحَةٌ، وَ<span class="vocab-highlight">سَجَّادَةٌ</span> جَمِيلَةٌ عَلَى الْأَرْضِ، وَعَلَى النَّافِذَةِ <span class="vocab-highlight">سِتَارَةٌ</span> حَرِيرِيَّةٌ. وَفِي غُرْفَةِ النَّوْمِ يُوجَدُ سَرِيرٌ كَبِيرٌ لِلرَّاحَةِ. أَمَّا فِي الْمَطْبَخِ فَيُوجَدُ فُرْنٌ لِلطَّبْخِ وَثَلَّاجَةٌ كَبِيرَةٌ لِحِفْظِ الطَّعَامِ. ذَاتَ يَوْمٍ، زَارَتْهُمْ جَارَتُهُمُ الْجَدِيدَةُ وَقَالَتْ: "<span class="vocab-highlight">أُرِيدُ مُشَاهَدَةَ</span> الْأَثَاثِ وَالشَّقَّةِ مِنْ فَضْلِكِ"، فَقَالَتْ لَهَا الْأُمُّ: "تَفَضَّلِي بِكُلِّ سُرُورٍ، هَذِهِ شَقَّةٌ جَمِيلَةٌ كَمَا تَرَيْنَ".<br><br>
+            فِي الْمَسَاءِ بَعْدَ الْغُرُوبِ، يَعُودُ الْأَبُ مِنْ عَمَلِهِ مُتْعَباً جِدّاً، فَيَجْلِسُ عَلَى الْأَرِيكَةِ لِيَسْتَرِيحَ وَيُشَاهِدَ التِّلْفَازَ بَعْضَ الْوَقْتِ. أَمَّا الْجَدَّةُ الْحَنُونَةُ، فَهِيَ تَدْخُلُ الْمَطْبَخَ وَتَغْسِلُ <span class="vocab-highlight">الْأَطْبَاقَ</span> بَعْدَ تَنَاوُلِ طَعَامِ الْعَشَاءِ بِمُسَاعَدَةِ الْبَنَاتِ. تَقُومُ أُخْتُهُ فَاطِمَةُ بِعَمَلِهَا الْيَوْمِيِّ، فَهِيَ تَكْنُسُ غُرْفَةِ الْجُلُوسِ بِالْمِكْنَسَةِ لِتَبْقَى نَظِيفَةً. بَيْنَمَا تَقُومُ أُخْتُهُ الْأُخْرَى لَطِيفَةُ بِعَمَلٍ آخَرَ مُهِمٍّ؛ حَيْثُ تَقِفُ لِسَاعَةٍ كَامِلَةٍ وَهِيَ <span class="vocab-highlight">تَكْوِي الْمَلَابِسَ</span> الْمَغْسُولَةَ وَتُرَتِّبُهَا فِي الْخِزَانَةِ. قَبْلَ الذَّهَابِ إِلَى النَّوْمِ، تَدْخُلُ الْأُمُّ إِلَى الْحَمَّامِ لِتَتَفَقَّدَهُ، ثُمَّ تُنَادِي بِنْتَهَا قَائِلَةً بِلَهْجَةٍ حَازِمَةٍ: "يَا فَاطِمَةُ، <span class="vocab-highlight">لَا تَتْرُكِي</span> الْمِرْآةَ بِدُونِ تَنْظِيفٍ!". هَكَذَا تَعِيشُ هَذِهِ الْأُسْرَةُ الْمُسْلِمَةُ السَّعِيدَةُ فِي نِظَامٍ وَتَعَاوُنٍ وَعَمَلٍ مُسْتَمِرٍّ كُلَّ يَوْمٍ.
+        </div>
+
+        <details>
+            <summary>جَدْوَلُ الْمُفْرَدَاتِ (Vocabulary Dictionary) - اضْغَطْ هُنَا لِلْعَرْضِ</summary>
+            <table>
+                <tr><th>الْكَلِمَة</th><th>الْمَعْنَى بِالْعَرَبِيَّة</th><th>مِثَالٌ تَوضِيحِيّ</th><th>Translation (English)</th></tr>
+                <tr><td>حَيِّ الْجَامِعَةِ</td><td>مِنْطَقَةٌ سَكَنِيَّةٌ قَرِيبَةٌ مِنَ الْجَامِعَةِ</td><td>أَسْكُنُ فِي حَيِّ الْجَامِعَةِ مُنْذُ سَنَتَيْنِ.</td><td>University District</td></tr>
+                <tr><td>الدَّوْرِ الْخَامِسِ</td><td>الطَّابِقُ رَقَم ٥ فِي الْمَبْنَى</td><td>شَقَّتِي تَقَعُ فِي الدَّوْرِ الْخَامِسِ.</td><td>Fifth floor</td></tr>
+                <tr><td>أَثَاثٌ</td><td>مُفْرَدَاتُ الْمَنْزِلِ كَالْأَسِرَّةِ وَالْكَرَاسِي</td><td>عِنْدَنَا أَثَاثٌ جَدِيدٌ فِي الصَّالَةِ.</td><td>Furniture</td></tr>
+                <tr><td>سَجَّادَةٌ</td><td>بِسَاطٌ يُفْرَشُ عَلَى الْأَرْضِ</td><td>أُصَلِّي عَلَى سَجَّادَةٍ نَظِيفَةٍ.</td><td>Carpet / Rug</td></tr>
+                <tr><td>سِتَارَةٌ</td><td>قُمَاشٌ يُغَطِّي النَّافِذَةَ</td><td>الْأُمُّ تَغْسِلُ سِتَارَةَ الْغُرْفَةِ.</td><td>Curtain</td></tr>
+                <tr><td>أُرِيدُ مُشَاهَدَةَ</td><td>أَرْغَبُ فِي رُؤْيَةِ كَذَا..</td><td>أُرِيدُ مُشَاهَدَةَ الشَّقَّةِ مِنْ فَضْلِكَ.</td><td>I want to see / watch</td></tr>
+                <tr><td>يَقْرَأُ الْقُرْآنَ</td><td>يَتْلُو كِتَابَ اللَّهِ</td><td>الْمُسْلِمُ يَقْرَأُ الْقُرْآنَ بَعْدَ الْفَجْرِ.</td><td>He reads the Quran</td></tr>
+                <tr><td>الْحَافِلَةَ</td><td>سَيَّارَةٌ كَبِيرَةٌ لِنَقْلِ الرُّكَّابِ</td><td>أَذْهَبُ إِلَى عَمَلِي بِالْحَافِلَةِ.</td><td>Bus</td></tr>
+                <tr><td>مُبَكِّراً</td><td>فِي أَوَّلِ النَّهَارِ / عَكْسُ مُتَأَخِّر</td><td>طَارِقٌ يَسْتَيْقِظُ مُبَكِّراً كُلَّ يَوْمٍ.</td><td>Early</td></tr>
+                <tr><td>لَا تَتَأَخَّرْ</td><td>أُسْلُوبُ نَهْيٍ (اِحْضَرْ فِي الْوَقْتِ)</td><td>لَا تَتَأَخَّرْ عَنِ الدَّرْسِ.</td><td>Do not be late</td></tr>
+                <tr><td>الْأَرِيكَةٌ</td><td>مَقْعَدٌ وَاسِعٌ وَمُرِيحٌ</td><td>يَجْلِسُ الْجَدُّ عَلَى الْأَرِيكَةِ.</td><td>Sofa / Couch</td></tr>
+                <tr><td>لَا تَتْرُكِي</td><td>أُسْلُوبُ نَهْيٍ لِلْمُؤَنَّثِ</td><td>لَا تَتْرُكِي الْبَابَ مَفْتُوحاً.</td><td>Do not leave (f.)</td></tr>
+            </table>
+        </details>
+
+        <!-- Question Containers -->
+        <div id="render-sec1"></div>
+        <div class="nav-wrap"><button class="nav-btn" onclick="goToSection(2)">Next Section (القسم التالي)</button></div>
+    </div>
+
+    <!-- Sections 2 to 7 -->
+    <div id="sec-2" class="section">
+        <h2 class="section-title">الْقِسْمُ الثَّانِي: الْمُفْرَدَاتُ وَالتَّعْبِيرَاتُ (Vocabulary & Expressions) - 15 سُؤَالاً</h2>
+        <div id="render-sec2"></div>
+        <div class="nav-wrap"><button class="nav-btn" onclick="goToSection(3)">Next Section</button></div>
+    </div>
+
+    <div id="sec-3" class="section">
+        <h2 class="section-title">الْقِسْمُ الثَّالِثُ: صَحْ أَمْ خَطَأ - التَّرَاكِيبُ (True or False - Grammar) - 15 سُؤَالاً</h2>
+        <div id="render-sec3"></div>
+        <div class="nav-wrap"><button class="nav-btn" onclick="goToSection(4)">Next Section</button></div>
+    </div>
+
+    <div id="sec-4" class="section">
+        <h2 class="section-title">الْقِسْمُ الرَّابِعُ: الْمُفْرَدُ وَالْجَمْعُ وَالْمُضَادُ (Singular, Plural & Antonyms) - 15 سُؤَالاً</h2>
+        <div id="render-sec4"></div>
+        <div class="nav-wrap"><button class="nav-btn" onclick="goToSection(5)">Next Section</button></div>
+    </div>
+
+    <div id="sec-5" class="section">
+        <h2 class="section-title">الْقِسْمُ الْخَامِسُ: امْلَأ الْفَرَاغَ (Fill in the Blanks) - 15 سُؤَالاً</h2>
+        <p style="text-align: center; color: #555; font-size:1.2rem;">اخْتَارِي الْكَلِمَةَ الصَّحِيحَةَ مِنَ الْقَائِمَةِ لِتُكْمِلِي الْجُمْلَةَ.</p>
+        <div id="render-sec5"></div>
+        <div class="nav-wrap"><button class="nav-btn" onclick="goToSection(6)">Next Section</button></div>
+    </div>
+
+    <div id="sec-6" class="section">
+        <h2 class="section-title">الْقِسْمُ السَّادِسُ: تَرْتِيبُ الْجُمَلِ (Sentence Ordering) - 15 سُؤَالاً</h2>
+        <p style="text-align: center; color: #555; font-size:1.2rem;">اضْغَطِي عَلَى الْكَلِمَاتِ لِتَرْتِيبِهَا بِشَكْلٍ صَحِيحٍ (كُلُّ جُمْلَةٍ تَتَكَوَّنُ مِنْ 10 كَلِمَاتٍ).</p>
+        <div id="render-sec6"></div>
+        <div class="nav-wrap"><button class="nav-btn" onclick="goToSection(7)">Next Section</button></div>
+    </div>
+
+    <div id="sec-7" class="section">
+        <h2 class="section-title">الْقِسْمُ السَّابِعُ: الْإِنْشَاءُ وَالتَّعْبِيرُ (Essay & Writing) - 15 كَلِمَةً</h2>
+        <p style="text-align: center; color: #c0392b; font-weight: bold; font-size:1.2rem;">مُلَاحَظَة: هَذَا الْقِسْمُ يُصَحَّحُ يَدَوِيّاً مِنَ الْمُعَلِّمِ وَلَا يُحْسَبُ فِي النَّتِيجَةِ الْآلِيَّةِ.</p>
+        <div id="render-sec7"></div>
+        <div class="nav-wrap"><button class="nav-btn" onclick="showResults()">Finish Quiz (إنْهَاءُ الِاخْتِبَارِ)</button></div>
+    </div>
+
+    <!-- Results -->
+    <div id="sec-results" class="section">
+        <h2 class="section-title">Final Result (النَّتِيجَةُ النِّهَائِيَّةُ)</h2>
+        <div class="score-display" id="score-text">0 / 95</div>
+        <p style="text-align: center; font-size: 1.6rem; color: #2c3e50;">لَقَدْ أَتْمَمْتِ الِاخْتِبَارَ الْمُبَرْمَجَ بِنَجَاح (الْأَقْسَام 1-6).</p>
+        <div style="text-align: center; margin-top: 40px;">
+            <button class="nav-btn" onclick="location.reload()">Try Again (إِعَادَةُ الِاخْتِبَارِ)</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // --- Data Arrays (Using Secure Destructuring Concept) ---
+    // Answers are kept as index references only.
+    
+    // Sec 1: 20 Qs (10 MCQ + 10 TF)
+    const sec1Data = [
+        // MCQ
+        ["1. أَيْنَ تَسْكُنُ أُسْرَةُ طَارِقٍ وَفِي أَيِّ دَوْرٍ؟", ["فِي حَيِّ الْجَامِعَةِ بِالدَّوْرِ الثَّالِثِ", "فِي حَيِّ الْجَامِعَةِ بِالدَّوْرِ الْخَامِسِ", "فِي الْمَدْرَسَةِ بِالدَّوْرِ الْأَوَّلِ"], 1],
+        ["2. كَمْ عَدَدُ غُرَفِ الشَّقَّةِ الَّتِي تَعِيشُ فِيهَا الْأُسْرَةُ؟", ["أَرْبَعُ غُرَفٍ", "سِتُّ غُرَفٍ", "خَمْسُ غُرَفٍ"], 2],
+        ["3. مَاذَا يَفْعَلُ طَارِقٌ بَعْدَ صَلَاةِ الْفَجْرِ فِي الْمَسْجِدِ؟", ["يَنَامُ مَرَّةً أُخْرَى", "يَقْرَأُ الْقُرْآنَ الْكَرِيمَ", "يَغْسِلُ الْأَطْبَاقَ"], 1],
+        ["4. مَتَى يَرْكَبُ طَارِقٌ الْحَافِلَةَ لِلذَّهَابِ إِلَى الْمَدْرَسَةِ؟", ["السَّاعَةَ السَّادِسَةَ", "السَّاعَةَ السَّابِعَةَ", "السَّاعَةَ الثَّامِنَةَ"], 1],
+        ["5. أَيْنَ تَضَعُ الْأُسْرَةُ الْأَرِيكَةَ وَالسَّجَّادَةَ؟", ["فِي الْمَطْبَخِ", "فِي غُرْفَةِ النَّوْمِ", "فِي غُرْفَةِ الْجُلُوسِ"], 2],
+        ["6. مَاذَا طَلَبَتِ الْجَارَةُ مِنْ أُمِّ طَارِقٍ عِنْدَمَا زَارَتْهُمْ؟", ["أَنْ تَنَامَ فِي السَّرِيرِ", "مُشَاهَدَةَ الْأَثَاثِ وَالشَّقَّةِ", "تَنَاوُلَ طَعَامِ الْعَشَاءِ"], 1],
+        ["7. مَنِ الَّذِي يَعُودُ فِي الْمَسَاءِ مُتْعَباً وَيُشَاهِدُ التِّلْفَازَ؟", ["الْأَبُ", "طَارِقٌ", "الْجَدَّةُ"], 0],
+        ["8. مَا هُوَ الْعَمَلُ الَّذِي تَقُومُ بِهِ الْجَدَّةُ بِمُسَاعَدَةِ الْبَنَاتِ؟", ["كَنْسُ الْغُرْفَةِ", "غَسْلُ الْأَطْبَاقِ", "كَيُّ الْمَلَابِسِ"], 1],
+        ["9. مَاذَا تَفْعَلُ لَطِيفَةُ لِسَاعَةٍ كَامِلَةٍ؟", ["تَغْسِلُ الْحَمَّامَ", "تُشَاهِدُ التِّلْفَازَ", "تَكْوِي الْمَلَابِسَ الْمَغْسُولَةَ"], 2],
+        ["10. مَاذَا حَذَّرَتِ الْأُمُّ فَاطِمَةَ قَبْلَ النَّوْمِ؟", ["أَلَّا تَتْرُكَ الْمِرْآةَ بِدُونِ تَنْظِيفٍ", "أَلَّا تَتَأَخَّرَ عَنِ الْمَدْرَسَةِ", "أَلَّا تَنَامَ مُبَكِّراً"], 0],
+        // TF
+        ["11. شَقَّةُ طَارِقٍ تَقَعُ فِي الدَّوْرِ السَّادِسِ وَهِيَ ضَيِّقَةٌ جِدّاً.", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 1], 
+        ["12. طَارِقٌ طَالِبٌ نَشِيطٌ يَسْتَيْقِظُ مُبَكِّراً وَلَا يَنَامُ بَعْدَ الْفَجْرِ.", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 0],
+        ["13. الْأَبُ يَذْهَبُ إِلَى عَمَلِهِ فِي الشَّرِكَةِ فِي وَقْتِ الْمَسَاءِ.", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 1], 
+        ["14. يُوجَدُ فِي الْمَطْبَخِ فُرْنٌ لِلطَّبْخِ وَثَلَّاجَةٌ كَبِيرَةٌ.", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 0],
+        ["15. السِّتَارَةُ الْحَرِيرِيَّةُ مَوْجُودَةٌ عَلَى النَّافِذَةِ فِي غُرْفَةِ الْجُلُوسِ.", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 0],
+        ["16. الْجَارَةُ رَفَضَتْ مُشَاهَدَةَ الشَّقَّةِ لِأَنَّهَا مُتَّسِخَةٌ.", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 1], 
+        ["17. فَاطِمَةُ هِيَ مَنْ تَقُومُ بِكَنْسِ غُرْفَةِ الْجُلُوسِ بِالْمِكْنَسَةِ.", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 0],
+        ["18. السَّرِيرُ الْكَبِيرُ مَوْجُودٌ فِي صَالَةِ الِاسْتِقْبَالِ.", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 1], 
+        ["19. الْأُمُّ هِيَ مَنْ قَالَتْ لِطَارِقٍ: لَا تَتَأَخَّرْ عَنِ الْمَدْرَسَةِ.", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 0],
+        ["20. تَكْوِي فَاطِمَةُ الْمَلَابِسَ بَيْنَمَا تَكْنُسُ لَطِيفَةُ الْأَرْضِيَّةَ.", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 1] 
+    ];
+
+    // Sec 2: 15 MCQ Vocab
+    const sec2Data = [
+        ["1. مَا مَعْنَى عِبَارَة (أُرِيدُ مُشَاهَدَةَ) الشَّقَّةِ؟", ["أُرِيدُ تَنْظِيفَ الشَّقَّةِ", "أُرِيدُ رُؤْيَةَ وَالنَّظَرَ إِلَى الشَّقَّةِ", "أُرِيدُ بَيْعَ الشَّقَّةِ"], 1],
+        ["2. مُرَادِفُ كَلِمَةِ (مُبَكِّراً) هُوَ:", ["فِي آخِرِ اللَّيْلِ", "فِي أَوَّلِ وَقْتِ الصَّبَاحِ", "فِي وَقْتِ الظُّهْرِ"], 1],
+        ["3. الْمَكَانُ الَّذِي نَطْبُخُ فِيهِ الطَّعَامَ وَفِيهِ فُرْنٌ يُسَمَّى:", ["الْمَطْبَخَ", "الْحَمَّامَ", "الصَّالَةَ"], 0],
+        ["4. أَيُّ مِنَ الْكَلِمَاتِ التَّالِيَةِ نَعْتَبِرُهُ مِنْ (الْأَثَاثِ)؟", ["الشَّرِكَةُ", "الْأَرِيكَةُ وَالسَّرِيرُ", "الْمَسْجِدُ"], 1],
+        ["5. كَلِمَةُ (سَجَّادَةٌ) تَعْنِي فِي اللُّغَةِ:", ["كُرْسِيٌّ مُرِيحٌ", "طَاوِلَةُ طَعَامٍ", "بِسَاطٌ يُفْرَشُ عَلَى الْأَرْضِ"], 2],
+        ["6. مَا مَعْنَى تَعْبِير (لَا تَتَأَخَّرْ)؟", ["اِذْهَبْ بَعِيداً", "نَمْ مُبَكِّراً", "تَعَالَ فِي الْمَوْعِدِ الْمُحَدَّدِ وَلَا تُضَيِّعِ الْوَقْتَ"], 2],
+        ["7. كَلِمَةُ (يَكْنُسُ) تَعْنِي:", ["يُزِيلُ الْأَوْسَاخَ بِالْمِكْنَسَةِ", "يَغْسِلُ بِالْمَاءِ", "يَقْرَأُ الْكِتَابَ"], 0],
+        ["8. كَلِمَة (مُتْعَباً) كَمَا وَرَدَتْ فِي النَّصِّ تَعْنِي أَنَّهُ:", ["يُرِيدُ أَنْ يَلْعَبَ", "يَشْعُرُ بِالْإِرْهَاقِ بَعْدَ الْعَمَلِ", "يَشْعُرُ بِالْجُوعِ"], 1],
+        ["9. الدَّوْرُ الْخَامِسُ يَعْنِي:", ["الطَّابِقَ رَقَم ٥ بَعْدَ الرَّابِعِ", "الْغُرْفَةَ رَقَم ٥", "الْبَابَ رَقَم ٥"], 0],
+        ["10. كَلِمَة (سِتَارَةٌ) هِيَ شَيْءٌ:", ["نَنَامُ عَلَيْهِ", "قُمَاشٌ يُغَطِّي النَّافِذَةَ لِحَجْبِ الضَّوْءِ", "نَطْبُخُ فِيهِ"], 1],
+        ["11. الْحَيُّ الَّذِي يَسْكُنُونَ فِيهِ (حَيُّ الْجَامِعَةِ) يَعْنِي:", ["مِنْطَقَةٌ سَكَنِيَّةٌ", "اسْمُ طَعَامٍ", "غُرْفَةٌ كَبِيرَةٌ"], 0],
+        ["12. عِنْدَمَا يَنْتَهِي الطَّالِبُ مِنَ الدَّرْسِ، نَقُولُ لِلْمُعَلِّمِ:", ["أَهْلاً وَسَهْلاً", "إِلَى اللِّقَاءِ / مَعَ السَّلَامَةِ", "صَبَاحَ الْخَيْرِ"], 1],
+        ["13. مُرَادِفُ (دَائِماً) هُوَ:", ["فِي كُلِّ وَقْتٍ / بِاسْتِمْرَارٍ", "مَرَّةً وَاحِدَةً فَقَطْ", "أَبَداً وَمُطْلَقاً"], 0],
+        ["14. أَيُّ الْكَلِمَاتِ التَّالِيَةِ تُرْتَبَطُ بِالْحَمَّامِ؟", ["الْمِرْآةُ وَالْمَاءُ", "الْفُرْنُ وَالثَّلَّاجَةُ", "الْأَرِيكَةُ"], 0],
+        ["15. مَعْنَى (يَتَوَضَّأُ) هُوَ:", ["يَغْسِلُ أَعْضَاءَهُ بِطَرِيقَةٍ مَخْصُوصَةٍ قَبْلَ الصَّلَاةِ", "يَغْسِلُ مَلَابِسَهُ بِالصَّابُونِ", "يَسْتَحِمُّ لِلنَّظَافَةِ الْعَامَّةِ"], 0]
+    ];
+
+    // Sec 3: 15 TF Grammar
+    const sec3Data = [
+        ["1. نَقُولُ لِلْمُؤَنَّثِ عِنْدَ النَّهْيِ: (لَا تَتْرُكِي الْمِرْآةَ).", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 0],
+        ["2. الْفِعْلُ الْمُضَارِعُ لِلْمُذَكَّرِ مِنْ (قَرَأَ) هُوَ (تَقْرَأُ).", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 1], 
+        ["3. نَسْتَخْدِمُ أَدَاةَ الِاسْتِفْهَامِ (أَيْنَ) لِلسُّؤَالِ عَنِ الْمَكَانِ (مِثْل: أَيْنَ تَسْكُنُ؟).", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 0],
+        ["4. الْجُمْلَةُ الصَّحِيحَةُ هِيَ: (أَنَا يَذْهَبُ إِلَى الْمَسْجِدِ كُلَّ يَوْمٍ).", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 1], 
+        ["5. كَلِمَة (شَقَّةٌ) هِيَ اسْمٌ مُؤَنَّثٌ يَنْتَهِي بِتَاءٍ مَرْبُوطَةٍ.", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 0],
+        ["6. جُمْلَةُ (هَلْ تَسْكُنُ فِي بَيْتٍ؟) هِيَ جُمْلَةٌ اسْتِفْهَامِيَّةٌ (سُؤَالٌ).", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 0],
+        ["7. نَقُولُ: (هَذَا سَجَّادَةٌ جَمِيلَةٌ).", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 1], 
+        ["8. نَقُولُ لِلْجَمْعِ: (هُمْ يَسْكُنُونَ فِي شَقَّةٍ بِالدَّوْرِ الْخَامِسِ).", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 0],
+        ["9. ضَمِيرُ الْمُخَاطَبِ لِلْمُذَكَّرِ هُوَ (أَنْتِ).", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 1], 
+        ["10. الْفِعْلُ الْمَاضِي مِنْ (يَجْلِسُ) هُوَ (جَلَسَ).", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 0],
+        ["11. نَسْتَخْدِمُ (مَا رَقْمُ شَقَّتِكَ؟) لِلسُّؤَالِ عَنِ الْعَدَدِ أَوِ الرَّقْمِ.", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 0],
+        ["12. (فِي) و (إِلَى) و (مِنْ) هِيَ أَفْعَالٌ مُضَارِعَةٌ نَسْتَخْدِمُهَا دَائِماً.", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 1], 
+        ["13. جُمْلَةُ (لَا أَنَامُ بَعْدَ الصَّلَاةِ) تَحْتَوِي عَلَى أُسْلُوبِ نَفْيٍ لِلْفِعْلِ.", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 0],
+        ["14. نَقُولُ فِي اللُّغَةِ الْعَرَبِيَّةِ: (الْأُمُّ يَطْبُخُ الطَّعَامَ).", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 1], 
+        ["15. جُمْلَة (شُكْراً جَزِيلاً) تُسْتَخْدَمُ عِنْدَ الشُّكْرِ لَيْسَ لِلِاعْتِذَارِ.", ["صَحِيحٌ (True)", "خَطَأٌ (False)"], 0] 
+    ];
+
+    // Sec 4: 15 MCQ Sing/Plur/Opposites
+    const sec4Data = [
+        ["1. مَا هُوَ جَمْعُ كَلِمَةِ (غُرْفَةٌ)؟", ["غُرَفٌ", "غُرْفَاتٌ", "أَغْرَافٌ"], 0],
+        ["2. مَا هُوَ مُفْرَدُ كَلِمَةِ (أَطْبَاقٌ)؟", ["طِبَاقٌ", "طَبَقٌ", "مُطَابِقٌ"], 1],
+        ["3. مَا هُوَ مُضَادُّ كَلِمَةِ (مُبَكِّراً)؟", ["سَرِيعاً", "مُتَأَخِّراً", "كَثِيراً"], 1],
+        ["4. جَمْعُ كَلِمَةِ (مَسْجِدٌ) هُوَ:", ["مَسَاجِدُ", "مُسَجَّدَاتٌ", "سُجُودٌ"], 0],
+        ["5. مُضَادُّ كَلِمَةِ (بَعْدَ) هُوَ:", ["أَمَامَ", "تَحْتَ", "قَبْلَ"], 2],
+        ["6. جَمْعُ كَلِمَةِ (أُسْرَةٌ) هُوَ:", ["أُسَرٌ", "أَسَارِيرُ", "أُسْرَاتٌ"], 0],
+        ["7. مُفْرَدُ كَلِمَةِ (مَلَابِسُ) هُوَ:", ["مَلْبَسٌ", "لِبَاسٌ", "الْإِجَابَتَانِ 1 و 2 صَحِيحَتَانِ لُغَوِيّاً"], 2],
+        ["8. مَا هُوَ مُضَادُّ كَلِمَةِ (وَاسِعَةٌ) كَمَا فِي \"شَقَّة وَاسِعَة\"؟", ["طَوِيلَةٌ", "ضَيِّقَةٌ", "قَصِيرَةٌ"], 1],
+        ["9. جَمْعُ كَلِمَةِ (دَوْرٌ) بِمَعْنَى طَابِق هُوَ:", ["دَوَرَاتٌ", "أَدْوَارٌ", "دِيرَانٌ"], 1],
+        ["10. مُضَادُّ كَلِمَةِ (يَنَامُ) هُوَ:", ["يَسْتَيْقِظُ", "يَمْشِي", "يَلْعَبُ"], 0],
+        ["11. مَا هُوَ مُفْرَدُ كَلِمَةِ (أَفْرَادٌ)؟", ["فَرِيدٌ", "فَرْدٌ", "مُفْرَدٌ"], 1],
+        ["12. مُضَادُّ كَلِمَةِ (نَظِيفٌ) هُوَ:", ["جَمِيلٌ", "جَدِيدٌ", "مُتَّسِخٌ"], 2],
+        ["13. جَمْعُ كَلِمَةِ (بَابٌ) هُوَ:", ["بَوَّابَاتٌ", "أَبْوَابٌ", "بَابَاتٌ"], 1],
+        ["14. مُضَادُّ كَلِمَةِ (يَدْخُلُ) هُوَ:", ["يَرْجِعُ", "يَخْرُجُ", "يَسْأَلُ"], 1],
+        ["15. جَمْعُ كَلِمَةِ (أَرِيكَةٌ) هُوَ:", ["أَرْوَكٌ", "أَرَائِكُ", "أَرِيكَاتٌ"], 1]
+    ];
+
+    // Sec 5: 15 Fill Blanks (Strictly 15 options, 15 questions)
+    const sec5OptionsRaw = [
+        "يَسْتَيْقِظُ", "يُصَلِّي", "تَغْسِلُ", "مُبَكِّراً", "الْحَافِلَةِ", 
+        "الْمَطْبَخِ", "الْخَامِسِ", "يَقْرَأُ", "الْمَسْجِدِ", "مُشَاهَدَةَ", 
+        "الْجُلُوسِ", "تَكْوِي", "تَكْنُسُ", "يُشَاهِدُ", "مُتَأَخِّراً"
+    ];
+    
+    // Store indices of correct answers securely
+    const sec5Questions = [
+        ["طَارِقٌ ....... فِي السَّاعَةِ الْخَامِسَةِ صَبَاحاً لِلصَّلَاةِ.", 0],
+        ["الْمُسْلِمُ ....... خَمْسَ مَرَّاتٍ فِي الْيَوْمِ لِلَّهِ.", 1],
+        ["الْجَدَّةُ ....... الْأَطْبَاقَ بَعْدَ تَنَاوُلِ طَعَامِ الْعَشَاءِ.", 2],
+        ["الطَّالِبُ النَّاجِحُ يَذْهَبُ إِلَى مَدْرَسَتِهِ ....... كُلَّ صَبَاحٍ.", 3],
+        ["لَا تَذْهَبْ بِالسَّيَّارَةِ، بَلِ ارْكَبِ ....... لِلْعَمَلِ.", 4],
+        ["تُعِدُّ الْأُمُّ طَعَامَ الْغَدَاءِ الشَّهِيَّ بِاسْتِخْدَامِ الْفُرْنِ فِي .......", 5],
+        ["تَقَعُ شَقَّةُ أُسْرَةِ طَارِقٍ التِّي قَرَأْنَا عَنْهَا فِي الدَّوْرِ .......", 6],
+        ["طَارِقٌ ....... الْقُرْآنَ كُلَّ يَوْمٍ بَعْدَ الْفَجْرِ.", 7],
+        ["نَذْهَبُ يَوْمَ الْجُمُعَةِ إِلَى ....... لِأَدَاءِ الصَّلَاةِ.", 8],
+        ["قَالَتِ الْجَارَةُ لِلْأُمِّ: أُرِيدُ ....... الْأَثَاثِ الْجَدِيدِ.", 9],
+        ["نَجْتَمِعُ مَعَ الضُّيُوفِ فِي غُرْفَةِ ....... لِنَتَحَدَّثَ.", 10],
+        ["لَطِيفَةُ ....... الْمَلَابِسَ الْمُجَعَّدَةَ لِتُصْبِحَ مُرَتَّبَةً جِدّاً.", 11],
+        ["فَاطِمَةُ ....... السَّجَّادَةَ بِالْمِكْنَسَةِ لِإِزَالَةِ التُّرَابِ الْعَالِقِ.", 12],
+        ["يَجْلِسُ الْأَبُ الْمُتْعَبُ عَلَى الْأَرِيكَةِ ثُمَّ ....... التِّلْفَازَ مَسَاءً.", 13],
+        ["لَا تَنَمْ ....... حَتَّى لَا تَشْعُرَ بِالْكَسَلِ غَداً.", 14]
+    ];
+
+    // Sec 6: 15 Sentence Ordering (Exactly 10 words each)
+    const sec6DataRaw = [
+        ["يَسْتَيْقِظُ", "طَارِقٌ", "مُبَكِّرًا", "عِنْدَ", "صَلَاةِ", "الْفَجْرِ", "ثُمَّ", "يَذْهَبُ", "إِلَى", "الْمَسْجِدِ"],
+        ["هُوَ", "يُصَلِّي", "الْفَجْرَ", "فِي", "الْمَسْجِدِ", "الْكَبِيرِ", "مَعَ", "أَفْرَادِ", "أُسْرَتِهِ", "دَائِمًا"],
+        ["طَارِقٌ", "لَا", "يَنَامُ", "بَعْدَ", "الصَّلَاةِ", "أَبَدًا", "بَلْ", "يَقْرَأُ", "الْقُرْآنَ", "الْكَرِيمَ"],
+        ["تَقُومُ", "الْجَدَّةُ", "بِغَسْلِ", "الْأَطْبَاقِ", "فِي", "الْمَطْبَخِ", "بَعْدَ", "تَنَاوُلِ", "طَعَامِ", "الْعَشَاءِ"],
+        ["تَكْنُسُ", "فَاطِمَةُ", "غُرْفَةَ", "النَّوْمِ", "وَغُرْفَةَ", "الْجُلُوسِ", "بِاسْتِخْدَامِ", "الْمِكْنَسَةِ", "كُلَّ", "صَبَاحٍ"],
+        ["تَسْكُنُ", "هَذِهِ", "الْعَائِلَةُ", "فِي", "شَقَّةٍ", "وَاسِعَةٍ", "تَقَعُ", "فِي", "الدَّوْرِ", "الْخَامِسِ"],
+        ["يَجْلِسُ", "الْجَدُّ", "عَلَى", "الْأَرِيكَةِ", "الْمُرِيحَةِ", "فِي", "الصَّالَةِ", "لِيَقْرَأَ", "الصَّحِيفَةَ", "الْيَوْمِيَّةَ"],
+        ["تَقُومُ", "لَطِيفَةُ", "بِكَيِّ", "الْمَلَابِسِ", "النَّظِيفَةِ", "دَاخِلَ", "غُرْفَةِ", "الْجُلُوسِ", "كُلَّ", "مَسَاءٍ"],
+        ["يَذْهَبُ", "الْأَوْلَادُ", "إِلَى", "الْمَدْرَسَةِ", "بِوَاسِطَةِ", "الْحَافِلَةِ", "فِي", "تَمَامِ", "السَّاعَةِ", "السَّابِعَةِ"],
+        ["الْأَبُ", "يُشَاهِدُ", "التِّلْفَازَ", "بَعْدَ", "الرُّجُوعِ", "مِنْ", "يَوْمِ", "عَمَلٍ", "شَاقٍّ", "وَمُتْعَبٍ"],
+        ["الْمِرْآةُ", "النَّظِيفَةُ", "مَوْجُودَةٌ", "دَاخِلَ", "الْحَمَّامِ", "بَيْنَمَا", "السَّرِيرُ", "مَوْجُودٌ", "فِي", "الْغُرْفَةِ"],
+        ["تَتَكَوَّنُ", "أُسْرَةُ", "النَّبِيِّ", "مِنْ", "أَبْنَاءٍ", "وَبَنَاتٍ", "مِثْلَ", "فَاطِمَةَ", "وَرُقَيَّةَ", "وَالْقَاسِمِ"],
+        ["قَالَتِ", "الْجَارَةُ", "لِلْأُمِّ", "أُرِيدُ", "مُشَاهَدَةَ", "الْأَثَاثِ", "مِنْ", "فَضْلِكِ", "الْيَوْمَ", "صَبَاحاً"],
+        ["لَا", "تَتَأَخَّرْ", "عَنِ", "الذَّهَابِ", "إِلَى", "الْمَدْرَسَةِ", "لِأَنَّ", "الدَّرْسَ", "يَبْدَأُ", "مُبَكِّرًا"],
+        ["الطَّالِبُ", "النَّشِيطُ", "يُحِبُّ", "أَنْ", "يُسَاعِدَ", "أُمَّهُ", "فِي", "تَرْتِيبِ", "غُرَفِ", "الشَّقَّةِ"]
+    ];
+
+    // Sec 7: 15 Hard Words for Essay
+    const sec7Words = [
+        "يَسْتَيْقِظُ", "أَرِيكَةٌ", "مُبَكِّراً", "مِرْآةٌ", "يَكْوِي", 
+        "يَكْنُسُ", "صَحِيفَةٌ", "يَتَوَضَّأُ", "سَجَّادَةٌ", "حَافِلَةٌ", 
+        "الْأَطْبَاقُ", "مُتَأَخِّراً", "يُشَاهِدُ", "مُشَاهَدَةَ", "أَثَاثٌ"
+    ];
+
+    // Tracking logic
+    let totalScore = 0;
+    const MAX_SCORE = 95; // (20+15+15+15+15+15)
+
+    // Secure Data Stores (Not exposed directly to DOM attributes)
+    const secureAnswers = {
+        sec5: sec5Questions.map(q => sec5OptionsRaw[q]),
+        sec6: sec6DataRaw.map(arr => arr.join(' '))
+    };
+
+    // --- Rendering Functions ---
+
+    function init() {
+        renderMCQTF(sec1Data, 'render-sec1', 0);
+        renderMCQTF(sec2Data, 'render-sec2', 20);
+        renderMCQTF(sec3Data, 'render-sec3', 35);
+        renderMCQTF(sec4Data, 'render-sec4', 50);
+        renderSelect(sec5Questions, sec5OptionsRaw, 'render-sec5');
+        renderOrdering(sec6DataRaw, 'render-sec6');
+        renderEssay(sec7Words, 'render-sec7');
+    }
+
+    function renderMCQTF(dataArray, containerId, offset) {
+        const container = document.getElementById(containerId);
+        let html = '';
+        dataArray.forEach((item, index) => {
+            const [qText, options, correctIdx] = item; // Destructuring applied here
+            const qId = `q-${offset + index}`;
+            
+            html += `<div class="q-block" id="block-${qId}">
+                        <div class="q-text">${qText}</div>
+                        <div class="mcq-grid">`;
+            
+            options.forEach((opt, optIndex) => {
+                // Pass indices to JS, not actual correct values in HTML
+                html += `<button class="mcq-btn" onclick="handleMCQ(this, ${optIndex}, ${correctIdx})">${opt}</button>`;
+            });
+            html += `</div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    window.handleMCQ = function(btn, chosenIdx, correctIdx) {
+        const parent = btn.parentElement;
+        Array.from(parent.children).forEach(b => b.style.pointerEvents = 'none'); // Lock
+        
+        if (chosenIdx === correctIdx) {
+            btn.classList.add('correct');
+            totalScore++;
+        } else {
+            btn.classList.add('wrong');
+            // Show the correct one in green slightly for learning, per A2 best practice
+            parent.children[correctIdx].classList.add('correct');
+        }
+    };
+
+    function renderSelect(qArray, optionsRaw, containerId) {
+        const container = document.getElementById(containerId);
+        
+        // Shuffle options for display visually
+        let shuffledOptions = [...optionsRaw].sort(() => Math.random() - 0.5);
+        let optsHtml = `<option value="" disabled selected>اخْتَارِي (Choose)...</option>`;
+        shuffledOptions.forEach(opt => {
+            optsHtml += `<option value="${opt}">${opt}</option>`;
+        });
+
+        let html = '';
+        qArray.forEach((item, index) => {
+            const [qText, _] = item; // Destructuring
+            html += `
+            <div class="q-block">
+                <div class="q-text">${index + 1}. ${qText}</div>
+                <select onchange="handleSelect(this, ${index})">
+                    ${optsHtml}
+                </select>
+            </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    window.handleSelect = function(selectElem, qIndex) {
+        const chosenVal = selectElem.value;
+        const correctVal = secureAnswers.sec5[qIndex];
+        
+        if (chosenVal === correctVal) {
+            selectElem.classList.remove('flash-wrong');
+            selectElem.classList.add('flash-correct');
+            totalScore++;
+        } else {
+            selectElem.classList.add('flash-wrong');
+            setTimeout(() => {
+                selectElem.classList.remove('flash-wrong');
+                selectElem.value = ""; // Clear for retry
+            }, 1000);
+        }
+    };
+
+    function renderOrdering(dataArray, containerId) {
+        const container = document.getElementById(containerId);
+        let html = '';
+        dataArray.forEach((wordsArr, index) => {
+            // Shuffle
+            const shuffled = [...wordsArr].sort(() => Math.random() - 0.5);
+            const qId = `order-${index}`;
+            
+            html += `
+            <div class="q-block" id="block-${qId}">
+                <div class="q-text">السُّؤَالُ ${index + 1}: رَتِّبِي لِتُصْبِحَ جُمْلَةً مُفِيدَةً.</div>
+                <div class="answer-area" id="ans-${qId}"></div>
+                <div class="pool-area" id="pool-${qId}">`;
+            
+            shuffled.forEach((w, wIdx) => {
+                html += `<button class="word-btn" id="word-${qId}-${wIdx}" onclick="moveWord(this, '${qId}', ${index})">${w}</button>`;
+            });
+
+            html += `</div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    window.moveWord = function(btn, qId, qIndex) {
+        const pool = document.getElementById(`pool-${qId}`);
+        const answerBox = document.getElementById(`ans-${qId}`);
+        
+        if (btn.parentElement === pool) {
+            answerBox.appendChild(btn);
+        } else {
+            pool.appendChild(btn);
+        }
+
+        // Validate if 10 words are in the answer box
+        if (pool.children.length === 0) {
+            const currentOrder = Array.from(answerBox.children).map(b => b.innerText).join(' ');
+            const correctOrder = secureAnswers.sec6[qIndex];
+            
+            if (currentOrder === correctOrder) {
+                answerBox.classList.remove('flash-wrong');
+                answerBox.classList.add('flash-correct');
+                Array.from(answerBox.children).forEach(b => b.style.pointerEvents = 'none');
+                totalScore++;
+            } else {
+                answerBox.classList.add('flash-wrong');
+                setTimeout(() => {
+                    answerBox.classList.remove('flash-wrong');
+                    // Return to pool
+                    while(answerBox.firstChild) {
+                        pool.appendChild(answerBox.firstChild);
+                    }
+                }, 1000); // 1 second warning then retry
+            }
+        }
+    };
+
+    function renderEssay(words, containerId) {
+        const container = document.getElementById(containerId);
+        let html = '';
+        words.forEach((w, index) => {
+            html += `
+            <div class="q-block">
+                <div class="q-text">${index + 1}. كَلِمَة: ( ${w} )</div>
+                <textarea placeholder="اُكْتُبِي جُمْلَةً طَوِيلَةً وَمُفِيدَةً هُنَا (Write a long and meaningful sentence here)..."></textarea>
+            </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    window.goToSection = function(num) {
+        document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+        const target = document.getElementById(`sec-${num}`);
+        if(target) {
+            target.classList.add('active');
+            window.scrollTo(0,0);
+        }
+    };
+
+    window.showResults = function() {
+        document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+        document.getElementById('sec-results').classList.add('active');
+        document.getElementById('score-text').innerText = `${totalScore} / ${MAX_SCORE}`;
+        window.scrollTo(0,0);
+    };
+
+    // Run Initialization
+    init();
+
+</script>
+</body>
+</html>
