@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Quiz - Section 1</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.9;
+            padding: 20px;
+            font-size: 1.1em;
+        }
+        .quiz-container {
+            max-width: 950px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+        .instructions {
+            text-align: center;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 15px;
+        }
+        /* مفتاح الألوان */
+        .color-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            background: #fdfdfd;
+            padding: 10px;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        /* تنسيق المفردات المظللة */
+        .vocab-verb { color: #e74c3c; font-weight: bold; background-color: #fceceb; padding: 0 4px; border-radius: 3px; } /* أحمر للأفعال */
+        .vocab-noun { color: #2980b9; font-weight: bold; background-color: #eaf4fb; padding: 0 4px; border-radius: 3px; } /* أزرق للأسماء */
+        .vocab-phrase { color: #27ae60; font-weight: bold; background-color: #eafaf1; padding: 0 4px; border-radius: 3px; } /* أخضر للعبارات */
+
+        .reading-passage {
+            background-color: #fcfcfc;
+            padding: 20px;
+            border-right: 5px solid #3498db;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 1.25em;
+            line-height: 2.2;
+            border: 1px solid #eee;
+        }
+        details.vocab-table {
+            background-color: #fff3e0;
+            padding: 15px;
+            border: 1px solid #ffcc80;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            cursor: pointer;
+        }
+        details summary {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #d35400;
+            outline: none;
+        }
+        .table-wrapper {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+        }
+        th, td {
+            border: 1px solid #ffb74d;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.95em;
+        }
+        th {
+            background-color: #ff9800;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        .question-block {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 12px;
+            font-size: 1.15em;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            transition: all 0.3s;
+        }
+        label:hover {
+            background-color: #f1f1f1;
+        }
+        input[type="radio"] {
+            margin-left: 10px;
+            transform: scale(1.2);
+        }
+        .correct-answer { background-color: #2ecc71 !important; color: white !important; border-color: #27ae60 !important; }
+        .wrong-answer { background-color: #f1c40f !important; color: black !important; border-color: #f39c12 !important; }
+        .btn {
+            background-color: #3498db; color: #fff; border: none; padding: 15px 30px;
+            font-size: 1.2em; border-radius: 5px; cursor: pointer; display: block;
+            width: 100%; text-align: center; transition: background 0.3s; margin-top: 20px; font-weight: bold;
+        }
+        .btn:hover { background-color: #2980b9; }
+        #result-section {
+            display: none; margin-top: 30px; padding: 30px; font-size: 1.5em; font-weight: bold;
+            text-align: center; background-color: #dff0d8; color: #3c763d; border: 2px solid #d6e9c6; border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h2>الْقِسْمُ الْأَوَّلُ: الْقِرَاءَةُ وَالِاسْتِيعَابُ <br> (Reading & Comprehension)</h2>
+    
+    <div class="instructions">
+        اقْرَئِي الْفَقْرَةَ بِتَرْكِيزٍ ثُمَّ أَجِيبِي عَنِ الْأَسْئِلَةِ (اخْتَارِي الْإِجَابَةَ الصَّحِيحَةَ).
+    </div>
+
+    <!-- مفتاح الألوان -->
+    <div class="color-legend">
+        <div><span class="vocab-verb">الْأَلْوَانُ الْحَمْرَاءُ:</span> أَفْعَالٌ (Verbs)</div>
+        <div><span class="vocab-noun">الْأَلْوَانُ الزَّرْقَاءُ:</span> أَسْمَاءٌ وَصِفَاتٌ (Nouns/Adj)</div>
+        <div><span class="vocab-phrase">الْأَلْوَانُ الْخَضْرَاءُ:</span> عِبَارَاتٌ وَتَرَاكِيبُ (Phrases)</div>
+    </div>
+
+    <!-- نص القراءة مع تظليل الكلمات بثلاثة ألوان حسب نوعها -->
+    <div class="reading-passage">
+        <p>فِي مَدِينَةٍ كَبِيرَةٍ وَجَمِيلَةٍ، تَسْكُنُ أُسْرَةُ طَارِقٍ فِي <span class="vocab-noun">حَيِّ الْجَامِعَةِ</span>. الْأُسْرَةُ <span class="vocab-verb">تَعِيشُ</span> فِي <span class="vocab-noun">شَقَّةٍ</span> <span class="vocab-noun">وَاسِعَةٍ</span> <span class="vocab-verb">تَقَعُ</span> فِي <span class="vocab-noun">الدَّوْرِ الْخَامِسِ</span> مِنْ <span class="vocab-noun">عِمَارَةٍ حَدِيثَةٍ</span>. هَذِهِ الشَّقَّةُ <span class="vocab-noun">مُرِيحَةٌ</span> جِدّاً وَفِيهَا خَمْسُ غُرَفٍ: غُرْفَةُ نَوْمٍ، وَ<span class="vocab-noun">غُرْفَةُ جُلُوسٍ</span>، وَمَطْبَخٌ <span class="vocab-noun">مُجَهَّزٌ</span>، وَحَمَّامٌ نَظِيفٌ، وَ<span class="vocab-phrase">صَالَةٌ كَبِيرَةٌ لِلِاسْتِقْبَالِ</span>.</p>
+        
+        <p><span class="vocab-verb">يَسْتَيْقِظُ</span> طَارِقٌ <span class="vocab-noun">مُبَكِّراً</span> كُلَّ يَوْمٍ عِنْدَ <span class="vocab-noun">سَمَاعِ</span> أَذَانِ صَلَاةِ الْفَجْرِ. هُوَ <span class="vocab-verb">يَتَوَضَّأُ</span> فِي الْحَمَّامِ ثُمَّ <span class="vocab-verb">يَذْهَبُ</span> إِلَى الْمَسْجِدِ <span class="vocab-verb">لِيُصَلِّيَ</span>. طَارِقٌ طَالِبٌ <span class="vocab-noun">نَشِيطٌ</span>؛ <span class="vocab-phrase">لِذَلِكَ</span> هُوَ لَا <span class="vocab-verb">يَنَامُ</span> بَعْدَ الصَّلَاةِ <span class="vocab-noun">أَبَداً</span>، <span class="vocab-phrase">بَلْ</span> <span class="vocab-verb">يَجْلِسُ</span> فِي غُرْفَةِ الْجُلُوسِ وَ <span class="vocab-phrase">يَقْرَأُ الْقُرْآنَ</span> الْكَرِيمَ. <span class="vocab-phrase">تَقُولُ لَهُ الْأُمُّ دَائِماً قَبْلَ خُرُوجِهِ</span>: "<span class="vocab-phrase">يَا بُنَيَّ</span>، <span class="vocab-phrase">لَا تَتَأَخَّرْ</span> عَنِ الْمَدْرَسَةِ!"، <span class="vocab-verb">فَيُجِيبُ</span> طَارِقٌ <span class="vocab-noun">مُبْتَسِماً</span>: "<span class="vocab-phrase">لَا تَقْلَقِي</span> يَا أُمِّي الْعَزِيزَةَ، أَنَا <span class="vocab-verb">أَرْكَبُ</span> <span class="vocab-noun">الْحَافِلَةَ</span> فِي السَّاعَةِ السَّابِعَةِ <span class="vocab-noun">تَمَاماً</span>، <span class="vocab-phrase">وَأَصِلُ فِي الْمَوْعِدِ</span>".</p>
+        
+        <p>فِي الصَّبَاحِ، يَذْهَبُ الْأَبُ إِلَى عَمَلِهِ فِي الشَّرِكَةِ، وَتَبْدَأُ الْأُمُّ فِي <span class="vocab-noun">تَرْتِيبِ الْبَيْتِ</span> وَ<span class="vocab-noun">تَنْظِيفِهِ</span>. الشَّقَّةُ فِيهَا <span class="vocab-noun">أَثَاثٌ</span> كَثِيرٌ وَ<span class="vocab-noun">مُرَتَّبٌ</span>؛ فَفِي غُرْفَةِ الْجُلُوسِ تُوجَدُ <span class="vocab-noun">أَرِيكَةٌ</span> <span class="vocab-noun">حَمْرَاءُ</span> وَ<span class="vocab-noun">مُرِيحَةٌ</span>، وَ <span class="vocab-noun">سَجَّادَةٌ</span> جَمِيلَةٌ عَلَى الْأَرْضِ، وَعَلَى النَّافِذَةِ <span class="vocab-noun">سِتَارَةٌ حَرِيرِيَّةٌ</span>. وَفِي غُرْفَةِ النَّوْمِ يُوجَدُ سَرِيرٌ كَبِيرٌ <span class="vocab-phrase">لِلرَّاحَةِ</span>. أَمَّا فِي الْمَطْبَخِ فَيُوجَدُ فُرْنٌ <span class="vocab-phrase">لِلطَّبْخِ</span> وَثَلَّاجَةٌ كَبِيرَةٌ <span class="vocab-phrase">لِحِفْظِ الطَّعَامِ</span>. <span class="vocab-phrase">ذَاتَ يَوْمٍ</span>، <span class="vocab-phrase">زَارَتْهُمْ جَارَتُهُمُ</span> الْجَدِيدَةُ وَقَالَتْ: "<span class="vocab-phrase">أُرِيدُ مُشَاهَدَةَ</span> الْأَثَاثِ وَالشَّقَّةِ مِنْ فَضْلِكِ"، فَقَالَتْ لَهَا الْأُمُّ: "<span class="vocab-phrase">تَفَضَّلِي بِكُلِّ سُرُورٍ</span>، هَذِهِ شَقَّةٌ جَمِيلَةٌ <span class="vocab-phrase">كَمَا تَرَيْنَ</span>".</p>
+        
+        <p>فِي الْمَسَاءِ بَعْدَ <span class="vocab-noun">الْغُرُوبِ</span>، <span class="vocab-verb">يَعُودُ</span> الْأَبُ مِنْ عَمَلِهِ <span class="vocab-phrase">مُتْعَباً جِدّاً</span>، فَيَجْلِسُ عَلَى الْأَرِيكَةِ <span class="vocab-verb">لِيَسْتَرِيحَ</span> وَ<span class="vocab-verb">يُشَاهِدَ</span> التِّلْفَازَ <span class="vocab-phrase">بَعْضَ الْوَقْتِ</span>. أَمَّا الْجَدَّةُ الْحَنُونَةُ، فَهِيَ <span class="vocab-verb">تَدْخُلُ</span> الْمَطْبَخَ وَ<span class="vocab-verb">تَغْسِلُ</span> الْأَطْبَاقَ بَعْدَ تَنَاوُلِ طَعَامِ الْعَشَاءِ <span class="vocab-phrase">بِمُسَاعَدَةِ الْبَنَاتِ</span>. تَقُومُ أُخْتُهُ فَاطِمَةُ <span class="vocab-phrase">بِعَمَلِهَا الْيَوْمِيِّ</span>، فَهِيَ <span class="vocab-verb">تَكْنُسُ</span> غُرْفَةِ الْجُلُوسِ <span class="vocab-noun">بِالْمِكْنَسَةِ</span> <span class="vocab-phrase">لِتَبْقَى نَظِيفَةً</span>. بَيْنَمَا تَقُومُ أُخْتُهُ <span class="vocab-noun">الْأُخْرَى</span> لَطِيفَةُ <span class="vocab-phrase">بِعَمَلٍ آخَرَ مُهِمٍّ</span>؛ حَيْثُ تَقِفُ <span class="vocab-phrase">لِسَاعَةٍ كَامِلَةٍ</span> وَهِيَ <span class="vocab-phrase">تَكْوِي الْمَلَابِسَ الْمَغْسُولَةَ</span> وَ<span class="vocab-verb">تُرَتِّبُهَا</span> فِي <span class="vocab-noun">الْخِزَانَةِ</span>. قَبْلَ الذَّهَابِ إِلَى النَّوْمِ، تَدْخُلُ الْأُمُّ إِلَى الْحَمَّامِ <span class="vocab-verb">لِتَتَفَقَّدَهُ</span>، ثُمَّ <span class="vocab-verb">تُنَادِي</span> بِنْتَهَا <span class="vocab-phrase">قَائِلَةً بِلَهْجَةٍ حَازِمَةٍ</span>: "يَا فَاطِمَةُ، <span class="vocab-phrase">لَا تَتْرُكِي</span> <span class="vocab-noun">الْمِرْآةَ</span> <span class="vocab-phrase">بِدُونِ تَنْظِيفٍ</span>!". هَكَذَا تَعِيشُ هَذِهِ الْأُسْرَةُ الْمُسْلِمَةُ السَّعِيدَةُ <span class="vocab-phrase">فِي نِظَامٍ وَتَعَاوُنٍ</span> وَ<span class="vocab-phrase">عَمَلٍ مُسْتَمِرٍّ</span> كُلَّ يَوْمٍ.</p>
+    </div>
+
+    <!-- جدول المفردات المنسدل (شامل لجميع الكلمات المظللة) -->
+    <details class="vocab-table">
+        <summary>Vocabulary Table (Dictionary) - Click to View (جَدْوَلُ الْمُفْرَدَاتِ)</summary>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>الْكَلِمَة / الْعِبَارَة</th>
+                        <th>النَّوْع</th>
+                        <th>الْمَعْنَى بِالْعَرَبِيَّة / مِثَالٌ</th>
+                        <th>Translation (English)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>حَيِّ الْجَامِعَةِ</td><td>اسْمٌ</td><td>مِنْطَقَةٌ سَكَنِيَّةٌ - (أَسْكُنُ فِي حَيِّ الْجَامِعَةِ)</td><td>University District</td></tr>
+                    <tr><td>تَعِيشُ</td><td>فِعْلٌ</td><td>تَسْكُنُ / تَحْيَا - (تَعِيشُ الْأُسْرَةُ هُنَا)</td><td>Live</td></tr>
+                    <tr><td>شَقَّةٍ</td><td>اسْمٌ</td><td>مَسْكَنٌ دَاخِلَ بِنَايَةٍ - (نَمْلِكُ شَقَّةً)</td><td>Apartment</td></tr>
+                    <tr><td>وَاسِعَةٍ</td><td>صِفَةٌ</td><td>كَبِيرَةٌ - (هَذِهِ شَقَّةٌ وَاسِعَةٌ)</td><td>Wide / Spacious</td></tr>
+                    <tr><td>تَقَعُ</td><td>فِعْلٌ</td><td>تُوجَدُ - (تَقَعُ مَدِينَتِي فِي الشَّمَالِ)</td><td>Located</td></tr>
+                    <tr><td>عِمَارَةٍ حَدِيثَةٍ</td><td>اسْمٌ</td><td>مَبْنَى سَكَنِيٌّ جَدِيدٌ - (بَنَى عِمَارَةً حَدِيثَةً)</td><td>Modern residential building</td></tr>
+                    <tr><td>مُرِيحَةٌ</td><td>صِفَةٌ</td><td>تُعْطِي الرَّاحَةَ - (هَذِهِ أَرِيكَةٌ مُرِيحَةٌ)</td><td>Comfortable</td></tr>
+                    <tr><td>غُرْفَةُ جُلُوسٍ</td><td>اسْمٌ</td><td>حُجْرَةٌ لِلْجُلُوسِ - (نَجْتَمِعُ فِي غُرْفَةِ الْجُلُوسِ)</td><td>Living room</td></tr>
+                    <tr><td>مُجَهَّزٌ</td><td>صِفَةٌ</td><td>فِيهِ كُلُّ الْأَدَوَاتِ - (عِنْدَنَا مَطْبَخٌ مُجَهَّزٌ)</td><td>Equipped</td></tr>
+                    <tr><td>صَالَةٌ كَبِيرَةٌ لِلِاسْتِقْبَالِ</td><td>عِبَارَةٌ</td><td>مَكَانٌ وَاسِعٌ لِلضُّيُوفِ - (نَجْلِسُ بِصَالَةِ الِاسْتِقْبَالِ)</td><td>For reception</td></tr>
+                    <tr><td>سَمَاعِ</td><td>اسْمٌ</td><td>إِدْرَاكُ الصَّوْتِ - (عِنْدَ سَمَاعِ الْأَذَانِ أُصَلِّي)</td><td>Hearing</td></tr>
+                    <tr><td>يَتَوَضَّأُ</td><td>فِعْلٌ</td><td>يَغْسِلُ أَعْضَاءَهُ لِلصَّلَاةِ - (يَتَوَضَّأُ الْمُسْلِمُ)</td><td>Perform ablution</td></tr>
+                    <tr><td>نَشِيطٌ</td><td>صِفَةٌ</td><td>كَثِيرُ الْحَرَكَةِ وَالْعَمَلِ - (هَذَا طَالِبٌ نَشِيطٌ)</td><td>Active student</td></tr>
+                    <tr><td>لِذَلِكَ</td><td>عِبَارَةٌ</td><td>بِسَبَبِ هَذَا - (هُوَ مَرِيضٌ لِذَلِكَ غَابَ)</td><td>Therefore</td></tr>
+                    <tr><td>أَبَداً</td><td>اسْمٌ</td><td>فِي أَيِّ وَقْتٍ - (لَا أَكْذِبُ أَبَداً)</td><td>Never</td></tr>
+                    <tr><td>بَلْ</td><td>عِبَارَةٌ</td><td>حَرْفُ اسْتِدْرَاكٍ - (لَا يَلْعَبُ بَلْ يَدْرُسُ)</td><td>But / Rather</td></tr>
+                    <tr><td>يَقْرَأُ الْقُرْآنَ</td><td>عِبَارَةٌ</td><td>يَتْلُو كِتَابَ اللَّهِ - (يَقْرَأُ الْقُرْآنَ بَعْدَ الْفَجْرِ)</td><td>He reads the Quran</td></tr>
+                    <tr><td>تَقُولُ لَهُ الْأُمُّ دَائِماً قَبْلَ خُرُوجِهِ</td><td>عِبَارَةٌ</td><td>تَنْصَحُهُ كُلَّ يَوْمٍ - (تَقُولُ لَهُ الْأُمُّ دَائِماً)</td><td>His mother always tells him before he goes out</td></tr>
+                    <tr><td>يَا بُنَيَّ</td><td>عِبَارَةٌ</td><td>يَا ابْنِي الصَّغِيرَ - (يَا بُنَيَّ، اجْتَهِدْ)</td><td>My son</td></tr>
+                    <tr><td>لَا تَتَأَخَّرْ</td><td>عِبَارَةٌ</td><td>لَا تَأْتِ بَعْدَ الْمَوْعِدِ - (لَا تَتَأَخَّرْ عَنِ الدَّرْسِ)</td><td>Don't be late for</td></tr>
+                    <tr><td>مُبْتَسِماً</td><td>صِفَةٌ</td><td>ضَاحِكاً بِدُونِ صَوْتٍ - (رَدَّ الطَّالِبُ مُبْتَسِماً)</td><td>Smiling</td></tr>
+                    <tr><td>فَيُجِيبُ</td><td>فِعْلٌ</td><td>يَرُدُّ عَلَى السُّؤَالِ - (فَيُجِيبُ الْمُعَلِّمَ بِأَدَبٍ)</td><td>He answers</td></tr>
+                    <tr><td>لَا تَقْلَقِي</td><td>عِبَارَةٌ</td><td>لَا تَخَافِي - (لَا تَقْلَقِي يَا أُمِّي)</td><td>Don't worry</td></tr>
+                    <tr><td>الْحَافِلَةَ</td><td>اسْمٌ</td><td>سَيَّارَةٌ كَبِيرَةٌ لِلرُّكَّابِ - (أَرْكَبُ الْحَافِلَةَ)</td><td>Bus</td></tr>
+                    <tr><td>تَمَاماً</td><td>اسْمٌ</td><td>بِالضَّبْطِ - (السَّاعَةُ السَّابِعَةُ تَمَاماً)</td><td>Exactly</td></tr>
+                    <tr><td>وَأَصِلُ فِي الْمَوْعِدِ</td><td>عِبَارَةٌ</td><td>أَبْلُغُ الْمَكَانَ فِي الْوَقْتِ - (أَخْرُجُ وَأَصِلُ فِي الْمَوْعِدِ)</td><td>I arrive on time</td></tr>
+                    <tr><td>تَرْتِيبِ الْبَيْتِ</td><td>اسْمٌ</td><td>تَنْظِيمُ الْمَنْزِلِ - (تُسَاعِدُ فِي تَرْتِيبِ الْبَيْتِ)</td><td>House organization</td></tr>
+                    <tr><td>وَتَنْظِيفِهِ</td><td>اسْمٌ</td><td>إِزَالَةُ الْأَوْسَاخِ - (أَهْتَمُّ بِتَنْظِيفِهِ)</td><td>Cleaning it</td></tr>
+                    <tr><td>أَثَاثٌ</td><td>اسْمٌ</td><td>مُفْرَدَاتُ الْمَنْزِلِ - (عِنْدَنَا أَثَاثٌ جَدِيدٌ)</td><td>Furniture</td></tr>
+                    <tr><td>مُرَتَّبٌ</td><td>صِفَةٌ</td><td>مُنَظَّمٌ - (غُرْفَتِي مُرَتَّبَةٌ دَائِماً)</td><td>Neat furniture</td></tr>
+                    <tr><td>حَمْرَاءُ</td><td>صِفَةٌ</td><td>لَوْنُهَا أَحْمَرُ - (سَيَّارَةٌ حَمْرَاءُ)</td><td>Red</td></tr>
+                    <tr><td>سِتَارَةٌ حَرِيرِيَّةٌ</td><td>اسْمٌ</td><td>قُمَاشٌ يُغَطِّي النَّافِذَةَ مِنَ الْحَرِيرِ - (اشْتَرَتْ سِتَارَةً)</td><td>Silk curtain</td></tr>
+                    <tr><td>لِلرَّاحَةِ</td><td>عِبَارَةٌ</td><td>لِلِاسْتِرْخَاءِ - (السَّرِيرُ لِلرَّاحَةِ)</td><td>For comfort</td></tr>
+                    <tr><td>لِلطَّبْخِ</td><td>عِبَارَةٌ</td><td>لِإِعْدَادِ الطَّعَامِ - (الْفُرْنُ لِلطَّبْخِ)</td><td>For cooking</td></tr>
+                    <tr><td>لِحِفْظِ الطَّعَامِ</td><td>عِبَارَةٌ</td><td>لِحِمَايَةِ الْأَكْلِ - (الثَّلَّاجَةُ لِحِفْظِ الطَّعَامِ)</td><td>For food preservation</td></tr>
+                    <tr><td>ذَاتَ يَوْمٍ</td><td>عِبَارَةٌ</td><td>فِي يَوْمٍ مِنَ الْأَيَّامِ - (ذَاتَ يَوْمٍ سَافَرْنَا)</td><td>One day</td></tr>
+                    <tr><td>زَارَتْهُمْ جَارَتُهُمُ</td><td>عِبَارَةٌ</td><td>جَاءَتْ جَارَتُهُمْ لِرُؤْيَتِهِمْ - (زَارَتْهُمْ جَارَتُهُمُ مَسَاءً)</td><td>Their neighbor visited them</td></tr>
+                    <tr><td>أُرِيدُ مُشَاهَدَةَ</td><td>عِبَارَةٌ</td><td>أَرْغَبُ فِي رُؤْيَةِ - (أُرِيدُ مُشَاهَدَةَ الشَّقَّةِ)</td><td>I want to see / watch</td></tr>
+                    <tr><td>تَفَضَّلِي بِكُلِّ سُرُورٍ</td><td>عِبَارَةٌ</td><td>كَلِمَةُ تَرْحِيبٍ - (قَالَتْ: تَفَضَّلِي بِكُلِّ سُرُورٍ)</td><td>With pleasure</td></tr>
+                    <tr><td>كَمَا تَرَيْنَ</td><td>عِبَارَةٌ</td><td>مِثْلَمَا تُشَاهِدِينَ - (الشَّقَّةُ نَظِيفَةٌ كَمَا تَرَيْنَ)</td><td>As you can see</td></tr>
+                    <tr><td>الْغُرُوبِ</td><td>اسْمٌ</td><td>وَقْتُ غِيَابِ الشَّمْسِ - (يَعُودُ بَعْدَ الْغُرُوبِ)</td><td>Sunset</td></tr>
+                    <tr><td>مُتْعَباً جِدّاً</td><td>عِبَارَةٌ</td><td>مُرْهَقاً بِشِدَّةٍ - (رَجَعَ مُتْعَباً جِدّاً)</td><td>Very tired</td></tr>
+                    <tr><td>بَعْضَ الْوَقْتِ</td><td>عِبَارَةٌ</td><td>قَلِيلاً مِنَ الزَّمَنِ - (سَأَنَامُ بَعْضَ الْوَقْتِ)</td><td>Some time</td></tr>
+                    <tr><td>بِمُسَاعَدَةِ الْبَنَاتِ</td><td>عِبَارَةٌ</td><td>بِمُعَاوَنَةِ الْفَتَيَاتِ - (طَبَخَتْ بِمُسَاعَدَةِ الْبَنَاتِ)</td><td>With the help of the girls</td></tr>
+                    <tr><td>بِعَمَلِهَا الْيَوْمِيِّ</td><td>عِبَارَةٌ</td><td>بِمَهَامِّهَا كُلَّ يَوْمٍ - (تَقُومُ بِعَمَلِهَا الْيَوْمِيِّ)</td><td>Her daily work</td></tr>
+                    <tr><td>تَكْنُسُ</td><td>فِعْلٌ</td><td>تُنَظِّفُ الْأَرْضَ - (الْبِنْتُ تَكْنُسُ الْغُرْفَةَ)</td><td>Sweep</td></tr>
+                    <tr><td>بِالْمِكْنَسَةِ</td><td>اسْمٌ</td><td>بِأَدَاةِ التَّنْظِيفِ - (أُنَظِّفُ بِالْمِكْنَسَةِ)</td><td>With the broom</td></tr>
+                    <tr><td>لِتَبْقَى نَظِيفَةً</td><td>عِبَارَةٌ</td><td>لِتَسْتَمِرَّ بِدُونِ أَوْسَاخٍ - (أَغْسِلُهَا لِتَبْقَى نَظِيفَةً)</td><td>To keep clean</td></tr>
+                    <tr><td>الْأُخْرَى</td><td>صِفَةٌ</td><td>الثَّانِيَةُ - (أَيْنَ يَدُكَ الْأُخْرَى؟)</td><td>The other</td></tr>
+                    <tr><td>بِعَمَلٍ آخَرَ مُهِمٍّ</td><td>عِبَارَةٌ</td><td>بِمُهِمَّةٍ ثَانِيَةٍ ضَرُورِيَّةٍ - (أَنَا مَشْغُولٌ بِعَمَلٍ آخَرَ مُهِمٍّ)</td><td>Doing another important task</td></tr>
+                    <tr><td>لِسَاعَةٍ كَامِلَةٍ</td><td>عِبَارَةٌ</td><td>لِمُدَّةِ ٦٠ دَقِيقَةً - (انْتَظَرْتُكَ لِسَاعَةٍ كَامِلَةٍ)</td><td>Full hour</td></tr>
+                    <tr><td>تَكْوِي الْمَلَابِسَ الْمَغْسُولَةَ</td><td>عِبَارَةٌ</td><td>تَفْرِدُ الثِّيَابَ النَّظِيفَةَ - (أُخْتِي تَكْوِي الْمَلَابِسَ الْمَغْسُولَةَ)</td><td>Ironing washed clothes</td></tr>
+                    <tr><td>وَتُرَتِّبُهَا</td><td>فِعْلٌ</td><td>تُنَظِّمُهَا فِي مَكَانِهَا - (تَغْسِلُهَا وَتُرَتِّبُهَا)</td><td>Arrange them</td></tr>
+                    <tr><td>الْخِزَانَةِ</td><td>اسْمٌ</td><td>الدُّولَابُ - (أَضَعُ مَلَابِسِي فِي الْخِزَانَةِ)</td><td>Wardrobe</td></tr>
+                    <tr><td>لِتَتَفَقَّدَهُ</td><td>فِعْلٌ</td><td>لِتَفْحَصَهُ وَتَتَأَكَّدَ مِنْهُ - (دَخَلَ لِيَتَفَقَّدَهُ)</td><td>Checks</td></tr>
+                    <tr><td>تُنَادِي</td><td>فِعْلٌ</td><td>تَرْفَعُ صَوْتَهَا لِطَلَبِ شَخْصٍ - (الْأُمُّ تُنَادِي أَبْنَاءَهَا)</td><td>Calling</td></tr>
+                    <tr><td>قَائِلَةً بِلَهْجَةٍ حَازِمَةٍ</td><td>عِبَارَةٌ</td><td>تَتَكَلَّمُ بِطَرِيقَةٍ صَارِمَةٍ - (تَحَدَّثَتْ قَائِلَةً بِلَهْجَةٍ حَازِمَةٍ)</td><td>Saying in a firm tone</td></tr>
+                    <tr><td>لَا تَتْرُكِي</td><td>عِبَارَةٌ</td><td>لَا تُبْقِي الشَّيْءَ كَمَا هُوَ - (لَا تَتْرُكِي الْبَابَ مَفْتُوحاً)</td><td>Do not leave (f.)</td></tr>
+                    <tr><td>بِدُونِ تَنْظِيفٍ</td><td>عِبَارَةٌ</td><td>وَهِيَ مُتَّسِخَةٌ - (لَا تَتْرُكْ غُرْفَتَكَ بِدُونِ تَنْظِيفٍ)</td><td>Uncleaned</td></tr>
+                    <tr><td>فِي نِظَامٍ وَتَعَاوُنٍ</td><td>عِبَارَةٌ</td><td>فِي تَرْتِيبٍ وَمُسَاعَدَةٍ - (نَعْمَلُ مَعاً فِي نِظَامٍ وَتَعَاوُنٍ)</td><td>In order and cooperation</td></tr>
+                    <tr><td>وَعَمَلٍ مُسْتَمِرٍّ</td><td>عِبَارَةٌ</td><td>جُهْدٍ دَائِمٍ لَا يَتَوَقَّفُ - (النَّجَاحُ يَحْتَاجُ إِلَى عَمَلٍ مُسْتَمِرٍّ)</td><td>Ongoing work</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </details>
+
+    <!-- حاوية الأسئلة الديناميكية -->
+    <div id="quiz-container-dynamic"></div>
+
+    <button type="button" class="btn" id="submit-btn" onclick="showResult()">Submit Quiz</button>
+    
+    <!-- واجهة النتيجة النهائية -->
+    <div id="result-section">
+        <!-- سيتم حقن النتيجة هنا برمجياً -->
+    </div>
+</div>
+
+<script>
+    // الأسئلة الديناميكية باستخدام المصفوفات
+    const quizData = [
+        { q: "1. أَيْنَ تَسْكُنُ أُسْرَةُ طَارِقٍ وَفِي أَيِّ دَوْرٍ؟", opts: ["فِي حَيِّ الْجَامِعَةِ بِالدَّوْرِ الثَّالِثِ", "فِي حَيِّ الْجَامِعَةِ بِالدَّوْرِ الْخَامِسِ", "فِي الْمَدْرَسَةِ بِالدَّوْرِ الْأَوَّلِ"], correct: 1 },
+        { q: "2. كَمْ عَدَدُ غُرَفِ الشَّقَّةِ الَّتِي تَعِيشُ فِيهَا الْأُسْرَةُ؟", opts: ["أَرْبَعُ غُرَفٍ", "سِتُّ غُرَفٍ", "خَمْسُ غُرَفٍ"], correct: 2 },
+        { q: "3. مَاذَا يَفْعَلُ طَارِقٌ بَعْدَ صَلَاةِ الْفَجْرِ فِي الْمَسْجِدِ؟", opts: ["يَنَامُ مَرَّةً أُخْرَى", "يَقْرَأُ الْقُرْآنَ الْكَرِيمَ", "يَغْسِلُ الْأَطْبَاقَ"], correct: 1 },
+        { q: "4. مَتَى يَرْكَبُ طَارِقٌ الْحَافِلَةَ لِلذَّهَابِ إِلَى الْمَدْرَسَةِ؟", opts: ["السَّاعَةَ السَّادِسَةَ", "السَّاعَةَ السَّابِعَةَ", "السَّاعَةَ الثَّامِنَةَ"], correct: 1 },
+        { q: "5. أَيْنَ تَضَعُ الْأُسْرَةُ الْأَرِيكَةَ وَالسَّجَّادَةَ؟", opts: ["فِي الْمَطْبَخِ", "فِي غُرْفَةِ النَّوْمِ", "فِي غُرْفَةِ الْجُلُوسِ"], correct: 2 },
+        { q: "6. مَاذَا طَلَبَتِ الْجَارَةُ مِنْ أُمِّ طَارِقٍ عِنْدَمَا زَارَتْهُمْ؟", opts: ["أَنْ تَنَامَ فِي السَّرِيرِ", "مُشَاهَدَةَ الْأَثَاثِ وَالشَّقَّةِ", "تَنَاوُلَ طَعَامِ الْعَشَاءِ"], correct: 1 },
+        { q: "7. مَنِ الَّذِي يَعُودُ فِي الْمَسَاءِ مُتْعَباً وَيُشَاهِدُ التِّلْفَازَ؟", opts: ["الْأَبُ", "طَارِقٌ", "الْجَدَّةُ"], correct: 0 },
+        { q: "8. مَا هُوَ الْعَمَلُ الَّذِي تَقُومُ بِهِ الْجَدَّةُ بِمُسَاعَدَةِ الْبَنَاتِ؟", opts: ["كَنْسُ الْغُرْفَةِ", "غَسْلُ الْأَطْبَاقِ", "كَيُّ الْمَلَابِسِ"], correct: 1 },
+        { q: "9. مَاذَا تَفْعَلُ لَطِيفَةُ لِسَاعَةٍ كَامِلَةٍ؟", opts: ["تَغْسِلُ الْحَمَّامَ", "تُشَاهِدُ التِّلْفَازَ", "تَكْوِي الْمَلَابِسَ الْمَغْسُولَةَ"], correct: 2 },
+        { q: "10. مَاذَا حَذَّرَتِ الْأُمُّ فَاطِمَةَ قَبْلَ النَّوْمِ؟", opts: ["أَلَّا تَتْرُكَ الْمِرْآةَ بِدُونِ تَنْظِيفٍ", "أَلَّا تَتَأَخَّرَ عَنِ الْمَدْرَسَةِ", "أَلَّا تَنَامَ مُبَكِّراً"], correct: 0 },
+        { q: "11. شَقَّةُ طَارِقٍ تَقَعُ فِي الدَّوْرِ السَّادِسِ وَهِيَ ضَيِّقَةٌ جِدّاً.", opts: ["صَحِيحٌ (True)", "خَطَأٌ (False)"], correct: 1 },
+        { q: "12. طَارِقٌ طَالِبٌ نَشِيطٌ يَسْتَيْقِظُ مُبَكِّراً وَلَا يَنَامُ بَعْدَ الْفَجْرِ.", opts: ["صَحِيحٌ (True)", "خَطَأٌ (False)"], correct: 0 },
+        { q: "13. الْأَبُ يَذْهَبُ إِلَى عَمَلِهِ فِي الشَّرِكَةِ فِي وَقْتِ الْمَسَاءِ.", opts: ["صَحِيحٌ (True)", "خَطَأٌ (False)"], correct: 1 },
+        { q: "14. يُوجَدُ فِي الْمَطْبَخِ فُرْنٌ لِلطَّبْخِ وَثَلَّاجَةٌ كَبِيرَةٌ.", opts: ["صَحِيحٌ (True)", "خَطَأٌ (False)"], correct: 0 },
+        { q: "15. السِّتَارَةُ الْحَرِيرِيَّةُ مَوْجُودَةٌ عَلَى النَّافِذَةِ فِي غُرْفَةِ الْجُلُوسِ.", opts: ["صَحِيحٌ (True)", "خَطَأٌ (False)"], correct: 0 },
+        { q: "16. الْجَارَةُ رَفَضَتْ مُشَاهَدَةَ الشَّقَّةِ لِأَنَّهَا مُتَّسِخَةٌ.", opts: ["صَحِيحٌ (True)", "خَطَأٌ (False)"], correct: 1 },
+        { q: "17. فَاطِمَةُ هِيَ مَنْ تَقُومُ بِكَنْسِ غُرْفَةِ الْجُلُوسِ بِالْمِكْنَسَةِ.", opts: ["صَحِيحٌ (True)", "خَطَأٌ (False)"], correct: 0 },
+        { q: "18. السَّرِيرُ الْكَبِيرُ مَوْجُودٌ فِي صَالَةِ الِاسْتِقْبَالِ.", opts: ["صَحِيحٌ (True)", "خَطَأٌ (False)"], correct: 1 },
+        { q: "19. الْأُمُّ هِيَ مَنْ قَالَتْ لِطَارِقٍ: لَا تَتَأَخَّرْ عَنِ الْمَدْرَسَةِ.", opts: ["صَحِيحٌ (True)", "خَطَأٌ (False)"], correct: 0 },
+        { q: "20. تَكْوِي فَاطِمَةُ الْمَلَابِسَ بَيْنَمَا تَكْنُسُ لَطِيفَةُ الْأَرْضِيَّةَ.", opts: ["صَحِيحٌ (True)", "خَطَأٌ (False)"], correct: 1 }
+    ];
+
+    let userScore = 0;
+    let answeredQuestions = new Array(quizData.length).fill(false);
+    const container = document.getElementById('quiz-container-dynamic');
+
+    quizData.forEach((item, index) => {
+        const { q, opts } = item;
+        let htmlBlock = `<div class="question-block" id="block-${index}">`;
+        htmlBlock += `<div class="question-text">${q}</div>`;
+        opts.forEach((optText, optIndex) => {
+            htmlBlock += `
+                <label id="lbl-${index}-${optIndex}">
+                    <input type="radio" name="question${index}" onchange="checkAnswer(${index}, ${optIndex})">
+                    ${optText}
+                </label>`;
+        });
+        htmlBlock += `</div>`;
+        container.innerHTML += htmlBlock;
+    });
+
+    window.checkAnswer = function(questionIndex, selectedOptionIndex) {
+        if (answeredQuestions[questionIndex]) return; 
+        answeredQuestions[questionIndex] = true;
+        
+        const { correct } = quizData[questionIndex];
+        const selectedLabel = document.getElementById(`lbl-${questionIndex}-${selectedOptionIndex}`);
+        const correctLabel = document.getElementById(`lbl-${questionIndex}-${correct}`);
+        
+        const radios = document.querySelectorAll(`input[name="question${questionIndex}"]`);
+        radios.forEach(radio => radio.disabled = true);
+
+        if (selectedOptionIndex === correct) {
+            selectedLabel.classList.add('correct-answer');
+            userScore += 5; 
+        } else {
+            selectedLabel.classList.add('wrong-answer');
+            correctLabel.classList.add('correct-answer'); 
+        }
+    };
+
+    window.showResult = function() {
+        container.style.display = 'none';
+        document.getElementById('submit-btn').style.display = 'none';
+        
+        const resultSection = document.getElementById('result-section');
+        resultSection.style.display = 'block';
+        resultSection.innerHTML = `
+            اكتمل الاختبار! الدرجة: ${userScore} / 100. أحسنتِ إتمام الاختبار التجريبي.
+            <br>
+            <button class="btn" onclick="location.reload()" style="margin-top: 25px;">Retake Test</button>
+        `;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+</script>
+
+</body>
+</html>
