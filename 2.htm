@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار متقدم وفائق: مبادئ أصول الفقه</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #2c3e50;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.7;
+        }
+        .quiz-container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .quiz-header {
+            text-align: center;
+            border-bottom: 3px solid #34495e;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .quiz-header h1 {
+            color: #2c3e50;
+            margin: 0 0 10px 0;
+            font-size: 1.8rem;
+        }
+        .progress-bar {
+            text-align: center;
+            font-weight: bold;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        .question-box {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        .question-box.active {
+            display: block;
+        }
+        .question-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #1a252f;
+        }
+        .q-type-badge {
+            display: inline-block;
+            background: #e74c3c;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .option {
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            padding: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.15rem;
+            font-weight: 500;
+        }
+        .option:hover {
+            background-color: #e9ecef;
+            border-color: #ced4da;
+        }
+        .correct {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+            color: #155724 !important;
+            cursor: default;
+        }
+        .wrong {
+            background-color: #fff3cd !important;
+            border-color: #ffeeba !important;
+            color: #856404 !important;
+            cursor: default;
+        }
+        .explanation-box {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #eaf4fe;
+            border-right: 6px solid #3498db;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            color: #1e4b6b;
+            line-height: 1.8;
+        }
+        .explanation-title {
+            font-weight: bold;
+            color: #2980b9;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 35px;
+            border-top: 2px solid #ecf0f1;
+            padding-top: 25px;
+        }
+        .nav-btn {
+            background-color: #34495e;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+        .nav-btn:hover {
+            background-color: #2c3e50;
+        }
+        .nav-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div class="quiz-header">
+        <h1>الاختبار التفاعلي المتقدم: أسس ومبادئ أصول الفقه</h1>
+    </div>
+
+    <div class="progress-bar" id="progress-text">السؤال 1 من 50</div>
+
+    <div id="questions-wrapper">
+        <!-- Questions injected via JS -->
+    </div>
+
+    <div class="navigation">
+        <button id="nextBtn" class="nav-btn" onclick="nextQuestion()">التالي</button>
+        <button id="prevBtn" class="nav-btn" onclick="prevQuestion()" disabled>السابق</button>
+    </div>
+</div>
+
+<script>
+    const quizData = [
+        // --- أسئلة الاختيار من متعدد (25 سؤال) ---
+        {
+            type: "MCQ",
+            question: "وفقاً لتقريرات الإمام الشاطبي، إذا واجه المجتهد مسألة الخلاف في أصل اللغات (توقيفية أم اصطلاحية)، فما هو الموقف المنهجي الأصح أصولياً؟",
+            options: [
+                { text: "تحليلها بدقة لضبط دلالات الألفاظ القرآنية عليها.", correct: false },
+                { text: "الإعراض عنها لكونها عارية ولا ينبني عليها عمل قلبي أو جوارحي.", correct: true },
+                { text: "إلحاقها بمباحث الأدلة التفصيلية لاستخراج الأحكام العادية.", correct: false },
+                { text: "دراستها حصراً لتدريب الذهن واستخراج الأحكام الشرعية العملية.", correct: false }
+            ],
+            explanation: "يقرر الشاطبي أن كل مسألة لا ينبني عليها فروع فقهية أو آداب (عمل) فوضعها في أصول الفقه عارية. ومسألة اللغات يصفها الأصوليون بأنها 'طويلة الذيل قليلة النيل' ولا ينبني عليها عمل."
+        },
+        {
+            type: "MCQ",
+            question: "أي من العبارات التالية تصف بدقة المأخذ الأصولي على تقييد المناطقة للحدود بأن تكون (مانعة جامعة)؟",
+            options: [
+                { text: "أنه يفتقر إلى الجنس والفصل مما يُخل بالمعنى الأصولي للاستنباط.", correct: false },
+                { text: "أنه يتوافق مع مقاصد الشريعة في تبسيط العلوم للمبتدئين.", correct: false },
+                { text: "أنه يؤدي إلى التكلف وتسوييد الصفحات في نقاشات لفظية تتنافى مع يسر وسماحة الشريعة.", correct: true },
+                { text: "أنه يخرج الأدلة التفصيلية من مباحث أصول الفقه ويحصرها في الإجمالية.", correct: false }
+            ],
+            explanation: "المناطقة يضعون تعريفات دقيقة جداً (جامعة مانعة) مما أدى إلى تكلف وتوسع يتنافى مع الغرض من الشريعة في إيصال المعاني بأقصر وأوضح الطرق، ولذلك اعترضوا حتى على تعريف النبي للإيمان."
+        },
+        {
+            type: "MCQ",
+            question: "إذا عرفنا الفقه بأنه (العلم بالأحكام الشرعية العملية)، فإن هذا التعريف يُعد قاصراً لغوياً وأصولياً في استيعاب مسائل الفقه؛ بسبب:",
+            options: [
+                { text: "أن لفظ (العلم) يقتضي اليقين، بينما غالب مسائل الفقه خلافية تحتمل الظن.", correct: true },
+                { text: "أن لفظ (العلم) يختص بالفقه الأكبر كالعقيدة، ولا يشمل فقه الجوارح.", correct: false },
+                { text: "أن لفظ (العلم) لا يكتسب إلا بالأدلة الإجمالية فقط.", correct: false },
+                { text: "جميع ما سبق.", correct: false }
+            ],
+            explanation: "استعمل الشيخ لفظ (المعرفة) لأنها تشمل العلم والظن، بينما لفظ (العلم) يُستعمل في اصطلاح الناس في اليقين فقط، والكثير من مسائل الفقه (كالاختلاف في ساعة إجابة الجمعة) هي مسائل ظنية."
+        },
+        {
+            type: "MCQ",
+            question: "استبدل المحققون كلمة (معرفة) في تعريف الفقه بجعل الفقه هو (الأحكام) ذاتها، وأضافوا قيد (المكتسبة). ما الغاية الدقيقة من القيد الأخير؟",
+            options: [
+                { text: "لإخراج الأحكام العقلية كعلم الرياضيات والفيزياء.", correct: false },
+                { text: "لإخراج العلم اللدني كعلم النبي ﷺ وعلوم الملائكة والخضر.", correct: true },
+                { text: "لإخراج الإجماع السكوتي لكونه مكتسباً بالظن لا القطع.", correct: false },
+                { text: "لإثبات أن الفقه يكتسب من الأدلة الإجمالية حصراً.", correct: false }
+            ],
+            explanation: "زيادة قيد (المكتسبة) أخرجت العلم اللدني (غير المكتسب بالتعلم) كعلم النبي ﷺ الذي هو وحي، وعلوم الملائكة والخضر، بينما فقهنا مكتسب بالتعلم والتفقه في طرق الاستدلال."
+        },
+        {
+            type: "MCQ",
+            question: "القاعدة اللغوية القائلة بأن (كان ترفع المبتدأ وتنصب الخبر) تخرج من تعريف الفقه الاصطلاحي من خلال أي محترز؟",
+            options: [
+                { text: "محترز (العملية).", correct: false },
+                { text: "محترز (التفصيلية).", correct: false },
+                { text: "محترز (الشرعية).", correct: true },
+                { text: "محترز (المكتسبة).", correct: false }
+            ],
+            explanation: "احترز بقوله (الشرعية) عن الأحكام العقلية، والعادية، والأحكام (الوضعية) اللغوية كقواعد النحو (عمل كان)، فالفقه يختص بالأحكام الشرعية فقط."
+        },
+        {
+            type: "MCQ",
+            question: "باحث قضى سنوات يتقن قواعد استنباط الأحكام من نصوص الوحي حتى تكونت لديه مَلَكَة صلبة، لكنه لم يقم باستخراج حكم شرعي واحد للناس. هذا الباحث:",
+            options: [
+                { text: "حقق فائدة علم أصول الفقه ولم يحقق ثمرته.", correct: false },
+                { text: "لم يحقق ثمرة علم أصول الفقه لغياب الجانب العملي.", correct: false },
+                { text: "حقق ثمرة علم أصول الفقه، لكنه لم يمارس فائدته.", correct: true },
+                { text: "حقق الثمرة والفائدة معاً لكونهما مترادفين اصطلاحاً.", correct: false }
+            ],
+            explanation: "من الناحية الاصطلاحية، (الثمرة) هي 'القدرة والمَلَكَة' على استنباط الأحكام، سواء استنبطها بالفعل أم لا. أما (الفائدة) فهي التطبيق العملي وهو الاستخراج الفعلي. فهذا الباحث نال الثمرة ولم يُفعّل الفائدة."
+        },
+        {
+            type: "MCQ",
+            question: "عند تعريف أصول الفقه كلقب للفن، فهو العلم الذي يبحث عن (أدلة الفقه الإجمالية). أي مما يلي يُعتبر تطبيقاً لدراسة الأدلة الإجمالية؟",
+            options: [
+                { text: "البحث في حكم رفع اليدين في الصلاة من حديث (صلوا كما رأيتموني أصلي).", correct: false },
+                { text: "البحث في مدى حجية الإجماع السكوتي وكيفية التعامل مع القراءات الشاذة للقرآن.", correct: true },
+                { text: "دراسة سند رواة حديث معين لبيان الجرح والتعديل فيه.", correct: false },
+                { text: "جميع ما سبق باستثناء الأولى.", correct: false }
+            ],
+            explanation: "أدلة الفقه الإجمالية تعني القواعد العامة للاستنباط (حجية الإجماع السكوتي، التعامل مع القراءات الشاذة، دلالات العام والخاص)، أما البحث في حديث مخصوص فهو دليل (تفصيلي) من وظيفة الفقيه لا الأصولي."
+        },
+        {
+            type: "MCQ",
+            question: "أُخرج (الفقه الأكبر) من التعريف الاصطلاحي للفقه بواسطة قيد (العملية). ما هو المقصود الأساسي بالفقه الأكبر في هذا السياق؟",
+            options: [
+                { text: "فقه الجوارح من صلاة وزكاة وحج وتجارة.", correct: false },
+                { text: "معرفة الأحكام القطعية التي أجمع عليها الصحابة.", correct: false },
+                { text: "الأحكام الشرعية العلمية المتعلقة بالاعتقاد وأعمال القلوب.", correct: true },
+                { text: "الأدلة الإجمالية الموصلة لمعرفة نصوص الكتاب والسنة.", correct: false }
+            ],
+            explanation: "الفقه الأكبر (ككتاب أبي حنيفة) يتعلق بالأحكام (العلمية) الاعتقادية وأعمال القلوب (توحيد الله وصفاته)، وخرجت بقيد (العملية) الذي حصر الفقه الاصطلاحي في فقه الجوارح."
+        },
+        {
+            type: "MCQ",
+            question: "أي من الخيارات التالية يمثل التصنيف الصحيح لعلم أصول الفقه وما يحتويه من مباحث؟",
+            options: [
+                { text: "هو علم غاية خالص، يبنى عليه علم التفسير والعقيدة.", correct: false },
+                { text: "هو علم آلة، ويُعد مزيجاً من مباحث لغوية ومنطقية وعلم كلام.", correct: true },
+                { text: "هو علم غاية، ويقتصر على الأدلة التفصيلية كالكتاب والسنة.", correct: false },
+                { text: "هو علم آلة، وخالٍ تماماً من المباحث اللغوية لأنه يهتم بالأحكام العملية.", correct: false }
+            ],
+            explanation: "نسبة أصول الفقه أنه من (علوم الآلات) التي تبنى عليها الغايات كالفقه، وهو مزيج يحتوي مباحث لغوية (وهي لبه) ومباحث منطقية ومباحث متعلقة بعلم الكلام."
+        },
+        {
+            type: "MCQ",
+            question: "ما الغاية من دراسة المصنفات المنطقية كـ (السلم المنورق) لطالب العلم الشرعي في العصر الحالي بناءً على كلام الشيخ؟",
+            options: [
+                { text: "لأن المنطق شرط أساسي لاكتساب المَلَكَة الفقهية القطعية.", correct: false },
+                { text: "التعبد بفهم دلالات الألفاظ التي نص عليها المناطقة.", correct: false },
+                { text: "فقط لفهم المراد من المصطلحات المنطقية التي شاعت وكُتبت بها كتب التراث الإسلامي.", correct: true },
+                { text: "للرد على الشبهات العصرية باستخدام الأحكام العقلية البحتة.", correct: false }
+            ],
+            explanation: "بالرغم من تحذير العلماء من علم المنطق، إلا أن دراسته أصبحت ضرورة محصورة فقط في (فهم المصطلحات) لفك طلاسم الكتب التراثية التي صُنفت على طريقته. علمه لا ينفع وجهله لا يضر ما وراء ذلك."
+        },
+        // (إضافة المزيد من أسئلة MCQ للوصول لـ 25)
+        { type: "MCQ", question: "كيف يتعامل علم أصول الفقه مع العوارض اللاحقة للنصوص؟", options: [{text: "يدرس كيفية تدوينها تاريخياً.", correct: false}, {text: "يبحث في كون النص عاماً فيُخصص، أو مطلقاً فيُقيد، أو مجملاً فيُبيّن.", correct: true}, {text: "يستبعدها تماماً ويعتمد على الإجماع القطعي فقط.", correct: false}, {text: "جميع ما سبق.", correct: false}], explanation: "علم الأصول يبحث في العوارض اللاحقة للنصوص؛ فتُدرس قواعد تخصيص العام، وتقييد المطلق، وتبيين المجمل (كتبيين السنة لمجمل الأمر بالصلاة)." },
+        { type: "MCQ", question: "في تعريف الحد عند المناطقة، عبارة (الخمر مائع مسكر) تعتبر:", options: [{text: "جملة إسمية عارية.", correct: false}, {text: "تحتوي على جنس (مائع) وفصل (مسكر) لتمييز الجنس.", correct: true}, {text: "تعريفاً غير مانع لأنها تشمل الخل.", correct: false}, {text: "دليلاً إجمالياً متفقاً عليه.", correct: false}], explanation: "عند المناطقة، الحد الأخص يحتوي على 'جنس' (الشيء العام كـ مائع) و 'فصل' (الشيء المميز كـ مسكر)." },
+        { type: "MCQ", question: "يُعرَّف علم أصول الفقه باعتبار مفرديه وباعتبار اللفظ المركب. ما هو تعريف مفردة (أصل) التي يميل إليها أكثر العلماء؟", options: [{text: "ما يُستنبط منه علم الغايات حصراً.", correct: false}, {text: "ما يتبادر للذهن من المعاني اللغوية.", correct: false}, {text: "ما يُبنى عليه غيره، أو ما يتفرع عنه غيره.", correct: true}, {text: "الأساس الذي يستند إليه الإجماع السكوتي.", correct: false}], explanation: "الأصل لغة هو ما يُبنى عليه غيره، وأكثر العلماء مالوا إلى أنه 'ما يتفرع عنه غيره' كأصل الشجرة، وكلاهما يفيد أنه الأساس." },
+        { type: "MCQ", question: "إذا استخدم الباحث عبارة (الإنسان حيوان ضاحك)، فهذا عند المناطقة يُعتبر:", options: [{text: "حداً جامعاً مانعاً.", correct: false}, {text: "تعريفاً وليس حداً، لأنه أعم ولا يستوفي شروط الجمع والمنع.", correct: true}, {text: "مطلوباً شرعياً في علم أصول الفقه.", correct: false}, {text: "مثالاً على الدليل التفصيلي.", correct: false}], explanation: "هذه العبارة ليست حداً عند المناطقة لأنها ليست جامعة مانعة، لذلك يدخلونها تحت مسمى 'التعريف' الذي هو عندهم أعم من الحد." },
+        { type: "MCQ", question: "أي مما يلي يُعد من الأدلة الإجمالية المُختلف فيها؟", options: [{text: "الكتاب والسنة.", correct: false}, {text: "الاستصحاب وسد الذرائع.", correct: true}, {text: "القياس والإجماع القطعي.", correct: false}, {text: "الأحكام الشرعية العملية.", correct: false}], explanation: "الأدلة الإجمالية المختلف فيها تشمل الاستصحاب، المصالح المرسلة، سد الذرائع وغيرها. أما الكتاب والسنة فمتفق عليهما." },
+        { type: "MCQ", question: "قول المصنف عن الثمرة: (صيانة الفقه الإسلامي) تعني حمايته من ماذا؟", options: [{text: "من تسرب الأدلة الإجمالية إليه.", correct: false}, {text: "من هيمنة الفقه الأكبر على الفقه الأصغر.", correct: false}, {text: "من ضعف القدرة على استنباط الأحكام وضعف أصول الاستدلال.", correct: true}, {text: "من استعمال الحد المنطقي.", correct: false}], explanation: "صيانة الفقه الإسلامي تكون من ضعف القدرة على استنباط الأحكام وضعف الاستدلال الذي يترتب عليهما تشوه في الفقه الإسلامي." },
+        { type: "MCQ", question: "عندما يرد نص مجمل في القرآن كقوله تعالى (وأقيموا الصلاة)، فإن بيان صفة الصلاة وشروطها يقع تحت دراسة:", options: [{text: "حال المستفيد.", correct: false}, {text: "العوارض اللاحقة للأدلة (تبيين المجمل).", correct: true}, {text: "المحترزات اللغوية.", correct: false}, {text: "الأحكام العادية.", correct: false}], explanation: "تبيين المجمل (كالصلاة) بالسنة (صلوا كما رأيتموني أصلي) هو من دراسة العوارض اللاحقة للنصوص والتي هي موضوع علم أصول الفقه." },
+        { type: "MCQ", question: "ما معنى قوله تعالى (يفقهوا قولي) في سياق تعريف الفقه لغة؟", options: [{text: "الفهم الدقيق لغوامض الأمور حصراً.", correct: false}, {text: "الفهم مطلقاً، سواء المسائل الكبيرة أو الصغيرة الظاهرة.", correct: true}, {text: "استنباط الأحكام القطعية من النص.", correct: false}, {text: "معرفة الدلالات المنطقية للخطاب.", correct: false}], explanation: "الفقه لغة عند جمهور المحققين هو الفهم مطلقاً (أي يفهموا قولي)، سواء المسائل الكبيرة أو الدقيقة أو الواضحة الظاهرة." },
+        { type: "MCQ", question: "قول الصحابي في علم أصول الفقه يُعتبر:", options: [{text: "دليلاً إجمالياً لا يجوز القياس عليه.", correct: false}, {text: "دليلاً تفصيلياً (إما حجة أو يستأنس به).", correct: true}, {text: "حكماً وضعياً مجرداً.", correct: false}, {text: "من علوم الغايات.", correct: false}], explanation: "قول الصحابي يندرج تحت الأدلة التفصيلية (قال الله، قال رسوله، قال الصحابي). وهو إما حجة أو يستأنس به لأنهم أفهم للشريعة." },
+        { type: "MCQ", question: "وفقاً للنص، كتاب (الأصول من علم الأصول) للشيخ ابن عثيمين يمتاز بأنه:", options: [{text: "متن شديد التعقيد يناسب المنتهين فقط.", correct: false}, {text: "يعتمد كلياً على المصطلحات المنطقية الغامضة.", correct: false}, {text: "يسير وواضح ويعد من أوضح المتون، بخلاف المنهاج وجمع الجوامع.", correct: true}, {text: "كتاب في العقيدة والفقه الأكبر.", correct: false}], explanation: "الكتاب اختير لكونه يسيراً وواضحاً من أسهل الرسائل، على عكس متون أخرى مثل المنهاج وجمع الجوامع التي تعد صعبة ومعقدة للمبتدئ." },
+        { type: "MCQ", question: "من هو واضع המبادئ العشرة للعلوم في أبيات شعرية؟", options: [{text: "الشيخ ابن عثيمين.", correct: false}, {text: "الإمام الأخضري.", correct: false}, {text: "العلامة الصبان (جامعها).", correct: true}, {text: "الإمام الشاطبي.", correct: false}], explanation: "العلامة الصبان رحمه الله هو من 'جمع' هذه المبادئ العشرة في أبيات شعرية (إن مبادئ كل علم عشرة...) في حاشيته على شرح الملوي." },
+        { type: "MCQ", question: "لماذا انتقد الإمام السيوطي المتأخرين في مقدمة (شرح عقود الجمان)؟", options: [{text: "لكتابتهم البلاغة ولسان العرب بلغة ومصطلحات أهل المنطق.", correct: true}, {text: "لإهمالهم علم المنطق تماماً في تصانيفهم.", correct: false}, {text: "لمزجهم بين الأدلة الإجمالية والتفصيلية.", correct: false}, {text: "لتركهم مباحث الإجماع السكوتي.", correct: false}], explanation: "تعجب السيوطي من أن يكتب الناس في لسان العرب أو بلاغة العرب بلغة ومصطلحات أهل المنطق كالحدود المانعة الجامعة." },
+        { type: "MCQ", question: "الحكم بأن (نزول الندى يحدث في الليلة الشاتية صحوة الجو) يخرج من الفقه بقيد:", options: [{text: "المكتسبة.", correct: false}, {text: "الشرعية (لأنه حكم عادي).", correct: true}, {text: "العملية (لأنه عقدي).", correct: false}, {text: "الأدلة التفصيلية.", correct: false}], explanation: "خرج بقيد (الشرعية) الأحكام (العادية) كمعرفة نزول الطل، لأنها عادة من عادات المناخ." },
+        { type: "MCQ", question: "الفرق الجوهري بين علم (الفقه) وعلم (أصول الفقه) يكمن في:", options: [{text: "الفقه يبحث في الأدلة الإجمالية، والأصول في التفصيلية.", correct: false}, {text: "الفقه يبحث في الأحكام الظنية، والأصول في اليقينية.", correct: false}, {text: "الفقه يبحث في الأدلة التفصيلية المقرونة بالمسائل، والأصول في الأدلة الإجمالية.", correct: true}, {text: "لا فرق بينهما من حيث الموضوع.", correct: false}], explanation: "الفقه يستمد الأحكام من 'الأدلة التفصيلية' المقرونة بمسائل معينة، بينما يبحث الأصول في 'الأدلة الإجمالية' وكيفية الاستفادة منها عموماً." },
+        { type: "MCQ", question: "هل الفقه عند جماهير المحققين هو الإحاطة بالأحكام أم الأحكام ذاتها؟", options: [{text: "هو الإحاطة بها ظناً وعلماً.", correct: false}, {text: "هو الأحكام ذاتها، ولذلك تم حذف كلمة (معرفة) من التعريف الدقيق.", correct: true}, {text: "هو الإحاطة القطعية فقط.", correct: false}, {text: "هو مزيج بين الأحكام الشرعية والعادية.", correct: false}], explanation: "الأرجح عند الجماهير أن الفقه ليس معرفة الأحكام، إنما هو الأحكام ذاتها، لذا عُدل التعريف ليصبح (الأحكام الشرعية العملية المكتسبة...)." },
+
+
+        // --- أسئلة الصح والخطأ (25 سؤال) ---
+        {
+            type: "TF",
+            question: "من ثمرات علم أصول الفقه، صيانة الفقه الإسلامي من القدرة على استنباط الأحكام.",
+            options: [
+                { text: "صح", correct: false },
+                { text: "خطأ", correct: true }
+            ],
+            explanation: "العبارة خاطئة. الصواب: صيانة الفقه من (ضعف القدرة) على استنباط الأحكام. القدرة ذاتها هي الغاية والثمرة الأساسية."
+        },
+        {
+            type: "TF",
+            question: "يُعرَّف (الحد) عند المناطقة و(التعريف) عند علماء الأصول واللغة بنفس الشروط تماماً وهي الجمع والمنع.",
+            options: [
+                { text: "صح", correct: false },
+                { text: "خطأ", correct: true }
+            ],
+            explanation: "العبارة خاطئة. المناطقة يشترطون في الحدود أن تكون مانعة جامعة بصرامة (جنس وفصل)، بينما العلماء يرون أن الحد هو مجرد (التعريف) من باب التسهيل والتيسير."
+        },
+        {
+            type: "TF",
+            question: "إضافة قيد (المكتسبة) في تعريف الفقه الاصطلاحي أخرجت العلم اللدني كعلم النبي ﷺ وعلوم الملائكة؛ لأنهما من الإلهام والوحي لا بالتعلم.",
+            options: [
+                { text: "صح", correct: true },
+                { text: "خطأ", correct: false }
+            ],
+            explanation: "العبارة صحيحة. قيد 'المكتسبة' مهم جداً لإخراج العلم غير المكتسب من دوائر الفقه الاصطلاحي."
+        },
+        {
+            type: "TF",
+            question: "يُعد كتاب (الموافقات) للإمام الشاطبي من أهم مصادر علم أصول الدين والفقه الأكبر.",
+            options: [
+                { text: "صح", correct: false },
+                { text: "خطأ", correct: true }
+            ],
+            explanation: "العبارة خاطئة. الموافقات هو أعظم كتاب صُنف في (علم مقاصد الشريعة) وأصول الفقه، وليس الفقه الأكبر (الاعتقاد)."
+        },
+        {
+            type: "TF",
+            question: "الأحكام الواردة في علم النحو مثل (كان ترفع المبتدأ) تصنف أصولياً ضمن الأحكام الوضعية التي تخرج من تعريف الفقه بقيد الشرعية.",
+            options: [
+                { text: "صح", correct: true },
+                { text: "خطأ", correct: false }
+            ],
+            explanation: "العبارة صحيحة. الأحكام اللغوية هي أحكام (وضعية)، وتخرج من الفقه لاحترازه بكلمة (الشرعية)."
+        },
+        {
+            type: "TF",
+            question: "كلمة أصول الفقه مركبة، وبناءً على قاعدة العلماء في المركبات، نكتفي بتعريف اللفظ المركب دون الحاجة لتعريف مفرداته.",
+            options: [
+                { text: "صح", correct: false },
+                { text: "خطأ", correct: true }
+            ],
+            explanation: "العبارة خاطئة. دأب العلماء عندما تكون هناك كلمة مركبة أن يعرّفوها من خلال (مفرديها) أولاً ثم من خلال (التركيب)."
+        },
+        {
+            type: "TF",
+            question: "مصطلح (العملية) في تعريف الفقه يحترز عن الأحكام الشرعية (العلمية) التي تتعلق بأعمال القلوب.",
+            options: [
+                { text: "صح", correct: true },
+                { text: "خطأ", correct: false }
+            ],
+            explanation: "العبارة صحيحة. (العملية) تخرج الأحكام العلمية (الاعتقادية/الفقه الأكبر) التي لا تتعلق بأعمال الجوارح كالصلاة بل بعلم القلب."
+        },
+        {
+            type: "TF",
+            question: "الردود على الشبهات الفقهية المعاصرة تعتمد غالباً على سرد الأدلة التفصيلية دون الحاجة إلى البعد الأصولي.",
+            options: [
+                { text: "صح", correct: false },
+                { text: "خطأ", correct: true }
+            ],
+            explanation: "العبارة خاطئة. أغلب الردود على الشبهات الفقهية لها (بعدٌ أصولي)، فالرد يكون بتوضيح الأسس السليمة للاستنباط (أصول الفقه) وخطأ استنباط المخالف."
+        },
+        {
+            type: "TF",
+            question: "مسألة (تحديد ساعة استجابة الدعاء يوم الجمعة) تُعد من المسائل القطعية لثبوتها في الأحاديث الصحيحة.",
+            options: [
+                { text: "صح", correct: false },
+                { text: "خطأ", correct: true }
+            ],
+            explanation: "العبارة خاطئة. هي مسألة (ظنية) لاختلاف الفقهاء فيها إلى أكثر من أربعين قولاً، وكل مسألة عليها خلاف معتبر تعامل كمسألة ظنية."
+        },
+        {
+            type: "TF",
+            question: "الثمرة والفائدة اصطلاحاً في علم الأصول ليستا مترادفتين؛ فالثمرة هي المَلَكة والقدرة، والفائدة هي الاستخراج الفعلي.",
+            options: [
+                { text: "صح", correct: true },
+                { text: "خطأ", correct: false }
+            ],
+            explanation: "العبارة صحيحة. لغوياً مترادفتان، لكن اصطلاحاً: الثمرة هي وجود القدرة، والفائدة هي المترتبة على القدرة أي الاستنباط الفعلي."
+        },
+        { type: "TF", question: "وفقاً للإمام الشاطبي، يعتبر الخوض في مسألة أصل اللغات من الواجبات الأصولية لأنها تنشط الذهن.", options: [{text: "صح", correct: false}, {text: "خطأ", correct: true}], explanation: "العبارة خاطئة. الخوض فيها خوض فيما لم يدل على استحسانه دليل، لكونها لا ينبني عليها عمل، ووضعها في الأصول (عارية)." },
+        { type: "TF", question: "علم أصول الفقه يصنف ضمن علوم الآلات، وهو مزيج معرفي يخلو تماماً من المباحث اللغوية.", options: [{text: "صح", correct: false}, {text: "خطأ", correct: true}], explanation: "العبارة خاطئة. علم أصول الفقه مزيج يحتوي مباحث كثيرة، ولكن المباحث اللغوية هي (لُبّ) هذا العلم." },
+        { type: "TF", question: "اعتبار المناطقة لتعريف النبي ﷺ للإيمان بأنه غير معتبر يمثل تكلفاً يتنافى مع الغرض من الشريعة في إيصال المعاني بوضوح وسهولة.", options: [{text: "صح", correct: true}, {text: "خطأ", correct: false}], explanation: "العبارة صحيحة. النبي عرف الإيمان بأركانه لا بحقيقته ليقرب المعنى، واعتراض المناطقة تكلف يخالف مقاصد الحنيفية السمحة." },
+        { type: "TF", question: "موضوع علم أصول الفقه هو البحث في الأدلة التفصيلية كدراسة الآيات بعينها للوصول لحكم فرعي مباشر.", options: [{text: "صح", correct: false}, {text: "خطأ", correct: true}], explanation: "العبارة خاطئة. موضوع أصول الفقه هو الأدلة الموصلة (الإجمالية)، ولا يبحث في التفصيلية (الآيات والأحاديث المخصوصة)." },
+        { type: "TF", question: "الإجماع السكوتي يُعد دليلاً إجمالياً متفقاً على حجيته بلا نزاع بين العلماء.", options: [{text: "صح", correct: false}, {text: "خطأ", correct: true}], explanation: "العبارة خاطئة. الإجماع السكوتي فيه (نزاع)، وهناك أكثر من عشرة أقوال في كونه حجة أم لا." },
+        { type: "TF", question: "الاحتراز (المحترزات) أصله من الوقاية، وهو ما يحتاط به المتكلم في التعريف لمنع فهم معنى غير مراد.", options: [{text: "صح", correct: true}, {text: "خطأ", correct: false}], explanation: "العبارة صحيحة. المحترزات هي أشياء نحترز ونحتاط بها في التعريف عن أشياء أخرى." },
+        { type: "TF", question: "الإجماع عند الأصوليين كابن المنذر والطبري يُقصد به دائماً الأغلبية الساحقة من العلماء.", options: [{text: "صح", correct: true}, {text: "خطأ", correct: false}], explanation: "العبارة صحيحة بناءً على النص. الإجماع لا يعني الأغلبية 'إلا' في مصطلح بعض أهل العلم مثل الطبري وابن المنذر." },
+        { type: "TF", question: "كتاب (رسالة) الإمام الشافعي مناسب جداً للمبتدئ في دراسة علم أصول الفقه.", options: [{text: "صح", correct: false}, {text: "خطأ", correct: true}], explanation: "العبارة خاطئة. (الرسالة) لا يصلح إلا للمنتهي أو المتوسط المميز، ولا يصلح للمبتدئ." },
+        { type: "TF", question: "الاستصحاب والمصالح المرسلة تصنف ضمن الأدلة التفصيلية في علم الفقه.", options: [{text: "صح", correct: false}, {text: "خطأ", correct: true}], explanation: "العبارة خاطئة. تصنف ضمن الأدلة (الإجمالية المختلف فيها)." },
+        { type: "TF", question: "استعمال مصطلح (الفقه الأكبر) و(الفقه الأصغر) هي اصطلاحات علمية متأخرة لضبط العلوم ولم تكن للتعبد في عصر الصحابة.", options: [{text: "صح", correct: true}, {text: "خطأ", correct: false}], explanation: "العبارة صحيحة. هذه المصطلحات علمية لضبط العلوم وليست تعبدية لم تكن على ألسنة الصحابة." },
+        { type: "TF", question: "علم التفسير والعقيدة والفقه تُعد من علوم المكملات.", options: [{text: "صح", correct: false}, {text: "خطأ", correct: true}], explanation: "العبارة خاطئة. هي من علوم (الغايات)، بينما الأصول ومصطلح الحديث من علوم (الآلات)." },
+        { type: "TF", question: "حكم الشارع (العزائم والرخص والشروط) يعتبر من الأحكام الوضعية التي تُستخرج عبر أدلة أصول الفقه.", options: [{text: "صح", correct: true}, {text: "خطأ", correct: false}], explanation: "العبارة صحيحة. الأحكام المستخرجة قد تكون شرعية (حلال/حرام) أو وضعية وضعها الشارع كالشروط والرخص." },
+        { type: "TF", question: "لفظ (المعرفة) يتجه غالباً للماديات أكثر من المعنويات مقارنة بلفظ (العلم).", options: [{text: "صح", correct: true}, {text: "خطأ", correct: false}], explanation: "العبارة صحيحة. قال ابن القيم إن المعرفة تتجه للماديات (يعرفونه كما يعرفون أبناءهم) بخلاف العلم للمعنويات (علمتموهن مؤمنات)." },
+        { type: "TF", question: "طالب العلم الذي يدرس أصول الفقه لابد أن يتقن علم المنطق ويتعمق فيه كشرط للاستنباط.", options: [{text: "صح", correct: false}, {text: "خطأ", correct: true}], explanation: "العبارة خاطئة. العلماء حذروا من التعمق فيه، وإنما أصبحت دراسته محصورة (لضرورة فهم المصطلحات) الموجودة في الكتب فقط." },
+        { type: "TF", question: "المستفيد في تعريف أصول الفقه كلقب للمركب يُقصد به (المجتهد).", options: [{text: "صح", correct: true}, {text: "خطأ", correct: false}], explanation: "العبارة صحيحة. حال المستفيد يعني حال المجتهد الذي يستخرج الأحكام." }
+    ];
+
+    let currentQuestionIndex = 0;
+    const questionsWrapper = document.getElementById('questions-wrapper');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const progressText = document.getElementById('progress-text');
+
+    function initQuiz() {
+        quizData.forEach((qData, index) => {
+            const qBox = document.createElement('div');
+            qBox.className = 'question-box';
+            if(index === 0) qBox.classList.add('active');
+            qBox.id = `q-${index}`;
+
+            const qType = document.createElement('span');
+            qType.className = 'q-type-badge';
+            qType.innerText = qData.type === 'MCQ' ? 'اختيار من متعدد' : 'صح أم خطأ';
+            qBox.appendChild(qType);
+
+            const qTitle = document.createElement('div');
+            qTitle.className = 'question-text';
+            qTitle.innerText = `${index + 1}. ${qData.question}`;
+            qBox.appendChild(qTitle);
+
+            const optionsContainer = document.createElement('div');
+            optionsContainer.className = 'options-container';
+
+            qData.options.forEach((opt) => {
+                const optEl = document.createElement('div');
+                optEl.className = 'option';
+                optEl.innerText = opt.text;
+                optEl.dataset.correct = opt.correct;
+                
+                optEl.onclick = function() {
+                    handleSelection(optEl, optionsContainer, qData.explanation);
+                };
+                optionsContainer.appendChild(optEl);
+            });
+            qBox.appendChild(optionsContainer);
+
+            const expBox = document.createElement('div');
+            expBox.className = 'explanation-box';
+            expBox.innerHTML = `<span class="explanation-title">📝 التفسير من المصدر:</span> ${qData.explanation}`;
+            qBox.appendChild(expBox);
+
+            questionsWrapper.appendChild(qBox);
+        });
+        updateNav();
+    }
+
+    function handleSelection(selectedEl, container, explanationText) {
+        const allOptions = container.querySelectorAll('.option');
+        allOptions.forEach(el => el.style.pointerEvents = 'none'); // Disable clicking again
+
+        const isCorrect = selectedEl.dataset.correct === "true";
+
+        if(isCorrect) {
+            selectedEl.classList.add('correct');
+        } else {
+            selectedEl.classList.add('wrong');
+            // Highlight the correct one
+            allOptions.forEach(el => {
+                if(el.dataset.correct === "true") {
+                    el.classList.add('correct');
+                }
+            });
+        }
+        
+        // Show explanation
+        const expBox = container.parentElement.querySelector('.explanation-box');
+        expBox.style.display = 'block';
+    }
+
+    function updateNav() {
+        prevBtn.disabled = currentQuestionIndex === 0;
+        nextBtn.disabled = currentQuestionIndex === quizData.length - 1;
+        progressText.innerText = `السؤال ${currentQuestionIndex + 1} من ${quizData.length}`;
+        
+        document.querySelectorAll('.question-box').forEach((box, index) => {
+            if(index === currentQuestionIndex) {
+                box.classList.add('active');
+            } else {
+                box.classList.remove('active');
+            }
+        });
+    }
+
+    function nextQuestion() {
+        if(currentQuestionIndex < quizData.length - 1) {
+            currentQuestionIndex++;
+            updateNav();
+        }
+    }
+
+    function prevQuestion() {
+        if(currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            updateNav();
+        }
+    }
+
+    window.onload = initQuiz;
+
+</script>
+</body>
+</html>
