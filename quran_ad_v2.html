@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    background: #e8ede8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .card {
+    width: 640px;
+    background: #fff;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+    border: 1px solid rgba(180,145,60,0.25);
+  }
+
+  /* ── TOP BANNER ── */
+  .top-banner {
+    background: linear-gradient(135deg, #2d6a4f 0%, #40916c 50%, #2d6a4f 100%);
+    padding: 18px 28px 16px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .top-banner::before {
+    content: '';
+    position: absolute;
+    top: -30px; left: -30px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .top-banner::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; right: -20px;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .top-banner .bismillah {
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+  .top-banner .icon { font-size: 38px; display: block; margin-bottom: 8px; }
+  .top-banner .name {
+    font-size: 22px; font-weight: 700;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    margin-bottom: 4px;
+  }
+  .top-banner .sub-name {
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 2px;
+  }
+  .gold-line {
+    width: 90px; height: 2px;
+    background: linear-gradient(90deg, transparent, #f5c842, transparent);
+    margin: 8px auto;
+  }
+
+  /* ── BODY ── */
+  .inner { padding: 26px 28px 22px; }
+
+  .headline-box {
+    background: linear-gradient(135deg, #f0f7f4 0%, #e8f5ee 100%);
+    border: 1.5px solid #b7e4c7;
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .headline-main {
+    font-size: 18px; font-weight: 700;
+    color: #1b4332;
+    line-height: 1.8;
+  }
+  .headline-sub {
+    font-size: 13.5px; color: #2d6a4f;
+    font-weight: 600; margin-top: 3px;
+  }
+
+  .body-text {
+    font-size: 14.5px;
+    color: #2d3a2e;
+    line-height: 2.2;
+    text-align: justify;
+    margin-bottom: 16px;
+  }
+  .hl-gold  { color: #8b6914; font-weight: 700; }
+  .hl-green { color: #2d6a4f; font-weight: 700; }
+
+  .sep {
+    width: 50%; height: 1px;
+    background: linear-gradient(90deg, transparent, #b7e4c7, transparent);
+    margin: 4px auto 18px;
+  }
+
+  .green-box {
+    background: #f0f7f4;
+    border: 1px solid #b7e4c7;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+  }
+
+  .contact-box {
+    background: linear-gradient(135deg, #fffbf0 0%, #fff8e1 100%);
+    border: 1.5px solid #f5c842;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .contact-title {
+    font-size: 13px; color: #8b6914;
+    font-weight: 700; margin-bottom: 6px;
+  }
+
+  .tags {
+    display: flex; justify-content: center;
+    gap: 9px; flex-wrap: wrap; margin-bottom: 20px;
+  }
+  .tag {
+    background: #f0f7f4;
+    border: 1px solid #b7e4c7;
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    color: #2d6a4f;
+    font-weight: 500;
+  }
+
+  /* ── FOOTER ── */
+  .footer-quote {
+    border-top: 1px solid #d8ead2;
+    padding-top: 14px;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .ayah { font-size: 14px; color: #2d6a4f; font-style: italic; }
+  .ayah-ref { font-size: 11px; color: #74a87e; margin-top: 4px; }
+
+  .bot-banner {
+    background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 50%, #1b4332 100%);
+    padding: 10px 0;
+    text-align: center;
+  }
+  .bot-banner span {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 2px;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="top-banner">
+    <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+    <span class="icon">📖</span>
+    <div class="name">أكاديمية خِلّ القرآن</div>
+    <div class="gold-line"></div>
+    <div class="sub-name">خدمةُ الوحيِ الشريف</div>
+  </div>
+
+  <div class="inner">
+
+    <div class="headline-box">
+      <div class="headline-main">🍃🍂 سارعوا بترك أثركم..</div>
+      <div class="headline-sub">في نداءُ السَّبْقِ لخدمةِ الوحيِ الشريف</div>
+    </div>
+
+    <div class="body-text">
+      📖 تعلن إدارة أكاديمية خِل القرآن عن فتح باب الانضمام لركبِ المتطوعين
+      والمتطوعات في ثغر <span class="hl-gold">"الدعم الفني والبث الرقمي"</span>؛
+      سعيًا لاستقطاب نخبةٍ من ذوي المروءة والعزيمة، ممن يرجون تجارةً لن تبور
+      في خدمة مجالس العلم والقرآن.
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="body-text">
+      إننا في هذا المحراب المبارك، ننشدُ
+      <span class="hl-gold">"كفاءاتٍ تقنية متميزة"</span>
+      تشاركنا شرف إدارة وبث الدروس والمجالس العلمية عبر منصة
+      <span class="hl-green">(Zoom)</span>،
+    </div>
+
+    <div class="green-box">
+      <div class="body-text" style="margin-bottom:0">
+        فمن وجد في نفسه الأهلية، وكان يمتلك
+        <span class="hl-gold">(حاسوباً شخصياً)</span>
+        يعينه على ضبط هذا البث وإتقان هذا الثغر،
+        فليُبادر بالخير وليحتسب الاجر
+      </div>
+    </div>
+
+    <div class="contact-box">
+      <div class="contact-title">📩 للتواصل والتسجيل</div>
+      <div class="body-text" style="margin-bottom:0; text-align:center; color:#3a2e00">
+        للراغبين والراغبات في نيل هذا الشرف، يرجى التواصل مع
+        <span class="hl-gold">(حساب التسجيل)</span> لترتيب الانضمام.
+      </div>
+    </div>
+
+    <div class="tags">
+      <span class="tag">🖥️ حاسوب شخصي</span>
+      <span class="tag">📡 بث رقمي</span>
+      <span class="tag">🎓 دعم فني</span>
+      <span class="tag">📖 خدمة القرآن</span>
+    </div>
+
+    <div class="footer-quote">
+      <div class="ayah">﴿ وَمَنْ أَحْسَنُ قَوْلًا مِّمَّن دَعَا إِلَى اللَّهِ ﴾</div>
+      <div class="ayah-ref">— سورة فصلت: ٣٣</div>
+    </div>
+
+  </div>
+
+  <div class="bot-banner">
+    <span>أكاديمية خِلّ القرآن</span>
+  </div>
+
+</div>
+</body>
+</html>
