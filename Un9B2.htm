@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار فنون الصمت والبيان</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        
+        :root {
+            --primary: #2a5d67;
+            --secondary: #4a90e2;
+            --light-bg: #f4f7f6;
+            --white: #ffffff;
+            --text-dark: #333333;
+            --highlight: #ffe0b2;
+            --correct-bg: #d4edda;
+            --correct-border: #28a745;
+            --wrong-bg: #f8d7da;
+            --wrong-border: #dc3545;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .header-ru {
+            text-align: center;
+            color: var(--secondary);
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            direction: ltr;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary);
+            text-align: center;
+        }
+
+        .reading-passage {
+            background: #fafafa;
+            padding: 25px;
+            border-right: 5px solid var(--primary);
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 1.25em;
+            text-align: justify;
+            line-height: 2;
+        }
+
+        .reading-passage p {
+            margin-bottom: 15px;
+        }
+
+        .highlight {
+            background-color: var(--highlight);
+            padding: 0 4px;
+            border-radius: 3px;
+        }
+
+        details {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 30px;
+        }
+
+        summary {
+            padding: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            background: #eef2f5;
+            border-radius: 6px;
+            color: var(--primary);
+            outline: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: right;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        td:last-child, th:last-child {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-card {
+            background: #fff;
+            border: 1px solid #eaeaea;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .question-text {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .option-btn {
+            background: var(--light-bg);
+            border: 2px solid transparent;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1em;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: #e0e6ed;
+            border-color: var(--secondary);
+        }
+
+        .correct { background-color: var(--correct-bg) !important; border-color: var(--correct-border) !important; color: #155724; }
+        .wrong { background-color: var(--wrong-bg) !important; border-color: var(--wrong-border) !important; color: #721c24; }
+        
+        select.fill-blank {
+            padding: 8px;
+            font-family: inherit;
+            font-size: 1em;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            outline: none;
+            margin: 0 5px;
+        }
+
+        .scrambled-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+            min-height: 45px;
+            padding: 10px;
+            background: #f9f9f9;
+            border: 1px dashed #ccc;
+            border-radius: 6px;
+        }
+
+        .word-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1em;
+        }
+
+        .word-btn:hover { background: var(--secondary); }
+
+        textarea.compose-area {
+            width: 100%;
+            height: 60px;
+            padding: 10px;
+            font-family: inherit;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            resize: vertical;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eaeaea;
+        }
+
+        .btn-main {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+
+        .btn-main:hover { background-color: var(--secondary); }
+
+        .btn-prev {
+            background-color: #7f8c8d;
+        }
+
+        .btn-prev:hover {
+            background-color: #95a5a6;
+        }
+
+        .btn-check {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #resultScreen { text-align: center; padding: 50px 0; }
+
+        .progress-indicator {
+            text-align: center;
+            color: #777;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            direction: ltr;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-ru">Интерактивный тест: Образование и Мир</div>
+    <h1>اِخْتِبَارُ الْعِلْمِ وَالْعَالَمِ الْقَرْيَةِ</h1>
+    
+    <div class="progress-indicator" id="progressIndicator">Раздел 1 из 7</div>
+
+    <!-- Section 1: Reading & Comprehension -->
+    <div id="sec1" class="section active">
+        <h2>الْقِسْمُ الْأَوَّلُ: الْقِرَاءَةُ وَالاِسْتِيعَابُ</h2>
+        <div class="header-ru">Раздел 1: Чтение и понимание</div>
+        
+        <div class="reading-passage">
+            <p>فِي يَوْمٍ مِنَ الْأَيَّامِ، جَلَسَتْ طَالِبَةٌ رُوسِيَّةٌ تُدْعَى "فَاطِمَة" أَمَامَ <span class="highlight">حَاسُوبِهَا</span> فِي مَدِينَةِ مُوسْكُو، تُفَكِّرُ فِي مُسْتَقْبَلِهَا الْجَامِعِيِّ. أَرَادَتْ فَاطِمَةُ أَنْ تُسَافِرَ إِلَى بَلَدٍ عَرَبِيٍّ لِتَتَعَلَّمَ اللُّغَةَ الْعَرَبِيَّةَ وَتَلْتَحِقَ بِجَامِعَةٍ كَبِيرَةٍ هُنَاكَ. كَانَتْ تَقْرَأُ عَنْ <span class="highlight">وَسَائِلِ النَّقْلِ الْقَدِيمَةِ</span>؛ كَيْفَ كَانَ النَّاسُ فِي الْمَاضِي يُسَافِرُونَ مَشْياً عَلَى الْأَقْدَامِ، أَوْ يَسْتَخْدِمُونَ الْحَيَوَانَاتِ مِثْلَ <span class="highlight">الْجِمَالِ وَالْبِغَالِ وَالْحَمِيرِ</span>، وَكَيْفَ كَانَتِ الرِّحْلَةُ تَسْتَغْرِقُ شُهُوراً طَوِيلَةً. أَمَّا الْآنَ، فَقَدْ حَجَزَتْ تَذْكَرَتَهَا عَلَى مَتْنِ طَائِرَةٍ حَدِيثَةٍ تَعْمَلُ بِالْمُحَرِّكَاتِ، لِتَصِلَ إِلَى عَاصِمَةٍ عَرَبِيَّةٍ فِي سَاعَاتٍ قَلِيلَةٍ. لَقَدْ أَصْبَحَ الْعَالَمُ -الْيَوْمَ- قَرْيَةً صَغِيرَةً بِسَبَبِ <span class="highlight">وَسَائِلِ النَّقْلِ</span> وَوَسَائِلِ الاِتِّصَالِ الْحَدِيثَةِ.</p>
+
+            <p>عِنْدَمَا وَصَلَتْ فَاطِمَةُ، اِلْتَقَتْ بِزَمِيلَتِهَا الْعَرَبِيَّةِ "زَيْنَب". قَالَتْ فَاطِمَةُ: "أَنَا مَشْغُولَةٌ جِدّاً بِإِرْسَالِ <span class="highlight">رَسَائِلَ</span> إِلَى أَهْلِي عَبْرَ <span class="highlight">الْبَرِيدِ الْإِلِكْتُرُونِيِّ</span>، فَأَنَا لَمْ أَعُدْ أُقْضِي وَقْتاً طَوِيلاً أَمَامَ التِّلْفَازِ، بَلْ أَمَامَ شَاشَةِ الْحَاسُوبِ". ابْتَسَمَتْ زَيْنَبُ وَقَالَتْ: "نَعَمْ، فِي الْمَاضِي كَانَ الْإِنْسَانُ يُرْسِلُ الْأَخْبَارَ عَنْ طَرِيقِ <span class="highlight">الْحَمَامِ الزَّاجِلِ</span>، أَمَّا الْآنَ فَنَحْنُ نَسْتَخْدِمُ <span class="highlight">الشَّبَكَةَ الدَّوْلِيَّةَ</span> الَّتِي تَرْبِطُ مَلاَيِينَ الْحَوَاسِيبِ فِي أَيِّ مَكَانٍ فِي الْعَالَمِ. لاَ تَقْلَقِي، الاِتِّصَالُ سَهْلٌ جِدّاً".</p>
+
+            <p>فِي الْيَوْمِ التَّالِي، ذَهَبَتِ الطَّالِبَتَانِ إِلَى الْجَامِعَةِ لِحُضُورِ مُحَاضَرَةٍ مُهِمَّةٍ عَنْ <span class="highlight">دُوَلِ الشِّمَالِ وَدُوَلِ الْجَنُوبِ</span>. وَقَفَ الْأُسْتَاذُ أَمَامَ السَّبُّورَةِ وَقَالَ: "اُنْظُرُوا إِلَى دُوَلِ الشِّمَالِ؛ إِنَّهَا دُوَلٌ <span class="highlight">غَنِيَّةٌ</span>، تَمْلِكُ الْقُوَّةَ وَالْعِلْمَ وَالْمَالَ. النَّاسُ هُنَاكَ <span class="highlight">أَصِحَّاءُ</span> يَعِيشُونَ فِي <span class="highlight">رَخَاءٍ</span>، وَتَكْثُرُ فِيهَا الْمَصَانِعُ وَالْمُسْتَشْفَيَاتُ. وَمِنْ نَاحِيَةٍ أُخْرَى، هَيَّا نَنْظُرْ إِلَى دُوَلِ الْجَنُوبِ؛ إِنَّهَا دُوَلٌ فَقِيرَةٌ، لاَ تَمْلِكُ الْقُوَّةَ أَوْ الْمَالَ. النَّاسُ فِيهَا يَلْبَسُونَ ثِيَاباً بَسِيطَةً، وَيَنْتَشِرُ بَيْنَهُمُ <span class="highlight">الْفَقْرُ وَالْمَرَضُ وَالْجَهْلُ</span>، وَمُعْظَمُهُمْ يَعْمَلُونَ فِي الْمَزَارِعِ. لِمَاذَا يَعِيشُ نِصْفُ الْعَالَمِ فِي رَخَاءٍ وَالنِّصْفُ الْآخَرُ فِي فَقْرٍ؟".</p>
+
+            <p>تَأَثَّرَتْ فَاطِمَةُ بِهَذَا الدَّرْسِ كَثِيراً، وَقَرَّرَتْ أَلاَّ تَتْرُكَ كُتُبَهَا، وَأَلاَّ تُضَيِّعَ وَقْتَهَا. بَقِيَتْ تَدْرُسُ فِي الْمَكْتَبَةِ كُلَّ يَوْمٍ، وَتُجْرِي الْبُحُوثَ لاِجْتِيَازِ الاِمْتِحَانَاتِ الصَّعْبَةِ. وَبَعْدَ أَرْبَعِ سَنَوَاتٍ، نَالَتْ فَاطِمَةُ شَهَادَةَ التَّخَرُّجِ مِنْ كُلِّيَّةِ الطِّبِّ بِتَفَوُّقٍ، وَلَمْ تَعُدْ إِلَى بَلَدِهَا لِلرَّاحَةِ، بَلْ قَرَّرَتْ السَّفَرَ إِلَى إِحْدَى دُوَلِ الْجَنُوبِ الْفَقِيرَةِ لِتَعْمَلَ طَبِيبَةً هُنَاكَ، وَتُسَاعِدَ الْمَرْضَى وَتَبْنِيَ مُسْتَقْبَلاً مُشْرِقاً لِلْإِنْسَانِيَّةِ.</p>
+        </div>
+
+        <details>
+            <summary>جَدْوَلُ الْمُفْرَدَاتِ (Словарь) - اضْغَطْ هُنَا لِلْعَرْضِ</summary>
+            <table>
+                <tr>
+                    <th>الْكَلِمَة</th>
+                    <th>الْمَعْنَى الْمُبَسَّط</th>
+                    <th>مِثَالٌ فِي جُمْلَة</th>
+                    <th>الترجمة الروسية</th>
+                </tr>
+                <tr><td>الشَّبَكَةَ الدَّوْلِيَّةَ</td><td>الْإِنْتَرْنِت / شَبَكَةُ الْمَعْلُومَاتِ</td><td>الشَّبَكَةُ الدَّوْلِيَّةُ تَرْبِطُ الْحَوَاسِيبَ.</td><td>Международная сеть (Интернет)</td></tr>
+                <tr><td>الْبَرِيدِ الْإِلِكْتُرُونِيِّ</td><td>رَسَائِلُ عَبْرَ الْحَاسُوبِ</td><td>أَرْسَلْتُ رِسَالَةً بِالْبَرِيدِ الْإِلِكْتُرُونِيِّ.</td><td>Электронная почта</td></tr>
+                <tr><td>الْجِمَالِ وَالْبِغَالِ</td><td>حَيَوَانَاتٌ كَانَتْ تُسْتَخْدَمُ لِلسَّفَرِ</td><td>سَافَرَ النَّاسُ قَدِيماً عَلَى الْجِمَالِ.</td><td>Верблюды и мулы</td></tr>
+                <tr><td>الْحَمَامِ الزَّاجِلِ</td><td>طُيُورٌ تُسْتَخْدَمُ لِنَقْلِ الرَّسَائِلِ</td><td>قَدِيماً، نَقَلُوا الْأَخْبَارَ بِالْحَمَامِ الزَّاجِلِ.</td><td>Почтовые голуби</td></tr>
+                <tr><td>دُوَلِ الشِّمَالِ</td><td>الدُّوَلُ الْغَنِيَّةُ وَالْمُتَقَدِّمَةُ</td><td>دُوَلُ الشِّمَالِ تَمْلِكُ الْمَصَانِعَ.</td><td>Страны Севера (развитые)</td></tr>
+                <tr><td>دُوَلِ الْجَنُوبِ</td><td>الدُّوَلُ الْفَقِيرَةُ وَالنَّامِيَةُ</td><td>تُعَانِي دُوَلُ الْجَنُوبِ مِنَ الْمَرَضِ.</td><td>Страны Юга (развивающиеся)</td></tr>
+                <tr><td>غَنِيَّةٌ</td><td>تَمْلِكُ الْمَالَ وَالْقُوَّةَ (عَكْس فَقِيرَة)</td><td>تِلْكَ الدَّوْلَةُ غَنِيَّةٌ جِدّاً.</td><td>Богатая</td></tr>
+                <tr><td>أَصِحَّاءُ</td><td>جَمْعُ (صَحِيح) / غَيْرُ مَرْضَى</td><td>النَّاسُ فِي هَذِهِ الْقَرْيَةِ أَصِحَّاءُ.</td><td>Здоровые</td></tr>
+                <tr><td>رَخَاءٍ</td><td>حَيَاةٌ سَهْلَةٌ وَغَنِيَّةٌ</td><td>يَعِيشُ النَّاسُ فِي رَخَاءٍ وَأَمْنٍ.</td><td>Благополучие / Достаток</td></tr>
+                <tr><td>الْفَقْرُ وَالْجَهْلُ</td><td>عَدَمُ الْمَالِ وَعَدَمُ الْعِلْمِ</td><td>الْفَقْرُ وَالْجَهْلُ مُشْكِلَةٌ كَبِيرَةٌ.</td><td>Бедность и невежество</td></tr>
+            </table>
+        </details>
+
+        <div id="sec1_mcq_container"></div>
+        <div id="sec1_tf_container"></div>
+    </div>
+
+    <!-- Section 2: Vocabulary -->
+    <div id="sec2" class="section">
+        <h2>الْقِسْمُ الثَّانِي: الْمُفْرَدَاتُ وَالتَّعْبِيرَاتُ</h2>
+        <div class="header-ru">Раздел 2: Лексика и выражения</div>
+        <div id="sec2_mcq_container"></div>
+    </div>
+
+    <!-- Section 3: Grammar T/F -->
+    <div id="sec3" class="section">
+        <h2>الْقِسْمُ الثَّالِثُ: التَّرَاكِيبُ النَّحْوِيَّةُ (صَحِيحٌ أَمْ خَطَأٌ)</h2>
+        <div class="header-ru">Раздел 3: Грамматика (Верно / Неверно)</div>
+        <div id="sec3_tf_container"></div>
+    </div>
+
+    <!-- Section 4: S/P/Antonyms -->
+    <div id="sec4" class="section">
+        <h2>الْقِسْمُ الرَّابِعُ: الْمُفْرَدُ وَالْجَمْعُ وَالْمُضَادُّ</h2>
+        <div class="header-ru">Раздел 4: Единственное/Множественное число и Антонимы</div>
+        <div id="sec4_mcq_container"></div>
+    </div>
+
+    <!-- Section 5: Fill in the blank -->
+    <div id="sec5" class="section">
+        <h2>الْقِسْمُ الْخَامِسُ: اِمْلَأِ الْفَرَاغَاتِ</h2>
+        <div class="header-ru">Раздел 5: Заполните пропуски (Выберите правильное слово)</div>
+        <div id="sec5_fill_container"></div>
+    </div>
+
+    <!-- Section 6: Sentence Ordering -->
+    <div id="sec6" class="section">
+        <h2>الْقِسْمُ السَّادِسُ: تَرْتِيبُ الْجُمَلِ</h2>
+        <div class="header-ru">Раздел 6: Порядок слов в предложении</div>
+        <div id="sec6_order_container"></div>
+    </div>
+
+    <!-- Section 7: Composition -->
+    <div id="sec7" class="section">
+        <h2>الْقِسْمُ السَّابِعُ: الْإِنْشَاءُ وَالتَّعْبِيرُ</h2>
+        <div class="header-ru">Раздел 7: Сочинение (Проверяется преподавателем)</div>
+        <p style="color:red; text-align:center; font-size:0.9em;">مُلاَحَظَةٌ: هَذَا الْقِسْمُ يُصَحَّحُ يَدَوِيّاً مِنْ قِبَلِ الْمُعَلِّمِ وَلاَ يَدْخُلُ فِي النَّتِيجَةِ الآلِيَّةِ.</p>
+        <div id="sec7_comp_container"></div>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="resultScreen" class="section">
+        <h2>النَّتِيجَةُ النِّهَائِيَّةُ</h2>
+        <div class="header-ru">Ваш результат</div>
+        <h1 id="scoreDisplay" style="font-size: 3em; color: var(--primary);"></h1>
+        <p>الْأَسْئِلَةُ الصَّحِيحَةُ مِنْ إِجْمَالِي 95 سُؤَالاً آلِيّاً</p>
+        <button class="btn-main" onclick="location.reload()">إِعَادَةُ الاِخْتِبَارِ (Повторить)</button>
+    </div>
+
+    <div class="controls" id="controls">
+        <button class="btn-main btn-prev" id="btnPrev" onclick="prevSection()" style="display: none;">الْقِسْمُ السَّابِقُ (Назад)</button>
+        <button class="btn-main" id="btnNext" onclick="nextSection()">الْقِسْمُ التَّالِي (Вперед)</button>
+    </div>
+</div>
+
+<script>
+    // State Variables
+    let currentSection = 1;
+    const totalSections = 7;
+    let score = 0;
+
+    /* === DATA GENERATION (Destructuring Arrays) === */
+    
+    // Sec 1 (10 MCQ, 10 TF)
+    const dataSec1MCQ = [
+        ["مَا هِيَ وَسَائِلُ النَّقْلِ الْقَدِيمَةُ الَّتِي قَرَأَتْ عَنْهَا فَاطِمَةُ؟", ["الطَّائِرَاتُ وَالْقِطَارَاتُ", "الْجِمَالُ وَالْبِغَالُ وَالْحَمِيرُ", "السَّيَّارَاتُ الْحَدِيثَةُ"], 1],
+        ["كَيْفَ أَرْسَلَتْ فَاطِمَةُ الرَّسَائِلَ إِلَى أَهْلِهَا فِي مُوسْكُو؟", ["عَنْ طَرِيقِ الْحَمَامِ الزَّاجِلِ", "بِوَاسِطَةِ الْبَرِيدِ الْإِلِكْتُرُونِيِّ", "بِالسَّفَرِ إِلَيْهِمْ"], 1],
+        ["مَاذَا كَانَ يَسْتَخْدِمُ الْإِنْسَانُ فِي الْمَاضِي لِنَقْلِ الْأَخْبَارِ؟", ["الْهَاتِفَ", "الشَّبَكَةَ الدَّوْلِيَّةَ", "الْحَمَامَ الزَّاجِلَ"], 2],
+        ["لِمَاذَا أَصْبَحَ الْعَالَمُ الْيَوْمَ قَرْيَةً صَغِيرَةً؟", ["بِسَبَبِ وَسَائِلِ النَّقْلِ وَالاِتِّصَالِ الْحَدِيثَةِ", "لِأَنَّ عَدَدَ النَّاسِ قَلِيلٌ", "بِسَبَبِ الْفَقْرِ"], 0],
+        ["بِمَاذَا تَتَمَيَّزُ دُوَلُ الشِّمَالِ كَمَا قَالَ الْأُسْتَاذُ؟", ["بِالْفَقْرِ وَالْمَرَضِ", "بِالْغِنَى وَالْقُوَّةِ وَرَخَاءِ الْعَيْشِ", "بِكَثْرَةِ الْمَزَارِعِ الْبَسِيطَةِ"], 1],
+        ["مَاذَا يَنْتَشِرُ فِي دُوَلِ الْجَنُوبِ؟", ["الْمَصَانِعُ الْكَبِيرَةُ", "رَخَاءُ الْعَيْشِ وَالْأَمْنُ", "الْفَقْرُ وَالْمَرَضُ وَالْجَهْلُ"], 2],
+        ["أَيْنَ كَانَتْ فَاطِمَةُ تَقْضِي وَقْتَهَا قَبْلَ الاِمْتِحَانَاتِ؟", ["فِي الْمَكْتَبَةِ تَدْرُسُ", "أَمَامَ التِّلْفَازِ", "فِي الْأَسْوَاقِ"], 0],
+        ["مَا هِيَ الشَّهَادَةُ الَّتِي حَصَلَتْ عَلَيْهَا فَاطِمَةُ؟", ["شَهَادَةٌ فِي الْهَنْدَسَةِ", "شَهَادَةُ التَّخَرُّجِ مِنْ كُلِّيَّةِ الطِّبِّ", "شَهَادَةٌ فِي اللُّغَاتِ فَقَطْ"], 1],
+        ["مَاذَا قَرَّرَتْ فَاطِمَةُ بَعْدَ التَّخَرُّجِ؟", ["أَنْ تَعُودَ إِلَى رُوسْيَا لِتَنَامَ", "أَنْ تُسَافِرَ لِدُوَلِ الْجَنُوبِ لِتُسَاعِدَ الْمَرْضَى", "أَنْ تَعْمَلَ فِي دُوَلِ الشِّمَالِ"], 1],
+        ["مَا الْمَقْصُودُ بِـ (الشَّبَكَة الدَّوْلِيَّة)؟", ["شَبَكَةُ الصَّيْدِ الْكَبِيرَةُ", "شَبَكَةُ الْمَاءِ", "الْإِنْتَرْنِت وَرَبْطُ الْحَوَاسِيبِ"], 2]
+    ];
+    
+    const dataSec1TF = [
+        ["كَانَتْ فَاطِمَةُ تَقْضِي وَقْتاً طَوِيلاً أَمَامَ التِّلْفَازِ فِي الْمَدِينَةِ الْعَرَبِيَّةِ.", false],
+        ["السَّفَرُ قَدِيماً عَلَى الْجِمَالِ كَانَ يَسْتَغْرِقُ شُهُوراً طَوِيلَةً.", true],
+        ["الْبَرِيدُ الْإِلِكْتُرُونِيُّ يُرْسِلُ الرَّسَائِلَ بِبُطْءٍ شَدِيدٍ جِدّاً.", false],
+        ["تَرْبِطُ الشَّبَكَةُ الدَّوْلِيَّةُ مَلاَيِينَ الْحَوَاسِيبِ فِي الْعَالَمِ.", true],
+        ["دُوَلُ الْجَنُوبِ دُوَلٌ غَنِيَّةٌ تَمْلِكُ الْكَثِيرَ مِنَ الْمَصَانِعِ.", false],
+        ["النَّاسُ فِي دُوَلِ الشِّمَالِ أَصِحَّاءُ وَيَعِيشُونَ فِي رَخَاءٍ.", true],
+        ["تَرَكَتْ فَاطِمَةُ دُرُوسَهَا بَعْدَ النَّدْوَةِ وَلَمْ تَهْتَمَّ بِالْكُتُبِ.", false],
+        ["مُعْظَمُ سُكَّانِ دُوَلِ الْجَنُوبِ يَعْمَلُونَ فِي الْمَزَارِعِ الْبَسِيطَةِ.", true],
+        ["فَاطِمَةُ نَالَتْ شَهَادَتَهَا بِتَفَوُّقٍ وَنَجَاحٍ.", true],
+        ["الطَّائِرَاتُ الْحَدِيثَةُ تَعْمَلُ بِالْمُحَرِّكَاتِ وَتَصِلُ فِي سَاعَاتٍ قَلِيلَةٍ.", true]
+    ];
+
+    // Sec 2 (15 MCQ)
+    const dataSec2 = [
+        ["مَا مَعْنَى (الشَّبَكَة الدَّوْلِيَّة)؟", ["شَبَكَةُ الطُّرُقِ", "الْإِنْتَرْنِت", "الْبَرِيدُ الْعَادِيُّ"], 1],
+        ["مَا مَعْنَى (رَخَاء)؟", ["حَيَاةٌ فَقِيرَةٌ وَصَعْبَةٌ", "حَيَاةٌ سَهْلَةٌ وَغَنِيَّةٌ وَأَمْنٌ", "مَرَضٌ شَدِيدٌ"], 1],
+        ["الْكَلِمَةُ الْمُنَاسِبَةُ لِوَصْفِ (دُوَل الشِّمَال):", ["فَقِيرَةٌ", "غَنِيَّةٌ", "ضَعِيفَةٌ"], 1],
+        ["مَا مَعْنَى كَلِمَةِ (مُعْظَمُ)؟", ["أَغْلَبُ / أَكْثَرُ", "أَقَلُّ", "لاَ أَحَدَ"], 0],
+        ["الْمَكَانُ الَّذِي نُجْرِي فِيهِ التَّجَارِبَ هُوَ:", ["الْمَكْتَبَةُ", "الْمُخْتَبَرُ", "الْمَلْعَبُ"], 1],
+        ["مَا مَعْنَى (نَالَتْ)؟", ["فَقَدَتْ", "بَحَثَتْ", "حَصَلَتْ عَلَى"], 2],
+        ["مَا مَعْنَى (الْحَمَام الزَّاجِل)؟", ["طُيُورٌ تُسْتَخْدَمُ لِنَقْلِ الرَّسَائِلِ", "حَيَوَانٌ يَمْشِي فِي الصَّحْرَاءِ", "طَائِرَةٌ حَدِيثَةٌ"], 0],
+        ["تَعْبِيرُ (الْعَالَمُ قَرْيَةٌ صَغِيرَةٌ) يَدُلُّ عَلَى:", ["صُعُوبَةِ السَّفَرِ", "سُهُولَةِ الاِتِّصَالِ وَالتَّوَاصُلِ", "صِغَرِ حَجْمِ الْأَرْضِ"], 1],
+        ["كَلِمَةٌ بِمَعْنَى (تَطْوِير وَزِيَادَة):", ["تَخَلُّف", "تَنْمِيَة", "رُسُوب"], 1],
+        ["مَا مَعْنَى (يَجْتَاز) فِي جُمْلَة (يَجْتَازُ الاِمْتِحَانَ)؟", ["يَرْسُبُ فِيهِ", "يَنْجَحُ فِيهِ وَيَمُرُّ مِنْهُ", "يَتْرُكُهُ"], 1],
+        ["الشَّخْصُ الَّذِي يُعَالِجُ الْمَرْضَى يُسَمَّى:", ["تِلْمِيذاً", "طَبِيباً", "مُهَنْدِساً"], 1],
+        ["مَا مَعْنَى (خِبْرَة)؟", ["مَعْرِفَةٌ سَابِقَةٌ بِالْعَمَلِ", "سَيَّارَةٌ جَدِيدَةٌ", "وَرَقَةُ الاِمْتِحَانِ"], 0],
+        ["عَكْسُ كَلِمَةِ (مُجْتَهِد):", ["ذَكِيّ", "كَسُول", "غَنِيّ"], 1],
+        ["الْكَلِمَةُ الدَّالَّةُ عَلَى النِّهَايَةِ السَّعِيدَةِ لِلدِّرَاسَةِ هِيَ:", ["الرُّسُوبُ", "التَّخَرُّجُ", "الْغِيَابُ"], 1],
+        ["(هَيْمَنَةُ الدُّوَلِ) تَعْنِي:", ["مُسَاعَدَةُ الدُّوَلِ", "سَيْطَرَةُ وَتَحَكُّمُ الدُّوَلِ", "تَرْكُ الدُّوَلِ"], 1]
+    ];
+
+    // Sec 3 (15 TF)
+    const dataSec3 = [
+        ["يُنْصَبُ الْفِعْلُ الْمُضَارِعُ إِذَا سُبِقَ بِـ (أَنْ) أَوْ (لَنْ).", true],
+        ["يُجْزَمُ الْفِعْلُ الْمُضَارِعُ إِذَا سُبِقَ بِـ (لَمْ) أَوْ (لاَ) النَّاهِيَةِ.", true],
+        ["الْفِعْلُ فِي جُمْلَةِ (لَنْ تُسَافِرَ الْيَوْمَ) مُضَارِعٌ مَجْزُومٌ بِالسُّكُونِ.", false],
+        ["فِي جُمْلَة (لَمْ أَعْمَلْ)، الْفِعْلُ (أَعْمَلْ) مَجْزُومٌ وَعَلاَمَتُهُ السُّكُونُ.", true],
+        ["(أُرِيدُ أَنْ أَتَعَلَّمَ) الْفِعْلُ (أَتَعَلَّمَ) مَنْصُوبٌ بِالْفَتْحَةِ.", true],
+        ["(لاَ تَحْزَنْ) أُسْلُوبُ نَهْيٍ، وَالْفِعْلُ بَعْدَهُ مُضَارِعٌ مَرْفُوعٌ.", false],
+        ["الْفِعْلُ الْمَاضِي مِثْل (دَرَسَ) يَبْنَى عَلَى الْفَتْحِ.", true],
+        ["إِذَا اتَّصَلَتْ بِالْمَاضِي تَاءُ الْفَاعِلِ مِثْل (قَرَأْتُ) يُبْنَى عَلَى السُّكُونِ.", true],
+        ["الْأَفْعَالُ الْخَمْسَةُ مِثْل (يَكْتُبُونَ) تُرْفَعُ بِالضَّمَّةِ الظَّاهِرَةِ.", false],
+        ["فِي جُمْلَة (لَمْ يَتَحَدَّثِ الطُّلاَّبُ) الْفِعْلُ مَجْزُومٌ بـ (لَمْ).", true],
+        ["الضَّمِيرُ (هِيَ) يَأْخُذُ الْفِعْلَ الْمُضَارِعَ الْمَبْدُوءَ بِالتَّاءِ مِثْل (تَقْرَأُ).", true],
+        ["فِي جُمْلَة (الْبَنَاتُ شَارَكْنَ) الْفِعْلُ مَبْنِيٌّ عَلَى السُّكُونِ.", true],
+        ["(سَافَرْنَا إِلَى مَكَّةَ) الْفَاعِلُ هُنَا هُوَ الضَّمِيرُ (نَا).", true],
+        ["نَقُولُ: (أَنَا وَصَلْتَ) لِلْمُتَكَلِّمِ.", false],
+        ["جُمْلَة (لَنْ نَنْسَى وَطَنَنَا) تَحْتَوِي عَلَى فِعْلٍ مُضَارِعٍ مَنْصُوبٍ.", true]
+    ];
+
+    // Sec 4 (15 MCQ)
+    const dataSec4 = [
+        ["مَا جَمْعُ كَلِمَةِ (فَقِير)؟", ["فَقِيرُونَ", "فُقَرَاء", "فَقَائِر"], 1],
+        ["مَا جَمْعُ كَلِمَةِ (غَنِيّ)؟", ["أَغْنِيَاء", "غَنِيُّون", "أَغْنِيَات"], 0],
+        ["مَا مُضَادُّ كَلِمَةِ (رَخَاء)؟", ["شِدَّة وَفَقْر", "أَمْن", "سَعَادَة"], 0],
+        ["مَا مُفْرَدُ (أَصِحَّاء)؟", ["صِحَّة", "صَحِيح", "صَحَاح"], 1],
+        ["مَا جَمْعُ (مَصْنَع)؟", ["مَصَانِع", "مُصَنَّعَات", "صُنَّاع"], 0],
+        ["مَا جَمْعُ (مَزْرَعَة)؟", ["زُرَّاع", "مَزَارِع", "زِرَاعَات"], 1],
+        ["مَا مُضَادُّ (حَدِيثَة)؟", ["قَدِيمَة", "سَرِيعَة", "جَدِيدَة"], 0],
+        ["مَا جَمْعُ (رِسَالَة)؟", ["رُسُل", "رَسَائِل", "رِسَالاَت"], 1],
+        ["مَا جَمْعُ (حَاسُوب)؟", ["حَوَاسِب", "حَاسُوبَات", "حَوَاسِيب"], 2],
+        ["مَا مُضَادُّ (الْجَهْل)؟", ["الْمَرَض", "الْعِلْم", "الْفَقْر"], 1],
+        ["مَا مُفْرَدُ (ضُيُوف)؟", ["ضَيْف", "ضِيَافَة", "ضَيِّف"], 0],
+        ["مَا مُضَادُّ (مَرِيض)؟", ["قَاسٍ", "صَحِيح / مُعَافَى", "ضَعِيف"], 1],
+        ["مَا جَمْعُ (نَدْوَة)؟", ["أَنْدِيَة", "نَدَوَات", "نَوَادٍ"], 1],
+        ["مَا جَمْعُ (ثَوْب)؟", ["أَثْوَاب / ثِيَاب", "ثَوَبَان", "مَثُوبَات"], 0],
+        ["مَا جَمْعُ (كِتَاب)؟", ["كُتُب", "كُتَّاب", "مَكَاتِب"], 0]
+    ];
+
+    // Sec 5 (15 Fill-in-the-blank)
+    const fillWordsSec5 = [
+        "الْجَامِعَةِ", "الشَّهَادَةَ", "الْمُخْتَبَرِ", "يَسْأَلُ", "الْمَكْتَبَةِ", 
+        "تَتَخَرَّجُ", "حَاسُوب", "الطَّائِرَةِ", "الْإِلِكْتُرُونِيِّ", "أَصِحَّاءُ", 
+        "رَخَاءٍ", "الْفَقْرُ", "الْمَصَانِعُ", "الزَّاجِلِ", "قَرْيَةٌ"
+    ];
+    
+    const dataSec5 = [
+        ["أَصْبَحَ الْعَالَمُ ______ صَغِيرَةً بِفَضْلِ الاِتِّصَالاَتِ.", "قَرْيَةٌ"],
+        ["كَانَ النَّاسُ يُرْسِلُونَ الرَّسَائِلَ بِالْحَمَامِ ______.", "الزَّاجِلِ"],
+        ["أَقْضِي وَقْتِي أَمَامَ شَاشَةِ الـ ______ لِلدِّرَاسَةِ.", "حَاسُوب"],
+        ["تَصِلُ الرَّسَائِلُ بِسُرْعَةٍ عَبْرَ الْبَرِيدِ ______.", "الْإِلِكْتُرُونِيِّ"],
+        ["سَافَرْتُ إِلَى بَلَدٍ بَعِيدٍ عَلَى مَتْنِ ______.", "الطَّائِرَةِ"],
+        ["دُوَلُ الشِّمَالِ غَنِيَّةٌ وَتَكْثُرُ فِيهَا ______.", "الْمَصَانِعُ"],
+        ["سُكَّانُ تِلْكَ الْمَدِينَةِ ______ وَلاَ يَمْرَضُونَ كَثِيراً.", "أَصِحَّاءُ"],
+        ["يَعِيشُ الْأَغْنِيَاءُ فِي أَمْنٍ وَ ______.", "رَخَاءٍ"],
+        ["يَنْتَشِرُ ______ فِي بَعْضِ دُوَلِ الْجَنُوبِ.", "الْفَقْرُ"],
+        ["نَظَّمَتِ الْكُلِّيَّةُ نَدْوَةً دَاخِلَ قَاعَةِ ______.", "الْجَامِعَةِ"],
+        ["نَالَتِ الطَّالِبَةُ ______ بِتَفَوُّقٍ.", "الشَّهَادَةَ"],
+        ["يُجْرِي الْعَالِمُ التَّجَارِبَ فِي ______.", "الْمُخْتَبَرِ"],
+        ["قَرَأْتُ كِتَاباً مُفِيداً فِي ______ الْعَامَّةِ.", "الْمَكْتَبَةِ"],
+        ["مَتَى ______ مِنْ كُلِّيَّةِ الطِّبِّ؟", "تَتَخَرَّجُ"],
+        ["الطَّالِبُ النَّشِيطُ ______ أُسْتَاذَهُ دَائِماً.", "يَسْأَلُ"]
+    ];
+
+    // Sec 6 (15 Sentence ordering)
+    const dataSec6 = [
+        ["قَرْيَةٌ / صَغِيرَةٌ / الْعَالَمُ / أَصْبَحَ / الْيَوْمَ", "أَصْبَحَ الْعَالَمُ الْيَوْمَ قَرْيَةٌ صَغِيرَةٌ"],
+        ["بِالْحَمَامِ / الْأَخْبَارَ / الْإِنْسَانُ / أَرْسَلَ / الزَّاجِلِ", "أَرْسَلَ الْإِنْسَانُ الْأَخْبَارَ بِالْحَمَامِ الزَّاجِلِ"],
+        ["مَلاَيِينَ / الشَّبَكَةُ / تَرْبِطُ / الْحَوَاسِيبِ / الدَّوْلِيَّةُ", "تَرْبِطُ الشَّبَكَةُ الدَّوْلِيَّةُ مَلاَيِينَ الْحَوَاسِيبِ"],
+        ["وَالْبِغَالِ / النَّاسُ / عَلَى / سَافَرَ / الْجِمَالِ", "سَافَرَ النَّاسُ عَلَى الْجِمَالِ وَالْبِغَالِ"],
+        ["تَمْلِكُ / دُوَلُ / الشِّمَالِ / الْمَالَ / وَالْقُوَّةَ", "تَمْلِكُ دُوَلُ الشِّمَالِ الْقُوَّةَ وَالْمَالَ"],
+        ["رَخَاءٍ / الْأَغْنِيَاءُ / فِي / يَعِيشُ / وَأَمْنٍ", "يَعِيشُ الْأَغْنِيَاءُ فِي أَمْنٍ وَرَخَاءٍ"],
+        ["يَنْتَشِرُ / دُوَلِ / الْفَقْرُ / فِي / الْجَنُوبِ", "يَنْتَشِرُ الْفَقْرُ فِي دُوَلِ الْجَنُوبِ"],
+        ["الْعِلْمِيَّةَ / الطُّلاَّبُ / حَضَرَ / النَّدْوَةَ", "حَضَرَ الطُّلاَّبُ النَّدْوَةَ الْعِلْمِيَّةَ"],
+        ["لِلْعُطْلَةِ / لَمْ / هَذَا / الْعَامَ / أُسَافِرْ", "لَمْ أُسَافِرْ لِلْعُطْلَةِ هَذَا الْعَامَ"],
+        ["أَنْ / الْعَرَبِيَّةَ / أُرِيدُ / أَتَعَلَّمَ / اللُّغَةَ", "أُرِيدُ أَنْ أَتَعَلَّمَ اللُّغَةَ الْعَرَبِيَّةَ"],
+        ["شَهَادَةَ / فَاطِمَةُ / نَالَتْ / بِتَفَوُّقٍ / التَّخَرُّجِ", "نَالَتْ فَاطِمَةُ شَهَادَةَ التَّخَرُّجِ بِتَفَوُّقٍ"],
+        ["عَلَى / طَاوِلَةِ / الْكِتَابُ / الْمَكْتَبَةِ / مَوْجُودٌ", "الْكِتَابُ مَوْجُودٌ عَلَى طَاوِلَةِ الْمَكْتَبَةِ"],
+        ["الْبَرِيدِ / رِسَالَةً / أَرْسَلْتُ / الْإِلِكْتُرُونِيِّ / عَبْرَ", "أَرْسَلْتُ رِسَالَةً عَبْرَ الْبَرِيدِ الْإِلِكْتُرُونِيِّ"],
+        ["وَاجِبَاتِكُمْ / لاَ / يَا / أَوْلاَدُ / تَنْسَوْا", "لاَ تَنْسَوْا وَاجِبَاتِكُمْ يَا أَوْلاَدُ"],
+        ["وَظِيفَةٍ / أَبْحَثُ / مُنَاسِبَةٍ / عَنْ / الْآنَ", "أَبْحَثُ عَنْ وَظِيفَةٍ مُنَاسِبَةٍ الْآنَ"]
+    ];
+
+    // Sec 7 (15 Words for Composition)
+    const dataSec7 = [
+        "الشَّبَكَة الدَّوْلِيَّة", "حَاسُوب", "دُوَل الشِّمَال", "رَخَاء", "الْفَقْر",
+        "الْبَرِيد الْإِلِكْتُرُونِيّ", "مُخْتَبَر", "بَحْث عِلْمِيّ", "طَائِرَة", "مُسْتَقْبَل",
+        "وَسَائِل الاِتِّصَال", "أَصِحَّاء", "شَهَادَة", "تَخَرُّج", "وَظِيفَة"
+    ];
+
+    /* === RENDER LOGIC === */
+
+    function handleBtnClick(btn, isCorrect) {
+        if(btn.disabled) return;
+        const parent = btn.parentElement;
+        Array.from(parent.children).forEach(b => b.disabled = true);
+        
+        if (isCorrect) {
+            btn.classList.add("correct");
+            score++;
+        } else {
+            btn.classList.add("wrong");
+        }
+    }
+
+    // Sec 1 MCQ
+    const sec1McqCont = document.getElementById("sec1_mcq_container");
+    dataSec1MCQ.forEach((qArr, index) => {
+        const [qText, options, correctIdx] = qArr;
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.innerHTML = `<div class="question-text">${index + 1}. ${qText}</div>`;
+        const grid = document.createElement('div');
+        grid.className = 'options-grid';
+        options.forEach((opt, oIdx) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => handleBtnClick(btn, oIdx === correctIdx);
+            grid.appendChild(btn);
+        });
+        card.appendChild(grid);
+        sec1McqCont.appendChild(card);
+    });
+
+    // Sec 1 TF
+    const sec1TfCont = document.getElementById("sec1_tf_container");
+    dataSec1TF.forEach((qArr, index) => {
+        const [qText, isTrue] = qArr;
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.innerHTML = `<div class="question-text">${index + 11}. ${qText}</div>`;
+        const grid = document.createElement('div');
+        grid.className = 'options-grid';
+        
+        const btnT = document.createElement('button');
+        btnT.className = 'option-btn';
+        btnT.textContent = 'صَحِيح (Верно)';
+        btnT.onclick = () => handleBtnClick(btnT, isTrue === true);
+        
+        const btnF = document.createElement('button');
+        btnF.className = 'option-btn';
+        btnF.textContent = 'خَطَأ (Неверно)';
+        btnF.onclick = () => handleBtnClick(btnF, isTrue === false);
+
+        grid.appendChild(btnT);
+        grid.appendChild(btnF);
+        card.appendChild(grid);
+        sec1TfCont.appendChild(card);
+    });
+
+    // Sec 2 MCQ
+    const sec2Cont = document.getElementById("sec2_mcq_container");
+    dataSec2.forEach((qArr, index) => {
+        const [qText, options, correctIdx] = qArr;
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.innerHTML = `<div class="question-text">${index + 1}. ${qText}</div>`;
+        const grid = document.createElement('div');
+        grid.className = 'options-grid';
+        options.forEach((opt, oIdx) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => handleBtnClick(btn, oIdx === correctIdx);
+            grid.appendChild(btn);
+        });
+        card.appendChild(grid);
+        sec2Cont.appendChild(card);
+    });
+
+    // Sec 3 TF
+    const sec3Cont = document.getElementById("sec3_tf_container");
+    dataSec3.forEach((qArr, index) => {
+        const [qText, isTrue] = qArr;
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.innerHTML = `<div class="question-text">${index + 1}. ${qText}</div>`;
+        const grid = document.createElement('div');
+        grid.className = 'options-grid';
+        
+        const btnT = document.createElement('button');
+        btnT.className = 'option-btn';
+        btnT.textContent = 'صَحِيح (Верно)';
+        btnT.onclick = () => handleBtnClick(btnT, isTrue === true);
+        
+        const btnF = document.createElement('button');
+        btnF.className = 'option-btn';
+        btnF.textContent = 'خَطَأ (Неверно)';
+        btnF.onclick = () => handleBtnClick(btnF, isTrue === false);
+
+        grid.appendChild(btnT);
+        grid.appendChild(btnF);
+        card.appendChild(grid);
+        sec3Cont.appendChild(card);
+    });
+
+    // Sec 4 MCQ
+    const sec4Cont = document.getElementById("sec4_mcq_container");
+    dataSec4.forEach((qArr, index) => {
+        const [qText, options, correctIdx] = qArr;
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.innerHTML = `<div class="question-text">${index + 1}. ${qText}</div>`;
+        const grid = document.createElement('div');
+        grid.className = 'options-grid';
+        options.forEach((opt, oIdx) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => handleBtnClick(btn, oIdx === correctIdx);
+            grid.appendChild(btn);
+        });
+        card.appendChild(grid);
+        sec4Cont.appendChild(card);
+    });
+
+    // Sec 5 Fill in the blank (FIXED)
+    const sec5Cont = document.getElementById("sec5_fill_container");
+    const selectTemplate = `<select class="fill-blank" onchange="checkSelect(this)"><option value="">...</option>` + 
+        fillWordsSec5.map(w => `<option value="${w}">${w}</option>`).join('') + 
+        `</select>`;
+
+    dataSec5.forEach((qArr, index) => {
+        const [qText, correctWord] = qArr;
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        
+        // تقسيم النص عند الفراغ واستدعاء الجزأين بشكل منفصل لمنع التكرار
+        const parts = qText.split("______");
+        card.innerHTML = `<div class="question-text" data-ans="${correctWord}">${index + 1}. ${parts} ${selectTemplate} ${parts[1]}</div>`;
+        sec5Cont.appendChild(card);
+    });
+
+    window.checkSelect = function(selectEl) {
+        const correctAns = selectEl.parentElement.getAttribute("data-ans");
+        if (selectEl.value === correctAns) {
+            selectEl.classList.add("correct");
+            selectEl.classList.remove("wrong");
+            selectEl.disabled = true;
+            score++;
+        } else {
+            selectEl.classList.add("wrong");
+            setTimeout(() => {
+                selectEl.classList.remove("wrong");
+                selectEl.value = "";
+            }, 1000);
+        }
+    };
+
+    // Sec 6 Ordering
+    const sec6Cont = document.getElementById("sec6_order_container");
+    dataSec6.forEach((qArr, index) => {
+        const [scrambledStr, correctSentence] = qArr;
+        const scrambledWords = scrambledStr.split(" / ").sort(() => Math.random() - 0.5);
+        
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.innerHTML = `<div class="question-text">${index + 1}. رَتِّبِ الْكَلِمَاتِ:</div>`;
+        
+        const srcArea = document.createElement('div');
+        srcArea.className = 'scrambled-area';
+        srcArea.id = `order_src_${index}`;
+        
+        const targetArea = document.createElement('div');
+        targetArea.className = 'scrambled-area';
+        targetArea.id = `order_tgt_${index}`;
+        targetArea.style.minHeight = '45px';
+        targetArea.style.borderColor = '#4a90e2';
+        
+        scrambledWords.forEach((word) => {
+            const wBtn = document.createElement('button');
+            wBtn.className = 'word-btn';
+            wBtn.textContent = word;
+            wBtn.onclick = () => {
+                if (wBtn.parentElement === srcArea) targetArea.appendChild(wBtn);
+                else srcArea.appendChild(wBtn);
+            };
+            srcArea.appendChild(wBtn);
+        });
+
+        const checkBtn = document.createElement('button');
+        checkBtn.className = 'btn-check';
+        checkBtn.textContent = 'تَحَقَّقْ (Проверить)';
+        checkBtn.onclick = () => {
+            const currentSentence = Array.from(targetArea.children).map(b => b.textContent).join(' ');
+            if (currentSentence === correctSentence) {
+                targetArea.style.backgroundColor = 'var(--correct-bg)';
+                checkBtn.style.display = 'none';
+                Array.from(targetArea.children).forEach(b => b.disabled = true);
+                score++;
+            } else {
+                targetArea.style.backgroundColor = 'var(--wrong-bg)';
+                setTimeout(() => targetArea.style.backgroundColor = '#f9f9f9', 1000);
+            }
+        };
+
+        card.appendChild(srcArea);
+        card.appendChild(targetArea);
+        card.appendChild(checkBtn);
+        sec6Cont.appendChild(card);
+    });
+
+    // Sec 7 Composition
+    const sec7Cont = document.getElementById("sec7_comp_container");
+    dataSec7.forEach((word, index) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.innerHTML = `
+            <div class="question-text">${index + 1}. ضَعْ كَلِمَةَ ( ${word} ) فِي جُمْلَةٍ:</div>
+            <textarea class="compose-area" placeholder="اُكْتُبْ جُمْلَتَكَ هُنَا (Напишите предложение здесь)..."></textarea>
+        `;
+        sec7Cont.appendChild(card);
+    });
+
+    /* === NAVIGATION LOGIC (WITH PREV/NEXT) === */
+    function updateControlsUI() {
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
+
+        if (currentSection === 1) {
+            btnPrev.style.display = 'none';
+        } else {
+            btnPrev.style.display = 'inline-block';
+        }
+
+        if (currentSection === totalSections) {
+            btnNext.textContent = 'إِنْهَاءُ الاِخْتِبَارِ (Завершить тест)';
+        } else {
+            btnNext.textContent = 'الْقِسْمُ التَّالِي (Вперед)';
+        }
+        
+        document.getElementById('progressIndicator').textContent = `Раздел ${currentSection} из ${totalSections}`;
+    }
+
+    window.nextSection = function() {
+        if (currentSection < totalSections) {
+            document.getElementById(`sec${currentSection}`).classList.remove('active');
+            currentSection++;
+            document.getElementById(`sec${currentSection}`).classList.add('active');
+            updateControlsUI();
+            window.scrollTo(0,0);
+        } else if (currentSection === totalSections) {
+            // Show Results
+            document.getElementById(`sec${currentSection}`).classList.remove('active');
+            document.getElementById('controls').style.display = 'none';
+            document.getElementById('progressIndicator').style.display = 'none';
+            const resultScreen = document.getElementById('resultScreen');
+            resultScreen.classList.add('active');
+            document.getElementById('scoreDisplay').textContent = `${score} / 95`;
+            window.scrollTo(0,0);
+        }
+    };
+
+    window.prevSection = function() {
+        if (currentSection > 1) {
+            document.getElementById(`sec${currentSection}`).classList.remove('active');
+            currentSection--;
+            document.getElementById(`sec${currentSection}`).classList.add('active');
+            updateControlsUI();
+            window.scrollTo(0,0);
+        }
+    };
+</script>
+</body>
+</html>
