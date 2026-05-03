@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اخْتِبَارُ اللُّغَةِ الْعَرَبِيَّةِ - Тест по арабскому языку</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        
+        :root {
+            --primary: #4A90E2;
+            --success: #2ECC71;
+            --danger: #E74C3C;
+            --bg-color: #F8F9FA;
+            --card-bg: #FFFFFF;
+            --text-color: #2C3E50;
+            --highlight: #FFE0B2;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.8;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        h1, h2, h3 { text-align: center; color: var(--primary); }
+        .ru-subtitle { font-size: 0.8em; color: #7F8C8D; display: block; margin-top: -10px; margin-bottom: 20px; text-align: center;}
+
+        .story-box {
+            background: #F0F4F8;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .vocab-highlight {
+            background-color: var(--highlight);
+            padding: 0 4px;
+            border-radius: 4px;
+        }
+
+        details.vocab-details {
+            background: #FFF;
+            border: 1px solid #DDD;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        details.vocab-details summary {
+            padding: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            background: #E8F0FE;
+            border-radius: 8px;
+            outline: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #DDD;
+            padding: 12px;
+            text-align: right;
+            font-size: 16px;
+        }
+        th { background-color: var(--primary); color: white; }
+
+        .section { display: none; animation: fadeIn 0.5s; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #EEE;
+            border-radius: 8px;
+        }
+        .q-text { font-weight: bold; font-size: 20px; margin-bottom: 10px; }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: right;
+            padding: 12px;
+            margin: 8px 0;
+            background: #F8F9FA;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+        .option-btn:hover { background: #E8F0FE; }
+        
+        .correct { background: var(--success) !important; color: white; border-color: var(--success); pointer-events: none; }
+        .wrong { background: var(--danger) !important; color: white; border-color: var(--danger); pointer-events: none; }
+
+        select {
+            padding: 10px;
+            font-size: 18px;
+            font-family: inherit;
+            border-radius: 5px;
+            border: 1px solid #CCC;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .word-bank { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+        .word-piece {
+            padding: 8px 15px;
+            background: var(--primary);
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .answer-zone {
+            min-height: 50px;
+            border: 2px dashed #BDC3C7;
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+            background: #FAFAFA;
+        }
+
+        .action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+        }
+        .action-btn:hover { background: #357ABD; }
+
+        textarea {
+            width: 100%;
+            height: 60px;
+            padding: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            border-radius: 8px;
+            border: 1px solid #CCC;
+            resize: vertical;
+        }
+
+        .flash-red { animation: flashRed 1s; }
+        @keyframes flashRed { 0% { background-color: var(--danger); color: white;} 100% { background-color: white; color: inherit;} }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- Welcome Screen -->
+    <div id="welcomeScreen" class="section active">
+        <h1>مَرْحَباً بِكِ فِي الاِخْتِبَارِ الشَّامِلِ</h1>
+        <span class="ru-subtitle">Добро пожаловать на комплексный тест</span>
+        <p style="text-align:center;">يَتَكَوَّنُ هَذَا الِاخْتِبَارُ مِنْ 7 أَقْسَامٍ، وَيَضُمُّ 110 أَسْئِلَةٍ لِقِيَاسِ مَهَارَاتِكِ فِي الْقِرَاءَةِ، الْمُفْرَدَاتِ، وَالْقَوَاعِدِ.</p>
+        <button class="action-btn" onclick="startTest()">ابْدَأِ الاِخْتِبَارَ (Начать тест)</button>
+    </div>
+
+    <!-- Container for dynamic sections -->
+    <div id="sectionsContainer"></div>
+
+    <!-- Final Result Screen -->
+    <div id="resultScreen" class="section">
+        <h1>أَحْسَنْتِ! انْتَهَى الِاخْتِبَارُ</h1>
+        <span class="ru-subtitle">Молодец! Тест завершен</span>
+        <h2 id="finalScoreText" style="text-align:center;"></h2>
+        <button class="action-btn" onclick="location.reload()">إِعَادَةُ الِاخْتِبَارِ (Пройти заново)</button>
+    </div>
+
+</div>
+
+<script>
+    // ==========================================
+    // STORY & VOCAB DATA (UPDATED & EXPANDED)
+    // ==========================================
+    const storyHTML = `
+        <div class="story-box">
+            كَانَتْ "نَادِيَةُ" طَالِبَةً <mark class="vocab-highlight">مُغْتَرِبَةً</mark> مِنْ رُوسِيَا، جَاءَتْ إِلَى الرِّيَاضِ لِتَدْرُسَ اللُّغَةَ الْعَرَبِيَّةَ وَالْعُلُومَ. 
+            فِي الْبِدَايَةِ، كَانَتْ <mark class="vocab-highlight">مُتَوَتِّرَةً</mark> لِأَنَّ اللُّغَةَ جَدِيدَةٌ، وَوَاجَهَتْ عِدَّةَ <mark class="vocab-highlight">عَقَبَاتٍ</mark> فِي التَّوَاصُلِ وَالْقِرَاءَةِ، لَكِنَّهَا اسْتَطَاعَتْ أَنْ <mark class="vocab-highlight">تَتَجَاوَزَهَا</mark> <mark class="vocab-highlight">بِمُثَابَرَةٍ</mark> وَاجْتِهَادٍ. 
+            لَمْ تَكُنْ نَادِيَةُ تَدْرُسُ فِي الْمَدْرَسَةِ فَقَطْ، بَلْ كَانَتْ تَسْتَخْدِمُ <mark class="vocab-highlight">الْحَاسُوبَ</mark> وَتَدْخُلُ <mark class="vocab-highlight">الشَّبَكَةَ الدَّوْلِيَّةَ</mark> لِلْبَحْثِ عَنِ الْمَعْلُومَاتِ.
+            <br><br>
+            وَمِنْ أَكْثَرِ الْأَشْيَاءِ الَّتِي لَفَتَتْ انْتِبَاهَهَا هُوَ الِاهْتِمَامُ الْكَبِيرُ بِالنَّظَافَةِ الْعَامَّةِ، كَمَا تَعَلَّمَتْ فِي دُرُوسِهَا أَنَّ الْإِسْلَامَ يَحُثُّ عَلَى النَّظَافَةِ. تَقُولُ نَادِيَةُ: "إِنَّ تَقَدُّمَ الدُّوَلِ <mark class="vocab-highlight">يُقَاسُ</mark> بِالنَّظَافَةِ، فَإِذَا كَانَتْ الدَّوْلَةُ تَهْتَمُّ بِالنَّظَافَةِ، فَهِيَ دَوْلَةٌ <mark class="vocab-highlight">مُتَحَضِّرَةٌ</mark>". لَقَدْ شَاهَدَتْ عُمَّالَ النَّظَافَةِ الَّذِينَ <mark class="vocab-highlight">يَجُوبُونَ</mark> الشَّوَارِعَ لِجَمْعِ <mark class="vocab-highlight">حَاوِيَاتِ</mark> الْقُمَامَةِ لِتُحْرَقَ بَعِيداً، عَلَى عَكْسِ دُوَلٍ أُخْرَى مَعْرُوفَةٍ <mark class="vocab-highlight">بِالْقَذَارَةِ</mark>.
+            <br><br>
+            وَفِي يَوْمٍ مِنَ الْأَيَّامِ، قَالَتْ لَهَا صَدِيقَتُهَا فَاطِمَةُ: "يَا نَادِيَةُ، لَا <mark class="vocab-highlight">تَتَكَاسَلِي</mark> عَنِ الْمُرَاجَعَةِ، وَلَا تَنَامِي مُتَأَخِّرَةً قَبْلَ الِامْتِحَانِ، وَتَذَكَّرِي أَنَّ نَظَافَةَ الْقَلْبِ مُهِمَّةٌ كَنَظَافَةِ الْجِسْمِ!". 
+            أَخَذَتْ نَادِيَةُ النَّصِيحَةَ، وَبَعْدَ سَنَوَاتٍ، الْتَحَقَتْ بِكُلِّيَّةِ <mark class="vocab-highlight">الصَّيْدَلَةِ</mark>. وَبَعْدَ التَّخَرُّجِ، بَدَأَتْ تَعْمَلُ فِي <mark class="vocab-highlight">مُسْتَشْفَى</mark> كَبِيرٍ فِي قِسْمِ الأَدْوِيَةِ، وَأَرْسَلَتْ رِسَالَةً <mark class="vocab-highlight">بِالْبَرِيدِ الْإِلِكْتُرُونِيِّ</mark> لِأَهْلِهَا لِتُخْبِرَهُمْ بِهَذِهِ النَّتِيجَةِ الرَّائِعَةِ.
+        </div>
+        <details class="vocab-details">
+            <summary>جَدْوَلُ الْمُفْرَدَاتِ (Словарь) - اضْغَطْ هُنَا لِلْعَرْضِ</summary>
+            <table>
+                <tr><th>الكلمة</th><th>المعنى المبسط</th><th>مثال</th><th>الترجمة الروسية</th></tr>
+                <tr><td>مُغْتَرِبَة</td><td>تَعِيشُ بَعِيداً عَنْ وَطَنِهَا</td><td>أَنَا طَالِبَةٌ مُغْتَرِبَةٌ هُنَا.</td><td>Иностранка / Экспатриантка</td></tr>
+                <tr><td>مُتَوَتِّرَة</td><td>قَلِقَةٌ وَغَيْرُ هَادِئَةٍ</td><td>كَانَتْ مُتَوَتِّرَةً قَبْلَ الِاخْتِبَارِ.</td><td>Нервная / Напряженная</td></tr>
+                <tr><td>عَقَبَات</td><td>صُعُوبَاتٌ وَمَشَاكِلُ</td><td>فِي الْحَيَاةِ عَقَبَاتٌ كَثِيرَةٌ.</td><td>Препятствия / Трудности</td></tr>
+                <tr><td>تَتَجَاوَزَهَا</td><td>تَمُرُّ مِنْهَا بِنَجَاحٍ</td><td>يَجِبُ أَنْ تَتَجَاوَزَ الصِّعَابَ.</td><td>Преодолеть их</td></tr>
+                <tr><td>بِمُثَابَرَة</td><td>بِاجْتِهَادٍ وَاسْتِمْرَارٍ</td><td>نَجَحَتْ بِمُثَابَرَةٍ.</td><td>С упорством / Настойчиво</td></tr>
+                <tr><td>يُقَاسُ</td><td>يُحْسَبُ وَيُعْرَفُ قَدْرُهُ</td><td>يُقَاسُ الْوَقْتُ بِالسَّاعَاتِ.</td><td>Измеряется / Оценивается</td></tr>
+                <tr><td>مُتَحَضِّرَة</td><td>مُتَقَدِّمَةٌ وَرَاقِيَةٌ</td><td>الْيَاَبَانُ دَوْلَةٌ مُتَحَضِّرَةٌ.</td><td>Цивилизованная / Развитая</td></tr>
+                <tr><td>يَجُوبُونَ</td><td>يَمْشُونَ فِيهَا كَثِيراً</td><td>الْعُمَّالُ يَجُوبُونَ الشَّوَارِعَ.</td><td>Бродят / Обходят</td></tr>
+                <tr><td>حَاوِيَات</td><td>صَنَادِيقُ كَبِيرَةٌ لِلْقُمَامَةِ</td><td>ضَعِ الْقُمَامَةَ فِي الْحَاوِيَاتِ.</td><td>Контейнеры / Баки</td></tr>
+                <tr><td>بِالْقَذَارَةِ</td><td>بِالْأَوْسَاخِ وَقِلَّةِ النَّظَافَةِ</td><td>هَذَا الْمَكَانُ مَلِيءٌ بِالْقَذَارَةِ.</td><td>Грязью / Нечистотами</td></tr>
+                <tr><td>حَاسُوب</td><td>جِهَازٌ آلِيٌّ لِلْمَعْلُومَاتِ</td><td>أَكْتُبُ عَلَى الْحَاسُوبِ.</td><td>Компьютер</td></tr>
+                <tr><td>الشَّبَكَة الدَّوْلِيَّة</td><td>الْإِنْتَرْنِت</td><td>أَبْحَثُ فِي الشَّبَكَةِ الدَّوْلِيَّةِ.</td><td>Интернет</td></tr>
+                <tr><td>تَتَكَاسَلِي</td><td>تُصْبِحِي كَسُولَةً (نَهْي)</td><td>لَا تَتَكَاسَلِي عَنِ الْعَمَلِ.</td><td>Не ленись (ж.р.)</td></tr>
+                <tr><td>الصَّيْدَلَة</td><td>عِلْمُ الْأَدْوِيَةِ</td><td>أَدْرُسُ فِي كُلِّيَّةِ الصَّيْدَلَةِ.</td><td>Фармация</td></tr>
+                <tr><td>مُسْتَشْفَى</td><td>مَكَانُ عِلَاجِ الْمَرْضَى</td><td>الْمَرِيضُ فِي الْمُسْتَشْفَى.</td><td>Больница</td></tr>
+                <tr><td>الْبَرِيد الْإِلِكْتُرُونِيّ</td><td>رِسَالَةٌ عَبْرَ الْإِنْتَرْنِت</td><td>أَرْسَلْتُ لَهُ رِسَالَةً بِالْبَرِيدِ.</td><td>Электронная почта</td></tr>
+            </table>
+        </details>
+    `;
+
+    // ==========================================
+    // QUESTION GENERATION DATA (EXACTLY 110)
+    // Arrays format: [Question Text, [Options], Correct Answer Text]
+    // ==========================================
+
+    // SEC 1: Reading (20 Qs: 10 MCQ + 10 TF)
+    const sec1MCQ = [
+        ["مِنْ أَيْنَ جَاءَتْ نَادِيَةُ؟", ["مِنْ رُوسِيَا", "مِنْ فَرَنْسَا", "مِنْ مِصْرَ"], "مِنْ رُوسِيَا"],
+        ["لِمَاذَا جَاءَتْ نَادِيَةُ إِلَى الرِّيَاضِ؟", ["لِلْعَمَلِ", "لِتَدْرُسَ الْعَرَبِيَّةَ", "لِتَزُورَ صَدِيقَتَهَا"], "لِتَدْرُسَ الْعَرَبِيَّةَ"],
+        ["كَيْفَ كَانَتْ حَالَةُ نَادِيَةَ فِي الْبِدَايَةِ؟", ["سَعِيدَةً جِدّاً", "مُتَوَتِّرَةً", "كَسُولَةً"], "مُتَوَتِّرَةً"],
+        ["بِمَاذَا تَجَاوَزَتْ نَادِيَةُ الْعَقَبَاتِ؟", ["بِالْمَالِ", "بِالْمُثَابَرَةِ", "بِالنَّوْمِ"], "بِالْمُثَابَرَةِ"],
+        ["مَاذَا اسْتَخْدَمَتْ نَادِيَةُ لِلْبَحْثِ عَنِ الْمَعْلُومَاتِ؟", ["الْحَاسُوبَ وَالشَّبَكَةَ", "الْكُتُبَ الْقَدِيمَةَ", "الْمَجَلَّاتِ"], "الْحَاسُوبَ وَالشَّبَكَةَ"],
+        ["مَا اسْمُ صَدِيقَةِ نَادِيَةَ؟", ["عَائِشَةُ", "فَاطِمَةُ", "مَرْيَمُ"], "فَاطِمَةُ"],
+        ["مَاذَا نَصَحَتْ فَاطِمَةُ نَادِيَةَ؟", ["أَنْ تَنَامَ مُبَكِّراً", "أَنْ تَتَكَاسَلَ", "أَنْ تَتْرُكَ الْجَامِعَةَ"], "أَنْ تَنَامَ مُبَكِّراً"],
+        ["فِي أَيِّ كُلِّيَّةٍ الْتَحَقَتْ نَادِيَةُ؟", ["كُلِّيَّةِ الطِّبِّ", "كُلِّيَّةِ الْهَنْدَسَةِ", "كُلِّيَّةِ الصَّيْدَلَةِ"], "كُلِّيَّةِ الصَّيْدَلَةِ"],
+        ["أَيْنَ بَدَأَتْ نَادِيَةُ تَعْمَلُ بَعْدَ التَّخَرُّجِ؟", ["فِي مُسْتَشْفَى", "فِي مَدْرَسَةٍ", "فِي مَكْتَبَةٍ"], "فِي مُسْتَشْفَى"],
+        ["كَيْفَ أَخْبَرَتْ نَادِيَةُ أَهْلَهَا بِالنَّتِيجَةِ؟", ["بِالْهَاتِفِ", "بِالْبَرِيدِ الْإِلِكْتُرُونِيِّ", "بِالرِّسَالَةِ الْوَرَقِيَّةِ"], "بِالْبَرِيدِ الْإِلِكْتُرُونِيِّ"]
+    ];
+    const sec1TF = [
+        ["نَادِيَةُ طَالِبَةٌ مِنْ عُومَانَ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "خَطَأٌ (Неверно)"],
+        ["الْتَحَقَتْ نَادِيَةُ بِكُلِّيَّةِ الْهَنْدَسَةِ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "خَطَأٌ (Неверно)"],
+        ["تَرَى نَادِيَةُ أَنَّ تَقَدُّمَ الدُّوَلِ يُقَاسُ بِالنَّظَافَةِ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "صَحِيحٌ (Верно)"],
+        ["نَصَحَتْ فَاطِمَةُ صَدِيقَتَهَا بِالتَّكَاسُلِ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "خَطَأٌ (Неверно)"],
+        ["عَمِلَتْ نَادِيَةُ فِي قِسْمِ الأَدْوِيَةِ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "صَحِيحٌ (Верно)"],
+        ["الدَّوْلَةُ الْمُتَحَضِّرَةُ تَهْتَمُّ بِالنَّظَافَةِ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "صَحِيحٌ (Верно)"],
+        ["اللُّغَةُ الْعَرَبِيَّةُ كَانَتْ سَهْلَةً جِدّاً لِنَادِيَةَ فِي الْبِدَايَةِ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "خَطَأٌ (Неверно)"],
+        ["أَرْسَلَتْ نَادِيَةُ رِسَالَةً بِالْبَرِيدِ الْإِلِكْتُرُونِيِّ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "صَحِيحٌ (Верно)"],
+        ["لَمْ تَوَاجِهْ نَادِيَةُ أَيَّ عَقَبَاتٍ فِي الدِّرَاسَةِ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "خَطَأٌ (Неверно)"],
+        ["نَظَافَةُ الْقَلْبِ مُهِمَّةٌ كَنَظَافَةِ الْجِسْمِ فِي الْإِسْلَامِ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "صَحِيحٌ (Верно)"]
+    ];
+
+    // SEC 2: Vocab (15 Qs)
+    const sec2MCQ = [
+        ["مَا مَعْنَى كَلِمَة (مُسْتَشْفَى)؟", ["مَكَانُ الدِّرَاسَةِ", "مَكَانُ عِلَاجِ الْمَرْضَى", "مَكَانُ بَيْعِ الطَّعَامِ"], "مَكَانُ عِلَاجِ الْمَرْضَى"],
+        ["مَا مَعْنَى (الشَّبَكَة الدَّوْلِيَّة)؟", ["الْإِنْتَرْنِت", "الْمَدْرَسَة", "الْمَكْتَبَة"], "الْإِنْتَرْنِت"],
+        ["كَلِمَة (حَاسُوب) تَعْنِي:", ["كِتَابٌ كَبِيرٌ", "جِهَازٌ آلِيٌّ لِلْمَعْلُومَاتِ", "سَيَّارَةٌ سَرِيعَةٌ"], "جِهَازٌ آلِيٌّ لِلْمَعْلُومَاتِ"],
+        ["مَا مَعْنَى (الْبَرِيد الْإِلِكْتُرُونِيّ)؟", ["رِسَالَةٌ عَبْرَ الْإِنْتَرْنِت", "بَابُ الْمُسْتَشْفَى", "كِتَابُ الْجَامِعَةِ"], "رِسَالَةٌ عَبْرَ الْإِنْتَرْنِت"],
+        ["(كُلِّيَّةُ الصَّيْدَلَةِ) خَاصَّةٌ بِـ:", ["هَنْدَسَةِ الْمَبَانِي", "عِلْمِ الْأَدْوِيَةِ", "تَدْرِيسِ اللُّغَةِ"], "عِلْمِ الْأَدْوِيَةِ"],
+        ["مَا هِيَ (الْعَقَبَاتُ)؟", ["الصُّعُوبَاتُ وَالْمَشَاكِلُ", "الْهَدَايَا", "الْأَصْدِقَاءُ"], "الصُّعُوبَاتُ وَالْمَشَاكِلُ"],
+        ["مَا مَعْنَى (مُتَحَضِّرَةٌ)؟", ["مُتَخَلِّفَةٌ", "مُتَقَدِّمَةٌ وَرَاقِيَةٌ", "قَدِيمَةٌ"], "مُتَقَدِّمَةٌ وَرَاقِيَةٌ"],
+        ["(مُغْتَرِبَةٌ) تَعْنِي أَنَّهَا:", ["تَعِيشُ فِي وَطَنِهَا", "تَعِيشُ بَعِيداً عَنْ وَطَنِهَا", "لَا تُحِبُّ السَّفَرَ"], "تَعِيشُ بَعِيداً عَنْ وَطَنِهَا"],
+        ["مَا مَعْنَى (الْمُثَابَرَة)؟", ["الْكَسَلُ", "الِاجْتِهَادُ وَالِاسْتِمْرَارُ", "الْغِيَابُ عَنِ الدَّرْسِ"], "الِاجْتِهَادُ وَالِاسْتِمْرَارُ"],
+        ["مَا مَعْنَى (النَّظَافَة)؟", ["الِاتِّسَاخُ", "الطَّهَارَةُ وَالنَّقَاءُ", "الْمَرَضُ"], "الطَّهَارَةُ وَالنَّقَاءُ"],
+        ["(تَتَكَاسَلُ) يَعْنِي:", ["تَجْتَهِدُ", "تَصِيرُ كَسُولَةً", "تَلْعَبُ كَثِيراً"], "تَصِيرُ كَسُولَةً"],
+        ["(يَتَجَاوَزُ) الْمُشْكِلَةَ يَعْنِي:", ["يَمُرُّ مِنْهَا بِنَجَاحٍ", "يَبْكِي مِنْهَا", "يَنَامُ"], "يَمُرُّ مِنْهَا بِنَجَاحٍ"],
+        ["مَا مَعْنَى (الْقَذَارَة)؟", ["الْأَوْسَاخُ", "الْعُطُورُ", "الْمَلَابِسُ"], "الْأَوْسَاخُ"],
+        ["مَا مَعْنَى (حَاوِيَات)؟", ["أَقْلَامٌ", "صَنَادِيقُ كَبِيرَةٌ لِلْقُمَامَةِ", "كُتُبٌ"], "صَنَادِيقُ كَبِيرَةٌ لِلْقُمَامَةِ"],
+        ["كَلِمَة (يَدْرُسُ) مُرَادِفَة لِـ:", ["يَأْكُلُ", "يَتَعَلَّمُ", "يُسَافِرُ"], "يَتَعَلَّمُ"]
+    ];
+
+    // SEC 3: Grammar (15 Qs TF)
+    const sec3TF = [
+        ["يُقَالُ لِلْمُؤَنَّثِ فِي النَّهْي: لَا تَتَكَاسَلِي.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "صَحِيحٌ (Верно)"],
+        ["يُقَالُ لِلْمُذَكَّرِ: لَا تَقْرَأِي.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "خَطَأٌ (Неверно)"],
+        ["الْفِعْلُ (يَقْرَأُ) لِلْمُذَكَّرِ الْمُفْرَدِ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "صَحِيحٌ (Верно)"],
+        ["الْفِعْلُ (تَكْتُبُ) يُمْكِنُ أَنْ يَكُونَ لِلْمُؤَنَّثِ الْغَائِبِ (هِيَ).", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "صَحِيحٌ (Верно)"],
+        ["(لَا تَلْعَبْ) هُوَ أُسْلُوبُ أَمْرٍ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "خَطَأٌ (Неверно)"],
+        ["الْكَلِمَةُ (مَدْرَسَةٌ) مُذَكَّرٌ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "خَطَأٌ (Неверно)"],
+        ["جُمْلَةُ (نَادِيَةُ طَالِبٌ) صَحِيحَةٌ لُغَوِيّاً.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "خَطَأٌ (Неверно)"],
+        ["الصَّحِيحُ أَنْ نَقُولَ: فَاطِمَةُ ذَكِيَّةٌ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "صَحِيحٌ (Верно)"],
+        ["(هَذَا حَاسُوبٌ) اسْتِخْدَامٌ صَحِيحٌ لِاسْمِ الْإِشَارَةِ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "صَحِيحٌ (Верно)"],
+        ["نَقُولُ فِي النَّفْيِ: لَمْ يَدْرُسْ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "صَحِيحٌ (Верно)"],
+        ["(الْجَامِعَةِ) اِسْمٌ مَجْرُورٌ فِي جُمْلَةِ: ذَهَبْتُ إِلَى الْجَامِعَةِ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "صَحِيحٌ (Верно)"],
+        ["الْفِعْلُ الْمَاضِي مِنْ يَكْتُبُ هُوَ كَتَبَ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "صَحِيحٌ (Верно)"],
+        ["(لَا تَنَامِي مُتَأَخِّرَةً) تُقَالُ لِلْمُذَكَّرِ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "خَطَأٌ (Неверно)"],
+        ["الصِّفَةُ تَتْبَعُ الْمَوْصُوفَ فِي التَّذْكِيرِ وَالتَّأْنِيثِ.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "صَحِيحٌ (Верно)"],
+        ["نَقُولُ: كُلِّيَّةُ الصَّيْدَلَةُ (بِالرَّفْعِ فِي الْكَلِمَتَيْنِ) دَائِماً.", ["صَحِيحٌ (Верно)", "خَطَأٌ (Неверно)"], "خَطَأٌ (Неверно)"]
+    ];
+
+    // SEC 4: Singular/Plural/Opposite (15 Qs MCQ)
+    const sec4MCQ = [
+        ["مَا جَمْعُ (طَالِب)؟", ["طَالِبَات", "طُلَّاب", "مَطَالِب"], "طُلَّاب"],
+        ["مَا جَمْعُ (مَدْرَسَة)؟", ["مُدَرِّسُون", "مَدَارِس", "دُرُوس"], "مَدَارِس"],
+        ["مَا جَمْعُ (كِتَاب)؟", ["كُتَّاب", "كُتُب", "مَكَاتِب"], "كُتُب"],
+        ["مَا مُفْرَدُ (عَقَبَات)؟", ["عُقُوبَة", "عَقَبَة", "عَاقِبَة"], "عَقَبَة"],
+        ["مَا مُفْرَدُ (مُهَنْدِسُون)؟", ["هَنْدَسَة", "مُهَنْدِس", "هِنْدِيّ"], "مُهَنْدِس"],
+        ["مَا عَكْسُ (نَاجِح)؟", ["رَاسِب", "ذَكِيّ", "سَعِيد"], "رَاسِب"],
+        ["مَا عَكْسُ (مُتَحَضِّرَة)؟", ["مُتَخَلِّفَة", "جَدِيدَة", "نَظِيفَة"], "مُتَخَلِّفَة"],
+        ["مَا عَكْسُ (صَعْب)؟", ["كَثِير", "بَعِيد", "سَهْل"], "سَهْل"],
+        ["مَا جَمْعُ (جَامِعَة)؟", ["جَوَامِع", "جَمَاعَات", "جَامِعَات"], "جَامِعَات"],
+        ["مَا مُفْرَدُ (أَدْوِيَة)؟", ["دَوَاء", "دَاء", "وَدَاع"], "دَوَاء"],
+        ["مَا عَكْسُ (نَظِيف)؟", ["مُتَّسِخ", "طَوِيل", "قَدِيم"], "مُتَّسِخ"],
+        ["مَا عَكْسُ (حَاضِر)؟", ["مَوْجُود", "غَائِب", "مُسَافِر"], "غَائِب"],
+        ["مَا جَمْعُ (حَاسُوب)؟", ["حَوَاسِيب", "حِسَابَات", "مَحَاسِب"], "حَوَاسِيب"],
+        ["مَا مُفْرَدُ (دُوَل)؟", ["دَوْلَة", "دَالّ", "دَوَائِر"], "دَوْلَة"],
+        ["مَا عَكْسُ (مُبَكِّراً)؟", ["سَرِيعاً", "مُتَأَخِّراً", "قَلِيلاً"], "مُتَأَخِّراً"]
+    ];
+
+    // SEC 5: Fill in the blank (Dropdown) (15 Qs)
+    const fillWords = [
+        "الْجَامِعَةِ", "طَالِبَةٌ", "نَجَحَتْ", "الْوَاجِبَ", "يَشْرَحُ", 
+        "النَّظَافَةِ", "مُتَحَضِّرَةٌ", "الشَّبَكَةِ", "الصَّيْدَلَةِ", "الْمُسْتَشْفَى",
+        "تَتَكَاسَلْ", "رِسَالَةً", "صَعْبٌ", "اللُّغَةَ", "عَقَبَاتٍ"
+    ];
+    const sec5Fill = [
+        ["نَادِيَةُ", "مُجْتَهِدَةٌ فِي صَفِّهَا.", "طَالِبَةٌ"],
+        ["الْتَحَقَتْ نَادِيَةُ بِـ", "بَعْدَ الْمَدْرَسَةِ الثَّانَوِيَّةِ.", "الْجَامِعَةِ"],
+        ["تَدْرُسُ نَادِيَةُ", "الْعَرَبِيَّةَ كُلَّ يَوْمٍ.", "اللُّغَةَ"],
+        ["وَاجَهَتْ نَادِيَةُ", "كَثِيرَةً لَكِنَّهَا تَجَاوَزَتْهَا.", "عَقَبَاتٍ"],
+        ["يَهْتَمُّ الْإِسْلَامُ كَثِيراً بِـ", "لِلْجِسْمِ وَالْمَكَانِ.", "النَّظَافَةِ"],
+        ["الطَّالِبَةُ", "فِي الِامْتِحَانِ النِّهَائِيِّ.", "نَجَحَتْ"],
+        ["أَرْسَلَتْ فَاطِمَةُ", "بِالْبَرِيدِ الْإِلِكْتُرُونِيِّ.", "رِسَالَةً"],
+        ["لَا", "يَا أَخِي فِي دِرَاسَتِكَ.", "تَتَكَاسَلْ"],
+        ["يَعْمَلُ الطَّبِيبُ فِي", "الْكَبِيرِ.", "الْمُسْتَشْفَى"],
+        ["الدَّوْلَةُ النَّظِيفَةُ هِيَ دَوْلَةٌ", "وَمُتَقَدِّمَةٌ.", "مُتَحَضِّرَةٌ"],
+        ["كُلِّيَّةُ", "تَهْتَمُّ بِعِلْمِ الْأَدْوِيَةِ.", "الصَّيْدَلَةِ"],
+        ["كَتَبَ التِّلْمِيذُ", "الْمَنْزِلِيَّ فِي الدَّفْتَرِ.", "الْوَاجِبَ"],
+        ["الْمُعَلِّمُ", "الدَّرْسَ بِطَرِيقَةٍ سَهْلَةٍ.", "يَشْرَحُ"],
+        ["هَذَا الِاخْتِبَارُ", "لَكِنَّنِي سَأَنْجَحُ.", "صَعْبٌ"],
+        ["أَبْحَثُ عَنِ الْمَعْلُومَاتِ فِي", "الدَّوْلِيَّةِ.", "الشَّبَكَةِ"]
+    ];
+
+    // SEC 6: Ordering (15 Qs)
+    const sec6Sentences = [
+        "نَادِيَةُ طَالِبَةٌ مُجْتَهِدَةٌ فِي الْجَامِعَةِ",
+        "الْإِسْلَامُ يَحُثُّ عَلَى النَّظَافَةِ دَائِماً",
+        "لَا تَتَكَاسَلِي عَنْ أَدَاءِ الْوَاجِبِ الْمَنْزِلِيِّ",
+        "تَقَدُّمُ الدُّوَلِ يُقَاسُ بِالنَّظَافَةِ الْعَامَّةِ",
+        "أَرْسَلْتُ رِسَالَةً بِالْبَرِيدِ الْإِلِكْتُرُونِيِّ لِصَدِيقِي",
+        "تَخَرَّجَ أَخِي مِنَ الْجَامِعَةِ بِتَفَوُّقٍ",
+        "يَعْمَلُ الطَّبِيبُ فِي الْمُسْتَشْفَى لِعِلَاجِ الْمَرْضَى",
+        "نَحْنُ نَبْحَثُ عَنِ الْمَعْلُومَاتِ فِي الشَّبَكَةِ الدَّوْلِيَّةِ",
+        "قَرَأَ التِّلْمِيذُ كِتَاباً مُفِيداً فِي الْمَكْتَبَةِ",
+        "يَشْرَحُ الْمُعَلِّمُ الدَّرْسَ عَلَى السَّبُّورَةِ بِوُضُوحٍ",
+        "نَظَافَةُ الْقَلْبِ مُهِمَّةٌ كَنَظَافَةِ الْجِسْمِ",
+        "هَذَا حَاسُوبٌ جَدِيدٌ وَسَرِيعٌ جِدّاً",
+        "نَجَحَتِ الطَّالِبَةُ فِي الِامْتِحَانِ الصَّعْبِ",
+        "تَجَاوَزَتْ نَادِيَةُ الْعَقَبَاتِ بِالْمُثَابَرَةِ وَالِاجْتِهَادِ",
+        "أَنَا أُحِبُّ تَعَلُّمَ اللُّغَاتِ الْأَجْنَبِيَّةِ"
+    ];
+
+    // SEC 7: Essay (15 words)
+    const sec7Words = [
+        "جَامِعَة", "نَظَافَة", "حَاسُوب", "يَدْرُسُ", "مُسْتَشْفَى",
+        "مُغْتَرِبَة", "صَيْدَلَة", "رِسَالَة", "يَتَكَاسَلُ", "مُتَحَضِّرَة",
+        "اِمْتِحَان", "الشَّبَكَة الدَّوْلِيَّة", "الْبَرِيد الْإِلِكْتُرُونِيّ", "يَقْرَأُ", "نَجَاح"
+    ];
+
+    let currentSection = 0;
+    const totalSections = 7;
+    let score = 0;
+
+    // --- HELPER: Shuffle Array ---
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
+
+    // ==========================================
+    // RENDERING FUNCTIONS
+    // ==========================================
+    function init() {
+        const container = document.getElementById("sectionsContainer");
+        
+        let s1 = `<div id="sec-1" class="section">
+            <h2>الْقِسْمُ الْأَوَّلُ: الْقِرَاءَةُ وَالِاسْتِيعَابُ (Раздел 1: Чтение)</h2>
+            <span class="ru-subtitle">اقرأ القصة ثم أجب عن الأسئلة (1-20)</span>
+            ${storyHTML}
+            <div id="q-sec-1"></div>
+            <button class="action-btn" onclick="nextSection(1)">الْقِسْمُ التَّالِي (Следующий раздел)</button>
+        </div>`;
+
+        let s2 = `<div id="sec-2" class="section">
+            <h2>الْقِسْمُ الثَّانِي: الْمُفْرَدَاتُ وَالتَّعْبِيرَاتُ (Раздел 2: Лексика)</h2>
+            <span class="ru-subtitle">اختر المعنى الصحيح (21-35)</span>
+            <div id="q-sec-2"></div>
+            <button class="action-btn" onclick="nextSection(2)">الْقِسْمُ التَّالِي (Следующий раздел)</button>
+        </div>`;
+
+        let s3 = `<div id="sec-3" class="section">
+            <h2>الْقِسْمُ الثَّالِثُ: الْقَوَاعِدُ اللُّغَوِيَّةُ (Раздел 3: Грамматика - Верно/Неверно)</h2>
+            <span class="ru-subtitle">اختر صحيح أم خطأ (36-50)</span>
+            <div id="q-sec-3"></div>
+            <button class="action-btn" onclick="nextSection(3)">الْقِسْمُ التَّالِي (Следующий раздел)</button>
+        </div>`;
+
+        let s4 = `<div id="sec-4" class="section">
+            <h2>الْقِسْمُ الرَّابِعُ: الْمُفْرَدُ وَالْجَمْعُ وَالْمُضَادُّ (Раздел 4: Единственное/Множественное число и Антонимы)</h2>
+            <span class="ru-subtitle">اختر الإجابة الصحيحة (51-65)</span>
+            <div id="q-sec-4"></div>
+            <button class="action-btn" onclick="nextSection(4)">الْقِسْمُ التَّالِي (Следующий раздел)</button>
+        </div>`;
+
+        let s5 = `<div id="sec-5" class="section">
+            <h2>الْقِسْمُ الْخَامِسُ: اِمْلَأِ الْفَرَاغَ (Раздел 5: Заполните пропуски)</h2>
+            <span class="ru-subtitle">اختر الكلمة المناسبة من القائمة (66-80)</span>
+            <div id="q-sec-5"></div>
+            <button class="action-btn" onclick="nextSection(5)">الْقِسْمُ التَّالِي (Следующий раздел)</button>
+        </div>`;
+
+        let s6 = `<div id="sec-6" class="section">
+            <h2>الْقِسْمُ السَّادِسُ: تَرْتِيبُ الْجُمَلِ (Раздел 6: Составление предложений)</h2>
+            <span class="ru-subtitle">رتب الكلمات لتصبح جملة مفيدة (81-95)</span>
+            <div id="q-sec-6"></div>
+            <button class="action-btn" onclick="nextSection(6)">الْقِسْمُ التَّالِي (Следующий раздел)</button>
+        </div>`;
+
+        let s7 = `<div id="sec-7" class="section">
+            <h2>الْقِسْمُ السَّابِعُ: الْإِنْشَاءُ (Раздел 7: Сочинение)</h2>
+            <span class="ru-subtitle" style="color:var(--danger)">مُلَاحَظَةٌ: هَذَا الْقِسْمُ يُصَحَّحُ يَدَوِيّاً (Этот раздел проверяется преподавателем вручную) (96-110)</span>
+            <p>ضَعْ كُلَّ كَلِمَةٍ فِي جُمْلَةٍ مُفِيدَةٍ مِنْ إِنْشَائِكِ:</p>
+            <div id="q-sec-7"></div>
+            <button class="action-btn" onclick="finishTest()">إِظْهَارُ النَّتِيجَةِ (Показать результат)</button>
+        </div>`;
+
+        container.innerHTML = s1 + s2 + s3 + s4 + s5 + s6 + s7;
+
+        renderMCQ(sec1MCQ, 'q-sec-1', 1);
+        renderMCQ(sec1TF, 'q-sec-1', 11);
+        renderMCQ(sec2MCQ, 'q-sec-2', 21);
+        renderMCQ(sec3TF, 'q-sec-3', 36);
+        renderMCQ(sec4MCQ, 'q-sec-4', 51);
+        renderFill(sec5Fill, fillWords, 'q-sec-5', 66);
+        renderOrdering(sec6Sentences, 'q-sec-6', 81);
+        renderEssay(sec7Words, 'q-sec-7', 96);
+    }
+
+    function renderMCQ(dataArray, containerId, startNum) {
+        const container = document.getElementById(containerId);
+        let qNum = startNum;
+        
+        dataArray.forEach((item) => {
+            const [qText, qOptions, qCorrect] = item;
+            
+            const qDiv = document.createElement('div');
+            qDiv.className = 'question-block';
+            
+            const qTitle = document.createElement('div');
+            qTitle.className = 'q-text';
+            qTitle.textContent = `${qNum}. ${qText}`;
+            qDiv.appendChild(qTitle);
+
+            const optionsContainer = document.createElement('div');
+            
+            qOptions.forEach((opt) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = opt;
+                btn.onclick = () => checkMCQ(btn, opt, qCorrect, optionsContainer);
+                optionsContainer.appendChild(btn);
+            });
+
+            qDiv.appendChild(optionsContainer);
+            container.appendChild(qDiv);
+            qNum++;
+        });
+    }
+
+    function checkMCQ(btn, selectedOption, correctOption, optionsContainer) {
+        const buttons = optionsContainer.querySelectorAll('.option-btn');
+        buttons.forEach(b => b.style.pointerEvents = 'none'); 
+
+        if (selectedOption === correctOption) {
+            btn.classList.add('correct');
+            score++;
+        } else {
+            btn.classList.add('wrong');
+            buttons.forEach(b => {
+                if (b.textContent === correctOption) {
+                    b.classList.add('correct');
+                }
+            });
+        }
+    }
+
+    function renderFill(dataArray, wordsPool, containerId, startNum) {
+        const container = document.getElementById(containerId);
+        let qNum = startNum;
+        const sortedWords = [...wordsPool].sort();
+
+        dataArray.forEach((item) => {
+            const [beforeTxt, afterTxt, correctWord] = item;
+            
+            const qDiv = document.createElement('div');
+            qDiv.className = 'question-block';
+            qDiv.style.display = 'flex';
+            qDiv.style.alignItems = 'center';
+            qDiv.style.gap = '10px';
+            qDiv.style.flexWrap = 'wrap';
+            
+            const numSpan = document.createElement('span');
+            numSpan.style.fontWeight = 'bold';
+            numSpan.textContent = `${qNum}.`;
+
+            const txt1 = document.createElement('span');
+            txt1.textContent = beforeTxt;
+
+            const select = document.createElement('select');
+            select.innerHTML = `<option value="">--- اختاري ---</option>`;
+            sortedWords.forEach(w => {
+                select.innerHTML += `<option value="${w}">${w}</option>`;
+            });
+
+            const txt2 = document.createElement('span');
+            txt2.textContent = afterTxt;
+
+            select.onchange = () => {
+                if (select.value === correctWord) {
+                    select.style.backgroundColor = 'var(--success)';
+                    select.style.color = 'white';
+                    select.disabled = true;
+                    score++;
+                } else {
+                    select.classList.add('flash-red');
+                    setTimeout(() => {
+                        select.classList.remove('flash-red');
+                        select.value = '';
+                    }, 1000);
+                }
+            };
+
+            qDiv.appendChild(numSpan);
+            qDiv.appendChild(txt1);
+            qDiv.appendChild(select);
+            qDiv.appendChild(txt2);
+            container.appendChild(qDiv);
+            qNum++;
+        });
+    }
+
+    function renderOrdering(sentencesArray, containerId, startNum) {
+        const container = document.getElementById(containerId);
+        let qNum = startNum;
+
+        sentencesArray.forEach((sentence, i) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'question-block';
+            
+            const qTitle = document.createElement('div');
+            qTitle.className = 'q-text';
+            qTitle.textContent = `${qNum}. رَتِّبِي الْكَلِمَاتِ:`;
+            
+            const answerZone = document.createElement('div');
+            answerZone.className = 'answer-zone';
+            answerZone.id = `ans-zone-${i}`;
+
+            const wordBank = document.createElement('div');
+            wordBank.className = 'word-bank';
+            wordBank.id = `bank-zone-${i}`;
+
+            const words = shuffle(sentence.split(' '));
+            
+            words.forEach((w, wIndex) => {
+                const wordBtn = document.createElement('div');
+                wordBtn.className = 'word-piece';
+                wordBtn.textContent = w;
+                wordBtn.id = `word-${i}-${wIndex}`; 
+                
+                wordBtn.onclick = () => {
+                    if (wordBtn.parentElement.id === wordBank.id) {
+                        answerZone.appendChild(wordBtn);
+                    } else {
+                        wordBank.appendChild(wordBtn);
+                    }
+                };
+                wordBank.appendChild(wordBtn);
+            });
+
+            const checkBtn = document.createElement('button');
+            checkBtn.className = 'action-btn';
+            checkBtn.style.marginTop = '10px';
+            checkBtn.style.width = 'auto';
+            checkBtn.textContent = 'تَحَقَّقْ (Проверить)';
+            
+            checkBtn.onclick = () => {
+                const currentAnswer = Array.from(answerZone.children).map(node => node.textContent).join(' ');
+                if (currentAnswer === sentence) {
+                    answerZone.style.backgroundColor = '#D5F5E3';
+                    answerZone.style.borderColor = 'var(--success)';
+                    checkBtn.style.display = 'none';
+                    Array.from(answerZone.children).forEach(n => n.style.pointerEvents = 'none');
+                    score++;
+                } else {
+                    answerZone.classList.add('flash-red');
+                    setTimeout(() => {
+                        answerZone.classList.remove('flash-red');
+                        while(answerZone.firstChild) {
+                            wordBank.appendChild(answerZone.firstChild);
+                        }
+                    }, 1000);
+                }
+            };
+
+            qDiv.appendChild(qTitle);
+            qDiv.appendChild(answerZone);
+            qDiv.appendChild(wordBank);
+            qDiv.appendChild(checkBtn);
+            container.appendChild(qDiv);
+            qNum++;
+        });
+    }
+
+    function renderEssay(wordsArray, containerId, startNum) {
+        const container = document.getElementById(containerId);
+        let qNum = startNum;
+
+        wordsArray.forEach(word => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'question-block';
+            
+            const qTitle = document.createElement('div');
+            qTitle.className = 'q-text';
+            qTitle.textContent = `${qNum}. اِسْتَخْدِمِي كَلِمَةَ (${word}):`;
+            
+            const textarea = document.createElement('textarea');
+            textarea.placeholder = 'اكْتُبِي الْجُمْلَةَ هُنَا... (Напишите предложение здесь...)';
+
+            qDiv.appendChild(qTitle);
+            qDiv.appendChild(textarea);
+            container.appendChild(qDiv);
+            qNum++;
+        });
+    }
+
+    function startTest() {
+        document.getElementById('welcomeScreen').classList.remove('active');
+        document.getElementById('sec-1').classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function nextSection(currentSecNum) {
+        document.getElementById(`sec-${currentSecNum}`).classList.remove('active');
+        document.getElementById(`sec-${currentSecNum + 1}`).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function finishTest() {
+        document.getElementById('sec-7').classList.remove('active');
+        document.getElementById('resultScreen').classList.add('active');
+        
+        const maxAutoScore = 95; 
+        document.getElementById('finalScoreText').textContent = `الِاخْتِبَارُ الآلِيُّ: ${score} مِنْ ${maxAutoScore} \n(يَتَبَقَّى 15 سُؤَالاً لِلتَّصْحِيحِ الْيَدَوِيِّ)`;
+        window.scrollTo(0,0);
+    }
+
+    window.onload = init;
+</script>
+
+</body>
+</html>
