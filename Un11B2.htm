@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الاِخْتِبَارُ الشَّامِلُ - العِلْمُ وَالجَامِعَةُ (Итоговый тест)</title>
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --secondary: #f5f7fa;
+            --text-dark: #333;
+            --highlight: #ffd699;
+            --correct: #d4edda;
+            --correct-border: #28a745;
+            --incorrect: #f8d7da;
+            --incorrect-border: #dc3545;
+            --warning: #fff3cd;
+            --warning-border: #ffc107;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eef2f5;
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.8;
+            font-size: 18px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h1, h2, h3 { color: var(--primary); text-align: center; }
+        .ru-trans { font-size: 0.85em; color: #666; font-style: italic; display: block; margin-bottom: 10px;}
+        
+        /* Reading Section */
+        .story-box {
+            background-color: var(--secondary);
+            padding: 20px;
+            border-radius: 8px;
+            border-right: 5px solid var(--primary);
+            margin-bottom: 20px;
+        }
+        .highlight { background-color: var(--highlight); padding: 0 4px; border-radius: 4px; font-weight: bold; }
+        
+        /* Vocab Table */
+        details { margin-bottom: 20px; background: #fff; border: 1px solid #ddd; border-radius: 8px; }
+        summary { padding: 15px; cursor: pointer; font-weight: bold; color: var(--primary); outline: none; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: right; }
+        th { background-color: var(--secondary); }
+        
+        /* Quiz Elements */
+        .section { display: none; }
+        .section.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .question-block { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px dashed #eee; }
+        .options-grid { display: grid; gap: 10px; margin-top: 10px; }
+        .option-btn {
+            background-color: var(--secondary); border: 1px solid #ccc;
+            padding: 12px; border-radius: 6px; cursor: pointer;
+            text-align: right; font-size: 16px; transition: 0.3s;
+        }
+        .option-btn:hover { background-color: #e2e6ea; }
+        .option-btn.disabled { pointer-events: none; }
+        
+        /* Feedback Classes */
+        .correct { background-color: var(--correct) !important; border-color: var(--correct-border) !important; }
+        .incorrect { background-color: var(--incorrect) !important; border-color: var(--incorrect-border) !important; }
+        .warning { background-color: var(--warning) !important; border-color: var(--warning-border) !important; transition: background-color 0.3s;}
+        
+        /* Ordering Question */
+        .word-pool { display: flex; flex-wrap: wrap; gap: 8px; min-height: 50px; padding: 10px; background: #f9f9f9; border-radius: 6px; }
+        .answer-box { display: flex; flex-wrap: wrap; gap: 8px; min-height: 50px; padding: 10px; border: 2px dashed var(--primary); border-radius: 6px; margin-top: 10px;}
+        .word-item { background: var(--primary); color: #fff; padding: 8px 15px; border-radius: 4px; cursor: pointer; user-select: none; }
+        .word-item:hover { opacity: 0.8; }
+        
+        /* UI Elements */
+        .next-btn {
+            display: block; width: 100%; padding: 15px; margin-top: 20px;
+            background-color: var(--primary); color: white; border: none;
+            border-radius: 8px; font-size: 18px; cursor: pointer; transition: 0.3s;
+        }
+        .next-btn:hover { background-color: #357abd; }
+        select, textarea { width: 100%; padding: 10px; font-size: 16px; border-radius: 6px; border: 1px solid #ccc; font-family: inherit;}
+        textarea { resize: vertical; min-height: 80px; margin-bottom: 10px; }
+        
+        #result-screen { text-align: center; }
+        .score { font-size: 48px; color: var(--primary); margin: 20px 0; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>الاِخْتِبَارُ الشَّامِلُ: العِلْمُ وَالتَّعَلُّمُ</h1>
+    <span class="ru-trans" style="text-align:center;">Итоговый тест: Наука и обучение</span>
+
+    <!-- Section 1 -->
+    <div id="section-1" class="section active">
+        <h2>القِسْمُ الأَوَّلُ: القِرَاءَةُ وَالِاسْتِيعَابُ</h2>
+        <span class="ru-trans" style="text-align:center;">Раздел 1: Чтение и понимание (20 вопросов)</span>
+        
+        <div class="story-box">
+            تَعِيشُ <span class="highlight">فَاطِمَةُ</span> فِي رُوسِيَا، وَهِيَ فَتَاةٌ تُحِبُّ <span class="highlight">العِلْمَ</span> وَالتَّعَلُّمَ كَثِيراً. بَعْدَ أَنْ أَنْهَتْ دِرَاسَتَهَا فِي المَدْرَسَةِ بِتَفَوُّقٍ، قَرَّرَتِ <span class="highlight">الاِلْتِحَاقَ</span> بِـ <span class="highlight">جَامِعَةٍ حَدِيثَةٍ</span> فِي بَلَدٍ عَرَبِيٍّ لِدِرَاسَةِ الطِّبِّ. عِنْدَمَا وَصَلَتْ، رَأَتْ مَدِينَةً كَبِيرَةً؛ فِيهَا طَائِرَاتٌ كَثِيرَةٌ فِي المَطَارِ، وَسَيَّارَاتٌ حَدِيثَةٌ فِي الشَّوَارِعِ. بَدَأَتْ فَاطِمَةُ تَدْرُسُ اللُّغَةَ العَرَبِيَّةَ بِنَشَاطٍ، وَمِنْ خِلَالِ الدُّرُوسِ، عَلِمَتْ أَنَّ الإِسْلَامَ هُوَ دِينُ العَرَبِ وَغَيْرِ العَرَبِ، وَأَنَّ النَّبِيَّ مُحَمَّدًا صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ أَتَى بِـ <span class="highlight">الحَقَائِقِ العِلْمِيَّةِ</span> مِنْ عِنْدِ اللهِ، وَقَدْ أَثْبَتَ العِلْمُ الحَدِيثُ تِلْكَ <span class="highlight">الحَقَائِقَ القُرْآنِيَّةَ</span> كَمَرَاحِلِ نُمُوِّ الجَنِينِ فِي بَطْنِ أُمِّهِ.<br><br>
+            فِي يَوْمٍ مِنَ الأَيَّامِ، تَعَرَّفَتْ فَاطِمَةُ إِلَى زَمِيلَةٍ اسْمُهَا سَارَة. كَانَتْ سَارَة لا تُرِيدُ الزَّوَاجَ مِنْ شَابٍّ اسْمُهُ طَارِقٌ؛ لِأَنَّ طَارِقاً لا يُصَلِّي. نَصَحَتْهَا فَاطِمَةُ قَائِلَةً: لا تَحْزَنِي يَا صَدِيقَتِي، فَالصَّلاةُ <span class="highlight">عِمَادُ</span> الدِّينِ، وَمَنْ تَرَكَهَا فَقَدْ ضَيَّعَ خَيْراً كَثِيراً. لَمْ تُهْمِلْ فَاطِمَةُ دِرَاسَتَهَا أَبَداً، بَلْ كَانَتْ تَذْهَبُ دَائِماً إِلَى <span class="highlight">المَكْتَبَاتِ</span> لِعَمَلِ <span class="highlight">قِرَاءَاتٍ عَمِيقَةٍ</span> فِي مَجَالِهَا. وَبَعْدَ أَنْ تَخَرَّجَتْ فِي الجَامِعَةِ، عَمِلَتْ فَاطِمَةُ مَعَ طَبِيبَاتٍ وَ <span class="highlight">مُهَنْدِسَاتٍ</span> فِي <span class="highlight">مُسْتَشْفَيَاتٍ</span> كَبِيرَةٍ، وَأَصْبَحَتْ تُسَاعِدُ الفُقَرَاءَ وَتُخْرِجُ الزَّكَاةَ مِنْ مَالِهَا، لِتَكُونَ قُدْوَةً حَسَنَةً فِي العِلْمِ وَالعَمَلِ.
+        </div>
+
+        <details>
+            <summary>جَدْوَلُ الْمُفْرَدَاتِ (Словарь) - اضْغَطْ هُنَا لِلْعَرْضِ</summary>
+            <table>
+                <tr>
+                    <th>الكَلِمَةُ</th>
+                    <th>المَعْنَى المُبَسَّطُ</th>
+                    <th>مِثَالٌ فِي جُمْلَةٍ</th>
+                    <th>الترجمة الروسية</th>
+                </tr>
+                <tr>
+                    <td>العِلْم</td>
+                    <td>المَعْرِفَةُ وَالدِّرَاسَةُ</td>
+                    <td>العِلْمُ نُورٌ فِي الحَيَاةِ.</td>
+                    <td>Наука / Знание</td>
+                </tr>
+                <tr>
+                    <td>الاِلْتِحَاق</td>
+                    <td>الانْضِمَامُ وَالدُّخُولُ</td>
+                    <td>تَمَّ الاِلْتِحَاقُ بِالجَامِعَةِ.</td>
+                    <td>Поступление / Присоединение</td>
+                </tr>
+                <tr>
+                    <td>جَامِعَة حَدِيثَة</td>
+                    <td>مَكَانُ تَعْلِيمٍ جَدِيدٌ وَمُتَطَوِّرٌ</td>
+                    <td>دَرَسْتُ فِي جَامِعَةٍ حَدِيثَةٍ.</td>
+                    <td>Современный университет</td>
+                </tr>
+                <tr>
+                    <td>حَقَائِق</td>
+                    <td>أُمُورٌ ثَابِتَةٌ وَصَحِيحَةٌ</td>
+                    <td>أَثْبَتَ العِلْمُ حَقَائِقَ كَثِيرَةً.</td>
+                    <td>Факты</td>
+                </tr>
+                <tr>
+                    <td>عِمَاد</td>
+                    <td>أَسَاسٌ وَشَيْءٌ مُهِمٌّ</td>
+                    <td>الصَّلَاةُ عِمَادُ الدِّينِ.</td>
+                    <td>Опора / Основа</td>
+                </tr>
+                <tr>
+                    <td>قِرَاءَات عَمِيقَة</td>
+                    <td>قِرَاءَةٌ بِتَفْكِيرٍ وَتَفْصِيلٍ</td>
+                    <td>قُمْتُ بِقِرَاءَاتٍ عَمِيقَةٍ فِي الكِتَابِ.</td>
+                    <td>Глубокое чтение (изучение)</td>
+                </tr>
+                <tr>
+                    <td>مُسْتَشْفَيَات</td>
+                    <td>أَمَاكِنُ لِعِلَاجِ المَرْضَى</td>
+                    <td>عَالَجَ الطَّبِيبُ المَرْضَى فِي المُسْتَشْفَيَاتِ.</td>
+                    <td>Больницы</td>
+                </tr>
+            </table>
+        </details>
+
+        <div id="s1-content"></div>
+        <button class="next-btn" onclick="nextSection(2)">الِانْتِقَالُ لِلْقِسْمِ الثَّانِي (Следующий раздел)</button>
+    </div>
+
+    <!-- Section 2 -->
+    <div id="section-2" class="section">
+        <h2>القِسْمُ الثَّانِي: مُفْرَدَاتٌ وَتَعْبِيرَاتٌ</h2>
+        <span class="ru-trans" style="text-align:center;">Раздел 2: Словарь и выражения (15 вопросов)</span>
+        <div id="s2-content"></div>
+        <button class="next-btn" onclick="nextSection(3)">الِانْتِقَالُ لِلْقِسْمِ الثَّالِثِ (Следующий раздел)</button>
+    </div>
+
+    <!-- Section 3 -->
+    <div id="section-3" class="section">
+        <h2>القِسْمُ الثَّالِثُ: القَوَاعِدُ (صَحِيحٌ أَمْ خَطَأٌ)</h2>
+        <span class="ru-trans" style="text-align:center;">Раздел 3: Верно или Неверно - Грамматика (15 вопросов)</span>
+        <div id="s3-content"></div>
+        <button class="next-btn" onclick="nextSection(4)">الِانْتِقَالُ لِلْقِسْمِ الرَّابِعِ (Следующий раздел)</button>
+    </div>
+
+    <!-- Section 4 -->
+    <div id="section-4" class="section">
+        <h2>القِسْمُ الرَّابِعُ: المُفْرَدُ وَالجَمْعُ وَالمُضَادُّ</h2>
+        <span class="ru-trans" style="text-align:center;">Раздел 4: Единственное, множественное число и антонимы (15 вопросов)</span>
+        <div id="s4-content"></div>
+        <button class="next-btn" onclick="nextSection(5)">الِانْتِقَالُ لِلْقِسْمِ الخَامِسِ (Следующий раздел)</button>
+    </div>
+
+    <!-- Section 5 -->
+    <div id="section-5" class="section">
+        <h2>القِسْمُ الخَامِسُ: اِمْلَأ الفَرَاغَ</h2>
+        <span class="ru-trans" style="text-align:center;">Раздел 5: Заполните пропуск (15 вопросов)</span>
+        <p style="color:var(--primary); text-align:center;">اِخْتَارِي الكَلِمَةَ المُنَاسِبَةَ لِكُلِّ جُمْلَةٍ (Выберите подходящее слово)</p>
+        <div id="s5-content"></div>
+        <button class="next-btn" onclick="nextSection(6)">الِانْتِقَالُ لِلْقِسْمِ السَّادِسِ (Следующий раздел)</button>
+    </div>
+
+    <!-- Section 6 -->
+    <div id="section-6" class="section">
+        <h2>القِسْمُ السَّادِسُ: تَرْتِيبُ الجُمَلِ</h2>
+        <span class="ru-trans" style="text-align:center;">Раздел 6: Построение предложений (15 вопросов)</span>
+        <p style="color:var(--primary); text-align:center;">اِضْغَطِي عَلَى الكَلِمَاتِ لِتَرْتِيبِهَا بِشَكْلٍ صَحِيحٍ (Нажмите на слова, чтобы составить предложение)</p>
+        <div id="s6-content"></div>
+        <button class="next-btn" onclick="nextSection(7)">الِانْتِقَالُ لِلْقِسْمِ السَّابِعِ (Следующий раздел)</button>
+    </div>
+
+    <!-- Section 7 -->
+    <div id="section-7" class="section">
+        <h2>القِسْمُ السَّابِعُ: الإِنْشَاءُ (الكِتَابَةُ)</h2>
+        <span class="ru-trans" style="text-align:center;">Раздел 7: Сочинение (15 вопросов)</span>
+        <p style="color:var(--incorrect-border); font-weight:bold; text-align:center;">مُلَاحَظَة: هَذَا القِسْمُ يُصَحَّحُ يَدَوِيّاً مِنَ المُعَلِّمِ وَلا يَدْخُلُ فِي النَّتِيجَةِ الآلِيَّةِ.<br><span class="ru-trans">Примечание: Этот раздел проверяется преподавателем вручную и не учитывается в автоматическом подсчете баллов.</span></p>
+        <p style="text-align:center;">وَظِّفِي الكَلِمَاتِ التَّالِيَةَ فِي جُمَلٍ مُفِيدَةٍ مِنْ إِنْشَائِكِ:</p>
+        <div id="s7-content"></div>
+        <button class="next-btn" style="background-color: var(--correct-border);" onclick="showResults()">إِنْهَاءُ الِاخْتِبَارِ (Завершить тест)</button>
+    </div>
+
+    <!-- Results Section -->
+    <div id="result-screen" class="section">
+        <h2>النَّتِيجَةُ النِّهَائِيَّةُ</h2>
+        <span class="ru-trans" style="text-align:center;">Итоговый результат</span>
+        <div class="score" id="score-display">0 / 95</div>
+        <p>أَحْسَنْتِ عَمَلاً يَا طَالِبَتِي العَزِيزَة! (Молодец, дорогая студентка!)</p>
+        <button class="next-btn" onclick="location.reload()">إِعَادَةُ الِاخْتِبَارِ (Пройти тест заново)</button>
+    </div>
+
+</div>
+
+<script>
+    // State
+    let totalScore = 0;
+    const answeredQs = new Set(); // Keep track of answered questions to prevent multiple points
+
+    // Data Structures
+    // S1: 10 MCQ (indices 0-9), 10 T/F (indices 10-19)
+    const s1_mcq = [
+        ["مِنْ أَيْنَ جَاءَتْ فَاطِمَةُ؟", ["مِنْ رُوسِيَا", "مِنَ الصِّينِ", "مِنْ أَمْرِيكَا", "مِنْ فَرَنْسَا"], 0],
+        ["مَاذَا تُحِبُّ فَاطِمَةُ كَثِيراً؟", ["اللَّعِبَ", "العِلْمَ وَالتَّعَلُّمَ", "النَّوْمَ", "السَّفَرَ فَقَطْ"], 1],
+        ["لِمَاذَا ذَهَبَتْ إِلَى بَلَدٍ عَرَبِيٍّ؟", ["لِلسِّيَاحَةِ", "لِلْعَمَلِ", "لِلاِلْتِحَاقِ بِجَامِعَةٍ حَدِيثَةٍ", "لِزِيَارَةِ صَدِيقَةٍ"], 2],
+        ["مَاذَا رَأَتْ فَاطِمَةُ فِي المَطَارِ؟", ["قِطَارَاتٍ", "طَائِرَاتٍ كَثِيرَةً", "سُفُناً", "حَافِلَاتٍ فَقَطْ"], 1],
+        ["مَا هُوَ دِينُ العَرَبِ وَغَيْرِ العَرَبِ كَمَا تَعَلَّمَتْ فَاطِمَةُ؟", ["الإِسْلَامُ", "اللُّغَةُ العَرَبِيَّةُ", "الرِّيَاضِيَّاتُ", "العِلْمُ"], 0],
+        ["مَنِ الَّذِي أَتَى بِالحَقَائِقِ العِلْمِيَّةِ فِي الإِسْلَامِ؟", ["العُلَمَاءُ الجُدُدُ", "النَّبِيُّ مُحَمَّدٌ (صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ)", "المُهَنْدِسُونَ", "الطَّبِيبَاتُ"], 1],
+        ["لِمَاذَا رَفَضَتْ سَارَةُ الزَّوَاجَ مِنْ طَارِقٍ؟", ["لِأَنَّهُ لا يَعْمَلُ", "لِأَنَّهُ مَرِيضٌ", "لِأَنَّهُ لا يُصَلِّي", "لِأَنَّهُ فَقِيرٌ"], 2],
+        ["مَاذَا كَانَتْ تَفْعَلُ فَاطِمَةُ فِي المَكْتَبَاتِ؟", ["تَنَامُ هُنَاكَ", "تُقَابِلُ سَارَةَ", "تَعْمَلُ قِرَاءَاتٍ عَمِيقَةً", "تَلْعَبُ بِالحَاسُوبِ"], 2],
+        ["أَيْنَ عَمِلَتْ فَاطِمَةُ بَعْدَ تَخَرُّجِهَا فِي الجَامِعَةِ؟", ["فِي المَطَارِ", "فِي مُسْتَشْفَيَاتٍ كَبِيرَةٍ", "فِي مَكْتَبَةٍ", "فِي مَدْرَسَةٍ"], 1],
+        ["كَيْفَ سَاعَدَتْ فَاطِمَةُ الفُقَرَاءَ؟", ["بِإِعْطَائِهِمْ كُتُباً", "بِإِخْرَاجِ الزَّكَاةِ مِنْ مَالِهَا", "بِبِنَاءِ جَامِعَةٍ", "بِتَعْلِيمِهِمْ رُوسِيَا"], 1]
+    ];
+
+    const s1_tf = [
+        ["فَاطِمَةُ طَالِبَةٌ صِينِيَّةٌ.", false],
+        ["الجَامِعَةُ الَّتِي اِلْتَحَقَتْ بِهَا فَاطِمَةُ هِيَ جَامِعَةٌ حَدِيثَةٌ.", true],
+        ["أَثْبَتَ العِلْمُ الحَدِيثُ الحَقَائِقَ القُرْآنِيَّةَ.", true],
+        ["نَصَحَتْ فَاطِمَةُ صَدِيقَتَهَا سَارَةَ بِأَلَّا تَحْزَنَ.", true],
+        ["طَارِقٌ شَابٌّ يُحَافِظُ عَلَى صَلَاتِهِ كُلَّ يَوْمٍ.", false],
+        ["الصَّلَاةُ هِيَ عِمَادُ الدِّينِ المُهِمُّ.", true],
+        ["أَهْمَلَتْ فَاطِمَةُ دِرَاسَتَهَا بِسَبَبِ أَصْدِقَائِهَا.", false],
+        ["عَمِلَتْ فَاطِمَةُ مَعَ طَبِيبَاتٍ وَمُهَنْدِسَاتٍ.", true],
+        ["الإِسْلَامُ دِينٌ مُخَصَّصٌ لِلْعَرَبِ فَقَطْ وَلَيْسَ لِغَيْرِهِمْ.", false],
+        ["كَانَتْ فَاطِمَةُ تُخْرِجُ الزَّكَاةَ لِمُسَاعَدَةِ الفُقَرَاءِ.", true]
+    ];
+
+    // S2: Vocab
+    const s2_vocab = [
+        ["مَا مَعْنَى كَلِمَةِ (الاِلْتِحَاق)؟", ["الخُرُوجُ", "الانْضِمَامُ وَالدُّخُولُ", "الرَّفْضُ", "النَّوْمُ"], 1],
+        ["مَا مَعْنَى كَلِمَةِ (عِمَاد) فِي عِبَارَةِ الصَّلاةُ عِمَادُ الدِّينِ؟", ["شَكْل", "لَوْن", "أَسَاس", "نِهَايَة"], 2],
+        ["مَا مَعْنَى (حَقَائِق)؟", ["أَشْيَاءٌ خَيَالِيَّةٌ", "أُمُورٌ ثَابِتَةٌ وَصَحِيحَةٌ", "أَقْلَامٌ", "أَخْطَاءٌ"], 1],
+        ["مَاذَا تَعْنِي (قِرَاءَات عَمِيقَة)؟", ["قِرَاءَةٌ بِتَفْكِيرٍ وَتَفْصِيلٍ", "قِرَاءَةٌ سَرِيعَةٌ جِدّاً", "عَدَمُ القِرَاءَةِ", "رَسْمُ صُوَرٍ"], 0],
+        ["مَا مَعْنَى (تُهْمِلْ)؟", ["تَحْفَظُ", "تَتْرُكُ وَتُقَصِّرُ بِلَا رِعَايَةٍ", "تَدْرُسُ", "تَقْرَأُ"], 1],
+        ["مَا مَعْنَى كَلِمَةِ (يَسُرُّنِي) مِنْ خِلَالِ دِرَاسَتِكِ السَّابِقَةِ؟", ["يُبْكِينِي", "يُسْعِدُنِي", "يَضْرِبُنِي", "يُفَارِقُنِي"], 1],
+        ["مَاذَا تَعْنِي كَلِمَةُ (أُمِّيّ)؟", ["شَخْصٌ غَنِيٌّ", "الَّذِي لَا يَقْرَأُ وَلَا يَكْتُبُ", "طَبِيبٌ مَاْهِرٌ", "رَجُلٌ قَوِيٌّ"], 1],
+        ["مَا مَعْنَى (دِينٌ عَامٌّ)؟", ["لِعَائِلَةٍ وَاحِدَةٍ", "لِلْعَرَبِ فَقَطْ", "لِلنَّاسِ جَمِيعاً", "لِلْمَرْضَى فَقَطْ"], 2],
+        ["مَا مَعْنَى الفِعْلِ (يَشْتَرِي)؟", ["يَبِيعُ", "يَدْفَعُ المَالَ لِيَأْخُذَ شَيْئاً", "يَنَامُ طَوِيلاً", "يَشْرَبُ المَاءَ"], 1],
+        ["مَا مَعْنَى كَلِمَةِ (شِفَاء)؟", ["مَرَض", "أَلَم", "عِلَاجٌ وَتَعَافٍ", "مَوْت"], 2],
+        ["مَا مَعْنَى الفِعْلِ (تُفَرِّق)؟", ["تُمَيِّزُ بَيْنَ الْأَشْيَاءِ", "تَجْمَعُ كُلَّ شَيْءٍ", "تُسَاعِدُ النَّاسَ", "تَبْتَسِمُ"], 0],
+        ["مَاذَا تَعْنِي كَلِمَةُ (نَافِلَة)؟", ["خَسَارَة", "زِيَادَةٌ وَعَمَلٌ إِضَافِيٌّ", "نَقْص", "عِقَاب"], 1],
+        ["مَا مَعْنَى كَلِمَةِ (سُبُل)؟", ["بُيُوت", "طُرُق", "كُتُب", "شُقَق"], 1],
+        ["مَا مَعْنَى الفِعْلِ (يَتَقَاتَل)؟", ["يَتَحَارَبُ وَيَتَخَاصَمُ", "يَتَصَالَحُ", "يَتَحَدَّثُ", "يَضْحَكُ"], 0],
+        ["مَا مَعْنَى (المُسَاوَاة)؟", ["الظُّلْمُ", "العَدْلُ بَيْنَ النَّاسِ", "الغَضَبُ", "الفَقْرُ"], 1]
+    ];
+
+    // S3: Grammar T/F
+    const s3_tf = [
+        ["قَاعِدَة: لا يَجْتَمِعُ فِي اللُّغَةِ العَرَبِيَّةِ حَرْفَانِ سَاكِنَانِ إِلَّا فِي الوَقْفِ.", true],
+        ["مِنْ حُرُوفِ العِلَّةِ فِي العَرَبِيَّةِ (ا ، و ، ي).", true],
+        ["الحُرُوفُ الصَّحِيحَةُ تَأْتِي فِي أَوَّلِ الكَلِمَةِ فَقَطْ وَلا تَأْتِي فِي الوَسَطِ.", false],
+        ["يُرْفَعُ جَمْعُ المُؤَنَّثِ السَّالِمِ دَائِماً بِالضَّمَّةِ.", true],
+        ["يُنْصَبُ جَمْعُ المُؤَنَّثِ السَّالِمِ بِالفَتْحَةِ مِثْلَ المُفْرَدِ.", false],
+        ["العَدَدُ مِنْ 3 إِلَى 10 يُطَابِقُ تَمْيِيزَهُ دَائِماً فِي التَّذْكِيرِ وَالتَّأْنِيثِ.", false],
+        ["تَمْيِيزُ الأَعْدَادِ مِنْ 3 إِلَى 10 يَكُونُ جَمْعاً مَجْرُوراً دَائِماً.", true],
+        ["عِنْدَ وُجُودِ التَّاءِ المَرْبُوطَةِ فِي آخِرِ الكَلِمَةِ، يُرْسَمُ تَنْوِينُ النَّصْبِ عَلَيْهَا مُبَاشَرَةً.", true],
+        ["يُرْسَمُ تَنْوِينُ النَّصْبِ دَائِماً عَلَى أَلِفٍ، حَتَّى بَعْدَ الهَمْزَةِ المَسْبُوقَةِ بِأَلِفٍ (مِثْل: مَاءَاً).", false],
+        ["كِتَابَةُ التَّنْوِينِ فِي كَلِمَةِ (مَاءً) صَحِيحَةٌ إِمْلَائِيّاً لِأَنَّ الهَمْزَةَ سُبِقَتْ بِأَلِفٍ.", true],
+        ["الفِعْلُ (يَسْعَى) هُوَ فِعْلٌ مُعْتَلُّ الآخِرِ.", true],
+        ["عِنْدَ التِقَاءِ السَّاكِنَيْنِ، نَحْذِفُ دَائِماً السَّاكِنَ الثَّانِي.", false],
+        ["جَمْعُ كَلِمَة (مُسْتَشْفَى) فِي العَرَبِيَّةِ هُوَ (مُسْتَشْفَيَات).", true],
+        ["فِي جُمْلَةِ (رَأَيْتُ مُهَنْدِسَاتٍ)، كَلِمَةُ مُهَنْدِسَاتٍ مَنْصُوبَةٌ بِالكَسْرَةِ.", true],
+        ["نَقُولُ فِي العَرَبِيَّةِ: (خَمْسُ بَنَاتٍ) لِأَنَّ بَنَات مُؤَنَّثٌ فَخَالَفَهَا العَدَدُ بِالتَّذْكِيرِ.", true]
+    ];
+
+    // S4: Sing/Plur/Antonyms
+    const s4_mcq = [
+        ["مَا جَمْعُ كَلِمَةِ (لُغَة)؟", ["لَغْوٌ", "لُغَاتٌ", "أَلْغَاءٌ", "مَلَاغِي"], 1],
+        ["مَا جَمْعُ كَلِمَةِ (رَأْي)؟", ["آرَاءٌ", "رُؤْيَةٌ", "رَايَاتٌ", "رَوَائِي"], 0],
+        ["مَا جَمْعُ كَلِمَةِ (سُؤَال)؟", ["سَائِلُونَ", "أَسْئِلَةٌ", "سُؤَالَاتٌ", "مَسَائِلُ"], 1],
+        ["مَا مُفْرَدُ كَلِمَةِ (حَقَائِق)؟", ["حَقٌّ", "حَقِيقَةٌ", "حُقُوقٌ", "مُحِقٌّ"], 1],
+        ["مَا مُفْرَدُ كَلِمَةِ (أَلْوَان)؟", ["لَوْنٌ", "تَلْوِينٌ", "مُلَوَّنٌ", "لَوَانٌ"], 0],
+        ["مَا مُفْرَدُ كَلِمَةِ (شُقَق)؟", ["شَاقٌّ", "مَشَقَّةٌ", "شُقَّةٌ", "شَقِيقٌ"], 2],
+        ["مَا مُفْرَدُ كَلِمَةِ (عُمَّال)؟", ["عَامِلٌ", "عَمَلٌ", "عُمُولَةٌ", "عَامِلَاتٌ"], 0],
+        ["مَا جَمْعُ كَلِمَةِ (مُهَنْدِسَة)؟", ["مُهَنْدِسُونَ", "مُهَنْدِسَاتٌ", "هَنْدَسَةٌ", "مَهَانِدُ"], 1],
+        ["مَا جَمْعُ كَلِمَةِ (عِرْق)؟", ["أَعْرَاقٌ", "عُرُوقٌ", "عَرَقٌ", "مَعَارِقُ"], 0],
+        ["مَا مُضَادُّ (عَكْسُ) كَلِمَةِ (صَوَاب)؟", ["صَحِيحٌ", "خَطَأٌ", "بَعِيدٌ", "جَمِيلٌ"], 1],
+        ["مَا مُضَادُّ كَلِمَةِ (العِلْم)؟", ["المَعْرِفَةُ", "الذَّكَاءُ", "الجَهْلُ", "القِرَاءَةُ"], 2],
+        ["مَا مُضَادُّ كَلِمَةِ (يَسُرُّنِي)؟", ["يُسْعِدُنِي", "يُحْزِنُنِي وَيُضَايِقُنِي", "يُعَلِّمُنِي", "يُشْبِعُنِي"], 1],
+        ["مَا مُضَادُّ كَلِمَةِ (الفُقَرَاء)؟", ["المَسَاكِينُ", "الأَغْنِيَاءُ", "المَرْضَى", "الأَطْفَالُ"], 1],
+        ["مَا مُضَادُّ الفِعْلِ (تُفَرِّق)؟", ["تَكْسِرُ", "تَبْنِي", "تَجْمَعُ", "تَنْسَى"], 2],
+        ["مَا مُضَادُّ كَلِمَةِ (حَدِيثَة) فِي وَصْفِ الجَامِعَةِ؟", ["قَدِيمَةٌ", "مُتَطَوِّرَةٌ", "كَبِيرَةٌ", "بَعِيدَةٌ"], 0]
+    ];
+
+    // S5: Fill in the blank
+    const blankWords = ['الكَعْبَةِ', 'وَقَفَ', 'اللهُ', 'عَمِيقاً', 'مُسَابَقَةِ', 'الرَّسُولُ', 'أَرْبَعِينَ', 'الحَقَائِقِ', 'العَرَبِ', 'العِلْمُ', 'التَّقْوَى', 'نُوحٌ', 'كُلِّ', 'العِبَادَاتِ', 'آسِيَا'];
+    
+    // index is the correct index in blankWords
+    const s5_fill = [
+        ["طَافَ الحَاجُّ بِـ .........", 0],
+        ["......... المُدَرِّسُ أَمَامَ الطُّلَّابِ لِيَشْرَحَ الدَّرْسَ.", 1],
+        ["يَغْفِرُ المُسْلِمُ لِأَخِيهِ لِيَغْفِرَ ......... لَهُ.", 2],
+        ["نَامَ الطِّفْلُ صَغِيرُ الحَجْمِ نَوْماً .........", 3],
+        ["فَازَ أَخِي الصَّغِيرُ فِي ......... القُرْآنِ الكَرِيمِ.", 4],
+        ["قَالَ ......... مُحَمَّدٌ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ: بُنِيَ الإِسْلَامُ عَلَى خَمْسٍ.", 5],
+        ["اِشْتَرَى وَالِدِي سَيَّارَةً حَدِيثَةً بِـ ......... أَلْفَ رِيَالٍ.", 6],
+        ["أَتَى النَّبِيُّ مُحَمَّدٌ بِـ ......... العِلْمِيَّةِ مِنْ عِنْدِ رَبِّهِ.", 7],
+        ["تَعَلَّمَتْ فَاطِمَةُ أَنَّ الإِسْلَامَ دِينُ ......... وَغَيْرِهِمْ.", 8],
+        ["أَثْبَتَ ......... الحَدِيثُ جَمِيعَ الحَقَائِقِ القُرْآنِيَّةِ.", 9],
+        ["أَفْضَلُ النَّاسِ فِي الإِسْلَامِ هُمْ أَهْلُ ......... وَالإِيمَانِ.", 10],
+        ["مِنْ أَوَّلِ الرُّسُلِ الَّذِينَ أَرْسَلَهُمُ اللهُ هُوَ ......... عَلَيْهِ السَّلَامُ.", 11],
+        ["يُؤْمِنُ المُسْلِمُونَ بِـ ......... الرُّسُلِ وَلَا يُفَرِّقُونَ بَيْنَهُمْ.", 12],
+        ["تَتَّفِقُ الشُّعُوبُ الإِسْلَامِيَّةُ جَمِيعاً فِي ......... وَالشَّعَائِرِ.", 13],
+        ["يَسْكُنُ أَكْثَرُ المُسْلِمِينَ حَوْلَ العَالَمِ فِي قَارَّةِ ......... المِسَاحَةِ.", 14]
+    ];
+
+    // S6: Sentence Ordering
+    // Format: [[words array randomized automatically later], correct joined string]
+    const s6_ordering = [
+        [["هَلْ", "الإِسْلَامُ", "دِينُ", "العَرَبِ"], "هَلْ الإِسْلَامُ دِينُ العَرَبِ"],
+        [["الإِسْلَامُ", "دِينٌ", "لِلنَّاسِ", "جَمِيعاً"], "الإِسْلَامُ دِينٌ لِلنَّاسِ جَمِيعاً"],
+        [["أَرْكَانُ", "الإِسْلَامِ", "خَمْسَةٌ"], "أَرْكَانُ الإِسْلَامِ خَمْسَةٌ"],
+        [["الصَّلَاةُ", "عِمَادُ", "الدِّينِ"], "الصَّلَاةُ عِمَادُ الدِّينِ"],
+        [["اِقْرَأْ", "كِتَاباً", "مُفِيداً"], "اِقْرَأْ كِتَاباً مُفِيداً"],
+        [["البَيْتُ", "بَعِيدٌ", "عَنِ", "الشَّارِعِ"], "البَيْتُ بَعِيدٌ عَنِ الشَّارِعِ"],
+        [["قَدِّمِ", "الخَيْرَ", "لِلنَّاسِ"], "قَدِّمِ الخَيْرَ لِلنَّاسِ"],
+        [["زَارَتِ", "المُهَنْدِسَاتُ", "الشَّرِكَةَ"], "زَارَتِ المُهَنْدِسَاتُ الشَّرِكَةَ"],
+        [["فِي", "بَلَدِي", "جَامِعَاتٌ", "حَدِيثَةٌ"], "فِي بَلَدِي جَامِعَاتٌ حَدِيثَةٌ"],
+        [["لَدَيَّ", "أَرْبَعَةُ", "كُتُبٍ"], "لَدَيَّ أَرْبَعَةُ كُتُبٍ"],
+        [["طَارِقٌ", "لا", "يُصَلِّي"], "طَارِقٌ لا يُصَلِّي"],
+        [["الحَجُّ", "زِيَارَةُ", "مَكَّةَ"], "الحَجُّ زِيَارَةُ مَكَّةَ"],
+        [["الصَّوْمُ", "تَرْكُ", "الطَّعَامِ"], "الصَّوْمُ تَرْكُ الطَّعَامِ"],
+        [["اشْتَرَيْتُ", "سِتَّةَ", "أَقْلَامٍ"], "اشْتَرَيْتُ سِتَّةَ أَقْلَامٍ"],
+        [["نَجَحَتِ", "التِّلْمِيذَاتُ", "فِي", "الاخْتِبَارِ"], "نَجَحَتِ التِّلْمِيذَاتُ فِي الاخْتِبَارِ"]
+    ];
+
+    // S7: Essay Words
+    const s7_essayWords = ["العِلْم", "التَّعَلُّم", "جَامِعَة", "مُسْتَشْفَيَات", "حَقَائِق", "تَقْوَى", "صَلَوَات", "زَكَاة", "اِخْتِبَار", "مُهَنْدِسَات", "طَبِيبَات", "مَكْتَبَة", "الاِلْتِحَاق", "مَطَار", "عِمَاد"];
+
+    // Utility: Shuffle Array
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
+
+    // Render logic
+    function renderMCQ(containerId, data, startQNum) {
+        const container = document.getElementById(containerId);
+        data.forEach((item, idx) => {
+            const [qText, options, correctIdx] = item;
+            const qDiv = document.createElement('div');
+            qDiv.className = 'question-block';
+            qDiv.innerHTML = `<strong>س ${startQNum + idx}: ${qText}</strong>`;
+            
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options-grid';
+            
+            options.forEach((optText, oIdx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = optText;
+                btn.onclick = () => handleMCQClick(btn, optionsDiv, oIdx, correctIdx, containerId + '_' + idx);
+                optionsDiv.appendChild(btn);
+            });
+            qDiv.appendChild(optionsDiv);
+            container.appendChild(qDiv);
+        });
+    }
+
+    function renderTF(containerId, data, startQNum) {
+        const container = document.getElementById(containerId);
+        data.forEach((item, idx) => {
+            const [qText, isTrue] = item;
+            const qDiv = document.createElement('div');
+            qDiv.className = 'question-block';
+            qDiv.innerHTML = `<strong>س ${startQNum + idx}: ${qText}</strong>`;
+            
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options-grid';
+            optionsDiv.style.gridTemplateColumns = "1fr 1fr";
+            
+            const btnT = document.createElement('button');
+            btnT.className = 'option-btn';
+            btnT.innerText = 'صَحِيحٌ (Верно)';
+            btnT.onclick = () => handleMCQClick(btnT, optionsDiv, true, isTrue, containerId + '_' + idx);
+            
+            const btnF = document.createElement('button');
+            btnF.className = 'option-btn';
+            btnF.innerText = 'خَطَأٌ (Неверно)';
+            btnF.onclick = () => handleMCQClick(btnF, optionsDiv, false, isTrue, containerId + '_' + idx);
+            
+            optionsDiv.appendChild(btnT);
+            optionsDiv.appendChild(btnF);
+            qDiv.appendChild(optionsDiv);
+            container.appendChild(qDiv);
+        });
+    }
+
+    function handleMCQClick(clickedBtn, parentDiv, userVal, correctVal, qId) {
+        Array.from(parentDiv.children).forEach(b => b.classList.add('disabled'));
+        if (userVal === correctVal) {
+            clickedBtn.classList.add('correct');
+            if(!answeredQs.has(qId)) {
+                totalScore++;
+                answeredQs.add(qId);
+            }
+        } else {
+            clickedBtn.classList.add('incorrect');
+            answeredQs.add(qId); // marked as answered to prevent point farming
+        }
+    }
+
+    function renderFill(containerId, data, startQNum) {
+        const container = document.getElementById(containerId);
+        data.forEach((item, idx) => {
+            const [qText, correctWordIdx] = item;
+            const qId = 'fill_' + idx;
+            const qDiv = document.createElement('div');
+            qDiv.className = 'question-block';
+            
+            let selectHTML = `<select id="${qId}" onchange="checkFill(this, ${correctWordIdx}, '${qId}')">`;
+            selectHTML += `<option value="-1" disabled selected>-- اِخْتَارِي الكَلِمَةَ --</option>`;
+            blankWords.forEach((word, wIdx) => {
+                selectHTML += `<option value="${wIdx}">${word}</option>`;
+            });
+            selectHTML += `</select>`;
+            
+            qDiv.innerHTML = `<strong>س ${startQNum + idx}: ${qText}</strong><br><br>${selectHTML}`;
+            container.appendChild(qDiv);
+        });
+    }
+
+    function checkFill(selectEl, correctIdx, qId) {
+        const userVal = parseInt(selectEl.value);
+        if (userVal === correctIdx) {
+            selectEl.classList.remove('warning', 'incorrect');
+            selectEl.classList.add('correct');
+            selectEl.disabled = true;
+            if(!answeredQs.has(qId)) {
+                totalScore++;
+                answeredQs.add(qId);
+            }
+        } else {
+            selectEl.classList.add('warning');
+            setTimeout(() => {
+                selectEl.classList.remove('warning');
+                selectEl.value = "-1";
+            }, 1000);
+            answeredQs.add(qId); // missed first try = no point, or we can allow retry for 0 penalty. 
+            // The prompt says: يسمح بالمحاولة مرة أخرى. I won't deduct, but I'll add score only if first try was right? 
+            // Let's just track if they ever got it right initially. If they got it wrong, add to set so no points later.
+        }
+    }
+
+    function renderOrdering(containerId, data, startQNum) {
+        const container = document.getElementById(containerId);
+        data.forEach((item, idx) => {
+            const [wordsArr, correctStr] = item;
+            const qId = 'ord_' + idx;
+            
+            const qDiv = document.createElement('div');
+            qDiv.className = 'question-block ordering-q';
+            qDiv.innerHTML = `<strong>س ${startQNum + idx}:</strong><br>`;
+            
+            const shuffledWords = shuffle([...wordsArr]);
+            
+            const poolDiv = document.createElement('div');
+            poolDiv.className = 'word-pool';
+            poolDiv.id = `pool_${idx}`;
+            
+            const ansDiv = document.createElement('div');
+            ansDiv.className = 'answer-box';
+            ansDiv.id = `ans_${idx}`;
+            
+            shuffledWords.forEach((w, wIdx) => {
+                const wSpan = document.createElement('span');
+                wSpan.className = 'word-item';
+                wSpan.innerText = w;
+                wSpan.id = `word_${idx}_${wIdx}`;
+                wSpan.onclick = () => moveWord(wSpan, poolDiv, ansDiv, correctStr, wordsArr.length, qId);
+                poolDiv.appendChild(wSpan);
+            });
+            
+            qDiv.appendChild(poolDiv);
+            qDiv.appendChild(ansDiv);
+            container.appendChild(qDiv);
+        });
+    }
+
+    function moveWord(wordEl, poolDiv, ansDiv, correctStr, totalLength, qId) {
+        if(ansDiv.classList.contains('correct')) return; // locked
+        
+        if (wordEl.parentElement === poolDiv) {
+            ansDiv.appendChild(wordEl);
+        } else {
+            poolDiv.appendChild(wordEl);
+        }
+        
+        // Auto check if answer box is full
+        if (ansDiv.children.length === totalLength) {
+            const userStr = Array.from(ansDiv.children).map(w => w.innerText).join(" ");
+            if (userStr === correctStr) {
+                ansDiv.classList.add('correct');
+                if(!answeredQs.has(qId)) {
+                    totalScore++;
+                    answeredQs.add(qId);
+                }
+            } else {
+                ansDiv.classList.add('warning');
+                answeredQs.add(qId);
+                setTimeout(() => {
+                    ansDiv.classList.remove('warning');
+                    // return all to pool
+                    while(ansDiv.firstChild) {
+                        poolDiv.appendChild(ansDiv.firstChild);
+                    }
+                }, 1000);
+            }
+        }
+    }
+
+    function renderEssay(containerId, words) {
+        const container = document.getElementById(containerId);
+        words.forEach((word, idx) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'question-block';
+            qDiv.innerHTML = `<strong>${idx + 1}. ${word}:</strong><br><textarea placeholder="اكْتُبِي جُمْلَةً هُنَا... (Напишите предложение здесь...)"></textarea>`;
+            container.appendChild(qDiv);
+        });
+    }
+
+    // Initialization
+    window.onload = () => {
+        // Section 1
+        renderMCQ('s1-content', s1_mcq, 1);
+        renderTF('s1-content', s1_tf, 11);
+        
+        // Section 2
+        renderMCQ('s2-content', s2_vocab, 21);
+        
+        // Section 3
+        renderTF('s3-content', s3_tf, 36);
+        
+        // Section 4
+        renderMCQ('s4-content', s4_mcq, 51);
+        
+        // Section 5
+        renderFill('s5-content', s5_fill, 66);
+        
+        // Section 6
+        renderOrdering('s6-content', s6_ordering, 81);
+        
+        // Section 7
+        renderEssay('s7-content', s7_essayWords);
+    };
+
+    function nextSection(num) {
+        document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+        document.getElementById('section-' + num).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function showResults() {
+        document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+        document.getElementById('result-screen').classList.add('active');
+        document.getElementById('score-display').innerText = `${totalScore} / 95`;
+        window.scrollTo(0,0);
+    }
+</script>
+
+</body>
+</html>
