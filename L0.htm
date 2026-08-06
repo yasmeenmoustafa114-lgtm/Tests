@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار المستوى التمهيدي</title>
+    <style>
+        :root {
+            --bg-color: #FDF5E6;
+            --main-color: #1F618D;
+            --hover-color: #154360;
+            --correct-color: #2ecc71;
+            --wrong-color: #e74c3c;
+            --highlight-color: #ffdcb3;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1, h2, h3 {
+            color: var(--main-color);
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .quote-box {
+            background: #f8f9fa;
+            border-right: 5px solid var(--main-color);
+            padding: 15px;
+            margin: 20px 0;
+            font-style: italic;
+            border-radius: 5px;
+        }
+
+        .btn {
+            background-color: var(--main-color);
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: block;
+            margin: 20px auto;
+            width: fit-content;
+        }
+
+        .btn:hover {
+            background-color: var(--hover-color);
+        }
+
+        .reading-box {
+            background: #fffdfa;
+            padding: 20px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        .highlight {
+            background-color: var(--highlight-color);
+            padding: 0 5px;
+            border-radius: 4px;
+        }
+
+        details {
+            margin-top: 15px;
+            background: #f1f8ff;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #d4e6f1;
+        }
+
+        summary {
+            font-weight: bold;
+            color: var(--main-color);
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: var(--main-color);
+            color: white;
+        }
+
+        .question-box {
+            background: #fdfdfd;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .option-btn {
+            background: #f4f6f7;
+            border: 2px solid var(--main-color);
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: 0.2s;
+        }
+
+        .option-btn:hover {
+            background: #eaf2f8;
+        }
+
+        .correct {
+            background-color: var(--correct-color) !important;
+            color: #fff;
+            border-color: var(--correct-color);
+        }
+
+        .wrong {
+            background-color: var(--wrong-color) !important;
+            color: #fff;
+            border-color: var(--wrong-color);
+        }
+
+        .explanation {
+            display: none;
+            background: #e8f8f5;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border-right: 4px solid var(--main-color);
+            color: #117a65;
+        }
+
+        .word-btn {
+            display: inline-block;
+            margin: 5px;
+            padding: 8px 15px;
+            background: #ebf5fb;
+            border: 1px dashed var(--main-color);
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .order-dropzone {
+            min-height: 50px;
+            background: #fef9e7;
+            border: 2px dashed #f39c12;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        select {
+            padding: 8px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            border: 1px solid var(--main-color);
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1.1em;
+            font-family: inherit;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        #quiz-screen, #result-screen {
+            display: none;
+        }
+
+        .section-title {
+            border-bottom: 2px solid var(--main-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Start Screen -->
+    <div id="start-screen">
+        <h1>اختبار الدرس الأول</h1>
+        <div class="subtitle">مادة علوم القرآن الكريم (المستوى التمهيدي)</div>
+        <h2>مرحباً بوصية رسول الله صلى الله عليه وسلم<br><span style="font-size: 0.8em; color: #7f8c8d;">(Добро пожаловать!)</span></h2>
+        
+        <div class="quote-box">
+            «تعلّموا العلم، فإن تعلّمه لله خشية... اللهم إنا نسألك فهم النبيين...»
+        </div>
+        
+        <button class="btn" onclick="startQuiz()">ابدأ الاختبار (Начать тест)</button>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quiz-screen">
+        <h2 id="section-title" class="section-title"></h2>
+        <div id="reading-container"></div>
+        <div id="questions-container"></div>
+        
+        <div class="nav-buttons">
+            <button class="btn" id="prev-btn" onclick="prevSection()" style="display:none;">السابق (Предыдущий)</button>
+            <button class="btn" id="next-btn" onclick="nextSection()">القسم التالي (Следующий раздел)</button>
+        </div>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="result-screen">
+        <h1>النتيجة النهائية (Ваш результат)</h1>
+        <h2 id="final-score"></h2>
+        <p style="text-align: center; color: #e74c3c;">ملاحظة: أسئلة الإنشاء تُصحح يدوياً ولا تدخل في النتيجة الآلية.<br>(Примечание: вопросы на сочинение проверяются вручную).</p>
+        
+        <div class="quote-box">
+            «لا يُستطاع العلم براحة الجسم. هنيئاً لك إتمام هذا الجهد...»
+        </div>
+        
+        <button class="btn" onclick="location.reload()">إعادة الاختبار (Пройти заново)</button>
+    </div>
+</div>
+
+<script>
+    // Safe Arrays using single quotes only
+    const templates = [
+        { q: 'مَا هَذَا؟ (صُورَة قَلَم)', opts: ['قَلَمٌ', 'مَسْجِدٌ', 'كِتَابٌ'], ans: 'قَلَمٌ' },
+        { q: 'مَا هَذِهِ؟ (صُورَة سَيَّارَة)', opts: ['سَيَّارَةٌ', 'دَجَاجَةٌ', 'مَدْرَسَةٌ'], ans: 'سَيَّارَةٌ' },
+        { q: 'مَنْ هَذَا؟', opts: ['وَلَدٌ', 'بِنْتٌ', 'سَمَكَةٌ'], ans: 'وَلَدٌ' },
+        { q: 'أَيْنَ الْكِتَابُ؟', opts: ['فَوْقَ الْمَكْتَبِ', 'فِي الْمَاءِ', 'خَلْفَ الْبَيْتِ'], ans: 'فَوْقَ الْمَكْتَبِ' },
+        { q: 'هَلْ هَذَا مَسْجِدٌ؟ (صُورَة بَيْت)', opts: ['لَا، هَذَا بَيْتٌ', 'نَعَمْ، هَذَا مَسْجِدٌ', 'لَا، هَذِهِ شَجَرَةٌ'], ans: 'لَا، هَذَا بَيْتٌ' }
+    ];
+
+    const baseTextConcepts = [
+        { c: 'هَذَا حِصَانٌ', isMale: true }, { c: 'هَذِهِ حُجْرَةٌ', isMale: false },
+        { c: 'هَذَا مِفْتَاحٌ', isMale: true }, { c: 'هَذِهِ سَفِينَةٌ', isMale: false },
+        { c: 'هَذَا سَرِيرٌ', isMale: true }, { c: 'هَذِهِ تَفَّاحَةٌ', isMale: false },
+        { c: 'هَذَا خُبْزٌ', isMale: true }, { c: 'هَذِهِ ثَلَّاجَةٌ', isMale: false },
+        { c: 'هَذَا طَبِيبٌ', isMale: true }, { c: 'هَذِهِ طَالِبَةٌ', isMale: false }
+    ];
+
+    let allQuestions = [
+        // Section 1: Reading
+        { sec: 1, type: 'mcq', q: 'مَا اسْمُ الطَّالِبَةِ؟ (Как зовут студентку?)', opts: ['نَادْيَا', 'مَرْيَم', 'فَاطِمَة'], ans: 'نَادْيَا' },
+        { sec: 1, type: 'mcq', q: 'مِنْ أَيْنَ نَادْيَا؟ (Откуда Надя?)', opts: ['مِنْ رُوسِيَا', 'مِنْ مِصْرَ', 'مِنْ أَمْرِيكَا'], ans: 'مِنْ رُوسِيَا' },
+        { sec: 1, type: 'mcq', q: 'مَا جِنْسِيَّتُهَا؟ (Какая у нее национальность?)', opts: ['رُوسِيَّةٌ', 'عَرَبِيَّةٌ', 'مِصْرِيَّةٌ'], ans: 'رُوسِيَّةٌ' },
+        { sec: 1, type: 'mcq', q: 'أَيْنَ تَسْكُنُ؟ (Где она живет?)', opts: ['فِي بَيْتٍ', 'فِي مَدْرَسَةٍ', 'فِي مَسْجِدٍ'], ans: 'فِي بَيْتٍ' },
+        { sec: 1, type: 'mcq', q: 'مَعَ مَنْ تَسْكُنُ؟ (С кем она живет?)', opts: ['مَعَ أُسْرَتِهَا', 'مَعَ الْمُعَلِّمَةِ', 'وَحْدَهَا'], ans: 'مَعَ أُسْرَتِهَا' },
+        { sec: 1, type: 'tf', q: 'نَادْيَا لَا تُحِبُّ اللُّغَةَ الْعَرَبِيَّةَ.', opts: ['صَحِيح (Верно)', 'خَطَأ (Неверно)'], ans: 'خَطَأ (Неверно)' },
+        { sec: 1, type: 'tf', q: 'تَسْكُنُ نَادْيَا فِي الدَّوْرِ الْأَوَّلِ.', opts: ['صَحِيح (Верно)', 'خَطَأ (Неверно)'], ans: 'صَحِيح (Верно)' },
+        { sec: 1, type: 'tf', q: 'تَدْرُسُ فِي الْمُسْتَوَى التَّمْهِيدِيِّ.', opts: ['صَحِيح (Верно)', 'خَطَأ (Неверно)'], ans: 'صَحِيح (Верно)' },
+        { sec: 1, type: 'tf', q: 'نَادْيَا طَالِبَةٌ.', opts: ['صَحِيح (Верно)', 'خَطَأ (Неверно)'], ans: 'صَحِيح (Верно)' },
+        { sec: 1, type: 'tf', q: 'هَذِهِ مُعَلِّمَةٌ مُمْتَازَةٌ.', opts: ['صَحِيح (Верно)', 'خَطَأ (Неверно)'], ans: 'صَحِيح (Верно)' },
+        // Section 2: Vocab
+        { sec: 2, type: 'mcq', q: 'مَا مَعْنَى (بَيْتٌ)؟', opts: ['Дом', 'Школа', 'Книга'], ans: 'Дом' },
+        { sec: 2, type: 'mcq', q: 'مَا مَعْنَى (كِتَابٌ)؟', opts: ['Книга', 'Ручка', 'Стол'], ans: 'Книга' },
+        { sec: 2, type: 'mcq', q: 'مَا مَعْنَى (مُعَلِّمَةٌ)؟', opts: ['Учительница', 'Студентка', 'Врач'], ans: 'Учительница' },
+        { sec: 2, type: 'mcq', q: 'مَا مَعْنَى (أُسْرَةٌ)؟', opts: ['Семья', 'Машина', 'Яблоко'], ans: 'Семья' },
+        { sec: 2, type: 'mcq', q: 'مَا مَعْنَى (قَلَمٌ)؟', opts: ['Ручка', 'Дверь', 'Кровать'], ans: 'Ручка' },
+        // Section 3: Situations
+        { sec: 3, type: 'mcq', q: 'عِنْدَمَا نُرَحِّبُ بِشَخْصٍ نَقُولُ:', opts: ['أَهْلًا وَسَهْلًا', 'مَعَ السَّلَامَةِ', 'إِلَى اللِّقَاءِ'], ans: 'أَهْلًا وَسَهْلًا' },
+        { sec: 3, type: 'tf', q: 'نَقُولُ (مَعَ السَّلَامَةِ) عِنْدَ اللِّقَاءِ الْأَوَّلِ.', opts: ['صَحِيح', 'خَطَأ'], ans: 'خَطَأ' },
+        { sec: 3, type: 'tf', q: 'نَقُولُ (فُرْصَةٌ سَعِيدَةٌ) عِنْدَ التَّعَارُفِ.', opts: ['صَحِيح', 'خَطَأ'], ans: 'صَحِيح' },
+        { sec: 3, type: 'mcq', q: 'إِذَا ذَهَبَ شَخْصٌ نَقُولُ:', opts: ['إِلَى اللِّقَاءِ', 'كَيْفَ الْحَالُ؟', 'أَنَا بِخَيْرٍ'], ans: 'إِلَى اللِّقَاءِ' },
+        { sec: 3, type: 'tf', q: 'كَيْفَ حَالُكِ؟ جَوَابُهَا: أَنَا مِنْ رُوسِيَا.', opts: ['صَحِيح', 'خَطَأ'], ans: 'خَطَأ' },
+        // Section 4 will be populated by algorithm to reach 100
+        // Section 5: Blanks
+        { sec: 5, type: 'blank', q: '... الْكِتَابُ؟ فَوْقَ الْمَكْتَبِ.', ans: 'أَيْنَ' },
+        { sec: 5, type: 'blank', q: 'هَلْ ... قَلَمٌ؟', ans: 'هَذَا' },
+        { sec: 5, type: 'blank', q: '... هَذِهِ؟ هَذِهِ دَجَاجَةٌ.', ans: 'مَا' },
+        { sec: 5, type: 'blank', q: '... هَذَا؟ هَذَا طَبِيبٌ.', ans: 'مَنْ' },
+        { sec: 5, type: 'blank', q: 'أَنَا ... مِنْ رُوسِيَا.', ans: 'طَالِبَةٌ' },
+        // Section 6: Ordering
+        { sec: 6, type: 'order', q: 'رَتِّبِ الْكَلِمَاتِ:', opts: ['هَذَا', 'كِتَابٌ', 'جَمِيلٌ'], ans: 'هَذَا كِتَابٌ جَمِيلٌ' },
+        { sec: 6, type: 'order', q: 'رَتِّبِ الْكَلِمَاتِ:', opts: ['هَذِهِ', 'سَيَّارَةٌ', 'سَرِيعَةٌ'], ans: 'هَذِهِ سَيَّارَةٌ سَرِيعَةٌ' },
+        { sec: 6, type: 'order', q: 'رَتِّبِ الْكَلِمَاتِ:', opts: ['أَنَا', 'أَسْكُنُ', 'فِي', 'بَيْتٍ'], ans: 'أَنَا أَسْكُنُ فِي بَيْتٍ' },
+        { sec: 6, type: 'order', q: 'رَتِّبِ الْكَلِمَاتِ:', opts: ['الْقَلَمُ', 'فَوْقَ', 'الْمَكْتَبِ'], ans: 'الْقَلَمُ فَوْقَ الْمَكْتَبِ' },
+        { sec: 6, type: 'order', q: 'رَتِّبِ الْكَلِمَاتِ:', opts: ['مَنْ', 'هَذِهِ', 'الْبِنْتُ؟'], ans: 'مَنْ هَذِهِ الْبِنْتُ؟' },
+        // Section 7: Essay
+        { sec: 7, type: 'essay', q: 'ضَعِي كَلِمَة (أَسْكُنُ) فِي جُمْلَةٍ.', ans: '' },
+        { sec: 7, type: 'essay', q: 'ضَعِي كَلِمَة (فَوْقَ) فِي جُمْلَةٍ.', ans: '' },
+        { sec: 7, type: 'essay', q: 'ضَعِي كَلِمَة (طَالِبَةٌ) فِي جُمْلَةٍ.', ans: '' },
+        { sec: 7, type: 'essay', q: 'ضَعِي كَلِمَة (هَلْ) فِي جُمْلَةٍ.', ans: '' },
+        { sec: 7, type: 'essay', q: 'ضَعِي كَلِمَة (مُعَلِّمَةٌ) فِي جُمْلَةٍ.', ans: '' }
+    ];
+
+    // Generate remaining questions to reach exactly 100 questions (Algorithm requirement)
+    let generatedCount = allQuestions.length;
+    let loopIndex = 0;
+    while (generatedCount < 100) {
+        let conceptObj = baseTextConcepts[loopIndex % baseTextConcepts.length];
+        let isMale = conceptObj.isMale;
+        let word = conceptObj.c.split(' ')[1];
+        
+        let newQ = { sec: 4, type: 'mcq' };
+        if (generatedCount % 3 === 0) {
+            newQ.q = `أَكْمِلِ الْفَرَاغَ: ... ${word}`;
+            newQ.opts = ['هَذَا', 'هَذِهِ', 'أَيْنَ'];
+            newQ.ans = isMale ? 'هَذَا' : 'هَذِهِ';
+        } else if (generatedCount % 3 === 1) {
+            newQ.q = `مَا هَذَا / هَذِهِ؟ (${word})`;
+            newQ.opts = [conceptObj.c, isMale ? `هَذِهِ ${word}` : `هَذَا ${word}`, 'لَا أَعْرِف'];
+            newQ.ans = conceptObj.c;
+        } else {
+            let optionsTemp = ['طَبِيبٌ', 'سَفِينَةٌ', 'سَرِيرٌ'];
+            if(!optionsTemp.includes(word)) optionsTemp = word;
+            newQ.q = `هَلْ ${conceptObj.c}؟`;
+            newQ.opts = [`نَعَمْ، ${conceptObj.c}`, `لَا، هَذَا ${optionsTemp[1]}`, `لَا، هَذِهِ ${optionsTemp[2]}`];
+            newQ.ans = `نَعَمْ، ${conceptObj.c}`;
+        }
+        allQuestions.splice(20, 0, newQ); // Insert into section 4
+        generatedCount++;
+        loopIndex++;
+    }
+
+    // Add templates to Sec 4
+    templates.forEach(t => {
+        allQuestions.splice(20, 0, { sec: 4, type: 'mcq', q: t.q, opts: t.opts, ans: t.ans });
+    });
+
+    const sectionsData = [
+        { id: 1, title: 'الْقِسْمُ الْأَوَّلُ: الْقِرَاءَةُ وَالِاسْتِيعَابُ (Чтение и понимание)' },
+        { id: 2, title: 'الْقِسْمُ الثَّانِي: الْمُفْرَدَاتُ (Словарный запас)' },
+        { id: 3, title: 'الْقِسْمُ الثَّالِثُ: الْمَوَاقِفُ (Ситуации)' },
+        { id: 4, title: 'الْقِسْمُ الرَّابِعُ: الْقَوَاعِدُ (Грамматика)' },
+        { id: 5, title: 'الْقِسْمُ الْخَامِسُ: اِمْلَأِ الْفَرَاغَ (Заполните пропуски)' },
+        { id: 6, title: 'الْقِسْمُ السَّادِسُ: تَرْتِيبُ الْجُمَلِ (Составление предложений)' },
+        { id: 7, title: 'الْقِسْمُ السَّابِعُ: الْإِنْشَاءُ (Письмо)' }
+    ];
+
+    let currentSectionIndex = 0;
+    let score = 0;
+    let totalScoreable = allQuestions.filter(q => q.type !== 'essay').length;
+
+    const blankWords = ['هَذَا', 'هَذِهِ', 'أَيْنَ', 'مَا', 'مَنْ', 'طَالِبَةٌ', 'رُوسِيَا', 'كِتَابٌ', 'قَلَمٌ', 'بَيْتٌ', 'مُعَلِّمَةٌ', 'فَوْقَ', 'نَعَمْ', 'لَا', 'أَسْكُنُ'];
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function startQuiz() {
+        document.getElementById('start-screen').style.display = 'none';
+        document.getElementById('quiz-screen').style.display = 'block';
+        // Shuffle grammar questions in section 4
+        let sec4Qs = allQuestions.filter(q => q.sec === 4);
+        sec4Qs = shuffle(sec4Qs);
+        allQuestions = allQuestions.filter(q => q.sec !== 4).concat(sec4Qs);
+        renderSection();
+    }
+
+    function renderSection() {
+        const secId = sectionsData[currentSectionIndex].id;
+        document.getElementById('section-title').innerText = sectionsData[currentSectionIndex].title;
+        
+        const readingContainer = document.getElementById('reading-container');
+        if (secId === 1) {
+            readingContainer.innerHTML = `
+                <div class="reading-box">
+                    أَنَا اِسْمِي (نَادْيَا). أَنَا طَالِبَةٌ مِنْ (رُوسِيَا). <span class="highlight">جِنْسِيَّتِي</span> رُوسِيَّةٌ. أَنَا أَدْرُسُ فِي (<span class="highlight">الْمُسْتَوَى التَّمْهِيدِيِّ</span>) فِي <span class="highlight">مَعْهَدِ</span> كَلِمَة. أَنَا أُحِبُّ اللُّغَةَ الْعَرَبِيَّةَ جِدًّا. أَنَا <span class="highlight">أَسْكُنُ</span> مَعَ <span class="highlight">أُسْرَتِي</span> فِي بَيْتٍ جَمِيلٍ. نَحْنُ نَسْكُنُ فِي <span class="highlight">الدَّوْرِ</span> الْأَوَّلِ. أَنَا أَدْرُسُ مَعَ <span class="highlight">مُعَلِّمَةٍ</span> مُمْتَازَةٍ. هَذَا كِتَابِي وَهَذَا قَلَمِي.
+                </div>
+                <details>
+                    <summary>جَدْوَلُ الْمُفْرَدَاتِ (Словарь) - اضْغَطْ هُنَا لِلْعَرْضِ</summary>
+                    <table>
+                        <tr><th>الْكَلِمَةُ (Слово)</th><th>الْمَعْنَى (Значение)</th><th>مِثَالٌ (Пример)</th><th>التَّرْجَمَةُ (Перевод)</th></tr>
+                        <tr><td>جِنْسِيَّتِي</td><td>بَلَدِي الَّذِي أَنْتَمِي إِلَيْهِ</td><td>جِنْسِيَّتِي مِصْرِيَّةٌ</td><td>Моя национальность</td></tr>
+                        <tr><td>الْمُسْتَوَى التَّمْهِيدِيِّ</td><td>الْبِدَايَةُ قَبْلَ الْمُبْتَدِئِ</td><td>أَدْرُسُ فِي الْمُسْتَوَى التَّمْهِيدِيِّ</td><td>Подготовительный уровень</td></tr>
+                        <tr><td>مَعْهَد</td><td>مَكَانُ الدِّرَاسَةِ</td><td>أَذْهَبُ إِلَى الْمَعْهَدِ</td><td>Институт</td></tr>
+                        <tr><td>أَسْكُنُ</td><td>أَعِيشُ</td><td>أَسْكُنُ فِي بَيْتٍ</td><td>Я живу</td></tr>
+                        <tr><td>أُسْرَتِي</td><td>أَبِي وَأُمِّي وَإِخْوَتِي</td><td>أُحِبُّ أُسْرَتِي</td><td>Моя семья</td></tr>
+                        <tr><td>الدَّوْرِ</td><td>الطَّابِقُ فِي الْبَيْتِ</td><td>أَسْكُنُ فِي الدَّوْرِ الْأَوَّلِ</td><td>Этаж</td></tr>
+                        <tr><td>مُعَلِّمَةٍ</td><td>مُدَرِّسَةٌ أُنْثَى</td><td>هَذِهِ مُعَلِّمَةٌ</td><td>Учительница</td></tr>
+                    </table>
+                </details>
+            `;
+        } else {
+            readingContainer.innerHTML = '';
+        }
+
+        const qContainer = document.getElementById('questions-container');
+        qContainer.innerHTML = '';
+
+        const currentQs = allQuestions.filter(q => q.sec === secId);
+        
+        currentQs.forEach((q, index) => {
+            // Destructuring strictly as requested
+            const [qText, qOpts, qAns, qType] = [q.q, q.opts, q.ans, q.type];
+            
+            let qHtml = `<div class="question-box"><h3>السُّؤَالُ ${index + 1}: ${qText}</h3>`;
+            
+            if (qType === 'mcq' || qType === 'tf') {
+                qHtml += `<div class="options-grid">`;
+                let shuffledOpts = shuffle([...qOpts]);
+                shuffledOpts.forEach(opt => {
+                    qHtml += `<button class="option-btn" onclick="checkAns(this, '${opt}', '${qAns}')">${opt}</button>`;
+                });
+                qHtml += `</div><div class="explanation">التَّأْصِيلُ الْعِلْمِيُّ: الْإِجَابَةُ الصَّحِيحَةُ هِيَ (${qAns})</div>`;
+            } 
+            else if (qType === 'blank') {
+                qHtml += `<select onchange="checkSelect(this, '${qAns}')"><option value="">اخْتَارِي الْكَلِمَةَ (Выберите слово)</option>`;
+                shuffle([...blankWords]).forEach(word => {
+                    qHtml += `<option value="${word}">${word}</option>`;
+                });
+                qHtml += `</select><div class="explanation">التَّأْصِيلُ الْعِلْمِيُّ: الْإِجَابَةُ الصَّحِيحَةُ هِيَ (${qAns})</div>`;
+            }
+            else if (qType === 'order') {
+                let shuffledWords = shuffle([...qOpts]);
+                let qId = `order-${secId}-${index}`;
+                qHtml += `<div>`;
+                shuffledWords.forEach((word, wIdx) => {
+                    qHtml += `<button class="word-btn" id="btn-${qId}-${wIdx}" onclick="moveWord(this, '${qId}')">${word}</button>`;
+                });
+                qHtml += `</div><div class="order-dropzone" id="zone-${qId}" onclick="checkOrder('${qId}', '${qAns}')">ضَعِي الْكَلِمَاتِ هُنَا (Поместите слова сюда). ثُمَّ اضْغَطِي لِلتَّأَكُّدِ.</div>`;
+                qHtml += `<div class="explanation" id="exp-${qId}">التَّأْصِيلُ الْعِلْمِيُّ: الْجُمْلَةُ الصَّحِيحَةُ هِيَ (${qAns})</div>`;
+            }
+            else if (qType === 'essay') {
+                qHtml += `<textarea placeholder="اكْتُبِي هُنَا... (Пишите здесь...)"></textarea>`;
+            }
+
+            qHtml += `</div>`;
+            qContainer.innerHTML += qHtml;
+        });
+
+        document.getElementById('prev-btn').style.display = currentSectionIndex === 0 ? 'none' : 'block';
+        document.getElementById('next-btn').innerText = currentSectionIndex === sectionsData.length - 1 ? 'إِنْهَاءُ الِاخْتِبَارِ (Завершить)' : 'الْقِسْمُ التَّالِي (Следующий раздел)';
+    }
+
+    window.checkAns = function(btn, selected, correct) {
+        let parent = btn.parentElement;
+        Array.from(parent.children).forEach(b => b.disabled = true);
+        if (selected === correct) {
+            btn.classList.add('correct');
+            score++;
+        } else {
+            btn.classList.add('wrong');
+            Array.from(parent.children).find(b => b.innerText === correct).classList.add('correct');
+        }
+        parent.nextElementSibling.style.display = 'block';
+    }
+
+    window.checkSelect = function(sel, correct) {
+        if (sel.value === correct) {
+            sel.style.backgroundColor = 'var(--correct-color)';
+            sel.style.color = '#fff';
+            sel.disabled = true;
+            score++;
+            sel.nextElementSibling.style.display = 'block';
+        } else {
+            sel.style.backgroundColor = 'var(--wrong-color)';
+            sel.style.color = '#fff';
+            setTimeout(() => {
+                sel.style.backgroundColor = '';
+                sel.style.color = 'var(--text-color)';
+                sel.value = '';
+            }, 1000); // إعطاء فرصة أخرى للمحاولة
+        }
+    }
+
+    window.moveWord = function(btn, qId) {
+        let zone = document.getElementById(`zone-${qId}`);
+        if(zone.innerText.includes('ضَعِي')) zone.innerText = '';
+        btn.style.display = 'none';
+        let span = document.createElement('span');
+        span.innerText = btn.innerText + ' ';
+        span.className = 'highlight';
+        span.style.margin = '2px';
+        span.dataset.btnId = btn.id;
+        span.onclick = function() {
+            document.getElementById(this.dataset.btnId).style.display = 'inline-block';
+            this.remove();
+        };
+        zone.appendChild(span);
+    }
+
+    window.checkOrder = function(qId, correctAns) {
+        let zone = document.getElementById(`zone-${qId}`);
+        let currentText = Array.from(zone.children).map(s => s.innerText.trim()).join(' ');
+        if (currentText === correctAns) {
+            zone.style.borderColor = 'var(--correct-color)';
+            zone.style.backgroundColor = '#e8f8f5';
+            document.getElementById(`exp-${qId}`).style.display = 'block';
+            score++;
+            zone.onclick = null; // disable further clicks
+        } else {
+            zone.style.backgroundColor = '#fadbd8';
+            setTimeout(() => {
+                zone.style.backgroundColor = '#fef9e7';
+            }, 1000); // فرصة أخرى للمحاولة
+        }
+    }
+
+    function prevSection() {
+        if (currentSectionIndex > 0) {
+            currentSectionIndex--;
+            renderSection();
+        }
+    }
+
+    function nextSection() {
+        if (currentSectionIndex < sectionsData.length - 1) {
+            currentSectionIndex++;
+            window.scrollTo(0,0);
+            renderSection();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-screen').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'block';
+        document.getElementById('final-score').innerText = `نَتِيجَتُكِ هِيَ: ${score} مِنْ ${totalScoreable} \n(Твой результат: ${score} из ${totalScoreable})`;
+    }
+</script>
+
+</body>
+</html>
