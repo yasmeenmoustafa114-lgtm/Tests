@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الِاخْتِبَارُ التَّفَاعُلِيُّ الْعَرَبِيُّ الشَّامِلُ (A2-B1)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-hover: #0369a1;
+            --primary-light: #e0f2fe;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --correct: #22c55e;
+            --correct-bg: #dcfce7;
+            --correct-border: #86efac;
+            --wrong: #ef4444;
+            --wrong-bg: #fee2e2;
+            --wrong-border: #fca5a5;
+            --highlight-b1: #ea580c;
+            --highlight-b1-bg: #ffedd5;
+            --highlight-video: #2563eb;
+            --highlight-video-bg: #dbeafe;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', 'Inter', sans-serif;
+            transition: all 0.2s ease-in-out;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 20px;
+            direction: rtl;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            padding: 35px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 20px;
+        }
+
+        header h1 {
+            color: var(--primary);
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-top: 5px;
+        }
+
+        .lang-sub {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            direction: ltr;
+            display: block;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #e2e8f0;
+            border-radius: 9999px;
+            height: 10px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            border-radius: 9999px;
+        }
+
+        .story-section {
+            background-color: #f1f5f9;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            line-height: 2.2;
+            font-size: 1.15rem;
+            text-align: justify;
+            border-right: 5px solid var(--primary);
+        }
+
+        .story-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .word-b1 {
+            background-color: var(--highlight-b1-bg);
+            color: var(--highlight-b1);
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            cursor: help;
+        }
+
+        .word-video {
+            background-color: var(--highlight-video-bg);
+            color: var(--highlight-video);
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            cursor: help;
+        }
+
+        details {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        summary {
+            padding: 12px 16px;
+            font-weight: bold;
+            color: var(--primary);
+            cursor: pointer;
+            background: #f8fafc;
+            user-select: none;
+            outline: none;
+        }
+
+        details[open] summary {
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--text);
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .badge-b1 {
+            background-color: var(--highlight-b1-bg);
+            color: var(--highlight-b1);
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .badge-vid {
+            background-color: var(--highlight-video-bg);
+            color: var(--highlight-video);
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .section-card {
+            display: none;
+        }
+
+        .section-card.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-top: 6px;
+        }
+
+        .question-box {
+            background: #fafafa;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .question-text {
+            font-weight: 700;
+            font-size: 1.15rem;
+            margin-bottom: 18px;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 14px 22px;
+            text-align: right;
+            font-size: 1.05rem;
+            cursor: pointer;
+            width: 100%;
+            outline: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .option-btn:hover:not(.disabled) {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .option-btn.correct {
+            background-color: var(--correct-bg) !important;
+            border-color: var(--correct) !important;
+            color: #166534;
+            font-weight: bold;
+        }
+
+        .option-btn.wrong {
+            background-color: var(--wrong-bg) !important;
+            border-color: var(--wrong) !important;
+            color: #991b1b;
+        }
+
+        .option-btn.disabled {
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        /* ملء الفراغات بدون قوائم منسدلة */
+        .blank-text-para {
+            font-size: 1.25rem;
+            line-height: 2.2;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        .blank-indicator {
+            background: #e2e8f0;
+            border: 2px solid #94a3b8;
+            padding: 2px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 0 5px;
+        }
+
+        .blank-indicator.filled {
+            background: var(--primary-light);
+            border-color: var(--primary);
+        }
+
+        .blank-indicator.correct {
+            background: var(--correct-bg);
+            border-color: var(--correct);
+            color: #166534;
+        }
+
+        .blank-indicator.wrong {
+            background: var(--wrong-bg);
+            border-color: var(--wrong);
+            color: #991b1b;
+        }
+
+        .matching-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .match-col {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .match-card {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 14px 18px;
+            cursor: pointer;
+            font-size: 1rem;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            line-height: 1.5;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .match-card:hover:not(.matched) {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .match-card.selected {
+            border-color: var(--primary);
+            background-color: #bae6fd;
+            font-weight: bold;
+        }
+
+        .match-card.matched {
+            background-color: var(--correct-bg);
+            border-color: var(--correct);
+            cursor: not-allowed;
+        }
+
+        .match-badge {
+            background: var(--primary);
+            color: white;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .classification-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .class-items-pool {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 12px;
+            min-height: 80px;
+        }
+
+        .class-item-card {
+            background: white;
+            border: 1px solid #cbd5e1;
+            padding: 10px 18px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .class-btn-sm {
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+        }
+
+        .btn-study { background-color: #0284c7; }
+        .btn-work { background-color: #ea580c; }
+        .btn-reset { background-color: #64748b; }
+
+        .classification-buckets {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .bucket {
+            border: 2px dashed #cbd5e1;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 220px;
+        }
+
+        .bucket-title {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 12px;
+            text-align: center;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .bucket-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .reorder-container {
+            margin-top: 15px;
+        }
+
+        .words-pool {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .word-btn {
+            background: white;
+            border: 1px solid #cbd5e1;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .word-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .ordered-container {
+            border: 2px dashed var(--primary);
+            background: #f0f9ff;
+            border-radius: 8px;
+            padding: 15px;
+            min-height: 70px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .essay-textarea {
+            width: 100%;
+            height: 120px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 1rem;
+            outline: none;
+            resize: vertical;
+            margin-top: 10px;
+        }
+
+        .essay-textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .manual-grade-notice {
+            color: #ea580c;
+            background-color: #fff7ed;
+            border: 1px solid #ffedd5;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            display: inline-block;
+        }
+
+        .nav-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 35px;
+            border-top: 2px solid #e2e8f0;
+            padding-top: 25px;
+        }
+
+        .btn-nav {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-nav:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-nav:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .score-screen {
+            text-align: center;
+            padding: 30px 10px;
+        }
+
+        .score-title {
+            font-size: 2.2rem;
+            color: var(--primary);
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .score-circle {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            border: 5px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 25px;
+        }
+
+        .score-circle span {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .written-responses-summary {
+            text-align: right;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .helper-btn {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            background: #ea580c;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 9999px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            cursor: pointer;
+            z-index: 1000;
+            font-weight: bold;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .helper-btn:hover {
+            background: #d97706;
+        }
+
+        .side-drawer {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            max-width: 550px;
+            height: 100%;
+            background: white;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+            z-index: 1001;
+            padding: 30px;
+            overflow-y: auto;
+            border-right: 5px solid #ea580c;
+        }
+
+        .side-drawer.open {
+            left: 0;
+        }
+
+        .close-drawer {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            float: left;
+            font-weight: bold;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="helper-btn" onclick="toggleDrawer()">
+        📖 دَلِيلُ الْقِرَاءَةِ وَالْمُفْرَدَاتِ (Помощник)
+    </button>
+
+    <div class="overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
+
+    <div class="side-drawer" id="sideDrawer">
+        <button class="close-drawer" onclick="toggleDrawer()">إِغْلَاق × Закрыть</button>
+        <h3 style="margin-bottom: 15px; color: #ea580c;">دَلِيلُ النَّصِّ وَالْمُفْرَدَاتِ</h3>
+        
+        <div class="story-section" style="font-size: 1.05rem; padding: 20px;">
+            <div class="story-title">نَصُّ الْقِصَّةِ (Текст истории)</div>
+            كَانَ هُنَاكَ شَابٌّ نَشِيطٌ يُدْعَى كَرِيمٌ، لَدَيْهِ <span class="word-b1" title="Профессиональные амбиции">طُمُوحٌ مِهْنِيٌّ</span> كَبِيرٌ لِتَطْوِيرِ قَرْيَتِهِ النَّائِيَةِ. بَعْدَ مَرْحَلَةِ الْمَدْرَسَةِ، قَرَّرَ كَرِيمٌ <span class="word-b1" title="Поступление / Зачисление">الِالْتِحَاقَ</span> بِالْجَامِعَةِ لِيَدْرُسَ الْهَنْدَسَةَ. خِلَالَ سَنَوَاتِ الدِّرَاسَةِ، وَاجَهَ كَرِيمٌ كَثِيرًا مِنَ <span class="word-b1" title="Препятствия и вызовы">الْعَقَبَاتِ وَالتَّحَدِّيَاتِ</span> الْمَالِيَّةِ وَالدِّرَاسِيَّةِ، لَكِنَّهُ تَغَلَّبَ عَلَيْهَا بِالصَّبْرِ وَالِاجْتِهَادِ حَتَّى <span class="word-b1" title="Выпустился / Окончил учебу">تَخَرَّجَ</span> بِتَفَوُّقٍ، وَنَالَ <span class="word-b1" title="Академическая квалификация">مُؤَهِّلًا عِلْمِيًّا</span> عَالِيًا.
+            <br><br>
+            بَعْدَ ذَلِكَ، قَامَ كَرِيمٌ بِإِعْدَادِ <span class="word-b1" title="Резюме / CV">سِيرَتِهِ الذَّاتِيَّةِ</span> الْمُمَيَّزَةِ لِيَبْحَثَ عَنْ عَمَلٍ يُنَاسِبُ دِرَاسَتَهُ. تَلَقَّى اتِّصَالًا هَاتِفِيًّا لِتَحْدِيدِ مَوْعِدٍ لِإِجْرَاءِ <span class="word-b1" title="Собеседование / Интервью">مُقَابَلَةٍ شَخْصِيَّةٍ</span> فِي إِحْدَى الشَّرِكَاتِ الْكُبْرَى. قَبْلَ الذَّهَابِ، زَارَ كَرِيمٌ جَدَّهُ الْمَعْرُوفَ بِـ <span class="word-video" title="Благотворительность / Щедрость">العَطَاءِ</span> وَمُسَاعَدَةِ النَّاسِ، فَأَهْدَاهُ الْجَدُّ <span class="word-video" title="Золотой динар">دِينَارًا ذَهَبِيًّا</span> قَدِيمًا كَانَ قَدْ وَرِثَهُ.
+            <br><br>
+            قَالَ الْجَدُّ لِكَرِيمٍ: «يَا بُنَيَّ، لَا تَجْعَلْ هَمَّكَ <span class="word-video" title="Удовлетворение неотложных потребностей">تَلْبِيَةَ الْحَاجَاتِ الْعَاجِلَةِ وَالْفَوْرِيَّةِ</span> مِثْلَ <span class="word-video" title="Изысканная еда и дорогая одежда">شِرَاءِ الطَّعَامِ الْفَاخِرِ وَالْمَلَابِسِ الثَّمِينَةِ</span>، بَلْ اجْعَلْ هَذَا الدِّينَارَ رَمْزًا لِـ <span class="word-video" title="Инвестиции">الِاسْتِثْمَارِ</span> وَالتَّفْكِيرِ الذَّكِيِّ. لَقَدْ تَعَلَّمْنَا فِي قِصَّةِ الرِّجَالِ الثَّلَاثَةِ أَنَّ مَنْ يَشْتَرِي <span class="word-video" title="Швейная машина">آلَةَ خِيَاطَةٍ</span> لِـ <span class="word-video" title="Основание бизнеса">تَأْسِيسِ مَشْرُوعٍ تِجَارِيٍّ</span> لَا يَخْسَرُ أَبَدًا، لِأَنَّهُ يَخْلُقُ <span class="word-b1" title="Производительность">إِنْتَاجِيَّةً</span> كَبِيرَةً، وَيَسْتَطِيعُ <span class="word-video" title="Предоставление рабочих мест для общества">تَوْفِيرَ فُرَصِ عَمَلٍ لِلْمُجْتَمَعِ</span>».
+            <br><br>
+            أَدْرَكَ كَرِيمٌ أَنَّ كَلَامَ جَدِّهِ يُمَثِّلُ <span class="word-b1" title="Перспективное видение">رُؤْيَةً مُسْتَقْبَلِيَّةً</span> نَاضِجَةً وَقَائِمَةً عَلَى <span class="word-video" title="Долгосрочное видение">الرُّؤْيَةِ بَعِيدَةِ الْمَدَى</span>. وَفِي الْمُقَابَلَةِ الشَّخْصِيَّةِ، عَرَضَ كَرِيمٌ فِكْرَةَ <span class="word-b1" title="Устойчивый проект">مَشْرُوعٍ مُسْتَدَامٍ</span> لِتَطْوِيرِ الرَّيِّ فِي الْقَرْيَةِ. أُعْجِبَتِ اللَّجْنَةُ بِطُمُوحِهِ وَعَيَّنَتْهُ فَوْرًا.
+        </div>
+
+        <details>
+            <summary>جَدْوَلُ الْمُفْرَدَاتِ (Словарь)</summary>
+            <div class="table-responsive">
+                <table id="vocabTableDrawer">
+                    <thead>
+                        <tr>
+                            <th>الْكَلِمَةُ (Слово)</th>
+                            <th>الْمَعْنَى (Значение)</th>
+                            <th>الْمِثَالُ (Пример)</th>
+                            <th>الرُّوسِيَّةُ (Русский)</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </details>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>حِكْمَةُ الْعَطَاءِ وَاسْتِثْمَارُ الطُّمُوحِ</h1>
+            <p>الِاخْتِبَارُ التَّفَاعُلِيُّ الْأَكْبَرُ - 16 قِسْمًا وَأَكْثَرُ مِنْ 170 سُؤَالًا!</p>
+            <span class="lang-sub">Крупнейший интерактивный тест - 16 разделов и более 170 вопросов!</span>
+        </header>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div id="quiz-flow"></div>
+
+        <div class="nav-controls">
+            <button class="btn-nav" id="prevBtn" onclick="navigate(-1)" disabled>
+                <span>السَّابِقُ (Назад)</span>
+            </button>
+            <div id="section-indicator" style="font-weight: bold; align-self: center;"></div>
+            <button class="btn-nav" id="nextBtn" onclick="navigate(1)">
+                <span>التَّالِي (Далее)</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const dictionary = [
+            { word: "طُمُوحٌ مِهْنِيٌّ", meaning: "الرَّغْبَةُ فِي النَّجَاحِ بِالْعَمَلِ", example: "لَدَيَّ طُمُوحٌ مِهْنِيٌّ كَبِيرٌ.", ru: "Профессиональные амбиции", type: "b1" },
+            { word: "الِالْتِحَاقُ", meaning: "الدُّخُولُ وَالتَّسْجِيلُ فِي الدِّرَاسَةِ", example: "أُرِيدُ الِالْتِحَاقَ بِالْجَامِعَةِ.", ru: "Поступление / Зачисление", type: "b1" },
+            { word: "عَقَبَاتٌ وَتَحَدِّيَاتٌ", meaning: "صُعُوبَاتٌ تَحْتَاجُ إِلَى صَبْرٍ", example: "تَغَلَّبْتُ عَلَى عَقَبَاتِ الْحَيَاةِ.", ru: "Препятствия и вызовы", type: "b1" },
+            { word: "تَخَرَّجَ", meaning: "أَنْهَى الدِّرَاسَةَ وَنَالَ الشَّهَادَةَ", example: "تَخَرَّجَ كَرِيمٌ بِتَفَوُّقٍ.", ru: "Выпустился / Окончил вуз", type: "b1" },
+            { word: "مُؤَهِّلٌ عِلْمِيٌّ", meaning: "شَهَادَةٌ تَعْلِيمِيَّةٌ رَسْمِيَّةٌ", example: "الْبَكَالُورْيُوسُ مُؤَهِّلٌ عِلْمِيٌّ.", ru: "Академическая квалификация", type: "b1" },
+            { word: "سِيرَةٌ ذَاتِيَّةٌ", meaning: "مَلَفُّ مَعْلُومَاتِ الشَّخْصِ لِلْعَمَلِ", example: "كَتَبْتُ سِيرَتِي الذَّاتِيَّةَ بِدِقَّةٍ.", ru: "Резюме / CV", type: "b1" },
+            { word: "مُقَابَلَةٌ شَخْصِيَّةٌ", meaning: "لِقَاءٌ لِلْحُصُولِ عَلَى الْوَظِيفَةِ", example: "نَجَحْتُ فِي الْمُقَابَلَةِ الشَّخْصِيَّةِ.", ru: "Собеседование / Интервью", type: "b1" },
+            { word: "إِنْتَاجِيَّةٌ", meaning: "مِقْدَارُ الْعَمَلِ وَالْإِنْجَازِ", example: "نَسْعَى لِزِيَادَةِ الْإِنْتَاجِيَّةِ.", ru: "Производительность", type: "b1" },
+            { word: "مَشْرُوعٌ مُسْتَدَامٌ", meaning: "مَشْرُوعٌ يَسْتَمِرُّ وَيُفِيدُ الْبِيئَةَ", example: "نَحْتَاجُ إِلَى طَاقَةٍ مُسْتَدَامَةٍ.", ru: "Устойчивый проект", type: "b1" },
+            { word: "رُؤْيَةٌ مُسْتَقْبَلِيَّةٌ", meaning: "التَّخْطِيطُ الذَّكِيُّ لِلْمُسْتَقْبَلِ", example: "رُؤْيَتِي الْمُسْتَقْبَلِيَّةُ هِيَ التَّفَوُّقُ.", ru: "Перспективное видение", type: "b1" },
+            { word: "العَطَاءُ", meaning: "مُسَاعَدَةُ النَّاسِ بِالْمَالِ وَالْجُهْدِ", example: "الْعَطَاءُ صِفَةٌ جَمِيلَةٌ.", ru: "Благотворительность / Даяние", type: "vid" },
+            { word: "دِينَارٌ ذَهَبِيٌّ", meaning: "عُمْلَةٌ نَقْدِيَّةٌ قَدِيمَةٌ ثَمِينَةٌ", example: "أَهْدَانِي جَدِّي دِينَارًا ذَهَبِيًّا.", ru: "Золотой динар", type: "vid" },
+            { word: "الِاسْتِثْمَارُ", meaning: "تَشْغِيلُ الْمَالِ لِيَزْدَادَ فِي الْمُسْتَقْبَلِ", example: "الِاسْتِثْمَارُ فِي الْعِلْمِ نَاجِحٌ.", ru: "Инвестиции / Вложение денег", type: "vid" },
+            { word: "تَلْبِيَةُ الْحَاجَاتِ الْفَوْرِيَّةِ", meaning: "شِرَاءُ الْأَشْيَاءِ لِلرَّغْبَةِ السَّرِيعَةِ", example: "تَجَنَّبْ تَلْبِيَةَ الْحَاجَاتِ الْفَوْرِيَّةِ فَقَطْ.", ru: "Удовлетворение мгновенных нужд", type: "vid" },
+            { word: "طَعَامٌ فَاخِرٌ وَمَلَابِسُ ثَمِينَةٌ", meaning: "أَكْلٌ مُمَتَازٌ وَمَلَابِسُ غَالِيَةٌ جِدًّا", example: "أَنْفَقَ مَالَهُ فِي شِرَاءِ طَعَامٍ فَاخِرٍ.", ru: "Изысканная еда и дорогая одежда", type: "vid" },
+            { word: "آلَةُ خِيَاطَةٍ", meaning: "أَدَاةٌ لِصُنْعِ الْمَلَابِسِ وَتَصْلِيحِهَا", example: "الْخَيَّاطُ يَسْتَخْدَمُ آلَةَ الْخِيَاطَةِ.", ru: "Швейная машина", type: "vid" },
+            { word: "تَأْسِيسُ مَشْرُوعٍ تِجَارِيٍّ", meaning: "بَدْءُ عَمَلٍ حُرٍّ لِلْكَسْبِ", example: "أَطْمَحُ إِلَى تَأْسِيسِ مَشْرُوعٍ تِجَارِيٍّ.", ru: "Основание бизнеса", type: "vid" },
+            { word: "تَوْفِيرُ فُرَصِ عَمَلٍ لِلْمُجْتَمَعِ", meaning: "خَلْقُ وَظَائِفَ جَدِيدَةٍ لِلنَّاسِ", example: "الْمَصْنَعُ يُوَفِّرُ فُرَصَ عَمَلٍ لِلْمُجْتَمَعِ.", ru: "Предоставление рабочих мест", type: "vid" }
+        ];
+
+        const examData = [
+            // Section 1
+            {
+                title: "الْقِسْمُ 1: الْفَهْمُ السَّطْحِيُّ",
+                titleRu: "Раздел 1: Буквальное понимание",
+                desc: "اخْتَرِ الْإِجَابَةَ الصَّحِيحَةَ بِنَاءً عَلَى مَا وَرَدَ فِي النَّصِّ.",
+                descRu: "Выберите правильный ответ на основе текста.",
+                type: "mcq",
+                questions: [
+                    ["مَاذَا دَرَسَ كَرِيمٌ فِي الْجَامِعَةِ؟", ["الْطِّبَّ", "الْهَنْدَسَةَ", "الْمُحَاسَبَةَ", "اللُّغَاتِ"], 43],
+                    ["مَاذَا أَعْطَى الْجَدُّ لِكَرِيمٍ؟", ["آلَةَ خِيَاطَةٍ", "دِينَارًا ذَهَبِيًّا", "سِيرَةً ذَاتِيَّةً", "طَعَامًا فَاخِرًا"], 43],
+                    ["مَا هَدَفُ كَرِيمٍ الْأَسَاسِيُّ؟", ["السَّفَرُ", "تَطْوِيرُ قَرْيَتِهِ", "شِرَاءُ مَلَابِسَ ثَمِينَةٍ", "الْلَّعِبُ"], 43],
+                    ["كَيْفَ وَاجَهَ كَرِيمٌ التَّحَدِّيَاتِ؟", ["بِالْكَسَلِ", "بِالْحُزْنِ", "بِالصَّبْرِ وَالِاجْتِهَادِ", "بِالْهُرُوبِ"], 40],
+                    ["مَاذَا فَعَلَ كَرِيمٌ قَبْلَ ذَهَابِهِ لِلْمُقَابَلَةِ؟", ["نَامَ طَوِيلًا", "زَارَ جَدَّهُ", "اشْتَرَى مَلَابِسَ", "الْلَّعِبَ"], 43],
+                    ["بِمَاذَا كَانَ يُعْرَفُ جَدُّ كَرِيمٍ؟", ["بِالْكَسَلِ", "بِالْعَطَاءِ وَالْإِحْسَانِ", "بِالتَّكَبُّرِ", "بِالْبُخْلِ"], 43],
+                    ["أَيْنَ عُرِضَتِ الْفِكْرَةُ الْمُسْتَدَامَةُ؟", ["فِي الْمَدْرَسَةِ", "فِي الْمُقَابَلَةِ الشَّخْصِيَّةِ", "فِي السُّوقِ", "فِي الْقَرْيَةِ"], 43],
+                    ["مَا نَوْعُ الْمَشْرُوعِ الَّذِي عَرَضَهُ كَرِيمٌ؟", ["مَشْرُوعٌ مُؤَقَّتٌ", "مَشْرُوعٌ زِرَاعِيٌّ مُسْتَدَامٌ", "مَشْرُوعٌ تِجَارِيٌّ صَغِيرٌ", "مَشْرُوعُ خِيَاطَةٍ"], 43],
+                    ["مَاذَا كَتَبَ كَرِيمٌ قَبْلَ الْمُقَابَلَةِ؟", ["رِسَالَةَ حُبٍّ", "سِيرَتَهُ الذَّاتِيَّةَ", "قِصَّةً قَصِيرَةً", "شِعْرًا"], 43],
+                    ["كَيْفَ كَانَتْ نَتِيجَةُ مُقَابَلَةِ كَرِيمٍ؟", ["الرَّفْضُ", "التَّعْيِينُ فَوْرًا", "التَّأْجِيلُ", "لَمْ يَذْهَبْ"], 43],
+                    ["مَاذَا مَثَّلَ كَلَامُ الْجَدِّ لِكَرِيمٍ؟", ["خَوْفًا", "رُؤْيَةً مُسْتَقْبَلِيَّةً نَاضِجَةً", "كَسَلًا", "عَقَبَةً"], 43]
+                ]
+            },
+            // Section 2
+            {
+                title: "الْقِسْمُ 2: الْفَهْمُ الِاسْتِنْتَاجِيُّ",
+                titleRu: "Раздел 2: Инференциальное понимание",
+                desc: "أَجِيبِي بِـ (صَحْ) أَوْ (خَطَأ) بِنَاءً عَلَى فَهْمِكِ لِلْمَعَانِي الْمَعْرُوضَةِ.",
+                descRu: "Ответьте (Верно) или (Неверно) на основе вашего понимания.",
+                type: "true_false",
+                questions: [
+                    ["الدِّينَارُ الذَّهَبِيُّ فِي الْقِصَّةِ هُوَ رَمْزٌ لِلِاسْتِثْمَارِ وَلَيْسَ لِلْإِنْفَاقِ السَّرِيعِ.", ["صَحْ (Верно)", "خَطَأ (Неверно)"], 42],
+                    ["تَلْبِيَةُ الرَّغَبَاتِ الْفَوْرِيَّةِ تُؤَدِّي إِلَى بِدَايَةِ مَشْرُوعٍ مُسْتَدَامٍ نَاجِحٍ.", ["صَحْ (Верно)", "خَطَأ (Неверно)"], 43],
+                    ["الْجَدُّ كَانَ حَكِيمًا وَأَرَادَ تَعْلِيمَ حَفِيدِهِ الِاعْتِمَادَ عَلَى النَّفْسِ.", ["صَحْ (Верно)", "خَطَأ (Неверно)"], 42],
+                    ["تَوْفِيرُ فُرَصِ الْعَمَلِ لِلْمُجْتَمَعِ يُفِيدُ الْفَرْدَ وَالْمُجْتَمَعَ مَعًا.", ["صَحْ (Верно)", "خَطَأ (Неверно)"], 42],
+                    ["الْمُؤَهِّلُ الْعِلْمِيُّ الْعَالِي لَا نَفْعَ مِنْهُ فِي الْحَيَاةِ الْمِهْنِيَّةِ.", ["صَحْ (Верно)", "خَطَأ (Неверно)"], 43],
+                    ["سَاعَدَتِ الْهَنْدَسَةُ كَرِيمًا فِي تَصْمِيمِ نِظَامِ الرَّيِّ لِقَرْيَتِهِ.", ["صَحْ (Верно)", "خَطَأ (Неверно)"], 42],
+                    ["آلَةُ الْخِيَاطَةِ فِي الْقِصَّةِ تُرْمَزُ إِلَى الْإِنْتَاجِيَّةِ وَالْعَمَلِ الْيَدَوِيِّ الْمُثْمِرِ.", ["صَحْ (Верно)", "خَطَأ (Неверно)"], 42],
+                    ["قَرَّرَ كَرِيمٌ الْبَحْثَ عَنْ عَمَلٍ فِي مَجَالٍ مُخْتَلِفٍ تَمَامًا عَنْ دِرَاسَتِهِ.", ["صَحْ (Верно)", "خَطَأ (Неверно)"], 43],
+                    ["الطَّعَامُ الْفَاخِرُ وَالْمَلَابِسُ الثَّمِينَةُ تَصْنَعُ مُسْتَقْبَلًا بَعِيدَ الْمَدَى.", ["صَحْ (Верно)", "خَطَأ (Неверно)"], 43],
+                    ["تَغَلَّبَ كَرِيمٌ عَلَى عَقَبَاتِهِ بِفَضْلِ الصَّبْرِ وَالتَّخْطِيطِ الذَّكِيِّ.", ["صَحْ (Верно)", "خَطَأ (Неверно)"], 42],
+                    ["أُعْجِبَتِ اللَّجْنَةُ بِكَرِيمٍ لِأَنَّهُ يَبْحَثُ عَنْ رِبْحٍ شَخْصِيٍّ فَقَطْ.", ["صَحْ (Верно)", "خَطَأ (Неверно)"], 43]
+                ]
+            },
+            // Section 3
+            {
+                title: "الْقِسْمُ 3: اقْرَأِ الْمَشْهَدَ وَاخْتَرِ الْمَكَانَ",
+                titleRu: "Раздел 3: Прочитайте сцену и выберите место",
+                desc: "اخْتَرِ الْمَكَانَ الْمُنَاسِبَ لِلْوَصْف.",
+                descRu: "Выберите подходящее место для описания.",
+                type: "mcq",
+                questions: [
+                    ["مَكَانٌ تَلْتَقِي فِيهِ بِالْمَسْؤُولِينَ لِتَقْدِيمِ مَهَارَاتِكِ لِلْحُصُولِ عَلَى وَظِيفَةٍ.", ["قَاعَةُ الْمُحَاضَرَاتِ", "غُرْفَةُ الْمُقَابَلَةِ الشَّخْصِيَّةِ", "الْمَكْتَبَةُ", "الْمَطْعَمُ"], 43],
+                    ["مُؤَسَّسَةٌ كُبْرَى لِتَلَقِّي الْعِلْمِ الْعَالِي بَعْدَ التَّخَرُّجِ مِنَ الْمَدْرَسَةِ.", ["الْجَامِعَةُ", "الْمَصْنَعُ", "الْقَرْيَةُ", "الْمَكْتَبُ"], 42],
+                    ["مَكَانٌ تَعْمَلُ فِيهِ النِّسَاءُ عَلَى آلَاتِ الْخِيَاطَةِ لِإِنْتَاجِ الْمَلَابِسِ.", ["الْمَطْبَخُ", "مَشْغَلُ الْخِيَاطَةِ", "الْمَسْرَحُ", "الْمَسْجِدُ"], 43],
+                    ["بِيئَةٌ زِرَاعِيَّةٌ نَائِيَةٌ تَحْتَاجُ إِلَى تَطْوِيرٍ وَمَشَارِيعَ مُسْتَدَامَةٍ.", ["الْمَدِينَةُ الْكَبِيرَةُ", "الْقَرْيَةُ", "الْمَطَارُ", "الْمَكْتَبُ"], 43],
+                    ["مَكَانٌ مَلِيءٌ بِالْكُتُبِ وَالْمَصَادِرِ الْعِلْمِيَّةِ يَدْرُسُ فِيهِ الطُّلَّابُ.", ["الْمَكْتَبَةُ", "الْكَافِيتِيرْيَا", "الْحَدِيقَةُ", "النَّادِي"], 42],
+                    ["مَكَانٌ يَذْهَبُ إِلَيْهِ النَّاسُ لِشِرَاءِ الطَّعَامِ الْفَاخِرِ.", ["الْمَطْعَمُ الْفَاخِرُ", "الْمَدْرَسَةُ", "الْمَكْتَبُ", "الْمَشْغَلُ"], 42],
+                    ["الْمَكَانُ الَّذِي تَتَعَلَّمُ فِيهِ الْفَتَاةُ الْقِرَاءَةَ وَالْكِتَابَةَ فِي صِغَرِهَا.", ["الْمَدْرَسَةُ", "الشَّرِكَةُ", "الْمُؤَسَّسَةُ", "الْجَامِعَةُ"], 42],
+                    ["مَكَانٌ يَجْتَمِعُ فِيهِ الْمُهَنْدِسُونَ لِتَصْمِيمِ خُطَطِ الرَّيِّ.", ["غُرْفَةُ الِاجْتِمَاعَاتِ", "الْقَاعَةُ الرِّيَاضِيَّةُ", "الْمَطْبَخُ", "السُّوقُ"], 42],
+                    ["مَكَانٌ يَذْهَبُ إِلَيْهِ النَّاسُ لِشِرَاءِ الْمَلَابِسِ الثَّمِينَةِ.", ["مَتْجَرُ الْمَلَابِسِ", "الْجَامِعَةُ", "الْمَكْتَبَةُ", "الْمَطْعَمُ"], 42],
+                    ["مَكَانٌ يَعْمَلُ فِيهِ كَرِيمٌ بَعْدَ قُبُولِهِ فِي الْوَظِيفَةِ.", ["الشَّرِكَةُ الْكُبْرَى", "الْمَدْرَسَةُ", "الْبَيْتُ", "الْحَقْلُ"], 42],
+                    ["مَكَانٌ هَادِئٌ يَجْلِسُ فِيهِ الْجَدُّ لِيَقُصَّ الْقِصَصَ عَلَى أَحْفَادِهِ.", ["غُرْفَةُ الْمَعِيشَةِ", "الْمَصْنَعُ", "الْمَكْتَبُ", "الْمَطَارُ"], 42]
+                ]
+            },
+            // Section 4
+            {
+                title: "الْقِسْمُ 4: رَدَّةُ الْفِعْلِ الْمُنَاسِبَةُ (Pragmatics)",
+                titleRu: "Раздел 4: Прагматика (Уместная реакция)",
+                desc: "اخْتَرِ الرَّدَّ الْمُنَاسِبَ لِلْمَوْقِفِ لِتَكُونَ الْمُحَادَثَةُ طَبِيعِيَّةً.",
+                descRu: "Выберите подходящую реакцию на ситуацию.",
+                type: "mcq",
+                questions: [
+                    ["صَدِيقَتُكِ نَجَحَتْ فِي مُقَابَلَةِ الْعَمَلِ. مَاذَا تَقُولِينَ لَهَا؟", ["أَلْفُ مَبْرُوكٍ! أَتَمَنَّى لَكِ التَّوْفِيقَ فِي الْوَظِيفَةِ.", "لِمَاذَا نَجَحْتِ؟", "أَنَا حَزِينَةٌ لَكِ.", "كَيْفَ السَّفَرُ؟"], 42],
+                    ["أُصِيبَتْ زَمِيلَتُكِ بِالْمَرَضِ قَبْلَ الِامْتِحَانِ. مَاذَا تَقُولِينَ لَهَا؟", ["مَبْرُوكٌ النَّجَاحُ!", "شَفَاكِ اللَّهُ وَعَافَاكِ يَا صَدِيقَتِي.", "أَيْنَ آلَةُ الْخِيَاطَةِ؟", "صَبَاحُ الْخَيْرِ."], 43],
+                    ["تُرِيدِينَ الدُّخُولَ إِلَى مَكْتَبِ الْمُدِيرِ لِتَقْدِيمِ سِيرَتِكِ. مَاذَا تَقُولِينَ؟", ["افْتَحْ الْبَابَ فَوْرًا!", "تَفَضَّلْ بِالْخُرُوجِ.", "تَسْمَحُ لِي بِالدُّخُولِ يَا حَضْرَةَ الْمُدِيرِ؟", "أَنَا رَافِضَةٌ لِلْعَمَلِ."], 40],
+                    ["أَهْدَاكِ جَدُّكِ هَدِيَّةً قَيِّمَةً. مَاذَا تَقُولِينَ لَهُ؟", ["شُكْرًا جَزِيلًا لَكَ يَا جَدِّي الْعَزِيزَ، حَفِظَكَ اللَّهُ.", "لَا أُرِيدُ هَذِهِ الْهَدِيَّةَ.", "هَذِهِ عَقَبَةٌ كَبِيرَةٌ.", "الْوَدَاعُ."], 42],
+                    ["قَبِلَتْكِ الشَّرِكَةُ لِلْعَمَلِ وَقَالَ لَكِ الْمُدِيرُ: (أَهْلًا بِكِ فِي فَرِيقِنَا).", ["أَنَا لَا أُحِبُّ الْعَمَلَ.", "شُكْرًا لَكُمْ، سَأَعْمَلُ بِكُلِّ جُهْدِي لِزِيَادَةِ الْإِنْتَاجِيَّةِ.", "أُرِيدُ مَلَابِسَ ثَمِينَةً فَقَطْ.", "مَعَ السَّلَامَةِ."], 43],
+                    ["صَدِيقَتُكِ تَسْأَلُكِ: (كَيْفَ أُحَضِّرُ لِلْمُقَابَلَةِ الشَّخْصِيَّةِ؟).", ["لَا تَفْعَلِي شَيْئًا، فَقَطْ اذْهَبِي.", "اكْتُبِي سِيرَتَكِ الذَّاتِيَّةَ بِدِقَّةٍ وَحَضِّرِي مُؤَهِّلَاتِكِ الْعِلْمِيَّةِ.", "اشْتَرِي طَعَامًا فَاخِرًا.", "نَامِي طَوِيلًا."], 43],
+                    ["طَالِبَةٌ جَدِيدَةٌ تَبْحَثُ عَنْ قَاعَةِ الْمُحَاضَرَاتِ.", ["تَفَضَّلِي بِاتِّبَاعِي، سَأَدُلُّكِ عَلَيْهَا بِكُلِّ سُرُورٍ.", "الْقَاعَةُ مُغْلَقَةٌ لِلْأَبَدِ.", "لَا أَعْلَمُ شَيْئًا.", "اذْهَبِي لِلْبَيْتِ."], 42],
+                    ["قَالَ لَكِ الْمُعَلِّمُ: (مَشْرُوعُكِ الْمُسْتَدَامُ مُمْتَازٌ جِدًّا).", ["شُكْرًا لَكَ يَا أُسْتَاذِي، هَذَا بِفَضْلِ تَوْجِيهِكَ.", "هَذَا سَيِّئٌ.", "أَنَا لَا أَهْتَمُّ.", "أُرِيدُ النَّوْمَ."], 42],
+                    ["رَأَيْتِ عَقَبَةً فِي قَرْيَتِكِ وَتُرِيدِينَ مُشَارَكَةَ الْحَلِّ مَعَ الْأَهْلِ.", ["لَنَا اللَّهُ، الْحَيَاةُ صَعْبَةٌ.", "لَدَيَّ رُؤْيَةٌ مُسْتَقْبَلِيَّةٌ لِحَلِّ هَذِهِ الْمُشْكِلَةِ بِالتَّعَاوُنِ.", "لَا فَائِدَةَ مِنَ الْكَلَامِ.", "سَأُغَادِرُ الْقَرْيَةَ."], 43],
+                    ["سَأَلَكِ صَدِيقٌ: (مَا أَهَمِّيَّةُ آلَةِ الْخِيَاطَةِ؟).", ["هِيَ آلَةٌ لَا قِيمَةَ لَهَا.", "تُسْتَخْدَمُ لِتَأْسِيسِ مَشْرُوعٍ يَخْلُقُ إِنْتَاجِيَّةً وَعَمَلًا.", "أَنَا لَا أُحِبُّ الْخِيَاطَةَ.", "شُكْرًا لَكَ."], 43],
+                    ["تُرِيدِينَ التَّعْبِيرَ عَنْ طُمُوحِكِ الْمِهْنِيِّ لِصَدِيقَتِكِ.", ["أَطْمَحُ أَنْ أَكُونَ مُهَنْدِسَةً لِأُسَاهِمَ فِي خِدْمَةِ وَطَنِي.", "لَيْسَ لَدَيَّ أَيُّ هَدَفٍ.", "الْجَامِعَةُ صَعْبَةٌ جِدًّا.", "سَأَشْتَرِي مَلَابِسَ."], 42]
+                ]
+            },
+            // Section 5
+            {
+                title: "الْقِسْمُ 5: اِمْلَأِ الْفَرَاغَ فِي الْقِصَّةِ (مربعات خيارات ظاهرة)",
+                titleRu: "Раздел 5: Заполните пропуски (Нажмите на правильный вариант)",
+                desc: "اقْرَأِ الْفِقْرَةَ ثُمَّ أَجِيبِي عَنِ الْأَسْئِلَةِ بِالنَّقْرِ عَلَى الْمُرَبَّعِ الصَّحِيحِ.",
+                descRu: "Прочитайте текст и ответьте на вопросы, кликнув на нужный квадрат.",
+                type: "fill_blanks_interactive",
+                story: "تَسْعَى زَيْنَبُ إِلَى تَطْوِيرِ حَيَاتِهَا؛ لِذَلِكَ قَرَّرَتْ (1) _______ بِالْجَامِعَةِ لِتَدْرُسَ الطِّبَّ. وَاجَهَتْ كَثِيرًا مِنَ (2) _______ خِلَالَ سَنَوَاتِ الدِّرَاسَةِ، لَكِنَّهَا صَمَدَتْ حَتَّى (3) _______ بِتَفَوُّقٍ كَبِيرٍ. قَامَتْ بِتَحْضِيرِ (4) _______ لِتَقْدِيمِهَا لِلْمُسْتَشْفَى، وَمَرَّتْ بِـ (5) _______ نَاجِحَةٍ جِدًّا. وَبَعْدَ قُبُولِهَا، كَانَ لَدَيْهَا (6) _______ لِتَقْدِيمِ خِدْمَاتٍ طِبِّيَّةٍ مَجَّانِيَّةٍ فِي قَرْيَتِهَا، حَيْثُ أَسَّسَتْ (7) _______ يُعَالِجُ الْمَرْضَى. تَعَلَّمَتْ زَيْنَبُ أَنَّ (8) _______ هُوَ أَسَاسُ السَّعَادَةِ، وَأَنَّ الرِّبْحَ لَا يَكُونُ فَقَطْ لِـ (9) _______ بَلْ لِـ (10) _______ وَالْعَمَلِ لِلْمُسْتَقْبَلِ بِـ (11) _______ نَاضِجَةٍ.",
+                questions: [
+                    { label: "[خُطْوَةُ الدُّخُولِ وَالتَّسْجِيلِ فِي التَّعْلِيمِ الْعَالِي]", options: ["الِالْتِحَاقِ", "الِانْسِحَابِ", "الِاسْتِقَالَةِ", "الِامْتِنَاعِ"], correctIdx: 0 },
+                    { label: "[مَا يُوَاجِهُهُ الطَّالِبُ مِنْ صُعُوبَاتٍ وَعَقَبَاتٍ]", options: ["الْمُكَافَآتِ وَالْأَرْبَاحِ", "الْعَقَبَاتِ وَالتَّحَدِّيَاتِ", "التَّسْهِيلَاتِ وَالْفُرَصِ", "الْمُؤَهِّلَاتِ وَالْخِبْرَاتِ"], correctIdx: 1 },
+                    { label: "[الِانْتِهَاءُ مِنَ الدِّرَاسَةِ وَنَيْلُ الشَّهَادَةِ]", options: ["تَخَرَّجَتْ", "تَرَاجَعَتْ", "تَوَظَّفَتْ", "تَدَرَّبَتْ"], correctIdx: 0 },
+                    { label: "[مَلَفُّ الْمَعْلُومَاتِ الْخَاصَّةِ بِالْمُؤَهِّلَاتِ وَالْعَمَلِ]", options: ["الْخُطَّةَ الْمَالِيَّةَ", "السِّيرَةَ الذَّاتِيَّةَ", "الْمُوَازَنَةَ السَّنَوِيَّةَ", "الرُّؤْيَةَ الْمُسْتَقْبَلِيَّةَ"], correctIdx: 1 },
+                    { label: "[اللِّقَاءُ الرَّسْمِيُّ لِتَقْيِيمِ طَلَبِ الْوَظِيفَةِ]", options: ["مُحَاضَرَةٍ جَامِعِيَّةٍ", "صَفْقَةٍ تِجَارِيَّةٍ", "مُقَابَلَةٍ شَخْصِيَّةٍ", "إِنْتَاجِيَّةٍ مِهْنِيَّةٍ"], correctIdx: 2 },
+                    { label: "[الرَّغْبَةُ الْقَوِيَّةُ وَالْهَدَفُ النَّبِيلُ فِي الْعَمَلِ]", options: ["طُمُوحٌ مِهْنِيٌّ", "تَرَدُّدٌ وَخَوْفٌ", "عَمَلٌ جُزْئِيٌّ", "مَشْرُوعٌ مُسْتَدَامٌ"], correctIdx: 0 },
+                    { label: "[الْمَشْرُوعُ الَّذِي يَسْتَمِرُّ وَيُفِيدُ الْبِيئَةَ وَالْمُجْتَمَعَ]", options: ["مُؤَهِّلًا عِلْمِيًّا", "مَشْرُوعًا مُسْتَدَامًا", "مَشْرُوعًا تِجَارِيًّا", "مَلْبَسًا ثَمِينًا"], correctIdx: 1 },
+                    { label: "[مُسَاعَدَةُ النَّاسِ وَتَقْدِيمُ الْخَيْرِ دُونَ مُقَابِلٍ]", options: ["الِاسْتِهْلَاكُ", "العَطَاءُ", "الِاسْتِثْمَارُ", "الِادِّخَارُ"], correctIdx: 1 },
+                    { label: "[شِرَاءُ الْأَشْيَاءِ الِاسْتِهْلَاكيَّةِ لِلرَّغْبَةِ السَّرِيعَةِ]", options: ["تَلْبِيَةِ الْحَاجَاتِ الْفَوْرِيَّةِ", "تَوْفِيرِ فُرَصِ الْعَمَلِ", "تَأْسِيسِ الْمَشَارِيعِ التِّجَارِيَّةِ", "تَطْوِيرِ الْمَهَارَاتِ الدِّرَاسِيَّةِ"], correctIdx: 0 },
+                    { label: "[تَشْغِيلُ الْمَالِ أَوِ الْعِلْمِ لِيَنْمُوَ فِي الْمُسْتَقْبَلِ]", options: ["الِاسْتِثْمَارِ", "الِاسْتِهْلَاكِ", "الِاسْتِقْرَارِ", "الِاسْتِعْدَادِ"], correctIdx: 0 },
+                    { label: "[التَّخْطِيطُ الذَّكِيُّ لِلْمُسْتَقْبَلِ الْبَعِيدِ]", options: ["رُؤْيَةٍ بَعِيدَةِ الْمَدَى", "رُؤْيَةٍ قَصِيرَةِ الْأَجَلِ", "خُطْوَةٍ عَرَضِيَّةٍ", "طُمُوحٍ عَابِرٍ"], correctIdx: 0 }
+                ]
+            },
+            // Section 6
+            {
+                title: "الْقِسْمُ 6: الْحِوَارُ التَّفَاعُلِيُّ النَّاقِصُ",
+                titleRu: "Раздел 6: Интерактивный диалог",
+                desc: "اخْتَرِ الْجُمْلَةَ الصَّحِيحَةَ لِإِكْمَالِ الْحِوَارِ بَيْنَ كَرِيمٍ وَالْمُقَابِلِ فِي الشَّرِكَةِ.",
+                descRu: "Выберите правильное предложение для завершения диалога.",
+                type: "mcq",
+                questions: [
+                    ["الْمُقَابِلُ: كَيْفَ حَالُكَ يَا كَرِيمُ؟ وَلِمَاذَا اخْتَرْتَ شَرِكَتَنَا؟<br>كَرِيمٌ: ________________________", ["بِخَيْرٍ، لِأَنَّنِي أَبْحَثُ عَنْ مَشْرُوعٍ مُسْتَدَامٍ لِتَطْبِيقِ دِرَاسَتِي الْهَنْدَسِيَّةِ.", "أَنَا تَعِبٌ وَلَا أُرِيدُ الْعَمَل$.", "جِئْتُ لِأَشْتَرِي طَعَامًا فَاخِرًا.", "لَا أَعْلَمُ لِمَاذَا أَنَا هُنَا."], 42],
+                    ["الْمُقَابِلُ: مَا هُوَ مُؤَهِّلُكَ الْعِلْمِيُّ؟<br>كَرِيمٌ: ________________________", ["مُؤَهِّلِي الْعِلْمِيُّ هُوَ بَكَالُورْيُوسُ الْهَنْدَسَةِ بِتَفَوُّقٍ.", "لَمْ أَدْرُسْ قَطُّ.", "أَنَا أُحِبُّ الْخِيَاطَةَ.", "عِنْدِي دِينَارٌ ذَهَبِيٌّ فَقَطْ."], 42],
+                    ["الْمُقَابِلُ: كَيْفَ نَشْأَتْ لَدَيْكَ فِكْرَةُ الرُّؤْيَةِ بَعِيدَةِ الْمَدَى؟<br>كَرِيمٌ: ________________________", ["مِنْ خِلَالَ كَلَامِ جَدِّي وَقِصَّةِ الرِّجَالِ الثَّلَاثَةِ وَالدِّينَارِ.", "تَعَلَّمْتُهَا مِنَ اللَّعِبِ.", "قَرَأْتُهَا فِي مَجَلَّةِ الْمَلَابِسِ الثَّمِينَةِ.", "لَا تُوجَدُ لَدَيَّ رُؤْيَة]"], 42],
+                    ["الْمُقَابِلُ: مَا رَأْيُكَ فِي زِيَادَةِ الْإِنْتَاجِيَّةِ؟<br>كَرِيمٌ: ________________________", ["الْإِنْتَاجِيَّةُ هِيَ مِفْتَاحُ نَجَاحِ أَيِّ مَشْرُوعٍ تِجَارِيٍّ مُسْتَدَامٍ.", "الْإِنْتَاجِيَّةُ لَيْسَتْ مُهِمَّةً.", "أُفَضِّلُ الرَّاحَةَ عَلَى الْإِنْتَاجِيَّةِ.", "الْإِنْتَاجِيَّةُ تَعْنِي الطَّعَامَ الْفَاخِرَ."], 42],
+                    ["الْمُقَابِلُ: كَيْفَ تُفِيدُ قَرْيَتَكَ النَّائِيَةَ؟<br>كَرِيمٌ: ________________________", ["سَأَقُومُ بِتَصْمِيمِ نِظَامِ رَيٍّ حَدِيثٍ يُوفِّرُ الْمَاءَ وَيَزِيدُ الْمَحَاصِيلَ.", "سَأَتْرُكُ الْقَرْيَةَ وَأَعِيشُ فِي الْمَدِينَةِ.", "سَأَطْلُبُ مِنْهُمْ شِرَاءَ مَلَابِسَ ثَمِينَةٍ.", "لَا أُرِيدُ مُسَاعَدَتَهُمْ."], 42],
+                    ["الْمُقَابِلُ: مَاذَا تَعْنِي لَكَ سِيرَتُكَ الذَّاتِيَّةُ؟<br>كَرِيمٌ: ________________________", ["تَعْنِي سِجِلِّي الْعِلْمِيَّ وَعَقَبَاتِي الَّتِي تَجَاوَزْتُهَا بِجَدَارَةٍ.", "وَرَقَةٌ لَا مَعْنَى لَهَا.", "قِصَّةٌ خَيَالِيَّةٌ.", "سِيرَةُ شَخْصٍ آخر."], 42],
+                    ["الْمُقَابِلُ: هَلْ أَنْتَ مُسْتَعِدٌّ لِمُوَاجَهَةِ عَقَبَاتِ الْعَمَلِ؟<br>كَرِيمٌ: ________________________", ["نَعَمْ، بِالْصَّبْرِ وَالِاجْتِهَادِ وَالتَّفْكِيرِ الْعِلْمِيِّ الْمُنَظَّمِ.", "لَا، أَنَا أَخَافُ الصُّعُوبَاتِ.", "سَأَسْتَقِيلُ عِنْدَ أَوَّلِ مُشْكِلَةٍ.", "سَأَذْهَبُ لِجَدِّي لِيَحِلَّهَا."], 42],
+                    ["الْمُقَابِلُ: كَيْفَ تَسْهِمُ فِي تَوْفِيرِ فُرَصِ عَمَلٍ لِلْمُجْتَمَعِ؟<br>كَرِيمٌ: ________________________", ["عَبْرَ تَأْسِيسِ مَشَارِيعَ جَدِيدَةٍ تَحْتَاجُ لِأَيْدٍ عَامِلَةٍ كَثِيرَةٍ.", "لَا يَهُمُّنِي عَمَلُ الآخَرِينَ.", "عَبْرَ إِغْلَاقِ الْمَصَانِعِ.", "عَبْرَ شِرَاءِ آلَاتِ خِيَاطَةٍ لِنَفْسِي فَقَطْ."], 42],
+                    ["الْمُقَابِلُ: مَا هُوَ طُمُوحُكَ الْمِهْنِيُّ بَعْدَ خَمْسِ سَنَوَاتٍ؟<br>كَرِيمٌ: ________________________", ["أَنْ أَقُودَ قِسْمَ الْهَنْدَسَةِ الْمُسْتَدَامَةِ فِي هَذِهِ الشَّرِكَةِ.", "أَنْ أَكُونَ غَنِيًّا دُونَ عَمَلٍ.", "أَنْ أَجْلِسَ فِي الْبَيْتِ.", "أَنْ أُسَافِرَ لِلَّعِبِ."], 42],
+                    ["الْمُقَابِلُ: هَلْ تُفَضِّلُ الِاسْتِثْمَارَ أَمِ الِاسْتِهْلَاكَ السَّسْرِيعَ؟<br>كَرِيمٌ: ________________________", ["الِاسْتِثْمَارُ طَبْعًا، لِأَنَّهُ يَبْنِي مُسْتَقْبَلَ الْأَجْيَالِ.", "الِاسْتِهْلَاكَ السَّرِيعَ لِلطَّعَامِ وَالْمَلَابِسِ.", "لَا فَرْقَ بَيْنَهُمَا.", "أَنَا لَا أُحِبُّ الِاثْنَيْنِ."], 42],
+                    ["الْمُقَابِلُ: تَمَّ قَبُولُكَ يَا كَرِيمُ، مَتَى تَسْتَطِيعُ الْبَدْءَ؟<br>كَرِيمٌ: ________________________", ["شُكْرًا جَزِيلًا! سَأَعْمَلُ بِكُلِّ جُهْدِي لِأَكُونَ عِنْدَ حُسْنِ ظَنِّكُمْ.", "رُبَّمَا بَعْدَ سَنَةٍ.", "أَنَا تَعِبٌ الْآنَ.", "لَا أَعْلَمُ."], 42]
+                ]
+            },
+            // Section 7
+            {
+                title: "الْقِسْمُ 7: الْمُفْرَدُ وَالْجَمْعُ",
+                titleRu: "Раздел 7: Единственное и множественное число",
+                desc: "اخْتَرِ الْجَمْعَ أَوِ الْمُفْرَدَ الصَّحِيحَ لِلْمُصْطَلَحَاتِ الْعِلْمِيَّةِ وَالْعَامَّةِ.",
+                descRu: "Выберите правильное единственное или множественное число.",
+                type: "mcq",
+                questions: [
+                    ["مَا جَمْعُ كَلِمَةِ «مُؤَهِّلٌ»؟", ["مُؤَهَّلَاتٌ", "أَهَالٍ", "مُؤَهِّلُون", "مَاهِرَاتٌ"], 42],
+                    ["مَا مُفْرَدُ كَلِمَةِ «عَقَبَاتٌ»؟", ["عَاقِبَةٌ", "عَقَبَةٌ", "تَعْقِيبٌ", "عَقِيبٌ"], 43],
+                    ["مَا جَمْعُ كَلِمَةِ «سِيرَةٌ»؟", ["سِيرَاتٌ", "أَسْيَارٌ", "سِيَرٌ", "مُسَيَّرَاتٌ"], 40],
+                    ["مَا جَمْعُ كَلِمَةِ «دِينَارٌ»؟", ["دَنَانِيرُ", "دِينَارَاتٌ", "دَوَاوِينُ", "دُونِمَاتٌ"], 42],
+                    ["مَا مُفْرَدُ كَلِمَةِ «حَاجَاتٌ»؟", ["حَجَّةٌ", "حَاجَةٌ", "حَاجٌّ", "حَجِيجٌ"], 43],
+                    ["مَا جَمْعُ كَلِمَةِ «آلَةٌ»", ["أَمْوَالٌ", "آلَاتٌ", "أَهِلَّةٌ", "أَدَوَاتٌ"], 43],
+                    ["مَا مُفْرَدُ كَلِمَةِ «فُرَصٌ»؟", ["فَرْضٌ", "فُرْصَةٌ", "فَرِيصَةٌ", "فَارِصٌ"], 43],
+                    ["مَا جَمْعُ كَلِمَةِ «مَشْرُوعٌ»؟", ["مَشْرُوعَاتٌ أَوْ مَشَارِيعُ", "شُرُوعٌ", "شَارِعُونَ", "مُشَرِّعُونَ"], 42],
+                    ["مَا مُفْرَدُ كَلِمَةِ «تَحَدِّيَاتٌ»؟", ["حُدُودٌ", "تَحَدٍّ", "تَحْدِيدٌ", "مَحْدُودٌ"], 43],
+                    ["مَا جَمْعُ كَلِمَةِ «قَرْيَةٌ»؟", ["قُرًى", "قَرْيَاتٌ", "قُرَّاءٌ", "قَارَّاتٌ"], 42],
+                    ["مَا مُفْرَدُ كَلِمَةِ «مَلَابِسُ»؟", ["لَبُوسٌ", "مَلْبَسٌ", "لَابِسٌ", "لِبَاسٌ"], 43]
+                ]
+            },
+            // Section 8
+            {
+                title: "الْقِسْمُ 8: التَّرَادُفُ وَالتَّضَادُّ السِّيَاقِيُّ",
+                titleRu: "Раздел 8: Синонимы и антонимы в контексте",
+                desc: "اخْتَرِ الْكَلِمَةَ الْمُرَادِفَةَ أَوْ الْمُضَادَّةَ لِلْكَلِمَةِ الْمُعْطَاةِ.",
+                descRu: "Выберите синоним или антоним для данного слова.",
+                type: "mcq",
+                questions: [
+                    ["مَا مُرَادِفُ كَلِمَةِ «طُمُوحٌ»؟", ["رَغْبَةٌ شَدِيدَةٌ فِي التَّقَدُّمِ", "خَوْفٌ وَقَلَقٌ", "كَسَلٌ", "حُزْنٌ"], 42],
+                    ["مَا ضِدُّ كَلِمَةِ «الْعَاجِلَةِ»؟", ["الْفَوْرِيَّةِ", "الْآجِلَةِ أَوِ الْمُسْتَقْبَلِيَّةِ", "السَّرِيعَةِ", "الْقَرِيبَةِ"], 43],
+                    ["مَا ضِدُّ كَلِمَةِ «مُسْتَدَامٌ»؟", ["مُسْتَمِرٌّ", "مُؤَقَّتٌ أَوْ مُنْقَطِعٌ", "طَوِيلٌ", "نَافِعٌ"], 43],
+                    ["مَا مُرَادِفُ كَلِمَةِ «العَطَاءِ»؟", ["الْبُخْلِ", "الْإِحْسَانِ وَالْجُودِ", "الْأَخْذِ", "الطَّمَعِ"], 43],
+                    ["مَا ضِدُّ كَلِمَةِ «النَّائِيَةِ» فِي (قَرْيَتِهِ النَّائِيَةِ)؟", ["الْبَعِيدَةِ", "الْقَرِيبَةِ", "الْصَّغِيرَةِ", "الْجَمِيلَةِ"], 43],
+                    ["مَا مُرَادِفُ كَلِمَةِ «تَخَرَّجَ»؟", ["أَنْهَى دِرَاسَتَهُ وَحَصَلَ عَلَى شَهَادَتِهِ", "بَدَأَ الدِّرَاسَةَ", "سَافَرَ لِلْعَمَلِ", "رَسَبَ"], 42],
+                    ["مَا مُرَادِفُ كَلِمَةِ «تَلْبِيَةِ»؟", ["رَفْضِ", "إِجَابَةِ وَتَحْقِيقِ", "تَأْجِيلِ", "تَجَاهُلِ"], 43],
+                    ["مَا ضِدُّ كَلِمَةِ «الثَّمِينَةِ»؟", ["الْغَالِيَةِ", "الرَّخِيصَةِ أَوِ الْعَدِيمَةِ الْقِيمَةِ", "الْجَمِيلَةِ", "الْقَدِيمَةِ"], 43],
+                    ["مَا مُرَادِفُ كَلِمَةِ «عَقَبَاتٌ»؟", ["حُلُولٌ", "صُعُوبَاتٌ وَحَوَاجِزُ", "أَهْدَافٌ", "مُكَافَآتٌ"], 43],
+                    ["مَا ضِدُّ كَلِمَةِ «الِالْتِحَاقِ»؟", ["الِانْفِصَالِ أَوِ الِانْسِحَابِ", "الدُّخُولِ", "التَّسْجِيلِ", "الْقَبُولِ"], 42],
+                    ["مَا مُرَادِفُ كَلِمَةِ «مُؤَهِّلٌ عِلْمِيٌّ»؟", ["شَهَادَةٌ تَعْلِيمِيَّةٌ", "هَوَايَةٌ", "سِيرَةٌ", "تَجْرِبَةٌ"], 42]
+                ]
+            },
+            // Section 9
+            {
+                title: "الْقِسْمُ 9: اكْتِشَافُ الْخَطَأِ وَتَصْحِيحُهُ",
+                titleRu: "Раздел 9: Поиск и исправление ошибок",
+                desc: "حَدِّدِ الْكَلِمَةَ الْخَاطِئَةَ فِي كُلِّ جُمْلَةٍ.",
+                descRu: "Найдите ошибочное слово в каждом предложении.",
+                type: "mcq",
+                questions: [
+                    ["«يَسْعَى الطُّلَّابُ إِلَى الْتِحَاقِ فِي الْجَامِعَةِ.» [الْخَطَأُ حَرْفُ الْجَرِّ مَعَ الْتِحَاقِ]", ["إِلَى", "الْتِحَاقِ", "فِي", "الْجَامِعَةِ"], 40],
+                    ["«السِّيرَةُ الذَّاتِيَّةُ هِيَ مَجْمُوعَةٌ مِنَ الْمَلَابِسِ الثَّمِينَةِ.» [الْخَطَأُ الدَّلَالِيُّ]", ["السِّيرَةُ", "مَجْمُوعَةٌ", "الْمَلَابِسِ الثَّمِينَةِ", "الذَّاتِيَّةُ"], 40],
+                    ["«الرُّؤْيَةُ بَعِيدَةُ الْمَدَى تُرَكِّزُ فَقَطْ عَلَى الرَّغَبَاتِ الْفَوْرِيَّةِ.» [الْخَطَأُ الدَّلَالِيُّ]", ["بَعِيدَةُ", "تُرَكِّزُ", "فَقَطْ", "الرَّغَبَاتِ الْفَوْرِيَّةِ"], 41],
+                    ["«تَخَرَّجَ كَرِيمٌ فِي الْهَنْدَسَةِ مِنَ الْجَامِعَةُ.» [خطأ نحوي في اسم مجرور]", ["تَخَرَّجَ", "فِي", "مِنَ", "الْجَامِعَةُ"], 41],
+                    ["«أَهْدَاهُ الْجَدُّ آلَةَ خِيَاطَةٍ ذَهَبِيٌّ.» [عدم تظابق النعت والمنعوت]", ["أَهْدَاهُ", "الْجَدُّ", "آلَةَ", "ذَهَبِيٌّ"], 41],
+                    ["«لَا تَجْعَلْ هَمَّكَ تَلْبِيَةِ الرَّغَبَاتِ.» [نصب خبر تجعل]", ["لَا", "تَجْعَلْ", "هَمَّكَ", "تَلْبِيَةِ"], 41],
+                    ["«الِاسْتِثْمَارُ فِي الْعِلْمِ يُؤَدِّي إِلَى الْفَشَلِ.» [تناقض المعنى]", ["الِاسْتِثْمَارُ", "فِي", "إِلَى", "الْفَشَلِ"], 41],
+                    ["«كَانَ كَرِيمٌ شَابٌّ نَشِيطٌ.» [نصب خبر كان]", ["كَانَ", "كَرِيمٌ", "شَابٌّ", "نَشِيطٌ"], 40],
+                    ["«سِيرَتُكَ الذَّاتِيَّةُ مَلِيئَةٌ بِالْأَلْعَابِ السَّرِيعَةِ.» [الخطأ الدلالي]", ["سِيرَتُكَ", "مَلِيئَةٌ", "بِالْأَلْعَابِ السَّرِيعَةِ", "الذَّاتِيَّةُ"], 40],
+                    ["«يَجِبُ تَوْفِيرُ فُرَصِ عَمَلٍ لِلْقَرْيَةِ النَّائِيَةِ كَيْ تَبْقَى فَقِيرَةً.» [خطأ المعنى]", ["تَوْفِيرُ", "فُرَصِ", "الْنَّائِيَةِ", "فَقِيرَةً"], 41],
+                    ["«آلَةُ الْخِيَاطَةِ هِيَ عُمْلَةٌ نَقْدِيَّةٌ قَدِيمَةٌ.» [تعريف خاطئ]", ["آلَةُ", "الْخِيَاطَةِ", "عُمْلَةٌ نَقْدِيَّةٌ", "قَدِيمَةٌ"], 40]
+                ]
+            },
+            // Section 10
+            {
+                title: "الْقِسْمُ 10: الرَّبْطُ بَيْنَ السَّبَبِ وَالنَّتِيجَةِ",
+                titleRu: "Раздел 10: Связь причины и следствия",
+                desc: "ارْبِطِي بَيْنَ السَّبَبِ فِي الْعَمُودِ الْأَوَّلِ وَالنَّتِيجَةِ الْمُنَاسِبَةِ فِي الْعَمُودِ الثَّانِي (11 زَوْجًا).",
+                descRu: "Сопоставьте причину и следствие (11 пар). Нажмите на причину, затем на следствие.",
+                type: "matching",
+                pairs: [
+                    { id: "p1", cause: "الِاجْتِهَادُ فِي الدِّرَاسَةِ وَتَخَطِّي الْعَقَبَاتِ", effect: "التَّخَرُّجُ بِتَفَوُّقٍ وَنَيْلُ الْمُؤَهِّلِ الْعِلْمِيِّ" },
+                    { id: "p2", cause: "شِرَاءُ آلَةِ خِيَاطَةٍ لِتَأْسِيسِ مَشْرُوعٍ", effect: "خَلْقُ إِنْتَاجِيَّةٍ وَتَوْفِيرُ فُرَصِ عَمَلٍ" },
+                    { id: "p3", cause: "التَّرْكِيزُ عَلَى تَلْبِيَةِ الْحَاجَاتِ الْفَوْرِيَّةِ", effect: "ضَيَاعُ الْمَالِ سَرِيعًا دُونَ اسْتِثْمَارٍ" },
+                    { id: "p4", cause: "إِعْدَادُ سِيرَةٍ ذَاتِيَّةٍ مُمَيَّزَةٍ", effect: "الْحُصُولُ عَلَى دَعْوَةٍ لِمُقَابَلَةٍ شَخْصِيَّةٍ" },
+                    { id: "p5", cause: "امْتِلَاكُ رُؤْيَةٍ بَعِيدَةِ الْمَدَى", effect: "التَّخْطِيطُ لِمَشَارِيعَ مُسْتَدَامَةٍ نَاجِحَةٍ" },
+                    { id: "p6", cause: "الْتِحَاقُ كَرِيمٍ بِكُلِّيَّةِ الْهَنْدَسَةِ", effect: "تَصْمِيمُ مَشْرُوعِ رَيٍّ حَدِيثٍ لِقَرْيَتِهِ" },
+                    { id: "p7", cause: "مُمَارَسَةُ العَطَاءِ وَمُسَاعَدَةِ الْآخَرِينَ", effect: "تَحْسِينُ مَعِيشَةِ الْفُقَرَاءِ وَنَشْرُ الْحُبِّ" },
+                    { id: "p8", cause: "تَأْسِيسُ مَشْرُوعٍ تِجَارِيٍّ مُسْتَدَامٍ", effect: "تَحْقِيقُ أَرْبَاحٍ دَائِمَةٍ وَخِدْمَةُ الْمُجْتَمَعِ" },
+                    { id: "p9", cause: "النَّجَاحُ فِي الْمُقَابَلَةِ الشَّخْصِيَّةِ", effect: "الْقَبُولُ فِي الْوَظِيفَةِ وَالتَّعْيِينُ الْفَوْرِيُّ" },
+                    { id: "p10", cause: "إِنْفَاقُ الدِّينَارِ عَلَى طَعَامٍ فَاخِرٍ", effect: "الْإِحْسَاسُ بِاللَّذَّةِ لِوَقْتٍ قَصِيرٍ ثُمَّ الْجُوعُ" },
+                    { id: "p11", cause: "عَرْضُ مَشْرُوعِ رَيٍّ عَلَى اللَّجْنَةِ", effect: "إِعْجَابُ الشَّرِكَةِ بِالْقُدُرَاتِ وَالتَّعْيِينُ" }
+                ]
+            },
+            // Section 11
+            {
+                title: "الْقِسْمُ 11: اسْتِخْرَاجُ الْقَاعِدَةِ النَّحَوِيَّةِ",
+                titleRu: "Раздел 11: Грамматические правила",
+                desc: "اخْتَرِ الْإِعْرَابَ أَوِ الْوَظِيفَةَ النَّحَوِيَّةَ الصَّحِيحَةَ لِلْكَلِمَاتِ.",
+                descRu: "Выберите правильную грамматическую функцию слов.",
+                type: "mcq",
+                questions: [
+                    ["مَا إِعْرَابُ «كَرِيمٌ» فِي جُمْلَةِ: «دَرَسَ كَرِيمٌ الْهَنْدَسَةَ»؟", ["فَاعِلٌ مَرْفُوعٌ", "مَفْعُولٌ بِهِ", "اِسْمُ كَانَ", "حَرْفُ جَرٍّ"], 42],
+                    ["مَا إِعْرَابُ «الْهَنْدَسَةَ» فِي جُمْلَةِ: «دَرَسَ كَرِيمٌ الْهَنْدَسَةَ»؟", ["فَاعِلٌ", "مَفْعُولٌ بِهِ مَنْصُوبٌ", "اِسْمُ مَجْرُورٌ", "خَبَرُ كَانَ"], 43],
+                    ["مَا حَرْفُ الْجَرِّ فِي جُمْلَةِ: «الْتَحَقَ بِالْجَامِعَةِ»؟", ["الْتَحَقَ", "الْبَاءُ فِي (بِالْجَامِعَةِ)", "الْجَامِعَةِ", "لَا يُوجَدُ"], 43],
+                    ["مَا إِعْرَابُ «شَابٌ» فِي جُمْلَةِ: «كَانَ كَرِيمٌ شَابًّا»؟", ["اِسْمُ كَانَ", "خَبَرُ كَانَ مَنْصُوبٌ", "فَاعِلٌ", "خَبَرُ الْمُبْتَدَأِ"], 43],
+                    ["مَا إِعْرَابُ «الْجَدُّ» فِي جُمْلَةِ: «أَهْدَى الْجَدُّ كَرِيمًا دِينَارًا»؟", ["فَاعِلٌ مَرْفُوعٌ", "مَفْعُولٌ بِهِ", "مُضَافٌ إِلَيْهِ", "نَعْتٌ"], 42],
+                    ["أَيْنَ الْفِعْلُ الْمَاضِي فِي جُمْلَةِ: «تَخَرَّجَ كَرِيمٌ بِتَفَوُّقٍ»؟", ["كَرِيمٌ", "تَخَرَّجَ", "بِتَفَوُّقٍ", "لَا يُوجَدُ فِعْلٌ"], 43],
+                    ["أَيْنَ الِاسْمُ الْمَجْرُورُ فِي جُمْلَةِ: «يَبْحَثُ عَنْ عَمَلٍ»؟", ["يَبْحَثُ", "عَنْ", "عَمَلٍ", "هُوَ"], 40],
+                    ["مَا نَوْعُ جُمْلَةِ: «الْعَطَاءُ صِفَةٌ جَمِيلَةٌ»؟", ["جُمْلَةٌ فِعْلِيَّةٌ", "جُمْلَةٌ اسْمِيَّةٌ", "شِبْهُ جُمْلَةٍ", "جُمْلَةٌ شَرْطِيَّةٌ"], 43],
+                    ["مَا هُوَ الْمُبْتَدَأُ فِي جُمْلَةِ: «الِاسْتِثْمَارُ ذَكِيٌّ»؟", ["الِاسْتِثْمَارُ", "ذَكِيٌّ", "هُوَ", "لَا يُوجَدُ"], 42],
+                    ["مَا إِعْرَابُ «الْفَوْرِيَّةِ» فِي: «تَلْبِيَةِ الْحَاجَاتِ الْفَوْرِيَّةِ»؟", ["فَاعِلٌ", "نَعْتٌ أَوْ صِفَةٌ مَجْرُورَةٌ", "مَفْعُولٌ بِهِ", "اِسْمُ كَانَ"], 43],
+                    ["مَا جَزْمُ الْفِعْلِ فِي جُمْلَةِ: «لَا تَجْعَلْ هَمَّكَ الْمَالَ»؟", ["السُّكُونُ عَلَى اللَّامِ فِي (تَجْعَلْ)", "الْفَتْحَةُ", "الضَّمَّةُ", "الْكَسْرَةُ"], 42]
+                ]
+            },
+            // Section 12
+            {
+                title: "الْقِسْمُ 12: الْمَرْجِعِيَّةُ الضَّمَائِرِيَّةُ",
+                titleRu: "Раздел 12: Референция местоимений",
+                desc: "حَدِّدِ الْكَلِمَةَ الَّتِي يَعُودُ عَلَيْهَا الضَّمِيرُ الْمُتَّصِلُ.",
+                descRu: "Определите слово, к которому относится слитное местоимение.",
+                type: "mcq",
+                questions: [
+                    ["فِي جُمْلَةِ: «أَهْدَاهُ جَدُّهُ دِينَارًا»، الضَّمِيرُ (ـهُ) فِي كَلِمَةِ «أَهْدَاهُ» يَعُودُ عَلَى:", ["الْجَدِّ", "كَرِيمٍ", "الدِّينَارِ", "الْقَرْيَةِ"], 43],
+                    ["فِي جُمْلَةِ: «بَدَأَ كَرِيمٌ كِتَابَةَ سِيرَتِهِ»، الضَّمِيرُ (ـهِ) فِي كَلِمَةِ «سِيرَتِهِ» يَعُودُ عَلَى:", ["الْجَامِعَةِ", "الشَّرِكَةِ", "كَرِيمٍ", "الْوَظِيفَةِ"], 40],
+                    ["فِي جُمْلَةِ: «أَعْجِبَتِ الشَّرِكَةُ بِرُؤْيَتِهِ»، الضَّمِيرُ (ـهِ) فِي كَلِمَةِ «بِرُؤْيَتِهِ» يَعُودُ عَلَى:", ["كَرِيمٍ", "الشَّرِكَةِ", "الْمَشْرُوعِ", "الْقَرْيَةِ"], 42],
+                    ["فِي جُمْلَةِ: «الْقَرْيَةُ نَائِيَةٌ وَتَطْوِيرُهَا مُهِمٌّ»، الضَّمِيرُ (هَا) فِي «تَطْوِيرُهَا» يَعُودُ عَلَى:", ["الْجَامِعَةِ", "الْقَرْيَةِ", "الْمَدِينَةِ", "الْمَلَابِسِ"], 43],
+                    ["فِي جُمْلَةِ: «اشْتَرَى آلَةَ خِيَاطَةٍ لِتَأْسِيسِ مَشْرُوعِهِ»، الضَّمِيرُ (ـهِ) فِي «مَشْرُوعِهِ» يَعُودُ عَلَى:", ["الشَّيْخِ", "الرَّجُلِ الثَّالِثِ", "الْجَدِّ", "الْقَرْيَةِ"], 43],
+                    ["فِي جُمْلَةِ: «الْمَدْرَسَةُ تَعَلَّمْنَا فِيهَا الْقِرَاءَةَ»، الضَّمِيرُ (هَا) فِي «فِيهَا» يَعُودُ عَلَى:", ["الْجَامِعَةِ", "الْمَدْرَسَةِ", "الْقِصَّةِ", "الْمَدِينَةِ"], 43],
+                    ["فِي جُمْلَةِ: «الْجَدُّ مَعْرُوفٌ بِعَطَائِهِ»، الضَّمِيرُ (ـهِ) فِي «بِعَطَائِهِ» يَعُودُ عَلَى:", ["كَرِيمٍ", "الْجَدِّ", "الْمَالِ", "النَّاسِ"], 43],
+                    ["فِي جُمْلَةِ: «الْمُقَابَلَةُ كَانَتْ صَعْبَةً لَكِنَّهَا انْتَهَتْ بِنَجَاحٍ»، الضَّمِيرُ (هَا) فِي «لَكِنَّهَا» يَعُودُ عَلَى:", ["الْمُقَابَلَةِ", "السِّيرَةِ", "الشَّرِكَةِ", "الْجَامِعَةِ"], 42],
+                    ["فِي جُمْلَةِ: «الْمُدِيرُ عَيَّنَهُ فَوْرًا»، الضَّمِيرُ (ـهُ) فِي «عَيَّنَهُ» يَعُودُ عَلَى:", ["الْجَدِّ", "كَرِيمٍ", "الْمَشْرُوعِ", "الدِّينَارِ"], 43],
+                    ["فِي جُمْلَةِ: «الْمَشْرُوعُ كَبِيرٌ وَأَهْدَافُهُ نَبِيلَةٌ»، الضَّمِيرُ (ـهُ) فِي «أَهْدَافُهُ» يَعُودُ عَلَى:", ["الْمَشْرُوعِ", "الْمَالِ", "كَرِيمٍ", "الْمُجْتَمَعِ"], 42],
+                    ["فِي جُمْلَةِ: «نَالَ كَرِيمٌ شَهَادَتَهُ»، الضَّمِيرُ (ـهُ) فِي «شَهَادَتَهُ» يَعُودُ عَلَى:", ["الْمُعَلِّمِ", "كَرِيمٍ", "الْجَامِعَةِ", "الشَّرِكَةِ"], 43]
+                ]
+            },
+            // Section 13
+            {
+                title: "الْقِسْمُ 13: التَّصْنِيفُ",
+                titleRu: "Раздел 13: Классификация (Сортировка)",
+                desc: "صَنِّفِي الْكَلِمَاتِ التَّالِيَةَ إِلَى مَجْمُوعَتَيْنِ: (الْجَامِعَةُ وَالدِّرَاسَةُ) أَوْ (الْعَمَلُ وَالْمِهْنَةُ).",
+                type: "classification",
+                categories: {
+                    cat1: { title: "الْجَامِعَةُ وَالدِّرَاسَةُ", titleRu: "Университет и учеба" },
+                    cat2: { title: "الْعَمَلُ وَالْمِهْنَةُ", titleRu: "Работа и карьера" }
+                },
+                items: [
+                    { text: "مُؤَهِّلٌ عِلْمِيٌّ", cat: "cat1" },
+                    { text: "سِيرَةٌ ذَاتِيَّةٌ", cat: "cat2" },
+                    { text: "مُقَابَلَةٌ شَخْصِيَّةٌ", cat: "cat2" },
+                    { text: "مَشْرُوعٌ مُسْتَدَامٌ", cat: "cat2" },
+                    { text: "الْتِحَاقٌ", cat: "cat1" },
+                    { text: "مَكْتَبَةٌ جَامِعِيَّةٌ", cat: "cat1" },
+                    { text: "تَوْفِيرُ فُرَصِ عَمَلٍ", cat: "cat2" },
+                    { text: "قَاعَةُ الْمُحَاضَرَاتِ", cat: "cat1" },
+                    { text: "إِنْتَاجِيَّةٌ مِهْنِيَّةٌ", cat: "cat2" },
+                    { text: "مُعَدَّلٌ دِرَاسِيٌّ", cat: "cat1" },
+                    { text: "تَخَرَّجَ بِتَفَوُّقٍ", cat: "cat1" }
+                ]
+            },
+            // Section 14
+            {
+                title: "الْقِسْمُ 14: تَرْتِيبُ الْجُمَلِ",
+                titleRu: "Раздел 14: Порядок слов",
+                desc: "انْقُرِي عَلَى الْكَلِمَاتِ بِالتَّرْتِيبِ لِتَكْوِينِ جُمْلَةٍ مُفِيدَةٍ صَحِيحَةٍ (11 جُمْلَةً).",
+                descRu: "Нажмите на слова по порядку, чтобы составить предложение (11 предложений).",
+                type: "reorder",
+                questions: [
+                    { words: ["يَسْعَى", "كَرِيمٌ", "إِلَى", "تَأْسِيسِ", "مَشْرُوعٍ", "مُسْتَدَامٍ"], correctOrder: ["يَسْعَى", "كَرِيمٌ", "إِلَى", "تَأْسِيسِ", "مَشْرُوعٍ", "مُسْتَدَامٍ"] },
+                    { words: ["الْتَحَقَتْ", "جَمِيلَةُ", "بِالْجَامِعَةِ", "بَعْدَ", "الْمَدْرَسَةِ", "مِنَ", "التَّخَرُّجِ"], correctOrder: ["الْتَحَقَتْ", "جَمِيلَةُ", "بِالْجَامِعَةِ", "بَعْدَ", "التَّخَرُّجِ", "مِنَ", "الْمَدْرَسَةِ"] },
+                    { words: ["أَهْدَى", "الْجَدُّ", "كَرِيمًا", "دِينَارًا", "ذَهَبِيًّا"], correctOrder: ["أَهْدَى", "الْجَدُّ", "كَرِيمًا", "دِينَارًا", "ذَهَبِيًّا"] },
+                    { words: ["تَغَلَّبَ", "كَرِيمٌ", "عَلَى", "الْعَقَبَاتِ", "بِالِاجْتِهَادِ"], correctOrder: ["تَغَلَّبَ", "كَرِيمٌ", "عَلَى", "الْعَقَبَاتِ", "بِالِاجْتِهَادِ"] },
+                    { words: ["الِاسْتِثْمَارُ", "فِي", "الْعِلْمِ", "يَبْنِي", "الْمُسْتَقْبَلَ"], correctOrder: ["الِاسْتِثْمَارُ", "فِي", "الْعِلْمِ", "يَبْنِي", "الْمُسْتَقْبَلَ"] },
+                    { words: ["كَتَبَتْ", "مَرْيَمُ", "سِيرَتَهَا", "الذَّاتِيَّةَ", "بِدِقَّةٍ"], correctOrder: ["كَتَبَتْ", "مَرْيَمُ", "سِيرَتَهَا", "الذَّاتِيَّةَ", "بِدِقَّةٍ"] },
+                    { words: ["نَجَحَ", "كَرِيمٌ", "فِي", "الْمُقَابَلَةِ", "الشَّخْصِيَّةِ"], correctOrder: ["نَجَحَ", "كَرِيمٌ", "فِي", "الْمُقَابَلَةِ", "الشَّخْصِيَّةِ"] },
+                    { words: ["تُوفِّرُ", "الْمَشَارِيعُ", "فُرَصَ", "عَمَلٍ", "لِلْمُجْتَمَعِ"], correctOrder: ["تُوفِّرُ", "الْمَشَارِيعُ", "فُرَصَ", "عَمَلٍ", "لِلْمُجْتَمَعِ"] },
+                    { words: ["آلَةُ", "الْخِيَاطَةِ", "تَخْلُقُ", "إِنْتَاجِيَّةً", "كَبِيرَةً"], correctOrder: ["آلَةُ", "الْخِيَاطَةِ", "تَخْلُقُ", "إِنْتَاجِيَّةً", "كَبِيرَةً"] },
+                    { words: ["تَجَنَّبْ", "تَلْبِيَةَ", "الْحَاجَاتِ", "الْفَوْرِيَّةِ", "الْعَاجِلَةِ"], correctOrder: ["تَجَنَّبْ", "تَلْبِيَةَ", "الْحَاجَاتِ", "الْفَوْرِيَّةِ", "الْعَاجِلَةِ"] },
+                    { words: ["يَمْلِكُ", "الْجَدُّ", "رُؤْيَةً", "بَعِيدَةَ", "الْمَدَى"], correctOrder: ["يَمْلِكُ", "الْجَدُّ", "رُؤْيَةً", "بَعِيدَةَ", "الْمَدَى"] }
+                ]
+            },
+            // Section 15
+            {
+                title: "الْقِسْمُ 15: التَّعْبِيرُ الْمُوَجَّهُ",
+                titleRu: "Раздел 15: Направляемое письмо",
+                desc: "أَكْمِلِي الْجُمَلَ التَّالِيَةَ بِالْعَرَبِيَّةِ (11 جُمْلَةً - يُصَحَّحُ يَدَوِيًّا).",
+                descRu: "Дополните предложения на арабском языке (11 предложений - оценивается вручную).",
+                type: "writing",
+                questions: [
+                    { prompt: "أُرِيدُ الِالْتِحَاقَ بِالْجَامِعَةِ لِأَنَّ...", hintRu: "Я хочу поступить в университет, потому что..." },
+                    { prompt: "لِكَيْ أَنْجَحَ فِي الْمُقَابَلَةِ الشَّخْصِيَّةِ، يَجِبُ عَلَيَّ...", hintRu: "Чтобы успешно пройти собеседование, я должна..." },
+                    { prompt: "مِنْ عَقَبَاتِ الدِّرَاسَةِ الَّتِي أُرِيدُ التَّغَلُّبَ عَلَيْهَا...", hintRu: "Среди учебных препятствий, которые я хочу преодолеть..." },
+                    { prompt: "سِيرَتِي الذَّاتِيَّةُ سَتَكُونُ مُمَيَّزَةً إِذَا...", hintRu: "Мое резюме будет особенным, если..." },
+                    { prompt: "الِاسْتِثْمَارُ فِي الْمَشْرُوعِ الْمُسْتَدَامِ يُفِيدُ...", hintRu: "Инвестиции в устойчивый проект приносят пользу..." },
+                    { prompt: "تَلْبِيَةُ الْحَاجَاتِ الْفَوْرِيَّةِ فَقَطْ تَجْعَلُ الشَّخْصَ...", hintRu: "Удовлетворение только мгновенных нужд делает человека..." },
+                    { prompt: "الْعَطَاءُ وَمُسَاعَدَةُ النَّاسِ صِفَةٌ...", hintRu: "Благотворительность и помощь людям - это качество..." },
+                    { prompt: "آلَةُ الْخِيَاطَةِ أَفْضَلُ مِنَ الطَّعَامِ الْفَاخِرِ لِأَنَّهَا...", hintRu: "Швейная машина лучше изысканной еды, потому что она..." },
+                    { prompt: "بَعْدَ تَخَرُّجِي مِنَ الْجَامِعَةِ، أَطْمَحُ إِلَى...", hintRu: "После окончания университета я стремлюсь..." },
+                    { prompt: "تَوْفِيرُ فُرَصِ عَمَلٍ لِلْمُجْتَمَعِ يُسَاعِدُ فِي...", hintRu: "Предоставление рабочих мест обществу помогает в..." },
+                    { prompt: "الرُّؤْيَةُ بَعِيدَةُ الْمَدَى تَحْمِينَا مِنْ...", hintRu: "Долгосрочное видение защищает нас от..." }
+                ]
+            },
+            // Section 16
+            {
+                title: "الْقِسْمُ 16: التَّعْبِيرُ الْإِبْدَاعِيُّ الْحُرُّ",
+                titleRu: "Раздел 16: Свободное творческое письмо",
+                desc: "أَجِيبِي عَنِ الْأَسْئِلَةِ التَّالِيَةِ بِكِتَابَةِ فِقْرَةٍ حُرَّةٍ (11 سُؤَالًا تَعْبِيرِيًّا - يُصَحَّحُ يَدَوِيًّا).",
+                descRu: "Ответьте на вопросы на арабском языке (11 вопросов - оценивается вручную).",
+                type: "creative_multi",
+                questions: [
+                    { prompt: "مَا هُوَ طُمُوحُكِ الْمِهْنِيُّ بَعْدَ التَّخَرُّجِ؟", hintRu: "Каковы ваши карьерные амбиции после выпуска?" },
+                    { prompt: "كَيْفَ تُحَقِّقِينَ التَّوَازُنَ بَيْنَ الِاسْتِثْمَارِ وَتَلْبِيَةِ الْحَاجَاتِ الْفَوْرِيَّةِ؟", hintRu: "Как сбалансировать инвестиции и удовлетворение мгновенных нужд?" },
+                    { prompt: "مَا أَهَمِّيَّةُ مُسَاعَدَةِ الْفُقَرَاءِ وَالعَطَاءِ فِي الْمُجْتَمَعِ؟", hintRu: "В чем важность помощи бедным и благотворительности в обществе?" },
+                    { prompt: "لِمَاذَا يُعْتَبَرُ الْمَشْرُوعُ الْمُسْتَدَامُ أَفْضَلَ مِنَ الْمَشْرُوعِ الْمُؤَقَّتِ؟", hintRu: "Почему устойчивый проект считается лучше временного?" },
+                    { prompt: "كَيْفَ يُسَاهِمُ التَّعْلِيمُ الْجَامِعِيُّ فِي صُنْعِ الرُّؤْيَةِ بَعِيدَةِ الْمَدَى؟", hintRu: "Как университетское образование способствует формированию долгосрочного видения?" },
+                    { prompt: "صِفِي مَوْقِفًا وَاجَهْتِ فِيهِ عَقَبَاتٍ وَكَيْفَ تَغَلَّبْتِ عَلَيْهَا.", hintRu: "Опишите ситуацию, когда вы столкнулись с трудностями, и как вы их преодолели." },
+                    { prompt: "مَاذَا تَعْنِي لَكِ زِيَادَةُ الْإِنْتَاجِيَّةِ فِي عَمَلِكِ الْمُسْتَقْبَلِيِّ؟", hintRu: "Что для вас значит повышение производительности в будущей работе?" },
+                    { prompt: "كَيْفَ يُمْكِنُ لِلْمَرْأَةِ أَنْ تُؤَسِّسَ مَشْرُوعًا تِجَارِيًّا نَاجِحًا؟", hintRu: "Как женщина может основать успешный бизнес-проект?" },
+                    { prompt: "مَا هِيَ صِفَاتُ الْجَدِّ الْحَكِيمِ فِي ثَقَافَتِكِ؟", hintRu: "Каковы качества мудрого дедушки в вашей культуре?" },
+                    { prompt: "كَيْفَ تُخَطِّطِينَ لِتَطْوِيرِ سِيرَتِكِ الذَّاتِيَّةِ خِلَالَ الدِّرَاسَةِ؟", hintRu: "Как вы планируете развивать свое резюме во время учебы?" },
+                    { prompt: "مَا هُوَ دَوْرُ الشَّبَابِ فِي تَوْفِيرِ فُرَصِ عَمَلٍ لِلْمُجْتَمَعِ؟", hintRu: "Какова роль молодежи в предоставлении рабочих мест обществу?" }
+                ]
+            }
+        ];
+
+        let currentSectionIndex = 0;
+        let userScores = {};
+        let selectedCauseId = null;
+
+        function buildVocabTable() {
+            const tbody = document.querySelector("#vocabTableDrawer tbody");
+            tbody.innerHTML = "";
+            dictionary.forEach(item => {
+                const tr = document.createElement("tr");
+                const badgeClass = item.type === "b1" ? "badge-b1" : "badge-vid";
+                const badgeText = item.type === "b1" ? "B1 مفردات" : "مفردات الفيديو";
+                tr.innerHTML = `
+                    <td><strong>${item.word}</strong> <span class="${badgeClass}">${badgeText}</span></td>
+                    <td>${item.meaning}</td>
+                    <td style="color:#475569; font-style:italic;">${item.example}</td>
+                    <td style="font-family:'Inter', sans-serif; font-size:0.85rem; color:#0f766e;">${item.ru}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function toggleDrawer() {
+            document.getElementById("sideDrawer").classList.toggle("open");
+            document.getElementById("drawerOverlay").classList.toggle("active");
+        }
+
+        function renderSection(index) {
+            const container = document.getElementById("quiz-flow");
+            container.innerHTML = "";
+
+            if (index >= examData.length) {
+                renderScoreScreen();
+                return;
+            }
+
+            const sec = examData[index];
+            const sectionCard = document.createElement("div");
+            sectionCard.className = "section-card active";
+            
+            let html = `
+                <div class="section-header">
+                    <div class="section-title"><span>${sec.title}</span></div>
+                    <span class="lang-sub" style="font-weight:600; color:var(--primary);">${sec.titleRu || ""}</span>
+                    <div class="section-desc">${sec.desc}</div>
+                    <span class="lang-sub">${sec.descRu || ""}</span>
+                </div>
+            `;
+
+            if (sec.type === "mcq" || sec.type === "true_false") {
+                sec.questions.forEach((q, qIdx) => {
+                    const [qText, options, encryptedCorrectIndex] = q;
+                    html += `
+                        <div class="question-box" id="qbox-${index}-${qIdx}">
+                            <div class="question-text">${qIdx + 1}. ${qText}</div>
+                            <div class="options-grid">
+                    `;
+                    options.forEach((opt, optIdx) => {
+                        const stateClass = getOptionStateClass(index, qIdx, optIdx);
+                        html += `
+                            <button class="option-btn ${stateClass}" 
+                                onclick="handleOptionClick(${index}, ${qIdx}, ${optIdx}, ${encryptedCorrectIndex}, this)">
+                                <span>${opt}</span>
+                            </button>
+                        `;
+                    });
+                    html += `</div></div>`;
+                });
+            } 
+            else if (sec.type === "fill_blanks_interactive") {
+                html += `
+                    <div class="question-box">
+                        <div class="blank-text-para">
+                            ${renderStoryWithBlanks(sec.story, index)}
+                        </div>
+                    </div>
+                `;
+
+                sec.questions.forEach((q, qIdx) => {
+                    const key = `blank_${index}_${qIdx}`;
+                    const saved = userScores[key];
+                    html += `
+                        <div class="question-box" id="blankbox-${index}-${qIdx}">
+                            <div class="question-text"><strong>(الفراغ ${qIdx + 1}):</strong> ${q.label}</div>
+                            <div class="options-grid">
+                    `;
+                    q.options.forEach((opt, optIdx) => {
+                        let btnClass = "";
+                        if (saved) {
+                            if (optIdx === q.correctIdx) btnClass = "correct disabled";
+                            else if (optIdx === saved.userAnswer) btnClass = "wrong disabled";
+                            else btnClass = "disabled";
+                        }
+                        html += `
+                            <button class="option-btn ${btnClass}" onclick="handleBlankClick(${index}, ${qIdx}, ${optIdx}, ${q.correctIdx})">
+                                ${opt}
+                            </button>
+                        `;
+                    });
+                    html += `</div></div>`;
+                });
+            }
+            else if (sec.type === "matching") {
+                html += `
+                    <div class="question-box">
+                        <div class="matching-container">
+                            <div class="match-col" id="causes-col">
+                `;
+                sec.pairs.forEach(pair => {
+                    const isMatched = isAlreadyMatched(index, pair.id);
+                    const isSelected = selectedCauseId === pair.id;
+                    const matchedClass = isMatched ? "matched" : (isSelected ? "selected" : "");
+                    const badge = isMatched ? `<span class="match-badge">رابط صَحّ</span>` : "";
+                    html += `
+                        <div class="match-card ${matchedClass}" id="cause-${pair.id}" onclick="selectCause('${pair.id}')">
+                            <span>${pair.cause}</span>
+                            ${badge}
+                        </div>
+                    `;
+                });
+
+                html += `</div><div class="match-col" id="effects-col">`;
+                const shuffledPairs = [...sec.pairs].reverse();
+                shuffledPairs.forEach(pair => {
+                    const isMatched = isAlreadyMatched(index, pair.id);
+                    const matchedClass = isMatched ? "matched" : "";
+                    const badge = isMatched ? `<span class="match-badge">مُرْتَبِط</span>` : "";
+                    html += `
+                        <div class="match-card ${matchedClass}" id="effect-${pair.id}" onclick="selectEffect('${pair.id}')">
+                            <span>${pair.effect}</span>
+                            ${badge}
+                        </div>
+                    `;
+                });
+
+                html += `</div></div></div>`;
+            } 
+            else if (sec.type === "classification") {
+                html += `
+                    <div class="question-box">
+                        <div class="classification-container">
+                            <div class="class-items-pool" id="class-pool">
+                `;
+                sec.items.forEach((item, itemIdx) => {
+                    const userCat = getUserClassification(index, itemIdx);
+                    if (!userCat) {
+                        html += `
+                            <div class="class-item-card" id="class-item-${itemIdx}">
+                                <span>${item.text}</span>
+                                <div style="display:flex; gap:6px;">
+                                    <button class="class-btn-sm btn-study" onclick="classifyItem(${index}, ${itemIdx}, 'cat1')">📚 دِرَاسَة</button>
+                                    <button class="class-btn-sm btn-work" onclick="classifyItem(${index}, ${itemIdx}, 'cat2')">💼 عَمَل</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+                html += `
+                            </div>
+                            <div class="classification-buckets">
+                                <div class="bucket" id="bucket-cat1">
+                                    <div class="bucket-title">${sec.categories.cat1.title}<span class="lang-sub">${sec.categories.cat1.titleRu}</span></div>
+                                    <div class="bucket-items">
+                `;
+                sec.items.forEach((item, itemIdx) => {
+                    if (getUserClassification(index, itemIdx) === 'cat1') {
+                        const isCorrect = item.cat === 'cat1';
+                        const borderStyle = isCorrect ? 'border: 2px solid var(--correct); background-color: var(--correct-bg);' : 'border: 2px solid var(--wrong); background-color: var(--wrong-bg);';
+                        html += `
+                            <div class="class-item-card" style="${borderStyle}">
+                                <span>${item.text} ${isCorrect ? '✅' : '❌'}</span>
+                                <button class="class-btn-sm btn-reset" onclick="resetClassify(${index}, ${itemIdx})">إِزَالَة ×</button>
+                            </div>
+                        `;
+                    }
+                });
+                html += `
+                                    </div>
+                                </div>
+                                <div class="bucket" id="bucket-cat2">
+                                    <div class="bucket-title">${sec.categories.cat2.title}<span class="lang-sub">${sec.categories.cat2.titleRu}</span></div>
+                                    <div class="bucket-items">
+                `;
+                sec.items.forEach((item, itemIdx) => {
+                    if (getUserClassification(index, itemIdx) === 'cat2') {
+                        const isCorrect = item.cat === 'cat2';
+                        const borderStyle = isCorrect ? 'border: 2px solid var(--correct); background-color: var(--correct-bg);' : 'border: 2px solid var(--wrong); background-color: var(--wrong-bg);';
+                        html += `
+                            <div class="class-item-card" style="${borderStyle}">
+                                <span>${item.text} ${isCorrect ? '✅' : '❌'}</span>
+                                <button class="class-btn-sm btn-reset" onclick="resetClassify(${index}, ${itemIdx})">إِزَالَة ×</button>
+                            </div>
+                        `;
+                    }
+                });
+                html += `
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } 
+            else if (sec.type === "reorder") {
+                sec.questions.forEach((q, qIdx) => {
+                    const userOrder = getUserOrder(index, qIdx);
+                    const isChecked = hasCheckedReorder(index, qIdx);
+                    const isCorrect = checkReorderCorrectness(index, qIdx);
+
+                    html += `
+                        <div class="question-box">
+                            <div class="question-text">${qIdx + 1}. رَتِّبِي الْكَلِمَاتِ التَّالِيَةَ:</div>
+                            <div class="words-pool">
+                    `;
+                    q.words.forEach((word) => {
+                        const countInAnswer = userOrder.filter(w => w === word).length;
+                        const countInPool = q.words.filter(w => w === word).length;
+                        if (countInAnswer < countInPool) {
+                            html += `<button class="word-btn" onclick="addWordToOrder(${index}, ${qIdx}, '${word}')">${word}</button>`;
+                        }
+                    });
+
+                    html += `
+                            </div>
+                            <div class="question-text" style="font-size:0.95rem; color:var(--primary); margin-top:10px;">الْجُمْلَةُ الْمُرَتَّبَةُ (Вариант предложения):</div>
+                            <div class="ordered-container ${isChecked ? (isCorrect ? 'correct' : 'wrong') : ''}">
+                    `;
+                    userOrder.forEach((word, wordIdx) => {
+                        html += `<button class="word-btn" style="background-color: var(--primary-light); border-color: var(--primary);" onclick="removeWordFromOrder(${index}, ${qIdx}, ${wordIdx})">${word}</button>`;
+                    });
+                    
+                    if (userOrder.length === q.words.length && !isChecked) {
+                        html += `<button class="class-btn-sm btn-study" style="margin-right: auto; padding: 6px 12px;" onclick="verifyReorder(${index}, ${qIdx})">تَحَقَّقِي (Проверить)</button>`;
+                    } else if (isChecked) {
+                        html += `<span style="margin-right: auto; font-weight: bold; color: ${isCorrect ? 'green' : 'red'};">${isCorrect ? 'أَحْسَنْتِ! ✅' : 'حَاوِلِي ثَانِيَةً ❌'}</span>`;
+                    }
+
+                    html += `</div></div>`;
+                });
+            } 
+            else if (sec.type === "writing") {
+                sec.questions.forEach((q, qIdx) => {
+                    const savedVal = getSavedWritingText(index, qIdx);
+                    html += `
+                        <div class="question-box">
+                            <div class="question-text">${qIdx + 1}. ${q.prompt}</div>
+                            <span class="lang-sub">${q.hintRu}</span>
+                            <textarea class="essay-textarea" placeholder="اُكْتُبِي إِجَابَتَكِ هُنَا بِالْعَرَبِيَّةِ..." oninput="saveWritingText(${index}, ${qIdx}, this.value)">${savedVal}</textarea>
+                            <span class="manual-grade-notice">⚠️ يُصَحَّحُ يَدَوِيًّا (Оценивается преподавателем вручную)</span>
+                        </div>
+                    `;
+                });
+            } 
+            else if (sec.type === "creative_multi") {
+                sec.questions.forEach((q, qIdx) => {
+                    const savedVal = getSavedWritingText(index, qIdx);
+                    html += `
+                        <div class="question-box">
+                            <div class="question-text">${qIdx + 1}. ${q.prompt}</div>
+                            <span class="lang-sub">${q.hintRu}</span>
+                            <textarea class="essay-textarea" placeholder="اُكْتُبِي فِقْرَةً مُتَكَامِلَةً هُنَا..." oninput="saveWritingText(${index}, qIdx, this.value)">${savedVal}</textarea>
+                            <span class="manual-grade-notice">⚠️ يُصَحَّحُ يَدَوِيًّا (Оценивается вручную)</span>
+                        </div>
+                    `;
+                });
+            }
+
+            sectionCard.innerHTML = html;
+            container.appendChild(sectionCard);
+
+            document.getElementById("prevBtn").disabled = (index === 0);
+            if (index === examData.length - 1) {
+                document.getElementById("nextBtn").innerHTML = "<span>إِنْهَاءُ الِاخْتِبَارِ (Завершить)</span>";
+            } else {
+                document.getElementById("nextBtn").innerHTML = "<span>التَّالِي (Далее)</span>";
+            }
+
+            const progPercent = ((index + 1) / examData.length) * 100;
+            document.getElementById("progressBar").style.width = `${progPercent}%`;
+            document.getElementById("section-indicator").innerText = `الْقِسْمُ ${index + 1} مِنْ ${examData.length}`;
+        }
+
+        function renderStoryWithBlanks(story, secIdx) {
+            let rendered = story;
+            for (let i = 0; i < 11; i++) {
+                const key = `blank_${secIdx}_${i}`;
+                const saved = userScores[key];
+                let className = "blank-indicator";
+                let text = `(${i + 1})`;
+                if (saved) {
+                    className += " filled " + (saved.score === 1 ? "correct" : "wrong");
+                    text = examData[secIdx].questions[i].options[saved.userAnswer];
+                }
+                rendered = rendered.replace(`(${i + 1}) _______`, `<span class="${className}">${text}</span>`);
+            }
+            return rendered;
+        }
+
+        function handleBlankClick(secIdx, qIdx, optIdx, correctIdx) {
+            const key = `blank_${secIdx}_${qIdx}`;
+            const isCorrect = (optIdx === correctIdx);
+            
+            userScores[key] = {
+                userAnswer: optIdx,
+                correctAnswer: correctIdx,
+                score: isCorrect ? 1 : 0
+            };
+
+            renderSection(secIdx);
+        }
+
+        function handleOptionClick(secIdx, qIdx, optIdx, encryptedCorrect, btnElement) {
+            const key = secIdx + "_" + qIdx;
+            if (userScores[key] !== undefined) return;
+
+            const decryptedCorrect = encryptedCorrect ^ 42;
+            const isCorrect = (optIdx === decryptedCorrect);
+
+            userScores[key] = {
+                userAnswer: optIdx,
+                correctAnswer: decryptedCorrect,
+                score: isCorrect ? 1 : 0
+            };
+
+            renderSection(secIdx);
+        }
+
+        function getOptionStateClass(secIdx, qIdx, optIdx) {
+            const key = secIdx + "_" + qIdx;
+            const saved = userScores[key];
+            if (!saved) return "";
+            if (optIdx === saved.correctAnswer) return "correct disabled";
+            if (optIdx === saved.userAnswer) return "wrong disabled";
+            return "disabled";
+        }
+
+        function selectCause(id) {
+            const key = `matching_${currentSectionIndex}_${id}`;
+            if (userScores[key]) return;
+
+            selectedCauseId = id;
+            const cards = document.querySelectorAll("#causes-col .match-card");
+            cards.forEach(c => c.classList.remove("selected"));
+            document.getElementById(`cause-${id}`).classList.add("selected");
+        }
+
+        function selectEffect(id) {
+            if (!selectedCauseId) return;
+
+            const key = `matching_${currentSectionIndex}_${selectedCauseId}`;
+            const isCorrect = (selectedCauseId === id);
+
+            if (isCorrect) {
+                userScores[key] = { score: 1 };
+                selectedCauseId = null;
+                renderSection(currentSectionIndex);
+            } else {
+                const wrongCause = document.getElementById(`cause-${selectedCauseId}`);
+                const wrongEffect = document.getElementById(`effect-${id}`);
+                wrongCause.style.borderColor = "var(--wrong)";
+                wrongCause.style.backgroundColor = "var(--wrong-bg)";
+                wrongEffect.style.borderColor = "var(--wrong)";
+                wrongEffect.style.backgroundColor = "var(--wrong-bg)";
+                
+                setTimeout(() => {
+                    wrongCause.style.borderColor = "";
+                    wrongCause.style.backgroundColor = "";
+                    wrongEffect.style.borderColor = "";
+                    wrongEffect.style.backgroundColor = "";
+                }, 1000);
+            }
+        }
+
+        // Checking if elements matched
+        function isAlreadyMatched(secIdx, id) {
+            return userScores[`matching_${secIdx}_${id}`] !== undefined;
+        }
+
+        function classifyItem(secIdx, itemIdx, catKey) {
+            const key = `classify_${secIdx}_${itemIdx}`;
+            userScores[key] = catKey;
+            renderSection(secIdx);
+        }
+
+        function resetClassify(secIdx, itemIdx) {
+            const key = `classify_${secIdx}_${itemIdx}`;
+            delete userScores[key];
+            renderSection(secIdx);
+        }
+
+        function getUserClassification(secIdx, itemIdx) {
+            return userScores[`classify_${secIdx}_${itemIdx}`];
+        }
+
+        function addWordToOrder(secIdx, qIdx, word) {
+            const key = `reorder_${secIdx}_${qIdx}`;
+            if (!userScores[key]) {
+                userScores[key] = { answer: [], checked: false, score: 0 };
+            }
+            if (userScores[key].checked) return;
+            userScores[key].answer.push(word);
+            renderSection(secIdx);
+        }
+
+        function removeWordFromOrder(secIdx, qIdx, wordIdx) {
+            const key = `reorder_${secIdx}_${qIdx}`;
+            if (!userScores[key] || userScores[key].checked) return;
+            userScores[key].answer.splice(wordIdx, 1);
+            renderSection(secIdx);
+        }
+
+        function getUserOrder(secIdx, qIdx) {
+            const key = `reorder_${secIdx}_${qIdx}`;
+            return userScores[key] ? userScores[key].answer : [];
+        }
+
+        function hasCheckedReorder(secIdx, qIdx) {
+            const key = `reorder_${secIdx}_${qIdx}`;
+            return userScores[key] ? userScores[key].checked : false;
+        }
+
+        function verifyReorder(secIdx, qIdx) {
+            const key = `reorder_${secIdx}_${qIdx}`;
+            if (!userScores[key]) return;
+            
+            const originalWords = examData[secIdx].questions[qIdx].correctOrder;
+            const userWords = userScores[key].answer;
+            
+            let isCorrect = true;
+            if (originalWords.length !== userWords.length) isCorrect = false;
+            else {
+                for (let i = 0; i < originalWords.length; i++) {
+                    if (originalWords[i] !== userWords[i]) {
+                        isCorrect = false;
+                        break;
+                    }
+                }
+            }
+
+            userScores[key].checked = true;
+            userScores[key].score = isCorrect ? 1 : 0;
+            renderSection(secIdx);
+
+            if (!isCorrect) {
+                setTimeout(() => {
+                    userScores[key].checked = false;
+                    userScores[key].answer = [];
+                    renderSection(secIdx);
+                }, 2000);
+            }
+        }
+
+        function checkReorderCorrectness(secIdx, qIdx) {
+            const key = `reorder_${secIdx}_${qIdx}`;
+            return userScores[key] ? userScores[key].score === 1 : false;
+        }
+
+        function saveWritingText(secIdx, qIdx, val) {
+            const key = `writing_${secIdx}_${qIdx}`;
+            userScores[key] = val;
+        }
+
+        function getSavedWritingText(secIdx, qIdx) {
+            return userScores[`writing_${secIdx}_${qIdx}`] || "";
+        }
+
+        function renderScoreScreen() {
+            const container = document.getElementById("quiz-flow");
+            document.querySelector(".nav-controls").style.display = "none";
+            document.querySelector(".progress-container").style.display = "none";
+
+            let totalInteractiveQuestions = 0;
+            let correctAnswers = 0;
+
+            examData.forEach((sec, secIdx) => {
+                if (sec.type === "mcq" || sec.type === "true_false") {
+                    sec.questions.forEach((_, qIdx) => {
+                        totalInteractiveQuestions++;
+                        const saved = userScores[`${secIdx}_${qIdx}`];
+                        if (saved && saved.score === 1) correctAnswers++;
+                    });
+                } 
+                else if (sec.type === "fill_blanks_interactive") {
+                    sec.questions.forEach((_, qIdx) => {
+                        totalInteractiveQuestions++;
+                        const saved = userScores[`blank_${secIdx}_${qIdx}`];
+                        if (saved && saved.score === 1) correctAnswers++;
+                    });
+                } 
+                else if (sec.type === "matching") {
+                    sec.pairs.forEach(pair => {
+                        totalInteractiveQuestions++;
+                        if (userScores[`matching_${secIdx}_${pair.id}`]) correctAnswers++;
+                    });
+                } 
+                else if (sec.type === "classification") {
+                    sec.items.forEach((item, itemIdx) => {
+                        totalInteractiveQuestions++;
+                        const savedCat = userScores[`classify_${secIdx}_${itemIdx}`];
+                        if (savedCat && savedCat === item.cat) correctAnswers++;
+                    });
+                } 
+                else if (sec.type === "reorder") {
+                    sec.questions.forEach((_, qIdx) => {
+                        totalInteractiveQuestions++;
+                        const saved = userScores[`reorder_${secIdx}_${qIdx}`];
+                        if (saved && saved.score === 1) correctAnswers++;
+                    });
+                }
+            });
+
+            const percentage = Math.round((correctAnswers / totalInteractiveQuestions) * 100);
+
+            let writtenOutputs = "";
+            examData.forEach((sec, secIdx) => {
+                if (sec.type === "writing" || sec.type === "creative_multi") {
+                    writtenOutputs += `<li><strong>${sec.title}</strong>:<br>`;
+                    sec.questions.forEach((q, qIdx) => {
+                        const ans = userScores[`writing_${secIdx}_${qIdx}`] || "(لَمْ تَتِمَّ الْإِجَابَةُ)";
+                        writtenOutputs += `ـ السؤال: ${q.prompt}<br>ـ الإجابة: <span style="color: #0284c7; font-weight:bold;">${ans}</span><br>`;
+                    });
+                    writtenOutputs += `</li>`;
+                }
+            });
+
+            container.innerHTML = `
+                <div class="score-screen">
+                    <div class="score-title">أَحْسَنْتِ! لَقَدْ أَتْمَمْتِ الِاخْتِبَارَ بِجَدَارَةٍ 🎉</div>
+                    <span class="lang-sub" style="font-size:1.1rem; margin-bottom: 20px; font-weight:bold; color: #64748b;">Вы успешно завершили тест!</span>
+                    <div class="score-circle">
+                        <span>${percentage}%</span>
+                        <div style="font-size:0.8rem; font-weight:bold; color:var(--text-muted);">${correctAnswers} / ${totalInteractiveQuestions} إِجَابَةٍ</div>
+                    </div>
+                    
+                    <div class="written-responses-summary">
+                        <h4 style="color:#ea580c; border-bottom: 2px solid #ffedd5; padding-bottom:8px; margin-bottom:12px;">✍️ إِجَابَاتُكِ الْكِتَابِيَّةُ (للتصحيح اليدوي من المعلم):</h4>
+                        <ul style="list-style-type: none; display:flex; flex-direction:column; gap:12px;">
+                            ${writtenOutputs}
+                        </ul>
+                    </div>
+
+                    <button class="btn-nav" style="margin: 30px auto 0; background: var(--correct);" onclick="resetExam()">
+                        🔄 إِعَادَةُ الِاخْتِبَارِ (Пройти тест заново)
+                    </button>
+                </div>
+            `;
+        }
+
+        function resetExam() {
+            currentSectionIndex = 0;
+            userScores = {};
+            selectedCauseId = null;
+            document.querySelector(".nav-controls").style.display = "flex";
+            document.querySelector(".progress-container").style.display = "block";
+            renderSection(currentSectionIndex);
+        }
+
+        function navigate(step) {
+            currentSectionIndex += step;
+            renderSection(currentSectionIndex);
+        }
+
+        window.onload = function() {
+            buildVocabTable();
+            renderSection(0);
+        };
+    </script>
+</body>
+</html>
