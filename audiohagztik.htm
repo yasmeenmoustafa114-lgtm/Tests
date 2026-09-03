@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الاخْتِبَارُ التَّفَاعُلِيُّ لِمَقْطَعِ المَطَارِ (CEFR B1-B2)</title>
+    <style>
+        :root {
+            --bg-cream: #FDFBF7;
+            --text-espresso: #2B1B17;
+            --accent-orange: #D84315;
+            --accent-light: #FBE9E7;
+            --accent-hover: #BF360C;
+            --card-bg: #FFFFFF;
+            --border-color: #E6E0D4;
+            --success-color: #2E7D32;
+            --success-bg: #E8F5E9;
+            --error-color: #C62828;
+            --error-bg: #FFEBEE;
+            --warning-color: #EF6C00;
+            --warning-bg: #FFF3E0;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-cream);
+            color: var(--text-espresso);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            line-height: 1.8;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 950px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(43, 27, 23, 0.06);
+            padding: 40px;
+            margin: 30px auto;
+            display: flex;
+            flex-direction: column;
+            min-height: 650px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* شاشة الترحيب البصرية */
+        .welcome-screen {
+            text-align: center;
+            padding: 60px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        .welcome-title {
+            font-size: 2.6rem;
+            color: var(--accent-orange);
+            margin-bottom: 20px;
+            font-weight: 800;
+            line-height: 1.4;
+        }
+
+        .welcome-subtitle-ru {
+            font-size: 1.4rem;
+            color: var(--text-espresso);
+            font-style: italic;
+            margin-bottom: 40px;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        .start-btn {
+            background-color: var(--accent-orange);
+            color: white;
+            border: none;
+            padding: 16px 45px;
+            font-size: 1.25rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 6px 20px rgba(216, 67, 21, 0.25);
+            font-weight: bold;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(216, 67, 21, 0.35);
+            background-color: var(--accent-hover);
+        }
+
+        /* التحكم بالأقسام */
+        .section-panel {
+            display: none;
+            flex-grow: 1;
+        }
+
+        .section-panel.active {
+            display: flex;
+            flex-direction: column;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            border-bottom: 3px solid var(--accent-orange);
+            padding-bottom: 12px;
+            margin-bottom: 30px;
+        }
+
+        .section-title-ar {
+            font-size: 1.8rem;
+            color: var(--text-espresso);
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .section-title-ru {
+            font-size: 1.1rem;
+            color: #6D4C41;
+            margin: 5px 0 0 0;
+            font-style: italic;
+            font-weight: normal;
+        }
+
+        /* الأسئلة الفردية */
+        .question-card {
+            background-color: #FDFDFD;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.2s ease;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 4px 15px rgba(43, 27, 23, 0.03);
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-espresso);
+        }
+
+        /* خيارات الاختيار من متعدد */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        @media (min-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .option-button {
+            background-color: #FAFAFA;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px 20px;
+            font-size: 1.1rem;
+            text-align: right;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-espresso);
+            outline: none;
+        }
+
+        .option-button:hover:not(:disabled) {
+            background-color: var(--accent-light);
+            border-color: var(--accent-orange);
+        }
+
+        /* حالات الإجابة الفورية */
+        .option-button.correct {
+            background-color: var(--success-bg) !important;
+            border-color: var(--success-color) !important;
+            color: var(--success-color) !important;
+            font-weight: bold;
+        }
+
+        .option-button.incorrect {
+            background-color: var(--error-bg) !important;
+            border-color: var(--error-color) !important;
+            color: var(--error-color) !important;
+        }
+
+        /* أسئلة الصح والخطأ */
+        .tf-grid {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .tf-button {
+            flex: 1;
+            background-color: #FAFAFA;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 1.15rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-espresso);
+        }
+
+        .tf-button:hover:not(:disabled) {
+            background-color: var(--accent-light);
+            border-color: var(--accent-orange);
+        }
+
+        .tf-button.correct {
+            background-color: var(--success-bg) !important;
+            border-color: var(--success-color) !important;
+            color: var(--success-color) !important;
+        }
+
+        .tf-button.incorrect {
+            background-color: var(--error-bg) !important;
+            border-color: var(--error-color) !important;
+            color: var(--error-color) !important;
+        }
+
+        /* أسئلة الفراغات الكلمات المنسدلة */
+        .fib-sentence {
+            font-size: 1.2rem;
+            line-height: 2.2;
+            margin-bottom: 10px;
+        }
+
+        .fib-select {
+            padding: 8px 15px;
+            font-size: 1.1rem;
+            border-radius: 6px;
+            border: 2px solid var(--border-color);
+            background-color: #FAFAFA;
+            color: var(--text-espresso);
+            outline: none;
+            cursor: pointer;
+            margin: 0 8px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .fib-select:focus {
+            border-color: var(--accent-orange);
+        }
+
+        .fib-select.correct {
+            background-color: var(--success-bg) !important;
+            border-color: var(--success-color) !important;
+            color: var(--success-color) !important;
+        }
+
+        .fib-select.flash-error {
+            background-color: var(--error-bg) !important;
+            border-color: var(--error-color) !important;
+            color: var(--error-color) !important;
+            animation: shake 0.4s ease;
+        }
+
+        /* أسئلة ترتيب الجمل */
+        .reorder-container {
+            margin-top: 15px;
+        }
+
+        .scrambled-box, .assembled-box {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            min-height: 65px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 15px;
+            background-color: #FCFCFC;
+            transition: all 0.3s ease;
+        }
+
+        .assembled-box {
+            border-style: solid;
+            background-color: #FAFAFA;
+        }
+
+        .assembled-box.correct {
+            background-color: var(--success-bg) !important;
+            border-color: var(--success-color) !important;
+        }
+
+        .assembled-box.flash-error {
+            background-color: var(--error-bg) !important;
+            border-color: var(--error-color) !important;
+            animation: shake 0.4s ease;
+        }
+
+        .word-btn {
+            background-color: white;
+            border: 1px solid #D1CFC7;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            color: var(--text-espresso);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            font-weight: 500;
+        }
+
+        .word-btn:hover {
+            background-color: var(--accent-light);
+            border-color: var(--accent-orange);
+            transform: translateY(-1px);
+        }
+
+        .check-reorder-btn {
+            background-color: var(--text-espresso);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            font-size: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-weight: 600;
+        }
+
+        .check-reorder-btn:hover:not(:disabled) {
+            background-color: var(--accent-orange);
+        }
+
+        .check-reorder-btn:disabled {
+            background-color: #CCCCCC;
+            cursor: not-allowed;
+        }
+
+        /* أسئلة الإنشاء والكتابة الحرة */
+        .essay-textarea {
+            width: 100%;
+            height: 100px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 1.15rem;
+            outline: none;
+            resize: vertical;
+            transition: border-color 0.2s;
+            color: var(--text-espresso);
+        }
+
+        .essay-textarea:focus {
+            border-color: var(--accent-orange);
+        }
+
+        .manual-correct-note {
+            display: inline-block;
+            background-color: var(--warning-bg);
+            color: var(--warning-color);
+            font-size: 0.9rem;
+            padding: 5px 12px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        /* أزرار التنقل بين الصفحات */
+        .navigation-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 30px;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .nav-btn {
+            background-color: var(--text-espresso);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background-color: var(--accent-orange);
+        }
+
+        .nav-btn:disabled {
+            background-color: #E0E0E0;
+            color: #9E9E9E;
+            cursor: not-allowed;
+        }
+
+        .step-indicator {
+            align-self: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #6D4C41;
+        }
+
+        /* شاشة النتيجة النهائية */
+        .result-screen {
+            display: none;
+            text-align: center;
+            padding: 40px 10px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .result-score {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--accent-orange);
+            margin: 20px 0;
+        }
+
+        .result-message {
+            font-size: 1.5rem;
+            color: var(--text-espresso);
+            max-width: 650px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .restart-btn {
+            background-color: var(--text-espresso);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.15rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+        }
+
+        .restart-btn:hover {
+            background-color: var(--accent-orange);
+            transform: translateY(-2px);
+        }
+
+        /* حركات الاهتزاز عند الخطأ */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        /* مظهر لترتيب الأرقام */
+        .number-badge {
+            display: inline-block;
+            background-color: var(--accent-light);
+            color: var(--accent-orange);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            text-align: center;
+            line-height: 32px;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- شاشة البدء والترحيب بالطالبة -->
+        <div id="welcome-panel" class="welcome-screen">
+            <div class="welcome-title">«مَرْحَبَاً بِوَصِيَّةِ رَسُولِ اللهِ ﷺ»</div>
+            <div class="welcome-subtitle-ru">(Добро пожаловать, о завет Посланника Аллаха, мир ему и благословение Аллаха!)</div>
+            <p style="font-size: 1.3rem; max-width: 750px; line-height: 1.8; margin-bottom: 35px; color: var(--text-espresso);">
+                أَهْلًا بِكِ يَا طَالِبَتَنَا العَزِيزَةَ فِي الِاخْتِبَارِ التَّفَاعُلِيِّ الشَّامِلِ لِمَقْطَعِ <strong>(حَجْزِ التِّذْكِرَةِ / المَطَارِ)</strong> لِلْمُسْتَوَى المُتَوَسِّطِ (CEFR B1-B2). تَمَّتْ كِتَابَةُ وتَشْكِيلُ جَمِيعِ الأَسْئِلَةِ لِتَدْرِيبِكِ عَلَى فَهْمِ المَسْمُوعِ وقَوَاعِدِ اللُّغَةِ ومُفْرَدَاتِهَا.
+            </p>
+            <button class="start-btn" onclick="startQuiz()">
+                ابدئي الاختبار التفاعلي <span style="font-size: 0.95rem; display:block; font-weight:normal; margin-top:2px;">(Начать интерактивный тест)</span>
+            </button>
+        </div>
+
+        <!-- الأقسام المتعددة (ستتولد برمجياً) -->
+        <div id="quiz-panels" style="display:none; flex-grow:1;">
+            <!-- هنا يتم توليد محتوى القسم النشط تلقائياً بواسطة JavaScript -->
+        </div>
+
+        <!-- أشرطة أزرار التنقل السفلية -->
+        <div id="navigation-footer" class="navigation-footer" style="display: none;">
+            <button id="prev-btn" class="nav-btn" onclick="goToPrevSection()">
+                <span>السابق</span> <span style="font-size:0.8rem; font-weight:normal;">(Назад)</span>
+            </button>
+            <div id="step-indicator" class="step-indicator">القسم 1 من 7</div>
+            <button id="next-btn" class="nav-btn" onclick="goToNextSection()">
+                <span>التالي</span> <span style="font-size:0.8rem; font-weight:normal;">(Далее)</span>
+            </button>
+        </div>
+
+        <!-- شاشة النتيجة النهائية -->
+        <div id="result-panel" class="result-screen">
+            <h2 style="font-size: 2.2rem; color: var(--text-espresso); margin: 0;">النَّتِيجَةُ النِّهَائِيَّةُ لِلِاخْتِبَارِ</h2>
+            <p style="font-size: 1.1rem; color: #6D4C41; font-style: italic; margin-top: 5px;">(Итоговый результат теста)</p>
+            <div id="score-display" class="result-score">0 / 45</div>
+            <div id="result-message" class="result-message"></div>
+            <button class="restart-btn" onclick="restartQuiz()">
+                إِعَادَةُ الِاخْتِبَارِ <span style="font-size:0.85rem; display:block; font-weight:normal;">(Пройти тест заново)</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // مصفوفات الأسئلة المصممة بنظام "التفكيك البرمجي" (Array Destructuring)
+        // [المعرف، السؤال، الخيارات، الإجابة الصحيحة (المؤشر أو القيمة المنطقية)، نوع السؤال]
+
+        const section1Data = [
+            [1, "إِلَى أَيِّ مَدِينَةٍ يُرِيدُ المُسَافِرُ حَجْزَ رِحْلَتِهِ؟", ["أ. مَدِينَةُ الرِّيَاضِ", "ب. مَدِينَةُ جُدَّةَ", "ج. مَدِينَةُ الدَّمَّامِ", "د. مَدِينَةُ المَدِينَةِ المُنَوَّرَةِ"], 0, "mcq"],
+            [2, "فِي أَيِّ دَوْلَةٍ تَقَعُ الوِجْهَةُ الَّتِي سَيُسَافِرُ إِلَيْهَا المَرِيضُ؟", ["أ. دَوْلَةُ الكُوَيْتِ", "ب. المَمْلَكَةُ العَرَبِيَّةُ السُّعُودِيَّةُ", "ج. المَمْلَكَةُ الأُرْدُنِيَّةُ", "د. دَوْلَةُ قَطَرَ"], 1, "mcq"],
+            [3, "مَا هُوَ تَارِيخُ السَّفَرِ الَّذِي يَبْحَثُ عَنْهُ المُسَافِرُ فِي البِدَايَةِ؟", ["أ. فِي الأَوَّلِ مِنْ شَهْرِ حَزِيرَانَ", "ب. فِي الخَامِسِ مِنْ شَهْرِ حَزِيرَانَ", "ج. فِي الخَامِسِ مِنْ شَهْرِ أَيَّارَ", "د. فِي العَاشِرِ مِنْ شَهْرِ تَمُّوزَ"], 1, "mcq"],
+            [4, "مَا هُوَ مَوْعِدُ الرِّحْلَةِ الأُولَى الَّتِي عَرَضَهَا المُوَظَّفُ وَلَمْ تُنَاسِبِ المُسَافِرَ؟", ["أ. فِي السَّاعَةِ الثَّامِنَةِ صَبَاحاً", "ب. فِي السَّاعَةِ الرَّابِعَةِ فَجْراً", "ج. فِي السَّاعَةِ الثَّانِيَةِ ظُهْراً", "د. فِي السَّاعَةِ السَّابِعَةِ مَسَاءً"], 1, "mcq"],
+            [5, "أَيُّ رِحْلَةٍ لَمْ تُنَاسِبْهُ لِأَنَّهَا كَانَتْ مُبَكِّرَةً جِدّاً؟", ["أ. رِحْلَةُ الرَّابِعَةِ فَجْراً", "ب. رِحْلَةُ الثَّامِنَةِ صَبَاحاً", "ج. رِحْلَةُ السَّابِعَةِ مَسَاءً", "د. رِحْلَةُ الثَّانِيَةِ ظُهْراً"], 0, "mcq"],
+            [6, "مَا هُوَ مَوْعِدُ الرِّحْلَةِ الأَخِيرَةِ الَّتِي تَقَرَّرَ حَجْزُهَا؟", ["أ. الرَّابِعَةُ فَجْراً", "ب. السَّابِعَةُ مَسَاءً", "ج. العَاشِرَةُ لَيْلاً", "د. الثَّانِيَةُ ظُهْراً"], 2, "mcq"],
+            [7, "مَتَى يَجِبُ عَلَى المُسَافِرِ أَنْ يَصِلَ إِلَى المَطَارِ لِتَأْكِيدِ الحَجْزِ؟", ["أ. قَبْلَ الإِقْلَاعِ بِسَاعَةٍ وَاحِدَةٍ", "ب. قَبْلَ الإِقْلَاعِ بِسَاعَتَيْنِ", "ج. قَبْلَ الإِقْلَاعِ بِثَلَاثِ سَاعَاتٍ", "د. قَبْلَ الإِقْلَاعِ بِأَرْبَعِ سَاعَاتٍ"], 1, "mcq"],
+            [8, "مَتَى سَتَصِلُ الطَّائِرَةُ إِلَى مَدِينَةِ الرِّيَاضِ؟", ["أ. فِي العَاشِرَةِ لَيْلاً تَمَاماً", "ب. عِنْدَ مُنْتَصَفِ اللَّيْلِ تَمَاماً", "ج. فِي الثَّامِنَةِ صَبَاحاً", "د. فِي السَّادِسَةِ مَسَاءً"], 1, "mcq"],
+            [9, "كَمْ سِعْرُ التِّذْكِرَةِ فِي الدَّرَجَةِ السِّيَاحِيَّةِ الَّتِي اسْتَقَرَّ عَلَيْهَا المُسَافِرُ؟", ["أ. ٣٠٠٠ دِينَارٍ كُوَيْتِيٍّ", "ب. ٢٠١٩ دِينَاراً كُوَيْتِيّاً", "ج. ١٥٠٠ دِينَارٍ كُوَيْتِيٍّ", "د. ٢٥٠٠ دِينَارٍ كُوَيْتِيٍّ"], 1, "mcq"],
+            [10, "مَا هِيَ الوَثِيقَةُ الَّتِي طَلَبَهَا مُوَظَّفُ المَطَارِ مِنَ المُسَافِرِ؟", ["أ. الهُوِيَّةُ الشَّخْصِيَّةُ", "ب. جَوَازُ السَّفَرِ", "ج. رُخْصَةُ القِيَادَةِ", "د. تَأْشِيرَةُ السَّفَرِ"], 1, "mcq"]
+        ];
+
+        const section2Data = [
+            [11, "مَا مَعْنَى كَلِمَةِ \"أَحْجِزَ\" فِي جُمْلَةِ: \"أُرِيدُ أَنْ أَحْجِزَ رِحْلَةً\"؟", ["أ. أُلْغِيَ رِحْلَتِي نِهَائِيّاً", "ب. أَشْتَرِيَ مَقْعَداً وأَضْمَنَ مَوْجُودِيَّتَهُ مُسَبَّقاً", "ج. أُؤَجِّلَ مَوْعِدَ رِحْلَتِي", "د. أَبِيعَ التِّذْكِرَةَ لِمُسَافِرٍ آخَرَ"], 1, "mcq"],
+            [12, "مَا المَقْصُودُ بِعِبَارَةِ \"إِقْلَاع الطَّائِرَة\"؟", ["أ. هُبُوطُهَا عَلَى الأَرْضِ بِسَلَامٍ", "ب. طَيَرَانُهَا وارْتِفَاعُهَا فِي الجَوِّ", "ج. صِيَانَتُهَا الفَنِّيَّةُ فِي المَطَارِ", "د. تَأْخِيرُ رِحْلَتِهَا بِسَبَبِ الجَوِّ"], 1, "mcq"],
+            [13, "مَا هُوَ التَّعْرِيفُ الدَّقِيقُ لِتِذْكِرَةِ \"ذَهَابٍ وَإِيَابٍ\"؟", ["أ. تِذْكِرَةٌ لِلسَّفَرِ إِلَى الوِجْهَةِ فَقَطْ", "ب. تِذْكِرَةٌ تَشْمَلُ السَّفَرَ إِلَى البَلَدِ والعَوْدَةَ مِنْهُ لِلْوَطَنِ", "ج. تِذْكِرَةٌ مَجَّانِيَّةٌ لِلأَطْفَالِ دُونَ سَنَتَيْنِ", "د. تِذْكِرَةٌ لِلسَّفَرِ الدَّاخِلِيِّ فَقَطْ"], 1, "mcq"],
+            [14, "مَا هُوَ شَهْرُ \"حَزِيرَانَ\" فِي التَّقْوِيمِ المِيلَادِيِّ الشَّائِعِ؟", ["أ. شَهْرُ أَبْرِيلَ (الشَّهْرُ ٤)", "ب. شَهْرُ مَايُو (الشَّهْرُ ٥)", "ج. شَهْرُ يُونْيُو (الشَّهْرُ ٦)", "د. شَهْرُ يُولْيُو (الشَّهْرُ ٧)"], 2, "mcq"],
+            [15, "مَا مَعْنَى عِبَارَةِ \"عَلَى الرَّحْبِ وَالسَّعَةِ\"؟", ["أ. السَّفَرُ مُتْعِبٌ جِدّاً وصَعْبٌ", "ب. بِكُلِّ سُرُورٍ وتَرْحَابٍ (Пожалуйста / На здоровье)", "ج. الوَقْتُ ضَيِّقٌ ولَا نَسْتَطِيعُ المُسَاعَدَةَ", "د. يَجِبُ عَلَيْكَ دَفْعُ مَبْلَغٍ إِضَافِيٍّ"], 1, "mcq"],
+            [16, "مَا المَقْصُودُ بِكَلِمَةِ \"بَيَانَاتِهَا\" فِي قَوْلِهِ: \"مَا بَيَانَاتُهَا؟\"؟", ["أ. سِعْرُهَا ومَشَاكِلُهَا", "ب. مَعْلُومَاتُهَا وتَفَاصِيلُهَا (أَوْقَاتُهَا ورَقَمُهَا)", "ج. رُكَّابُ الطَّائِرَةِ الآخَرُونَ", "د. شُرُوطُ إِلْغَاءِ التِّذْكِرَةِ"], 1, "mcq"],
+            [17, "مَا مَعْنَى كَلِمَةِ \"فَجْراً\"؟", ["أ. فِي آخِرِ المَسَاءِ بَعْدَ العِشَاءِ", "ب. فِي بِدَايَةِ اليَوْمِ قَبْلَ شُرُوقِ الشَّمْسِ مُبَكِّراً", "ج. بَعْدَ الظُّهْرِ عِنْدَ زَوَالِ الشَّمْسِ", "د. عِنْدَ مَغِيبِ الشَّمْسِ تَمَاماً"], 1, "mcq"],
+            [18, "مَا مَعْنَى كَلِمَةِ \"تَأْكِيد الحَجْز\"؟", ["أ. إِلْغَاءُ التِّذْكِرَةِ واسْتِرْجَاعُ السِّعْرِ", "ب. تَثْبِيتُ وتَأْكِيدُ مَوْعِدِ السَّفَرِ لِضَمَانِ المَقْعَدِ", "ج. تَغْيِيرُ دَرَجَةِ السَّفَرِ إِلَى الأُولَى", "د. تَأْجِيلُ السَّفَرِ لِلأُسْبُوعِ القَادِمِ"], 1, "mcq"],
+            [19, "مَا المَقْصُودُ بِكَلِمَةِ \"إِيَاب\"؟", ["أ. سَفَرٌ طَوِيلٌ", "ب. رُجُوعٌ وعَوْدَةٌ (Возвращение)", "ج. ضَيَاعُ الحَقِيبَةِ", "د. إِلْغَاءُ الرِّحْلَةِ"], 1, "mcq"],
+            [20, "مَا هِيَ \"الدَّرَجَةُ السِّيَاحِيَّةُ\" فِي الطَّائِرَةِ؟", ["أ. مَقْصُورَةُ طَاقَمِ الضِّيَافَةِ", "ب. دَرَجَةُ السَّفَرِ العَادِيَّةِ والاقْتِصَادِيَّةِ (Эконом-класс)", "ج. الدَّرَجَةُ الأُولَى الفَاخِرَةُ", "د. مَجْمُوعَةُ الرُّكَّابِ السَّائِحِينَ فَقَطْ"], 1, "mcq"]
+        ];
+
+        const section3Data = [
+            [21, "كَلِمَةُ \"إِيَاب\" تَعْنِي العَوْدَةَ وَالرُّجُوعَ مِنَ السَّفَرِ.", ["صَحِيح (Верно)", "خَطَأ (Неверно)"], 0, "tf"],
+            [22, "طَلَبَ المُسَافِرُ تِذْكِرَةَ ذَهَابٍ فَقَطْ دُونَ عَوْدَةٍ إِلَى بَلَدِهِ.", ["صَحِيح (Верно)", "خَطَأ (Неверно)"], 1, "tf"],
+            [23, "ثَمَنُ تِذْكِرَةِ الدَّرَجَةِ غَيْرِ السِّيَاحِيَّةِ (الدَّرَجَة الأُولَى) هُوَ ٢٠١٩ دِينَاراً كُوَيْتِيّاً.", ["صَحِيح (Верно)", "خَطَأ (Неверно)"], 1, "tf"],
+            [24, "أَخْبَرَ المُرْشِدُ المُسَافِرَ أَنَّهُ يَجِبُ الحُضُورُ إِلَى المَطَارِ قَبْلَ الإِقْلَاعِ بِثَلَاثِ سَاعَاتٍ.", ["صَحِيح (Верно)", "خَطَأ (Неверно)"], 1, "tf"],
+            [25, "مَدِينَةُ الرِّيَاضِ فِي المَمْلَكَةِ العَرَبِيَّةِ السُّعُودِيَّةِ هِيَ الوِجْهَةُ المَقْصُودَةُ لِلْمُسَافِرِ.", ["صَحِيح (Верно)", "خَطَأ (Неверно)"], 0, "tf"]
+        ];
+
+        const section4Data = [
+            [26, "الفِعْلُ \"أَحْجِزَ\" فِي جُمْلَةِ \"أُرِيدُ أَنْ أَحْجِزَ\" هُوَ:", ["أ. فِعْلٌ مُضَارِعٌ مَنْصُوبٌ بِـ (أَنْ) وعَلَامَةُ نَصْبِهِ الفَتْحَةُ", "ب. فِعْلٌ مُضَارِعٌ مَرْفُوعٌ وعَلَامَةُ رَفْعِهِ الضَّمَّةُ", "ج. فِعْلُ أَمْرٍ مَبْنِيٌّ عَلَى السُّكُونِ", "د. فِعْلٌ مَاضٍ مَبْنِيٌّ عَلَى الفَتْحِ"], 0, "mcq"],
+            [27, "مَا هُوَ إِعْرَابُ كَلِمَةِ \"سَاعَتَيْنِ\" فِي عِبَارَةِ \"بِسَاعَتَيْنِ\"؟", ["أ. اسْمٌ مَجْرُورٌ بِالبَاءِ وعَلَامَةُ جَرِّهِ الكَسْرَةُ", "ب. اسْمٌ مَجْرُورٌ بِالبَاءِ وعَلَامَةُ جَرِّهِ اليَاءُ لِأَنَّهُ مُثَنَّى", "ج. مَفْعُولٌ بِهِ مَنْصُوبٌ بِاليَاءِ", "د. فَاعِلٌ مَرْفُوعٌ بِالأَلِفِ"], 1, "mcq"],
+            [28, "مَا إِعْرَابُ كَلِمَةِ \"السَّبْتِ\" فِي جُمْلَةِ \"يَوْمَ السَّبْتِ\"؟", ["أ. مَفْعُولٌ بِهِ مَنْصُوبٌ", "ب. مُضَافٌ إِلَيْهِ مَجْرُورٌ بِالكَسْرَةِ الظَّاهِرَةِ", "ج. نَعْتٌ (صِفَةٌ) مَجْرُورٌ", "د. فَاعِلٌ مَرْفُوعٌ"], 1, "mcq"],
+            [29, "مَا هُوَ جَمْعُ كَلِمَةِ \"تِذْكِرَة\" جَمْعاً تَكْسِيراً صَحِيحاً؟", ["أ. تَذَاكِرُ", "ب. تَذْكِيرَاتٌ", "ج. تِذْكِرَاتٌ", "د. ذَاكِرَاتٌ"], 0, "mcq"],
+            [30, "كَلِمَةُ \"حَزِيرَانَ\" فِي \"شَهْرِ حَزِيرَانَ\" مَجْرُورَةٌ بِالفَتْحَةِ نِيَابَةً عَنِ الكَسْرَةِ لِأَنَّهَا:", ["أ. اسْمٌ مَمْنُوعٌ مِنَ الصَّرْفِ (عَلَمٌ يَنْتَهِي بِأَلِفٍ وَنُونٍ)", "ب. اسْمٌ مَبْنِيٌّ عَلَى الفَتْحِ", "ج. فِعْلٌ مَاضٍ مَبْنِيٌّ", "د. جَمْعُ مُؤَنَّثٍ سَالِمٌ"], 0, "mcq"],
+            [31, "الفِعْلُ \"أَنْظُرْ\" فِي جُمْلَةِ \"دَعْنِي أَنْظُرْ\" هُوَ فِعْلٌ مُضَارِعٌ:", ["أ. مَرْفُوعٌ بِالضَّمَّةِ", "ب. مَنْصُوبٌ بِالفَتْحَةِ", "ج. مَجْزُومٌ فِي جَوَابِ الطَّلَبِ وعَلَامَةُ جَزْمِهِ السُّكُونُ", "د. مَبْنِيٌّ عَلَى السُّكُونِ"], 2, "mcq"],
+            [32, "مَا هُوَ إِعْرَابُ كَلِمَةِ \"دِينَاراً\" بَعْدَ العَدَدِ فِي \"٢٠١٩ دِينَاراً\"؟", ["أ. مَفْعُولٌ بِهِ مَنْصُوبٌ", "ب. تَمْيِيزٌ مَنْصُوبٌ وعَلَامَةُ نَصْبِهِ الفَتْحَةُ الظَّاهِرَةُ", "ج. فَاعِلٌ مَرْفُوعٌ", "د. صِفَةٌ مَنْصُوبَةٌ"], 1, "mcq"],
+            [33, "كَلِمَةُ \"مَطَار\" فِي اللُّغَةِ العَرَبِيَّةِ تَعُودُ لِمُشْتَقِّ:", ["أ. اسْمِ فَاعِلٍ", "ب. اسْمِ مَكَانٍ عَلَى وَزْنِ (مَفْعَل)", "ج. اسْمِ مَفْعُولٍ", "د. اسْمِ زَمَانٍ"], 1, "mcq"],
+            [34, "الفِعْلُ \"أَرِيدُ\" (مَاضِيهِ: أَرَادَ) هُوَ فِعْلٌ مُعْتَلُّ العَيْنِ، ومِنْ أَنْوَاعِ المُعْتَلِّ هُوَ:", ["أ. نَاقِصٌ", "ب. أَجْوَفُ", "ج. مِثَالٌ", "د. لَفِيفٌ"], 1, "mcq"],
+            [35, "مَا هُوَ مُفْرَدُ كَلِمَةِ \"بَيَانَات\" المَذْكُورَةِ فِي المَقْطَعِ؟", ["أ. بَيَانٌ", "ب. بَيِّنَةٌ", "ج. بَائِنٌ", "د. بَيْنٌ"], 0, "mcq"]
+        ];
+
+        const section5Data = [
+            [36, "يَجِبُ عَلَى المُسَافِرِ حَمْلُ _______ السَّفَرِ عِنْدَ الذَّهَابِ إِلَى المَطَارِ.", "جَوَازُ", "fib"],
+            [37, "اِخْتَارَ المُسَافِرُ تِذْكِرَةَ الدَّرَجَةِ _______ لِأَنَّ سِعْرَهَا أَقَلُّ بكثيرٍ.", "السِّيَاحِيَّةِ", "fib"],
+            [38, "سَيَكُونُ مَوْعِدُ _______ الطَّائِرَةِ فِي تَمَامِ السَّاعَةِ العَاشِرَةِ لَيْلاً.", "إِقْلَاعُ", "fib"],
+            [39, "يَجِبُ الحُضُورُ إِلَى المَطَارِ _______ قَبْلَ رِحْلَتِكَ لِتَأْكِيدِ الحَجْزِ.", "بِسَاعَتَيْنِ", "fib"],
+            [40, "يَسْتَطِيعُ المُسَافِرُ _______ رِحْلَةٍ جَدِيدَةٍ عَنْ طَرِيقِ مَكْتَبِ الطَّيَرَانِ.", "حَجْزِ", "fib"]
+        ];
+
+        const section6Data = [
+            [41, "أُرِيدُ أَنْ أَحْجِزَ رِحْلَةً إِلَى مَدِينَةِ الرِّيَاضِ", ["أَحْجِزَ", "أُرِيدُ", "رِحْلَةً", "أَنْ", "الرِّيَاضِ", "مَدِينَةِ", "إِلَى"], "reorder"],
+            [42, "يَجِبُ أَنْ تَصِلَ المَطَارَ قَبْلَ المَوْعِدِ بِسَاعَتَيْنِ", ["تَصِلَ", "بِسَاعَتَيْنِ", "أَنْ", "يَجِبُ", "المَوْعِدِ", "المَطَارَ", "قَبْلَ"], "reorder"],
+            [43, "هَلْ تُرِيدُ تِذْكِرَةَ ذَهَابٍ فَقَطْ أَوْ ذَهَابٍ وَإِيَابٍ", ["تُرِيدُ", "ذَهَابٍ", "هَلْ", "فَقَطْ", "تِذْكِرَةَ", "وَإِيَابٍ", "أَوْ", "ذَهَابٍ"], "reorder"],
+            [44, "أَبْحَثُ عَنْ رِحْلَةٍ فِي الخَامِسِ مِنْ شَهْرِ حَزِيرَانَ", ["شَهْرِ", "الخَامِسِ", "عَنْ", "أَبْحَثُ", "حَزِيرَانَ", "رِحْلَةٍ", "فِي", "مِنْ"], "reorder"],
+            [45, "تَصِلُ الطَّائِرَةُ إِلَى الرِّيَاضِ مُنْتَصَفَ اللَّيْلِ تَمَاماً", ["اللَّيْلِ", "تَصِلُ", "مُنْتَصَفَ", "الرِّيَاضِ", "تَمَاماً", "إِلَى", "الطَّائِرَةُ"], "reorder"]
+        ];
+
+        const section7Data = [
+            [46, "اِحْجِزْ", "احْجِزْ لِي رِحْلَةً إِلَى الرِّيَاضِ", "essay"],
+            [47, "إِقْلَاعٌ", "مَوْعِدُ إِقْلَاعِ الطَّائِرَةِ قَرِيبٌ", "essay"],
+            [48, "السِّيَاحِيَّةُ", "أُفَضِّلُ السَّفَرَ فِي الدَّرَجَةِ السِّيَاحِيَّةِ", "essay"],
+            [49, "جَوَازُ السَّفَرِ", "قَدَّمْتُ جَوَازَ السَّفَرِ لِلْمُوَظَّفِ", "essay"],
+            [50, "ذَهَابٌ وَإِيَابٌ", "اشْتَرَيْتُ تِذْكِرَةَ ذَهَابٍ وَإِيَابٍ", "essay"]
+        ];
+
+        const sectionsList = [
+            { id: 1, titleAr: "الْقِسْمُ الأَوَّلُ: فَهْمُ المَسْمُوعِ وَأَحْدَاثِ المَقْطَعِ", titleRu: "Часть 1: Понимание прослушанного материала и событий", data: section1Data },
+            { id: 2, titleAr: "الْقِسْمُ الثَّانِي: المُفْرَدَاتُ وَالتَّعْبِيرَاتُ", titleRu: "Часть 2: Словарный запас и выражения", data: section2Data },
+            { id: 3, titleAr: "الْقِسْمُ الثَّالِثُ: صَحْ أَمْ خَطَأ", titleRu: "Часть 3: Вопросы Верно / Неверно", data: section3Data },
+            { id: 4, titleAr: "الْقِسْمُ الرَّابِعُ: القَوَاعِدُ وَالتَّرَاكِيبُ النَّحْوِيَّةُ", titleRu: "Часть 4: Грамматика и синтаксис", data: section4Data },
+            { id: 5, titleAr: "الْقِسْمُ الخَامِسُ: امْلَأِ الفَرَاغَ بِالخِيَارِ المُنَاسِبِ", titleRu: "Часть 5: Заполнение пропусков (выпадающий список)", data: section5Data },
+            { id: 6, titleAr: "الْقِسْمُ السَّادِسُ: تَرْتِيبُ الكَلِمَاتِ لِتَكْوِينِ جُمَلٍ صَحِيحَةٍ", titleRu: "Часть 6: Восстановление порядка слов в предложении", data: section6Data },
+            { id: 7, titleAr: "الْقِسْمُ السَّابِعُ: التَّعْبِيرُ الكِتَابِيُّ الحُرُّ", titleRu: "Часть 7: Творческое задание / Письменная речь", data: section7Data }
+        ];
+
+        // مصفوفة الخيارات الثابتة لقائمة الفراغات المنسدلة (القسم 5)
+        const fibFixedWords = ["جَوَازُ", "السِّيَاحِيَّةِ", "إِقْلَاعُ", "بِسَاعَتَيْنِ", "حَجْزِ"];
+
+        // حالة التطبيق المخزنة
+        let activeSectionIndex = 0; // مؤشر القسم الحالي (0 إلى 6)
+        let studentAnswers = {}; // لتخزين الإجابات وحالة الإجابات
+        let studentScore = 0; // النتيجة التراكمية
+
+        // بدء الاختبار
+        function startQuiz() {
+            document.getElementById('welcome-panel').style.display = 'none';
+            document.getElementById('quiz-panels').style.display = 'flex';
+            document.getElementById('navigation-footer').style.display = 'flex';
+            activeSectionIndex = 0;
+            studentAnswers = {};
+            studentScore = 0;
+            renderSection(activeSectionIndex);
+        }
+
+        // رندرة وتوليد القسم برمجياً مع التفكيك البرمجي
+        function renderSection(sectionIdx) {
+            const currentSectionObj = sectionsList[sectionIdx];
+            const sectionId = currentSectionObj.id;
+            const titleAr = currentSectionObj.titleAr;
+            const titleRu = currentSectionObj.titleRu;
+            const questionsArray = currentSectionObj.data;
+
+            // تحديث مؤشر الأقسام
+            document.getElementById('step-indicator').innerText = `الْقِسْمُ ${sectionId} مِنْ 7 (Часть ${sectionId} из 7)`;
+
+            // ضبط تفعيل أزرار التنقل
+            document.getElementById('prev-btn').disabled = (sectionIdx === 0);
+            if (sectionIdx === 6) {
+                document.getElementById('next-btn').innerHTML = '<span>إِنْهَاءُ الِاخْتِبَارِ</span> <span style="font-size:0.75rem; font-weight:normal;">(Завершить)</span>';
+            } else {
+                document.getElementById('next-btn').innerHTML = '<span>الْقِسْمُ التَّالِي</span> <span style="font-size:0.75rem; font-weight:normal;">(Далее)</span>';
+            }
+
+            let htmlContent = `
+                <div class="section-header">
+                    <h2 class="section-title-ar">${titleAr}</h2>
+                    <h5 class="section-title-ru">${titleRu}</h5>
+                </div>
+                <div class="questions-container">
+            `;
+
+            // المعالجة البرمجية للأسئلة طبقاً لنوعها مع التفكيك البرمجي الصارم
+            questionsArray.forEach((questionItem) => {
+                if (questionItem[questionItem.length - 1] === "mcq") {
+                    // التفكيك البرمجي (Array Destructuring) لأسئلة الاختيار من متعدد
+                    const [id, qText, opts, correctIdx, type] = questionItem;
+
+                    // توليد كرت السؤال برمجياً
+                    htmlContent += `
+                        <div class="question-card" id="card-${id}">
+                            <div class="question-text"><span class="number-badge">${id}</span> ${qText}</div>
+                            <div class="options-grid">
+                                ${opts.map((option, idx) => `
+                                    <button class="option-button" 
+                                            id="btn-${id}-${idx}" 
+                                            onclick="checkMCQAnswer(${id}, ${idx}, ${correctIdx})"
+                                            ${studentAnswers[id] !== undefined ? 'disabled' : ''}>
+                                        ${option}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                } 
+                else if (questionItem[questionItem.length - 1] === "tf") {
+                    // التفكيك البرمجي لأسئلة صح أو خطأ
+                    const [id, qText, opts, correctBoolIdx, type] = questionItem;
+
+                    htmlContent += `
+                        <div class="question-card" id="card-${id}">
+                            <div class="question-text"><span class="number-badge">${id}</span> ${qText}</div>
+                            <div class="tf-grid">
+                                ${opts.map((option, idx) => `
+                                    <button class="tf-button" 
+                                            id="btn-${id}-${idx}" 
+                                            onclick="checkTFAnswer(${id}, ${idx}, ${correctBoolIdx})"
+                                            ${studentAnswers[id] !== undefined ? 'disabled' : ''}>
+                                        ${option}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+                else if (questionItem[questionItem.length - 1] === "fib") {
+                    // التفكيك البرمجي لأسئلة الفراغات
+                    const [id, qSentence, correctWord, type] = questionItem;
+                    
+                    // تحويل الفراغ إلى قائمة منسدلة منسقة
+                    const optionsMarkup = `
+                        <select id="select-${id}" class="fib-select" onchange="checkFIBAnswer(${id}, '${correctWord}')" ${studentAnswers[id] !== undefined && studentAnswers[id].isCorrect ? 'disabled' : ''}>
+                            <option value="">اخْتَارِي... (Выбрать...)</option>
+                            ${fibFixedWords.map(word => `
+                                <option value="${word}" ${studentAnswers[id] !== undefined && studentAnswers[id].selected === word ? 'selected' : ''}>${word}</option>
+                            `).join('')}
+                        </select>
+                    `;
+
+                    const vocalizedSentenceWithDropdown = qSentence.replace("_______", optionsMarkup);
+
+                    htmlContent += `
+                        <div class="question-card" id="card-${id}">
+                            <div class="fib-sentence"><span class="number-badge">${id}</span> ${vocalizedSentenceWithDropdown}</div>
+                        </div>
+                    `;
+                }
+                else if (questionItem[questionItem.length - 1] === "reorder") {
+                    // التفكيك البرمجي لأسئلة الترتيب
+                    const [id, correctSentence, scrambledWords, type] = questionItem;
+                    
+                    // تهيئة حالة السؤال إن لم تكن مخزنة من قبل
+                    if (!studentAnswers[id]) {
+                        studentAnswers[id] = {
+                            assembled: [],
+                            scrambled: [...scrambledWords],
+                            isCorrect: false
+                        };
+                    }
+
+                    const state = studentAnswers[id];
+
+                    htmlContent += `
+                        <div class="question-card" id="card-${id}">
+                            <div class="question-text" style="margin-bottom:5px;"><span class="number-badge">${id}</span> رَتِّبِي الكَلِمَاتِ لِتَكْوِينِ الجُمْلَةِ المَسْمُوعَةِ:</div>
+                            <p style="font-size:0.9rem; color:#7D6608; font-style:italic; margin:0 0 15px 0;">(Нажимайте на слова, чтобы собрать правильное предложение)</p>
+                            
+                            <div class="reorder-container">
+                                <!-- صندوق الكلمات المبعثرة -->
+                                <div class="scrambled-box" id="scrambled-box-${id}">
+                                    ${state.isCorrect ? '' : state.scrambled.map((word, wordIdx) => `
+                                        ${word === null ? '' : `
+                                            <button class="word-btn" id="word-btn-${id}-${wordIdx}" onclick="moveWordToAssembled(${id}, ${wordIdx})">
+                                                ${word}
+                                            </button>
+                                        `}
+                                    `).join('')}
+                                </div>
+                                
+                                <!-- صندوق الكلمات المرتبة -->
+                                <div class="assembled-box ${state.isCorrect ? 'correct' : ''}" id="assembled-box-${id}">
+                                    ${state.assembled.map((wordObj, arrIdx) => `
+                                        <button class="word-btn" style="border-color:var(--accent-orange);" onclick="removeWordFromAssembled(${id}, ${arrIdx})" ${state.isCorrect ? 'disabled' : ''}>
+                                            ${wordObj.word}
+                                        </button>
+                                    `).join('')}
+                                </div>
+
+                                <button class="check-reorder-btn" id="check-reorder-btn-${id}" onclick="verifyReorderedSentence(${id}, '${correctSentence}')" ${state.isCorrect ? 'disabled' : ''}>
+                                    تَحَقَّقِي مِنَ التَّرْتِيبِ (Проверить)
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+                else if (questionItem[questionItem.length - 1] === "essay") {
+                    // التفكيك البرمجي لأسئلة التعبير والإنشاء
+                    const [id, targetWord, example, type] = questionItem;
+
+                    if (studentAnswers[id] === undefined) {
+                        studentAnswers[id] = { text: "" };
+                    }
+
+                    htmlContent += `
+                        <div class="question-card" id="card-${id}">
+                            <div class="question-text">
+                                <span class="number-badge">${id}</span> 
+                                وَظِّفِي كَلِمَةَ <strong style="color:var(--accent-orange); font-size:1.4rem;">( ${targetWord} )</strong> فِي جُمْلَةٍ مُفِيدَةٍ مِنْ إِنْشَائِكِ:
+                            </div>
+                            <p style="font-size:0.95rem; color:#7F8C8D; margin:0 0 15px 0;">(Составьте предложение с этим словом и напишите его ниже)</p>
+                            
+                            <textarea class="essay-textarea" 
+                                      id="essay-${id}" 
+                                      placeholder="اُكْتُبِي جُمْلَتَكِ المَشْكُولَةَ هُنَا..." 
+                                      oninput="updateEssayAnswer(${id}, this.value)">${studentAnswers[id].text}</textarea>
+                            
+                            <span class="manual-correct-note">⚠️ هَذَا القِسْمُ يُصَحَّحُ يَدُوِيّاً (Этот раздел проверяется преподавателем вручную)</span>
+                        </div>
+                    `;
+                }
+            });
+
+            htmlContent += `</div>`;
+            document.getElementById('quiz-panels').innerHTML = htmlContent;
+
+            // تطبيق الهيد لتثبيت علامات الأكورديون والصناديق التفاعلية إن وجدت
+            restoreInteractiveStates(sectionId);
+        }
+
+        // استعادة الحالات التفاعلية للخيارات في الأقسام عند الانتقال
+        function restoreInteractiveStates(sectionId) {
+            if (sectionId <= 4) {
+                // استرجاع ألوان وتنسيقات الأسئلة التي تمت الإجابة عليها سابقاً
+                for (let id in studentAnswers) {
+                    const ans = studentAnswers[id];
+                    if (ans.type === "mcq" || ans.type === "tf") {
+                        const selectedBtn = document.getElementById(`btn-${id}-${ans.selected}`);
+                        const correctBtn = document.getElementById(`btn-${id}-${ans.correct}`);
+                        if (selectedBtn && correctBtn) {
+                            if (ans.isCorrect) {
+                                selectedBtn.classList.add('correct');
+                            } else {
+                                selectedBtn.classList.add('incorrect');
+                                correctBtn.classList.add('correct');
+                            }
+                            // تعطيل كافة أزرار السؤال
+                            const buttons = document.querySelectorAll(`[id^="btn-${id}-"]`);
+                            buttons.forEach(b => b.disabled = true);
+                        }
+                    }
+                }
+            } else if (sectionId === 5) {
+                // تلوين القوائم المنسدلة التي تم حلها بنجاح
+                for (let id in studentAnswers) {
+                    const ans = studentAnswers[id];
+                    if (ans.type === "fib" && ans.isCorrect) {
+                        const selectEl = document.getElementById(`select-${id}`);
+                        if (selectEl) {
+                            selectEl.classList.add('correct');
+                            selectEl.disabled = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        // تصحيح فوري لأسئلة الاختيار من متعدد
+        function checkMCQAnswer(questionId, selectedIdx, correctIdx) {
+            studentAnswers[questionId] = {
+                type: "mcq",
+                selected: selectedIdx,
+                correct: correctIdx,
+                isCorrect: (selectedIdx === correctIdx)
+            };
+
+            const selectedBtn = document.getElementById(`btn-${questionId}-${selectedIdx}`);
+            const correctBtn = document.getElementById(`btn-${questionId}-${correctIdx}`);
+
+            if (selectedIdx === correctIdx) {
+                selectedBtn.classList.add('correct');
+                studentScore++;
+            } else {
+                selectedBtn.classList.add('incorrect');
+                correctBtn.classList.add('correct');
+            }
+
+            // تعطيل الاختيارات لمنع النقر المتعدد
+            const buttons = document.querySelectorAll(`[id^="btn-${questionId}-"]`);
+            buttons.forEach(b => b.disabled = true);
+        }
+
+        // تصحيح فوري لأسئلة صح أم خطأ
+        function checkTFAnswer(questionId, selectedIdx, correctIdx) {
+            studentAnswers[questionId] = {
+                type: "tf",
+                selected: selectedIdx,
+                correct: correctIdx,
+                isCorrect: (selectedIdx === correctIdx)
+            };
+
+            const selectedBtn = document.getElementById(`btn-${questionId}-${selectedIdx}`);
+            const correctBtn = document.getElementById(`btn-${questionId}-${correctIdx}`);
+
+            if (selectedIdx === correctIdx) {
+                selectedBtn.classList.add('correct');
+                studentScore++;
+            } else {
+                selectedBtn.classList.add('incorrect');
+                correctBtn.classList.add('correct');
+            }
+
+            const buttons = document.querySelectorAll(`[id^="btn-${questionId}-"]`);
+            buttons.forEach(b => b.disabled = true);
+        }
+
+        // تصحيح فوري لأسئلة الفراغات اللعينة
+        function checkFIBAnswer(questionId, correctWord) {
+            const selectEl = document.getElementById(`select-${questionId}`);
+            const selectedVal = selectEl.value;
+
+            if (selectedVal === "") return;
+
+            if (selectedVal === correctWord) {
+                // إجابة صحيحة
+                selectEl.className = "fib-select correct";
+                selectEl.disabled = true;
+                studentAnswers[questionId] = {
+                    type: "fib",
+                    selected: selectedVal,
+                    isCorrect: true
+                };
+                studentScore++;
+            } else {
+                // إجابة خاطئة: وميض أحمر تحذيري لثانية ثم مسح القيمة لتدع المحاولة مجدداً
+                selectEl.className = "fib-select flash-error";
+                selectEl.disabled = true; // تعطيل مؤقت لمنع العبث
+
+                setTimeout(() => {
+                    selectEl.className = "fib-select";
+                    selectEl.value = "";
+                    selectEl.disabled = false;
+                }, 1000);
+            }
+        }
+
+        // أسئلة الترتيب: نقل الكلمة من المبعثرة للمرتبة
+        function moveWordToAssembled(questionId, wordIdx) {
+            const state = studentAnswers[questionId];
+            if (state.isCorrect) return;
+
+            const clickedWordText = state.scrambled[wordIdx];
+            if (clickedWordText === null) return;
+            
+            // حفظ الكلمة ومؤشرها الأصلي لنستطيع إرجاعها
+            state.assembled.push({ word: clickedWordText, originalIdx: wordIdx });
+            
+            // حذفها من المبعثرة بصرياً (نجعلها فارغة بدلاً من الحذف لتفادي اللخبطة)
+            state.scrambled[wordIdx] = null;
+
+            renderSection(activeSectionIndex);
+        }
+
+        // إرجاع الكلمة من المرتبة إلى المبعثرة
+        function removeWordFromAssembled(questionId, arrIdx) {
+            const state = studentAnswers[questionId];
+            if (state.isCorrect) return;
+
+            const wordObj = state.assembled[arrIdx];
+            
+            // إرجاع الكلمة لموقعها المبعثر
+            state.scrambled[wordObj.originalIdx] = wordObj.word;
+            
+            // حذفها من المرتبة
+            state.assembled.splice(arrIdx, 1);
+
+            renderSection(activeSectionIndex);
+        }
+
+        // التحقق من صحة ترتيب الجملة
+        function verifyReorderedSentence(questionId, correctSentence) {
+            const state = studentAnswers[questionId];
+            const assembledText = state.assembled.map(o => o.word).join(' ');
+
+            const assembledBox = document.getElementById(`assembled-box-${questionId}`);
+            const checkBtn = document.getElementById(`check-reorder-btn-${questionId}`);
+
+            // تنظيف الحركات للتأكد من المضاهاة العادلة مع تجاهل التشكيل بالكامل لعدم إرهاق الطالبة برمجياً
+            const cleanAssembled = stripTashkeel(assembledText).trim().replace(/\s+/g, ' ');
+            const cleanCorrect = stripTashkeel(correctSentence).trim().replace(/\s+/g, ' ');
+
+            if (cleanAssembled === cleanCorrect) {
+                // الترتيب صحيح
+                assembledBox.className = "assembled-box correct";
+                state.isCorrect = true;
+                checkBtn.disabled = true;
+                studentScore++;
+                renderSection(activeSectionIndex); // إعادة الرندرة لإلغاء إمكانية النقر وتأكيد اللون الأخضر
+            } else {
+                // الترتيب خاطئ: وميض أحمر لمدة ثانية ثم إعادة تصفير السؤال والمحاولة ثانية
+                assembledBox.className = "assembled-box flash-error";
+                checkBtn.disabled = true;
+
+                setTimeout(() => {
+                    // استعادة الكلمات الأصلية المبعثرة بالكامل
+                    const originalScrambled = sectionsList[activeSectionIndex].data.find(q => q === questionId)[1];
+                    state.scrambled = [...originalScrambled];
+                    state.assembled = [];
+                    state.isCorrect = false;
+                    renderSection(activeSectionIndex);
+                }, 1100);
+            }
+        }
+
+        // تحديث نص كتابة المقالة الحرة
+        function updateEssayAnswer(questionId, value) {
+            studentAnswers[questionId].text = value;
+        }
+
+        // دالة تنظيف التشكيل للمطابقة المنطقية السليمة لترتيب الكلمات
+        function stripTashkeel(text) {
+            return text.replace(/[\u064B-\u0652]/g, "");
+        }
+
+        // أزرار التنقل
+        function goToNextSection() {
+            if (activeSectionIndex < 6) {
+                activeSectionIndex++;
+                renderSection(activeSectionIndex);
+            } else {
+                // إنهاء وعرض النتيجة
+                showFinalResults();
+            }
+        }
+
+        function goToPrevSection() {
+            if (activeSectionIndex > 0) {
+                activeSectionIndex--;
+                renderSection(activeSectionIndex);
+            }
+        }
+
+        // عرض النتيجة النهائية بالكامل
+        function showFinalResults() {
+            document.getElementById('quiz-panels').style.display = 'none';
+            document.getElementById('navigation-footer').style.display = 'none';
+            
+            const resultPanel = document.getElementById('result-panel');
+            resultPanel.style.display = 'flex';
+
+            // حساب المجموع الكلي المستحق للدرجات التلقائية (الأقسام من 1 إلى 6 فقط)
+            // المجموع التلقائي = 40 سؤالاً (قسم 1: 10 + قسم 2: 10 + قسم 3: 5 + قسم 4: 10 + قسم 5: 5 + قسم 6: 5)
+            // القسم السابع (5 أسئلة للتعبير) تصحح يدوياً.
+            
+            const totalAutoPoints = 45; 
+            document.getElementById('score-display').innerText = `${studentScore} / ${totalAutoPoints}`;
+
+            let msg = "";
+            let percent = (studentScore / totalAutoPoints) * 100;
+
+            if (percent >= 90) {
+                msg = "أَحْسَنْتِ جِدّاً! لَقَدْ حَقَّقْتِ دَرَجَةً مُمْتَازَةً فِي فَهْمِ المَقْطَعِ الصَّوْتِيِّ وقَوَاعِدِهِ. (Отлично! Вы показали великолепный результат!)";
+            } else if (percent >= 75) {
+                msg = "جَيِّدٌ جِدّاً! لَدَيْكِ فَهْمٌ قَوِيٌّ لِمَقْطَعِ المَطَارِ ومُفْرَدَاتِهِ. (Очень хорошо! Вы отлично справились!)";
+            } else if (percent >= 50) {
+                msg = "مَقْبُولٌ. نَنْصَحُكِ بِإِعَادَةِ الِاسْتِمَاعِ لِلْمَقْطَعِ وَمُرَاجَعَةِ المَعْجَمِ مَرَّةً أُخْرَى. (Удовлетворительно. Рекомендуется повторить прослушивание)";
+            } else {
+                msg = "تَحْتَاجِينَ إِلَى مَزِيدٍ مِنَ الدِّرَاسَةِ والمُمَارَسَةِ. اِسْتَمِعِي جَيِّداً وأَعِيدِي الِاخْتِبَارَ. (Требуется дополнительное изучение)";
+            }
+
+            msg += "<br/><br/><em style='font-size:1.1rem; color:#EF6C00;'>مُلَاحَظَةٌ: الأَسْئِلَةُ (من ٤٦ إِلَى ٥٠) فِي القِسْمِ السَّابِعِ تَحْتَاجُ لِتَقْيِيمِ المُعَلِّمِ يَدُوِيّاً لِأَنَّهَا كِتَابَةٌ حُرَّةٌ.</em>";
+
+            document.getElementById('result-message').innerHTML = msg;
+        }
+
+        // إعادة تصفير الاختبار بالكامل
+        function restartQuiz() {
+            document.getElementById('result-panel').style.display = 'none';
+            startQuiz();
+        }
+    </script>
+</body>
+</html>
