@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إِخْتِبَارُ مَقْطَعِ (قِصَّةُ جَزَاءِ سِنِمَّارَ) التَّفَاعُلِيِّ | Интерактивный тест «Награда Синиммара»</title>
+    <style>
+        :root {
+            --bg-color: #fcfbfa;
+            --container-bg: #ffffff;
+            --primary-color: #4a7c59;
+            --primary-hover: #3b6347;
+            --accent-yellow: #f4e285;
+            --accent-orange: #f2a65a;
+            --danger-color: #d9534f;
+            --success-color: #5cb85c;
+            --text-dark: #2f3e46;
+            --text-light: #6c757d;
+            --border-color: #e9ecef;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.8;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: var(--container-bg);
+            max-width: 900px;
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        h2.subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 30px;
+            direction: ltr;
+        }
+
+        .welcome-card {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .welcome-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .input-group {
+            margin: 25px 0;
+            text-align: right;
+        }
+
+        .input-name {
+            width: 100%;
+            padding: 14px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1.1rem;
+            margin-top: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-name:focus {
+            border-color: var(--primary-color);
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background-color: #8e9aaf;
+        }
+
+        .btn-secondary:hover {
+            background-color: #6c757d;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: var(--border-color);
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .section-header {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .section-translation {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            direction: ltr;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        .question-card {
+            background: #fdfdfd;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .question-translation {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            direction: ltr;
+            text-align: right;
+            margin-bottom: 18px;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .option-item {
+            background: white;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-size: 1.05rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .option-item:hover {
+            border-color: var(--primary-color);
+            background-color: #f8fbf9;
+        }
+
+        .option-item.correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724;
+            font-weight: bold;
+        }
+
+        .option-item.incorrect {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24;
+        }
+
+        .tf-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .tf-btn {
+            flex: 1;
+            padding: 12px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            background: white;
+            font-size: 1.05rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tf-btn:hover {
+            border-color: var(--primary-color);
+        }
+
+        .tf-btn.correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724;
+        }
+
+        .tf-btn.incorrect {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24;
+        }
+
+        .select-blank {
+            padding: 8px 12px;
+            font-size: 1rem;
+            border-radius: 6px;
+            border: 1.5px solid var(--primary-color);
+            background: white;
+            outline: none;
+            margin: 0 6px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .select-blank.correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .select-blank.incorrect {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .word-pool, .answer-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            min-height: 55px;
+            align-items: center;
+        }
+
+        .word-pool {
+            background: #f1f3f5;
+            margin-bottom: 12px;
+        }
+
+        .answer-area {
+            background: #ffffff;
+            border: 2px dashed var(--border-color);
+        }
+
+        .answer-area.correct {
+            border-color: var(--success-color);
+            background-color: #f4fbf6;
+        }
+
+        .answer-area.incorrect {
+            border-color: var(--danger-color);
+            background-color: #fdf2f2;
+        }
+
+        .word-btn {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            transition: all 0.2s;
+        }
+
+        .word-btn:hover {
+            border-color: var(--primary-color);
+        }
+
+        .word-btn.selected {
+            opacity: 0.4;
+            cursor: default;
+        }
+
+        .clear-reorder-btn {
+            background: #e9ecef;
+            border: none;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 8px;
+            color: var(--text-dark);
+        }
+
+        .clear-reorder-btn:hover {
+            background: #dee2e6;
+        }
+
+        .essay-textarea {
+            width: 100%;
+            height: 100px;
+            padding: 12px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        .essay-textarea:focus {
+            border-color: var(--primary-color);
+        }
+
+        .essay-note {
+            font-size: 0.85rem;
+            color: var(--accent-orange);
+            margin-top: 6px;
+            font-weight: bold;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .controls .btn {
+            width: 48%;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .result-screen {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 25px auto;
+            font-size: 2.2rem;
+            font-weight: bold;
+            box-shadow: 0 6px 20px rgba(74, 124, 89, 0.3);
+        }
+
+        .score-circle span {
+            font-size: 0.9rem;
+            font-weight: normal;
+        }
+
+        .feedback-msg {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            .controls {
+                flex-direction: column;
+            }
+            .controls .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="main-container">
+    <!-- Screen 1: Welcome Screen -->
+    <div id="welcome-screen" class="welcome-card">
+        <div class="welcome-icon">🏰</div>
+        <h1>إِخْتِبَارُ مَقْطَعِ (قِصَّةُ جَزاءِ سِنِمَّارَ) التَّفَاعُلِيِّ</h1>
+        <h2 class="subtitle">Интерактивный тест по видеоролику «Награда Синиммара»</h2>
+
+        <div style="background: #f8f9fa; border-radius: 10px; padding: 15px; margin: 20px 0; border-right: 4px solid var(--primary-color);">
+            <p style="font-weight: bold; font-size: 1.05rem;">مَعْلُومَاتُ الْمَقْطَعِ | Информация о видеозаписи:</p>
+            <p style="color: var(--text-light); font-size: 0.95rem;">
+                مَقْطَعُ: قِصَّةُ جَزَاءِ سِنِمَّارَ (حِكَايَةٌ تُبَيِّنُ جَحَدَ الْمَعْرُوفِ وَالإِسَاءَةَ لِلْمُحْسِنِ)
+                <br>
+                <span style="direction: ltr; display: block; margin-top: 3px;">Видео: «Награда Синиммара» (Притча о неблагодарности)</span>
+            </p>
+        </div>
+
+        <div class="input-group">
+            <label style="font-weight: bold; font-size: 1.1rem;">الرَّجَاءُ كِتَابَةُ اسْمِكِ هُنَا لِلْبَدْءِ:</label>
+            <label style="font-size: 0.9rem; color: var(--text-light); direction: ltr; display: block;">Пожалуйста, введите ваше имя для начала:</label>
+            <input type="text" id="student-name" class="input-name" placeholder="اسْمُكِ هُنَا / Ваше имя">
+        </div>
+
+        <button class="btn" id="start-btn" onclick="startQuiz()">ابْدَئِي الِاخْتِبَارَ | Начать тест</button>
+    </div>
+
+    <!-- Screen 2: Quiz Area -->
+    <div id="quiz-area" class="hidden">
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div class="section-header">
+            <div class="section-title" id="section-title">الْقِسْمُ</div>
+            <div class="section-translation" id="section-translation">Раздел</div>
+        </div>
+
+        <div id="questions-container">
+            <!-- Dynamic Questions Rendered by JS -->
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-secondary" id="prev-btn" onclick="prevSection()" disabled>الْقِسْمُ السَّابِقُ | Назад</button>
+            <button class="btn" id="next-btn" onclick="nextSection()">الْقِسْمُ التَّالِي | Далее</button>
+        </div>
+    </div>
+
+    <!-- Screen 3: Result Screen -->
+    <div id="result-screen" class="result-screen hidden">
+        <h1 style="color: var(--primary-color);">عَمَلٌ رَائِعٌ! لَقَدْ أَنْهَيْتِ الِاخْتِبَارَ</h1>
+        <h2 class="subtitle">Отличная работа! Вы завершили тест.</h2>
+
+        <div id="student-display-name" style="font-size: 1.3rem; font-weight: bold; margin-bottom: 10px;"></div>
+
+        <div class="score-circle">
+            <span id="score-value">0 / 45</span>
+            <span style="margin-top: 5px;">Дробь</span>
+        </div>
+
+        <div style="font-size: 1.2rem; font-weight: bold; margin-bottom: 5px;" id="percentage-value">النِّسْبَةُ الْمِئَوِيَّةُ: 0%</div>
+        <div style="font-size: 0.95rem; color: var(--text-light); margin-bottom: 25px; direction: ltr;">Процент правильных ответов</div>
+
+        <div class="feedback-msg" id="feedback-msg"></div>
+
+        <p style="font-size: 0.95rem; color: var(--text-light); margin-bottom: 30px; padding: 0 40px; line-height: 1.6;">
+            * مُلَاحَظَةٌ: الْقِسْمُ السَّابِعُ خَاصٌّ بِالْإِنْشَاءِ وَالْكِتَابَةِ الْحُرَّةِ، وَهُوَ مَتْرُوكٌ لِلتَّصْحِيحِ الْيَدْوِيِّ مِنَ الْمُعَلِّمِ وَلَا يَدْخُلُ ضِمْنَ النَّتِيجَةِ التِّلْقَائِيَّةِ (الْحَدُّ الْأَقْصَى لِلنَّتِيجَةِ التِّلْقَائِيَّةِ هُوَ 45 دَرَجَةً عَنْ 45 سُؤَالًا مَوْضُوعِيًّا).
+            <br>
+            <span style="direction: ltr; display: block; margin-top: 5px;">* Примечание: Раздел 7 посвящен свободному письму и предназначен для ручной проверки преподавателем. Он не включен в автоматическую оценку (максимальный автоматический балл — 45 за 45 объективных вопросов).</span>
+        </p>
+
+        <button class="btn" onclick="restartQuiz()">إِعَادَةُ الِاخْتِبَارِ | Пройти заново</button>
+    </div>
+</div>
+
+<script>
+    /* SECTION 1: Comprehension (10 Questions MCQ) */
+    /* format: [questionText, options, correctAnswerIndex, russianTranslation] */
+    const section1Data = [
+        [
+            "مَاذَا طَلَبَ الْمَلِكُ مِنَ الْبَنَّاءِ سِنِمَّارَ فِي بِدَايَةِ الْقِصَّةِ؟",
+            ["أَنْ يَزْرَعَ لَهُ بُسْتَاناً كَبِيراً", "أَنْ يَبْنِيَ لَهُ قَصْراً جَمِيلاً وَفَرِيداً", "أَنْ يَصْنَعَ لَهُ سَفِينَةً حَرْبِيَّةً", "أَنْ يُعَلِّمَهُ الْبِنَاءَ وَالْهَنْدَسَةَ"],
+            1,
+            "Что царь попросил у строителя Синиммара в начале истории?"
+        ],
+        [
+            "بِمَاذَا وَعَدَ الْمَلِكُ سِنِمَّارَ عِنْدَمَا اتَّفَقَ مَعَهُ عَلَى بِنَاءِ الْقَصْرِ؟",
+            ["بِإِعْطَائِهِ مُكَافَأَةً كَبِيرَةً وَمَالاً جَزِيلاً", "بِأَنْ يَجْعَلَهُ وَزِيراً فِي الْقَصْرِ", "بِأَنْ يُزَوِّجَهُ ابْنَتَهُ", "بِأَنْ يُعْطِيَهُ حُكْمَ إِحْدَى الْمُدُنِ"],
+            0,
+            "Что царь пообещал Синиммару, когда договорился с ним о постройке дворца?"
+        ],
+        [
+            "كَمْ مِنَ الْوَقْتِ اسْتَغْرَقَ سِنِمَّارُ فِي بِنَاءِ قَصْرِ الْخَوَرْنَقِ؟",
+            ["شَهْراً وَاحِداً فَقَطْ", "سَنَةً وَاحِدَةً", "سَنَوَاتٍ طَوِيلَةً مُمْتَدَّةً", "ثَلَاثَةَ أَشْهُرٍ"],
+            2,
+            "Сколько времени ушло у Синиммара на строительство дворца Аль-Хаварнак?"
+        ],
+        [
+            "مَاذَا فَعَلَ الْمَلِكُ عِنْدَمَا انْتَهَى سِنِمَّارُ مِنْ بِنَاءِ الْقَصْرِ؟",
+            ["أَمَرَ بِهَدْمِ الْقَصْرِ فَوْراً", "أَعْطَاهُ الْمُكَافَأَةَ وَشَكَرَهُ", "سَافَرَ وَتَرَكَ سِنِمَّارَ فِي الْقَصْرِ", "صَعِدَ مَعَهُ إِلَى أَعْلَى الْقَصْرِ لِيَرَى جَمَالَهُ"],
+            3,
+            "Что сделал царь, когда Синиммар закончил строительство дворца?"
+        ],
+        [
+            "مَا الَّذِي كَشَفَهُ سِنِمَّارُ لِلْمَلِكِ حِينَ كَانَا عَلَى سَطْحِ الْقَصْرِ؟",
+            ["أَنَّهُ يَجْهَلُ أَمَاكِنَ الْحِجَارَةِ", "أَنَّ هُنَاكَ حَجَراً لَوْ أُزِيلَ لَسَقَطَ الْقَصْرُ", "أَنَّ الْقَصْرَ سَيَسْقُطُ غَداً", "أَنَّهُ سَرَقَ بَعْضَ مَالِ الْقَصْرِ"],
+            1,
+            "Что Синиммар открыл царю, когда они были на крыше дворца?"
+        ],
+        [
+            "مَاذَا قَالَ سِنِمَّارُ عَنْ قُدْرَتِهِ فِي الْبِنَاءِ أَيْضاً؟",
+            ["أَنَّهُ يَسْتَطِيعُ بِنَاءَ قَصْرٍ أَفْضَلَ يَدُورُ مَعَ الشَّمْسِ", "أَنَّهُ لَنْ يَبْنِيَ أَيَّ قَصْرٍ آخَرَ فِي حَيَاتِهِ", "أَنَّهُ لَا يَسْتَطِيعُ بِنَاءَ شَيْءٍ بَعْدَ الْآنَ", "أَنَّ الْقَصْرَ الضَّخْمَ بُنِيَ فِي يَوْمَيْنِ"],
+            0,
+            "Что еще сказал Синиммар о своих способностях в строительстве?"
+        ],
+        [
+            "لِمَاذَا خَافَ الْمَلِكُ بَعْدَ أَنْ سَمِعَ كَلَامَ سِنِمَّارَ؟",
+            ["خَافَ أَنْ يَحْتَرِقَ الْقَصْرُ فِي اللَّيْلِ", "خَافَ أَنْ يَسْرِقَ سِنِمَّارُ أَمْوَالَهُ", "خَافَ أَنْ يَبْنِيَ قَصْراً أَفْضَلَ لِمَلِكٍ آخَرَ أَوْ يُسْقِطَ الْقَصْرَ", "خَافَ أَنْ يَهْرُبَ سِنِمَّارُ خَارِجَ الْبِلَادِ"],
+            2,
+            "Почему царь испугался, услышав слова Синиммара?"
+        ],
+        [
+            "مَاذَا كَانَ عِقَابُ سِنِمَّارَ وَجَزَاؤُهُ مِنْ قِبَلِ الْمَلِكِ؟",
+            ["سَجَنَهُ فِي سِجْنِ الْمَدِينَةِ", "طَرَدَهُ خَارِجَ الْبِلَادِ دُونَ مَالٍ", "كَافَأَهُ بِضِعْفِ الْمَالِ", "أَمَرَ بِأَلْقَائِهِ مِنْ أَعْلَى الْقَصْرِ فَمَاتَ"],
+            3,
+            "Каким было наказание и «награда» Синиммара от царя?"
+        ],
+        [
+            "مَا المَعْنَى الَّذِي يُصْبِحُ عَلَيْهِ المَثَلُ 'جَزَاهُ جَزَاءَ سِنِمَّارَ'؟",
+            ["مُكَافَأَةُ المُنْصِفِ بِالْخَيْرِ وَالْكَرَمِ", "مَكَاَفَأَةُ مَنْ أَحْسَنَ وَأَبْدَعَ بِالإِسَاءَةِ وَالْغَدْرِ", "شُكْرُ الْمُحْسِنِ عَلَى جُهْدِهِ", "نَسِيَانُ الْمَعْرُوفِ دُونَ إِذَايَةٍ"],
+            1,
+            "Какое значение имеет пословица «Вознаградил его наградой Синиммара»?"
+        ],
+        [
+            "مَا الدَّرْسُ الرَّئِيسِيُّ المَسْتَفَادُ مِنْ هَذِهِ الْقِصَّةِ التَّرَاثِيَّةِ؟",
+            ["التَّحْذِيرُ مِنَ الْغَدْرِ وَإِنْكارِ الْجَمِيلِ وَالْفَخْرِ الزَّائِدِ", "عَدَمُ بِنَاءِ الْقُصُورِ الْكَبِيرَةِ", "التَّنَقُّلُ الدَّائِمُ بَيْنَ الْمُدُنِ", "عَدَمُ الْعَمَلِ مَعَ الْمُلُوكِ مُطْلَقاً"],
+            0,
+            "Каков главный урок из этой традиционной притчи?"
+        ]
+    ];
+
+    /* SECTION 2: Vocabulary & Expressions (5 Questions MCQ) */
+    const section2Data = [
+        [
+            "مَا مَعْنَى كَلِمَةِ 'الْبَنَّاءُ' فِي سِيَاقِ الْقِصَّةِ؟",
+            ["الشَّخْصُ الَّذِي يَبْنِي الْبُيُوتَ وَالْقُصُورَ", "الشَّخْصُ الَّذِي يَزْرَعُ الْأَرْضَ", "الشَّخْصُ الَّذِي يَصْنَعُ الْمَلَابِسَ", "الشَّخْصُ الَّذِي يَبِيعُ السَّمَكَ"],
+            0,
+            "Что означает слово «Строитель» в контексте истории?"
+        ],
+        [
+            "عِبَارَةُ 'مُكَافَأَةٌ كَبِيرَةٌ' تَعْنِي:",
+            ["غَرَامَةٌ مَالِيَّةٌ شَدِيدَةٌ", "جَائِزَةٌ وَعَطَاءٌ جَزِيلٌ مُقَابِلَ الْعَمَلِ", "عِقَابٌ زَاجِرٌ لِلْمُخَالِفِ", "عَمَلٌ شَاقٌّ دُونَ جَزَاءٍ"],
+            1,
+            "Выражение «Большое вознаграждение» означает:"
+        ],
+        [
+            "مَا الْمَقْصُودُ بِـ 'قَصْرٌ فَرِيدٌ'؟",
+            ["قَصْرٌ صَغِيرٌ قَدِيمٌ", "قَصْرٌ مَهْدُومٌ لَا سَقْفَ لَهُ", "قَصْرٌ جَمِيلٌ لَا مَثِيلَ لَهُ فِي رَوْعَتِهِ", "قَصْرٌ مَبْنِيٌّ فِي الْبَحْرِ"],
+            2,
+            "Что имеется в виду под «Уникальный дворец»?"
+        ],
+        [
+            "مَا مَعْنَى الْفِعْلِ 'أَتَمَّ' فِي جُمْلَةِ 'أَتَمَّ سِنِمَّارُ الْبِنَاءَ'؟",
+            ["بَدَأَ فِي الْعَمَلِ", "هَدَمَ الْمَبْنَى", "تَرَكَ الْعَمَلَ بِلَا كَمَالٍ", "أَنْهَى وَأَكْمَلَ الْبِنَاءَ عَلَى أَكْمَلِ وَجْهٍ"],
+            3,
+            "Что означает глагол «Завершил/Закончил» в предложении «Синиммар завершил строительство»?"
+        ],
+        [
+            "عِبَارَةُ 'إِنْكَارُ الْجَمِيلِ' تَعْنِي:",
+            ["جَحْدُ المَعْرُوفِ وَعَدَمُ شُكْرِ مَنْ أَحْسَنَ إِلَيْكَ", "الاعْتِرَافُ بِالْفَضْلِ وَالشُّكْرُ", "إِعْطَاءُ الْهَدَايَا لِلْأَصْدِقَاءِ", "مُسَاعَدَةُ الْفُقَرَاءِ"],
+            0,
+            "Выражение «Неблагодарность» означает:"
+        ]
+    ];
+
+    /* SECTION 3: True / False (5 Questions) */
+    /* format: [questionText, isTrue, russianTranslation] */
+    const section3Data = [
+        [
+            "طَلَبَ الْمَلِكُ مِنْ سِنِمَّارَ أَنْ يَبْنِيَ لَهُ سَفِينَةً كَبِيرَةً فِي الْبَحْرِ.",
+            false,
+            "Царь попросил Синиммара построить для него большой корабль в море."
+        ],
+        [
+            "عَمِلَ سِنِمَّارُ فِي بِنَاءِ الْقَصْرِ سَنَوَاتٍ طَوِيلَةً حَتَّى أَصْبَحَ قَصْراً فَرِيداً.",
+            true,
+            "Синиммар работал над строительством дворца долгие годы, пока он не стал уникальным."
+        ],
+        [
+            "كَافَأَ الْمَلِكُ سِنِمَّارَ بِأَنْ أَعْطَاهُ أَمْوَالاً كَثِيرَةً وَجَعَلَهُ وَزِيراً.",
+            false,
+            "Царь вознаградил Синиммара, дав ему много денег и сделав его министром."
+        ],
+        [
+            "خَافَ الْمَلِكُ أَنْ يَبْنِيَ سِنِمَّارُ قَصْراً أَفْضَلَ لِمَلِكٍ آخَرَ أَوْ يُسْقِطَ الْقَصْرَ.",
+            true,
+            "Царь испугался, что Синиммар построит дворец получше для другого царя или обрушит этот дворец."
+        ],
+        [
+            "يُضْرَبُ الْمَثَلُ 'جَزَاءُ سِنِمَّارَ' لِمَنْ يُكافِئُ الإِحْسَانَ بِالإِحْسَانِ وَالْكَرَمِ.",
+            false,
+            "Пословица «Награда Синиммара» приводится в пример тому, кто отвечает на добро добром и щедростью."
+        ]
+    ];
+
+    /* SECTION 4: Grammar & Structures Level B2 (10 Questions MCQ) */
+    const section4Data = [
+        [
+            "فِي جُمْلَةِ: 'أَمَرَ الْمَلِكُ أَنْ يُلْقَى سِنِمَّارُ مِنْ أَعْلَى الْقَصْرِ'، المَصْدَرُ الْمُؤَوَّلُ (أَنْ يُلْقَى) فِي مَحَلِّ:",
+            ["نَصْبٍ مَفْعُولٍ بِهِ", "رَفْعٍ فَاعِلٍ", "جَرٍّ بِإِضَافَةٍ", "رَفْعٍ مُبْتَدَأٍ"],
+            0,
+            "В предложении «Царь приказал сбросить Синиммара...», инфинитивный оборот (Масдар Муавваль) находится в роли:"
+        ],
+        [
+            "فِي قَوْلِهِ: 'لَوْ أُزِيلَ الحَجَرُ لَسَقَطَ الْقَصْرُ'، الْفِعْلُ 'أُزِيلَ' هُوَ:",
+            ["فِعْلٌ مَاضٍ مَبْنِيٌّ لِلْمَعْلُومِ", "فِعْلٌ مَاضٍ مَبْنِيٌّ لِلْمَجْهُولِ، وَ'الحَجَرُ' نَائِبُ فَاعِلٍ", "فِعْلٌ مُضَارِعٌ مَجْزُومٌ", "فِعْلُ أَمْرٍ مَبْنِيٌّ عَلَى السُّكُونِ"],
+            1,
+            "В выражении «Если бы камень был извлечен, дворец бы упал», глагол «Узиля» является:"
+        ],
+        [
+            "فِي جُمْلَةِ: 'عَمِلَ سِنِمَّارُ سَنَوَاتٍ طَوِيلَةً لِيَبْنِيَ الْقَصْرَ'، الْفِعْلُ 'لِيَبْنِيَ' مَنْصُوبٌ بِـ:",
+            ["فَتْحَةٍ مَقْدُورَةٍ عَلَى الأَلِفِ", "حَذْفِ النُّونِ", "لاَمِ التَّعْلِيلِ (وَأَنْ الْمُضْمَرَةِ بَعْدَهَا) وَعَلَامَتُهُ الْفَتْحَةُ الظَّاهِرَةُ", "السُّكُونِ"],
+            2,
+            "В предложении «Синиммар работал долгие годы, чтобы построить дворец», глагол «Лиябния» находится в сослагательном наклонении благодаря:"
+        ],
+        [
+            "فِي عِبَارَةِ: 'لَمْ يَبْنِ سِنِمَّارُ قَصْراً آخَرَ'، الْفِعْلُ 'يَبْنِ' مَجْزُومٌ بِـ 'لَمْ' وَعَلَامَةُ جَزْمِهِ:",
+            ["السُّكُونُ الظَّاهِرُ", "الْفَتْحَةُ", "ثُبُوتُ النُّونِ", "حَذْفُ حَرْفِ الْعِلَّةِ (الْيَاءِ)"],
+            3,
+            "В выражении «Синиммар не построил другой дворец», глагол «Ябни» усечен благодаря «Лам», и признак его усечения:"
+        ],
+        [
+            "فِي جُمْلَةِ: 'خَافَ المَلِكُ كَيْلَا يَبْنِيَ قَصْراً أَفْضَلَ'، كَلِمَةُ 'أَفْضَلَ' تُعْرَبُ:",
+            ["نَعْتاً مَنْصُوباً بِالْفَتْحَةِ (وَهُوَ مَمْنُوعٌ مِنَ الصَّرْفِ)", "مَفْعُولاً بِهِ ثانيّاً", "مُضَافاً إِلَيْهِ مَجْرُوراً", "حَالاً مَنْصُوبَةً"],
+            0,
+            "В предложении «Царь испугался, чтобы тот не построил дворец получше», слово «Афдаля» является:"
+        ],
+        [
+            "فِي عِبَارَةِ: 'إِنَّ سِنِمَّارَ بَنَّاءٌ مَاهِرٌ'، اسْمُ 'إِنَّ' وَخَبَرُهَا هُمَا:",
+            ["اسْمُهَا (مَاهِرٌ) وَخَبَرُهَا (بَنَّاءٌ)", "اسْمُهَا (سِنِمَّارَ) المَنْصُوبُ، وَخَبَرُهَا (بَنَّاءٌ) المَرْفُوعُ", "اسْمُهَا (بَنَّاءٌ) وَخَبَرُهَا (سِنِمَّارَ)", "اسْمُهَا ضَمِيرٌ مُسْتَتِرٌ"],
+            1,
+            "В выражении «Иинна Синиммара баннаун махирун», имя «Инна» و ее сказуемое:"
+        ],
+        [
+            "فِي جُمْلَةِ: 'صَعِدَ المَلِكُ وَسِنِمَّارُ وَهُمَا مَسْرُورَانِ'، نَوْعُ الْحَالِ فِي 'وَهُمَا مَسْرُورَانِ':",
+            ["مَفْرَدٌ", "شِبْهُ جُمْلَةٍ", "جُمْلَةٌ اسْمِيَّةٌ فِي مَحَلِّ نَصْبٍ", "جُمْلَةٌ فِعْلِيَّةٌ"],
+            2,
+            "В предложении «Царь и Синиммар поднялись, будучи радостными», тип обстоятельства образа действия (Халь) в «Ва хума масрурани»:"
+        ],
+        [
+            "فِي عِبَارَةِ: 'بَنَى سِنِمَّارُ الْقَصْرَ بِنَاءً جَمِيلاً'، كَلِمَةُ 'بِنَاءً' تُعْرَبُ:",
+            ["مَفْعُولاً بِهِ", "مَفْعُولاً لِأَجْلِهِ", "حَالاً", "مَفْعُولاً مُطْلَقاً مَنْصُوباً بِالْفَتْحَةِ"],
+            3,
+            "В выражении «Синиммар построил дворец прекрасным строительством», слово «Бинаан» является:"
+        ],
+        [
+            "فِي جُمْلَةِ: 'قَالَ سِنِمَّارُ: لَوْ شِئْتُ لَبَنَيْتُ قَصْراً يَدُورُ مَعَ الشَّمْسِ'، كَلِمَةُ 'لَوْ' هِيَ:",
+            ["حَرْفُ شَرْطٍ غَيْرُ جَازِمٍ (حَرْفُ امْتِنَاعٍ لِامْتِنَاعٍ)", "أَدَاةُ جَزْمٍ لِلْمُضَارِعِ", "حَرْفُ نَفْيٍ", "أَدَاةُ اسْتِفْهَامٍ"],
+            0,
+            "В предложении «Синиммар сказал: Если бы я захотел, я бы построил дворец...», слово «Ляв» является:"
+        ],
+        [
+            "فِي قَوْلِهِ: 'لَمْ يَكُنْ فِي المَدِينَةِ أَحْسَنُ مِنْ هَذَا القَصْرِ'، كَلِمَةُ 'أَحْسَنُ' تُعْرَبُ:",
+            ["خَبَرَ يَكُنْ المَنْصُوبَ", "اسْمَ 'يَكُنْ' الْمُؤَخَّرَ الْمَرْفُوعَ بِالضَّمَّةِ", "فَاعِلاً مَرْفُوعاً", "مُضَافاً إِلَيْهِ"],
+            1,
+            "В выражении «В городе не было ничего прекраснее этого дворца», слово «Ахсану» является:"
+        ]
+    ];
+
+    /* SECTION 5: Fill in the Blanks (5 Questions with Dropdown) */
+    const section5Data = [
+        [
+            "طَلَبَ الْمَلِكُ مِنْ سِنِمَّارَ أَنْ يَبْنِيَ لَهُ _______ جَمِيلاً.",
+            "قصْراً",
+            "Царь попросил Синиммара построить для него красивый ..."
+        ],
+        [
+            "وَعَدَ الْمَلِكُ الْبَنَّاءَ بِأَنْ يُعْطِيَهُ _______ كَبِيرَةً.",
+            "مُكَافَأَةً",
+            "Царь пообещал строителю дать ему большую ..."
+        ],
+        [
+            "قَالَ سِنِمَّارُ: إِنَّ فِي الْقَصْرِ _______ لَوْ أُزِيلَ لَسَقَطَ الْبِنَاءُ.",
+            "حَجَرٌ",
+            "Синиммар сказал: Во дворце есть ..., если извлечь который, здание упадет."
+        ],
+        [
+            "قَالَ سِنِمَّارُ أَيْضاً: أَسْتَطِيعُ بِنَاءَ قَصْرٍ يَدُورُ مَعَ _______.",
+            "الشَّمْسِ",
+            "Синиммар также сказал: Я могу построить дворец, который вращается вместе с ..."
+        ],
+        [
+            "أَمَرَ الْمَلِكُ بِإِلْقَاءِ سِنِمَّارَ مِنْ _______ الْقَصْرِ.",
+            "أَعْلَى",
+            "Царь приказал сбросить Синиммара с ... дворца."
+        ]
+    ];
+    const section5Words = ["قصْراً", "مُكَافَأَةً", "حَجَرٌ", "الشَّمْسِ", "أَعْلَى"];
+
+    /* SECTION 6: Sentence Reordering (5 Questions) */
+    const section6Data = [
+        [
+            ["الْمَلِكُ", "مِنْ", "طَلَبَ", "أَنْ", "سِنِمَّارَ", "يَبْنِيَ", "قَصْراً"],
+            "طَلَبَ الْمَلِكُ مِنْ سِنِمَّارَ أَنْ يَبْنِيَ قَصْراً",
+            "Царь попросил Синиммара построить дворец."
+        ],
+        [
+            ["سِنِمَّارُ", "سَنَوَاتٍ", "عَمِلَ", "طَوِيلَةً", "فِي", "الْبِنَاءِ"],
+            "عَمِلَ سِنِمَّارُ سَنَوَاتٍ طَوِيلَةً فِي الْبِنَاءِ",
+            "Синиммар работал долгие годы на строительстве."
+        ],
+        [
+            ["الْمَلِكُ", "صَعِدَ", "مَعَ", "إِلَى", "سِنِمَّارَ", "الْقَصْرِ"],
+            "صَعِدَ الْمَلِكُ مَعَ سِنِمَّارَ إِلَى الْقَصْرِ",
+            "Царь поднялся вместе с Синиммаром на дворец."
+        ],
+        [
+            ["مَوْضِعَ", "أَعْرِفُ", "حَجَرٍ", "فِي", "الْقَصْرِ"],
+            "أَعْرِفُ مَوْضِعَ حَجَرٍ فِي الْقَصْرِ",
+            "Я знаю местоположение одного камня во дворце."
+        ],
+        [
+            ["بِأَلْقَائِهِ", "الْمَلِكُ", "أَمَرَ", "مِنْ", "الْقَصْرِ", "أَعْلَى"],
+            "أَمَرَ الْمَلِكُ بِأَلْقَائِهِ مِنْ أَعْلَى الْقَصْرِ",
+            "Царь приказал сбросить его с вершины дворца."
+        ]
+    ];
+
+    /* SECTION 7: Free Written Production (5 Questions - Manual Grade) */
+    const section7Data = [
+        ["سِنِمَّارُ / الْبَنَّاءُ", "Синиммар / Строитель", "وَظِّفِي كَلِمَةَ (سِنِمَّارَ) أَوْ (الْبَنَّاءِ) فِي جُمْلَةٍ مُفِيدَةٍ عَنْ بِنَاءِ الْقُصُورِ."],
+        ["قَصْرٌ فَرِيدٌ", "Уникальный дворец", "اكْتُبِي جُمْلَةً تَصِفِينَ فِيهَا قَصْراً جَمِيلاً وَفَرِيداً."],
+        ["مُكَافَأَةٌ", "Вознаграждение / Награда", "صُوغِي جُمْلَةً عَنْ حُصُولِ العَامِلِ عَلَى مُكَافَأَةٍ مُقَابِلَ عَمَلِهِ."],
+        ["إِنْكُارُ الْجَمِيلِ / الْغَدْرُ", "Неблагодарность / Предательство", "اسْتَخْدِمِي عِبَارَةَ (إِنْكَارُ الْجَمِيلِ) فِي جُمْلَةٍ تَتَحَدَّثِينَ فِيهَا عَنْ أَهَمِّيَّةِ الشُّكْرِ."],
+        ["جَزَاءُ سِنِمَّارَ", "Награда Синиммара", "اكْتُبِي جُمْلَةً تَشْرَحِينَ فِيهَا الْمَقْصُودَ بِمَثَلِ (جَزَاءِ سِنِمَّارَ)."]
+    ];
+
+    /* State Variables */
+    let currentSectionIndex = 0;
+    let studentName = "";
+    let answers = {
+        section1: Array(section1Data.length).fill(null),
+        section2: Array(section2Data.length).fill(null),
+        section3: Array(section3Data.length).fill(null),
+        section4: Array(section4Data.length).fill(null),
+        section5: Array(section5Data.length).fill(null),
+        section6: Array(section6Data.length).fill(null).map(() => []),
+        section7: Array(section7Data.length).fill("")
+    };
+
+    const sectionMetadata = [
+        { title: "الْقِسْمُ الْأَوَّلُ: اسْتِيعَابُ الْقِصَّةِ وَفَهْمُ الْأَحْدَاثِ", translation: "Раздел 1: Понимание сюжета и событий истории (10 вопросов). Выберите правильный вариант." },
+        { title: "الْقِسْمُ الثَّانِي: الْمُفْرَدَاتُ وَالتَّعَابِيرُ فِي الْقِصَّةِ", translation: "Раздел 2: Слоوارный запас и выражения (5 вопросов). Определите лексическое значение." },
+        { title: "الْقِسْمُ الثَّالِثُ: صَحٌّ أَوْ خَطَأٌ - اسْتِيعَابُ الْمَفَاهِيمِ", translation: "Раздел 3: Верно или неверно (5 вопросов). Определите истинность утверждений." },
+        { title: "الْقِسْمُ الرَّابِعُ: الْقَوَاعِدُ وَالتَّرَاكِيبُ اللُّغَوِيَّةُ لِلْمُسْتَوَى B2", translation: "Раздел 4: Грамматика и конструкции уровня B2 (10 вопросов). Выберите грамматически верный ответ." },
+        { title: "الْقِسْمُ الْخَامِسُ: اِمْلَأِ الْفَرَاغَ بِالْكَلِمَةِ الْمُنَاسِبَةِ", translation: "Раздел 5: Заполнение пропусков (5 вопросов). Выберите подходящее слово из списка." },
+        { title: "الْقِسْمُ السَّادِسُ: تَرْتِيبُ الْجُمَلِ كَمَا وَرَدَتْ فِي الْقِصَّةِ", translation: "Раздел 6: Порядок слов (5 вопросов). Составьте оригинальные предложения из истории." },
+        { title: "الْقِسْمُ السَّابِعُ: الْإِنْشَاءُ وَالْكِتَابَةُ الْحُرَّةُ (تَقْوِيمٌ يَدْوِيٌّ)", translation: "Раздел 7: Сочинение и свободное письмо (5 вопросов). Напишите предложения с ключевыми словами." }
+    ];
+
+    /* Initialize Quiz */
+    function startQuiz() {
+        const nameInput = document.getElementById('student-name');
+        studentName = nameInput.value.trim() || "الطَّالِبَةُ | Студентка";
+        document.getElementById('welcome-screen').classList.add('hidden');
+        document.getElementById('quiz-area').classList.remove('hidden');
+        renderSection();
+    }
+
+    /* Render current section */
+    function renderSection() {
+        const container = document.getElementById('questions-container');
+        container.innerHTML = '';
+
+        document.getElementById('section-title').innerText = sectionMetadata[currentSectionIndex].title;
+        document.getElementById('section-translation').innerText = sectionMetadata[currentSectionIndex].translation;
+
+        const progressPercentage = ((currentSectionIndex) / sectionMetadata.length) * 100;
+        document.getElementById('progress-bar').style.width = progressPercentage + '%';
+
+        document.getElementById('main-container').scrollIntoView({ behavior: 'smooth' });
+
+        document.getElementById('prev-btn').disabled = (currentSectionIndex === 0);
+        const nextBtn = document.getElementById('next-btn');
+        if (currentSectionIndex === sectionMetadata.length - 1) {
+            nextBtn.innerHTML = "إِنْهَاءُ الِاخْتِبَارِ وَعَرْضُ النَّتِيجَةِ | Завершить";
+        } else {
+            nextBtn.innerHTML = "الْقِسْمُ التَّالِي | Далее";
+        }
+
+        switch (currentSectionIndex) {
+            case 0:
+                renderMCQSection(section1Data, 'section1');
+                break;
+            case 1:
+                renderMCQSection(section2Data, 'section2');
+                break;
+            case 2:
+                renderTFSection();
+                break;
+            case 3:
+                renderMCQSection(section4Data, 'section4');
+                break;
+            case 4:
+                renderDropdownSection();
+                break;
+            case 5:
+                renderReorderSection();
+                break;
+            case 6:
+                renderEssaySection();
+                break;
+        }
+    }
+
+    /* 1. Render MCQ Section (using Array Destructuring strictly) */
+    function renderMCQSection(data, stateKey) {
+        const container = document.getElementById('questions-container');
+        data.forEach((item, qIdx) => {
+            const [qText, qOptions, qCorrectAnswer, qTranslation] = item;
+
+            const card = document.createElement('div');
+            card.className = "question-card";
+
+            const textEl = document.createElement('div');
+            textEl.className = "question-text";
+            textEl.innerText = `${qIdx + 1}. ${qText}`;
+            card.appendChild(textEl);
+
+            const transEl = document.createElement('div');
+            transEl.className = "question-translation";
+            transEl.innerText = qTranslation;
+            card.appendChild(transEl);
+
+            const optionsUl = document.createElement('ul');
+            optionsUl.className = "options-list";
+
+            qOptions.forEach((optionText, optIdx) => {
+                const optLi = document.createElement('li');
+                optLi.className = "option-item";
+                optLi.innerText = optionText;
+
+                const savedAns = answers[stateKey][qIdx];
+                if (savedAns !== null) {
+                    if (optIdx === qCorrectAnswer) {
+                        optLi.classList.add('correct');
+                    } else if (optIdx === savedAns) {
+                        optLi.classList.add('incorrect');
+                    }
+                }
+
+                optLi.onclick = () => {
+                    if (answers[stateKey][qIdx] !== null) return;
+
+                    answers[stateKey][qIdx] = optIdx;
+                    if (optIdx === qCorrectAnswer) {
+                        optLi.classList.add('correct');
+                    } else {
+                        optLi.classList.add('incorrect');
+                        optionsUl.children[qCorrectAnswer].classList.add('correct');
+                    }
+                };
+
+                optionsUl.appendChild(optLi);
+            });
+
+            card.appendChild(optionsUl);
+            container.appendChild(card);
+        });
+    }
+
+    /* 2. Render True/False Section (using Array Destructuring strictly) */
+    function renderTFSection() {
+        const container = document.getElementById('questions-container');
+        section3Data.forEach((item, qIdx) => {
+            const [qText, qCorrectBool, qTranslation] = item;
+
+            const card = document.createElement('div');
+            card.className = "question-card";
+
+            const textEl = document.createElement('div');
+            textEl.className = "question-text";
+            textEl.innerText = `${qIdx + 1}. ${qText}`;
+            card.appendChild(textEl);
+
+            const transEl = document.createElement('div');
+            transEl.className = "question-translation";
+            transEl.innerText = qTranslation;
+            card.appendChild(transEl);
+
+            const btnContainer = document.createElement('div');
+            btnContainer.className = "tf-buttons";
+
+            const trueBtn = document.createElement('button');
+            trueBtn.className = "tf-btn";
+            trueBtn.innerText = "صَحّ (Верно)";
+
+            const falseBtn = document.createElement('button');
+            falseBtn.className = "tf-btn";
+            falseBtn.innerText = "خَطَأ (Неверно)";
+
+            const savedAns = answers.section3[qIdx];
+            if (savedAns !== null) {
+                if (qCorrectBool === true) {
+                    trueBtn.classList.add('correct');
+                    if (savedAns === false) falseBtn.classList.add('incorrect');
+                } else {
+                    falseBtn.classList.add('correct');
+                    if (savedAns === true) trueBtn.classList.add('incorrect');
+                }
+            }
+
+            trueBtn.onclick = () => {
+                if (answers.section3[qIdx] !== null) return;
+                answers.section3[qIdx] = true;
+                if (qCorrectBool === true) {
+                    trueBtn.classList.add('correct');
+                } else {
+                    trueBtn.classList.add('incorrect');
+                    falseBtn.classList.add('correct');
+                }
+            };
+
+            falseBtn.onclick = () => {
+                if (answers.section3[qIdx] !== null) return;
+                answers.section3[qIdx] = false;
+                if (qCorrectBool === false) {
+                    falseBtn.classList.add('correct');
+                } else {
+                    falseBtn.classList.add('incorrect');
+                    trueBtn.classList.add('correct');
+                }
+            };
+
+            btnContainer.appendChild(trueBtn);
+            btnContainer.appendChild(falseBtn);
+            card.appendChild(btnContainer);
+            container.appendChild(card);
+        });
+    }
+
+    /* 3. Render Dropdown Section (using Array Destructuring strictly) */
+    function renderDropdownSection() {
+        const container = document.getElementById('questions-container');
+        section5Data.forEach((item, qIdx) => {
+            const [qTextWithBlank, qCorrectWord, qTranslation] = item;
+
+            const card = document.createElement('div');
+            card.className = "question-card";
+
+            const parts = qTextWithBlank.split('_______');
+            const questionTextContainer = document.createElement('div');
+            questionTextContainer.className = "question-text";
+            
+            questionTextContainer.appendChild(document.createTextNode(`${qIdx + 1}. ` + parts[0]));
+
+            const selectEl = document.createElement('select');
+            selectEl.className = "select-blank";
+
+            const placeholderOpt = document.createElement('option');
+            placeholderOpt.value = "";
+            placeholderOpt.text = "اخْتَارِي (Выбрать)";
+            selectEl.appendChild(placeholderOpt);
+
+            section5Words.forEach(word => {
+                const opt = document.createElement('option');
+                opt.value = word;
+                opt.text = word;
+                selectEl.appendChild(opt);
+            });
+
+            const savedAns = answers.section5[qIdx];
+            if (savedAns !== null) {
+                selectEl.value = savedAns;
+                selectEl.disabled = true;
+                if (savedAns === qCorrectWord) {
+                    selectEl.classList.add('correct');
+                } else {
+                    selectEl.classList.add('incorrect');
+                }
+            }
+
+            selectEl.onchange = () => {
+                const selectedValue = selectEl.value;
+                if (!selectedValue) return;
+
+                if (selectedValue === qCorrectWord) {
+                    answers.section5[qIdx] = selectedValue;
+                    selectEl.classList.add('correct');
+                    selectEl.disabled = true;
+                } else {
+                    selectEl.classList.add('incorrect');
+                    selectEl.disabled = true;
+                    setTimeout(() => {
+                        selectEl.classList.remove('incorrect');
+                        selectEl.value = "";
+                        selectEl.disabled = false;
+                    }, 1000);
+                }
+            };
+
+            questionTextContainer.appendChild(selectEl);
+            if (parts[1]) {
+                questionTextContainer.appendChild(document.createTextNode(parts[1]));
+            }
+            card.appendChild(questionTextContainer);
+
+            const transEl = document.createElement('div');
+            transEl.className = "question-translation";
+            transEl.innerText = qTranslation;
+            card.appendChild(transEl);
+
+            container.appendChild(card);
+        });
+    }
+
+    /* 4. Render Reorder Section (using Array Destructuring strictly) */
+    function renderReorderSection() {
+        const container = document.getElementById('questions-container');
+        section6Data.forEach((item, qIdx) => {
+            const [shuffledWords, correctSentence, qTranslation] = item;
+
+            const card = document.createElement('div');
+            card.className = "question-card";
+
+            const textEl = document.createElement('div');
+            textEl.className = "question-text";
+            textEl.innerText = `${qIdx + 1}. تَرْتِيبُ الْجُمْلَةِ | Соберите предложение:`;
+            card.appendChild(textEl);
+
+            const transEl = document.createElement('div');
+            transEl.className = "question-translation";
+            transEl.innerText = qTranslation;
+            card.appendChild(transEl);
+
+            const wordPool = document.createElement('div');
+            wordPool.className = "word-pool";
+            wordPool.id = `pool-q-${qIdx}`;
+
+            const answerArea = document.createElement('div');
+            answerArea.className = "answer-area";
+            answerArea.id = `answer-q-${qIdx}`;
+
+            const activeWords = [...answers.section6[qIdx]];
+            const isCompleted = activeWords.join(' ') === correctSentence;
+
+            if (isCompleted) {
+                answerArea.classList.add('correct');
+                activeWords.forEach(word => {
+                    const span = document.createElement('span');
+                    span.className = "word-btn";
+                    span.innerText = word;
+                    answerArea.appendChild(span);
+                });
+            } else {
+                shuffledWords.forEach((word, wordIdx) => {
+                    const btn = document.createElement('button');
+                    btn.className = "word-btn";
+                    btn.id = `btn-q-${qIdx}-w-${wordIdx}`;
+                    btn.innerText = word;
+
+                    if (activeWords.includes(word)) {
+                        btn.classList.add('selected');
+                    }
+
+                    btn.onclick = () => {
+                        if (btn.classList.contains('selected') || answerArea.classList.contains('correct')) return;
+
+                        btn.classList.add('selected');
+                        activeWords.push(word);
+                        answers.section6[qIdx] = activeWords;
+
+                        const span = document.createElement('span');
+                        span.className = "word-btn";
+                        span.innerText = word;
+                        answerArea.appendChild(span);
+
+                        if (activeWords.length === shuffledWords.length) {
+                            const combinedAnswer = activeWords.join(' ');
+                            if (combinedAnswer === correctSentence) {
+                                answerArea.classList.add('correct');
+                            } else {
+                                answerArea.classList.add('incorrect');
+                                setTimeout(() => {
+                                    answerArea.classList.remove('incorrect');
+                                    clearReorder(qIdx, shuffledWords);
+                                }, 1200);
+                            }
+                        }
+                    };
+
+                    wordPool.appendChild(btn);
+                });
+
+                const clearBtn = document.createElement('button');
+                clearBtn.className = "clear-reorder-btn";
+                clearBtn.innerText = "مسح الترتيب | Сбросить";
+                clearBtn.onclick = () => clearReorder(qIdx, shuffledWords);
+                card.appendChild(clearBtn);
+            }
+
+            card.appendChild(wordPool);
+            card.appendChild(answerArea);
+            container.appendChild(card);
+        });
+    }
+
+    function clearReorder(qIdx, shuffledWords) {
+        answers.section6[qIdx] = [];
+        const answerArea = document.getElementById(`answer-q-${qIdx}`);
+        answerArea.innerHTML = '';
+        answerArea.className = "answer-area";
+
+        shuffledWords.forEach((word, wordIdx) => {
+            const btn = document.getElementById(`btn-q-${qIdx}-w-${wordIdx}`);
+            if (btn) btn.classList.remove('selected');
+        });
+    }
+
+    /* 5. Render Essay/Writing Section (using Array Destructuring strictly) */
+    function renderEssaySection() {
+        const container = document.getElementById('questions-container');
+        section7Data.forEach((item, qIdx) => {
+            const [arabicWord, russianTranslation, instructionText] = item;
+
+            const card = document.createElement('div');
+            card.className = "question-card";
+
+            const textEl = document.createElement('div');
+            textEl.className = "question-text";
+            textEl.innerHTML = `${qIdx + 1}. الْكَلِمَةُ: <strong style="color: var(--primary-color); font-size: 1.3rem;">${arabicWord}</strong> (${russianTranslation})`;
+            card.appendChild(textEl);
+
+            const instEl = document.createElement('div');
+            instEl.className = "question-translation";
+            instEl.innerText = instructionText;
+            card.appendChild(instEl);
+
+            const textarea = document.createElement('textarea');
+            textarea.className = "essay-textarea";
+            textarea.placeholder = "اكْتُبِي الْجُمْلَةَ هُنَا بِاللُّغَةِ الْعَرَبِيَّةِ...";
+            textarea.value = answers.section7[qIdx];
+
+            textarea.oninput = () => {
+                answers.section7[qIdx] = textarea.value;
+            };
+
+            card.appendChild(textarea);
+
+            const note = document.createElement('div');
+            note.className = "essay-note";
+            note.innerText = "* يُقَيَّمُ يَدْوِيًّا (Оценивается вручную)";
+            card.appendChild(note);
+
+            container.appendChild(card);
+        });
+    }
+
+    /* Navigation Controls */
+    function nextSection() {
+        if (currentSectionIndex === sectionMetadata.length - 1) {
+            calculateAndShowResult();
+        } else {
+            currentSectionIndex++;
+            renderSection();
+        }
+    }
+
+    function prevSection() {
+        if (currentSectionIndex > 0) {
+            currentSectionIndex--;
+            renderSection();
+        }
+    }
+
+    /* Calculation & Scores */
+    function calculateAndShowResult() {
+        let score = 0;
+        let totalAutomatableQuestions = 45;
+
+        section1Data.forEach((item, qIdx) => {
+            const [qText, qOpts, qCorrect] = item;
+            if (answers.section1[qIdx] === qCorrect) score++;
+        });
+
+        section2Data.forEach((item, qIdx) => {
+            const [qText, qOpts, qCorrect] = item;
+            if (answers.section2[qIdx] === qCorrect) score++;
+        });
+
+        section3Data.forEach((item, qIdx) => {
+            const [qText, qCorrectBool] = item;
+            if (answers.section3[qIdx] === qCorrectBool) score++;
+        });
+
+        section4Data.forEach((item, qIdx) => {
+            const [qText, qOpts, qCorrect] = item;
+            if (answers.section4[qIdx] === qCorrect) score++;
+        });
+
+        section5Data.forEach((item, qIdx) => {
+            const [qText, qCorrectWord] = item;
+            if (answers.section5[qIdx] === qCorrectWord) score++;
+        });
+
+        section6Data.forEach((item, qIdx) => {
+            const [shuffled, correctSentence] = item;
+            if (answers.section6[qIdx].join(' ') === correctSentence) score++;
+        });
+
+        document.getElementById('quiz-area').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+
+        document.getElementById('student-display-name').innerText = `الطَّالِبَةُ الْمُتَمَيِّزَةُ: ${studentName} | Студентка: ${studentName}`;
+        document.getElementById('score-value').innerText = `${score} / ${totalAutomatableQuestions}`;
+
+        const percentage = Math.round((score / totalAutomatableQuestions) * 100);
+        document.getElementById('percentage-value').innerText = `النِّسْبَةُ الْمِئَوِيَّةُ: ${percentage}% | Результат: ${percentage}%`;
+
+        const feedbackEl = document.getElementById('feedback-msg');
+        if (percentage >= 90) {
+            feedbackEl.innerHTML = "مُمْتَازٌ جِدًّا! لَقَدْ أَثْبَتِّ إِتْقَانًا رَائِعًا لِمَهَارَاتِ الِاسْتِمَاعِ وَالْقَوَاعِدِ!<br><span style='font-size:0.95rem; font-weight:normal; color:var(--text-light);'>Отлично! Вы продемонстрировали великолепное владение навыками аудирования и грамматики!</span>";
+        } else if (percentage >= 75) {
+            feedbackEl.innerHTML = "جَيِّدٌ جِدًّا! أَدَاؤُكِ رَائِعٌ، وَتَحْتَاجِينَ فَقَطْ إِلَى بَعْضِ التَّرْكِيزِ لِتَحْقِيقِ الْعَلَامَةِ الْكَامِلَةِ.<br><span style='font-size:0.95rem; font-weight:normal; color:var(--text-light);'>Очень хорошо! Отличный результат, вам нужно лишь немного внимания для достижения идеального балла.</span>";
+        } else if (percentage >= 50) {
+            feedbackEl.innerHTML = "مَقْبُولٌ. أَدَاؤُكِ مُتَوَسِّطٌ، نَنْصَحُكِ بِإِعَادَةِ مُشَاهَدَةِ الْفِيدْيُو مَرَّةً أُخْرَى.<br><span style='font-size:0.95rem; font-weight:normal; color:var(--text-light);'>Удовлетворительно. Средний результат, рекомендуем посмотреть видео еще раз.</span>";
+        } else {
+            feedbackEl.innerHTML = "تَحْتَاجِينَ إِلَى الْمَزِيدِ مِنَ الْمُمَارَسَةِ. حَاوِلِي مَرَّةً أُخْرَى بَعْدَ مُرَاجَعَةِ الْمُفْرَدَاتِ.<br><span style='font-size:0.95rem; font-weight:normal; color:var(--text-light);'>Требуется больше практики. Попробуйте еще раз после повторения слов.</span>";
+        }
+    }
+
+    function restartQuiz() {
+        currentSectionIndex = 0;
+        answers = {
+            section1: Array(section1Data.length).fill(null),
+            section2: Array(section2Data.length).fill(null),
+            section3: Array(section3Data.length).fill(null),
+            section4: Array(section4Data.length).fill(null),
+            section5: Array(section5Data.length).fill(null),
+            section6: Array(section6Data.length).fill(null).map(() => []),
+            section7: Array(section7Data.length).fill("")
+        };
+        document.getElementById('result-screen').classList.add('hidden');
+        document.getElementById('welcome-screen').classList.remove('hidden');
+        document.getElementById('student-name').value = studentName;
+    }
+</script>
+
+</body>
+</html>
