@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إِخْتِبَارُ مَقْطَعِ (عَائِلَةُ الْخَيْرِ - أَنَا أُحِبُّ اللَّهَ) التَّفَاعُلِيُّ</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #27ae60;
+            --accent-color: #e67e22;
+            --bg-color: #f4f6f9;
+            --container-bg: #ffffff;
+            --text-color: #2c3e50;
+            --text-light: #7f8c8d;
+            --border-color: #e2e8f0;
+            --correct-bg: #d4edda;
+            --correct-color: #155724;
+            --incorrect-bg: #f8d7da;
+            --incorrect-color: #721c24;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+            direction: rtl;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        /* Top Bar with Floating Tables Buttons */
+        .top-nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .modal-trigger-btn {
+            background: #ffffff;
+            border: 2px solid var(--border-color);
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.04);
+        }
+
+        .modal-trigger-btn:hover {
+            border-color: var(--secondary-color);
+            color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(39, 174, 96, 0.15);
+        }
+
+        .modal-trigger-btn.colloc {
+            border-color: #f39c12;
+            color: #d35400;
+        }
+
+        .modal-trigger-btn.colloc:hover {
+            border-color: #d35400;
+            background-color: #fef5e7;
+        }
+
+        .welcome-card {
+            text-align: center;
+            padding: 20px 10px;
+        }
+
+        .welcome-icon {
+            font-size: 3.8rem;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            direction: ltr;
+        }
+
+        .level-badge {
+            display: inline-block;
+            background-color: #e8f8f5;
+            color: #117864;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            border: 1px solid #a3e4d7;
+        }
+
+        .input-group {
+            margin: 25px 0;
+            text-align: right;
+        }
+
+        .input-name {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 1.05rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            outline: none;
+            transition: border-color 0.3s;
+            margin-top: 8px;
+        }
+
+        .input-name:focus {
+            border-color: var(--secondary-color);
+        }
+
+        .btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: #219150;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            background-color: var(--border-color);
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--secondary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Question Cards */
+        .section-header {
+            margin-bottom: 20px;
+            border-right: 4px solid var(--secondary-color);
+            padding-right: 12px;
+        }
+
+        .section-header h2 {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+        }
+
+        .section-header p {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            direction: ltr;
+            text-align: right;
+        }
+
+        .question-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 6px;
+        }
+
+        .question-translation {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            direction: ltr;
+            text-align: right;
+        }
+
+        /* Options List */
+        .options-list {
+            list-style: none;
+        }
+
+        .option-item {
+            background-color: #f8f9fa;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .option-item:hover {
+            border-color: var(--secondary-color);
+            background-color: #f4fbf6;
+        }
+
+        .option-item.correct {
+            background-color: var(--correct-bg) !important;
+            border-color: var(--secondary-color) !important;
+            color: var(--correct-color);
+            font-weight: bold;
+        }
+
+        .option-item.incorrect {
+            background-color: var(--incorrect-bg) !important;
+            border-color: #dc3545 !important;
+            color: var(--incorrect-color);
+        }
+
+        /* True/False Buttons */
+        .tf-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .tf-btn {
+            flex: 1;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tf-btn:hover {
+            border-color: var(--secondary-color);
+        }
+
+        .tf-btn.correct {
+            background-color: var(--correct-bg);
+            border-color: var(--secondary-color);
+            color: var(--correct-color);
+        }
+
+        .tf-btn.incorrect {
+            background-color: var(--incorrect-bg);
+            border-color: #dc3545;
+            color: var(--incorrect-color);
+        }
+
+        /* Dropdown Select */
+        .select-blank {
+            padding: 8px 14px;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            outline: none;
+            background-color: #ffffff;
+            margin: 0 6px;
+            cursor: pointer;
+        }
+
+        .select-blank.correct {
+            border-color: var(--secondary-color);
+            background-color: var(--correct-bg);
+        }
+
+        .select-blank.incorrect {
+            border-color: #dc3545;
+            background-color: var(--incorrect-bg);
+        }
+
+        /* Word Reorder Area */
+        .word-pool, .answer-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            min-height: 50px;
+            align-items: center;
+        }
+
+        .word-pool {
+            background: #f1f3f5;
+            margin-bottom: 12px;
+        }
+
+        .answer-area {
+            background: #ffffff;
+            border: 2px dashed var(--border-color);
+        }
+
+        .answer-area.correct {
+            border-color: var(--secondary-color);
+            background-color: #f4fbf6;
+        }
+
+        .answer-area.incorrect {
+            border-color: #dc3545;
+            background-color: #fdf2f2;
+        }
+
+        .word-btn {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            transition: all 0.2s;
+        }
+
+        .word-btn:hover {
+            border-color: var(--primary-color);
+        }
+
+        .word-btn.selected {
+            opacity: 0.4;
+            cursor: default;
+        }
+
+        .clear-reorder-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        /* Textarea Essay */
+        .essay-textarea {
+            width: 100%;
+            height: 90px;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            resize: vertical;
+        }
+
+        .essay-textarea:focus {
+            border-color: var(--secondary-color);
+        }
+
+        .essay-note {
+            font-size: 0.85rem;
+            color: #e67e22;
+            margin-top: 5px;
+        }
+
+        /* Nav Controls */
+        .nav-controls {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn-nav {
+            flex: 1;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-prev {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .btn-next {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Modal Overlay & Card Styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.65);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 1100px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            overflow: hidden;
+            animation: modalSlide 0.3s ease;
+        }
+
+        @keyframes modalSlide {
+            from { transform: translateY(30px); }
+            to { transform: translateY(0); }
+        }
+
+        .modal-header {
+            padding: 18px 24px;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .modal-header h3 {
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-print {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-close {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        /* 5-Column Table with Colored Pastel Columns */
+        .vocab-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            text-align: right;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .vocab-table th, .vocab-table td {
+            padding: 12px 14px;
+            border: 1px solid #dcdde1;
+            vertical-align: middle;
+        }
+
+        .vocab-table th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        /* Pastel Column Colors for Words Table */
+        .words-table td:nth-child(1) { background-color: #e8f4f8; } /* Soft Blue */
+        .words-table td:nth-child(2) { background-color: #e8f8f5; font-weight: bold; text-align: center; color: #117864; } /* Soft Mint */
+        .words-table td:nth-child(3) { background-color: #fef9e7; direction: ltr; text-align: left; } /* Soft Yellow */
+        .words-table td:nth-child(4) { background-color: #f5eedc; } /* Soft Peach */
+        .words-table td:nth-child(5) { background-color: #f4ecf7; } /* Soft Lavender */
+
+        /* Pastel Column Colors for Collocations Table */
+        .colloc-table td:nth-child(1) { background-color: #fef5e7; } /* Soft Amber */
+        .colloc-table td:nth-child(2) { background-color: #eaf2f8; font-weight: bold; text-align: center; color: #1a5276; } /* Soft Sky Blue */
+        .colloc-table td:nth-child(3) { background-color: #eafaf1; direction: ltr; text-align: left; } /* Soft Emerald */
+        .colloc-table td:nth-child(4) { background-color: #f9ebf3; } /* Soft Rose */
+        .colloc-table td:nth-child(5) { background-color: #f2f4f4; } /* Soft Platinum */
+
+        .vocab-table .hl-word, .vocab-table b {
+            color: #d35400;
+            font-weight: bold;
+            font-size: 1.05rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Print Media Styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .modal-overlay.active, .modal-overlay.active * {
+                visibility: visible;
+            }
+            .modal-overlay.active {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white;
+            }
+            .modal-card {
+                max-width: 100%;
+                max-height: none;
+                box-shadow: none;
+            }
+            .modal-header .btn-close, .modal-header .btn-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="main-container">
+
+    <!-- Top Navigation Bar for Modal Windows -->
+    <div class="top-nav-bar">
+        <button class="modal-trigger-btn" onclick="openModal('modal-words')">
+            📘 جَدْوَلُ الْكَلِمَاتِ الصَّعْبَةِ (32 كَلِمَةً) | Сложные слова
+        </button>
+        <button class="modal-trigger-btn colloc" onclick="openModal('modal-colloc')">
+            📙 جَدْوَلُ الْعِبَارَاتِ وَالْمُتَلاَزِمَاتِ (18 عِبَارَةً) | Фразы и выражения
+        </button>
+    </div>
+
+    <!-- Screen 1: Welcome Screen -->
+    <div id="welcome-screen" class="welcome-card">
+        <div class="welcome-icon">🌱</div>
+        <h1>إِخْتِبَارُ مَقْطَعِ (عَائِلَةُ الْخَيْرِ - أَنَا أُحِبُّ اللَّهَ) التَّفَاعُلِيِّ</h1>
+        <h2 class="subtitle">Интерактивный тест по видеоролику «Семья добра: Я люблю Аллаха»</h2>
+
+        <div class="level-badge">
+            الْمُسْتَوَى: الْمُبْتَدِئُ الثَّانِي (A2) وَالْمُتَوَسِّطُ الْأَوَّلُ (B1)
+        </div>
+
+        <div style="background: #f8f9fa; border-radius: 10px; padding: 15px; margin: 15px 0; border-right: 4px solid var(--secondary-color); text-align: right;">
+            <p style="font-weight: bold; font-size: 1.05rem; color: var(--primary-color);">مَعْلُومَاتُ الِاخْتِبَارِ | Информация о тесте:</p>
+            <p style="color: var(--text-light); font-size: 0.95rem; margin-top: 5px;">
+                7 أَقْسَامٍ تَفَاعُلِيَّةٍ | كُلُّ قِسْمٍ يَتَكَوَّنُ مِنْ 15 سُؤَالًا (الإِجْمَالِيُّ 105 نُقَاطٍ).
+                <br>
+                <span style="direction: ltr; display: block; margin-top: 3px;">7 интерактивных разделов по 15 вопросов каждый (Всего 105 баллов).</span>
+            </p>
+        </div>
+
+        <div class="input-group">
+            <label style="font-weight: bold; font-size: 1.05rem;">الرَّجَاءُ كِتَابَةُ اسْمِكِ هُنَا لِلْبَدْءِ:</label>
+            <label style="font-size: 0.9rem; color: var(--text-light); direction: ltr; display: block;">Пожалуйста, введите ваше имя для начала:</label>
+            <input type="text" id="student-name" class="input-name" placeholder="اسْمُكِ هُنَا / Ваше имя">
+        </div>
+
+        <button class="btn" id="start-btn" onclick="startQuiz()">ابْدَئِي الِاخْتِبَارَ | Начать тест</button>
+    </div>
+
+    <!-- Screen 2: Quiz Area -->
+    <div id="quiz-area" class="hidden">
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div class="section-header">
+            <h2 id="section-title">عنوان القسم</h2>
+            <p id="section-translation">Раздел</p>
+        </div>
+
+        <div id="questions-container">
+            <!-- Questions rendered via JS -->
+        </div>
+
+        <div class="nav-controls">
+            <button class="btn-nav btn-prev" id="prev-btn" onclick="prevSection()">الْقِسْمُ السَّابِقُ | Назад</button>
+            <button class="btn-nav btn-next" id="next-btn" onclick="nextSection()">الْقِسْمُ التَّالِي | Далее</button>
+        </div>
+    </div>
+
+    <!-- Screen 3: Result Screen -->
+    <div id="result-screen" class="welcome-card hidden">
+        <div class="welcome-icon">🏆</div>
+        <h1>نَتِيجَةُ الِاخْتِبَارِ التَّفَاعُلِيِّ</h1>
+        <p class="subtitle" id="student-display-name">الطَّالِبَةُ:</p>
+
+        <div style="background: #f8f9fa; border-radius: 12px; padding: 25px; margin: 20px 0; border: 2px solid var(--border-color);">
+            <h2 style="font-size: 2.2rem; color: var(--secondary-color);" id="score-value">0 / 90</h2>
+            <p style="font-size: 1.1rem; color: var(--text-light); margin-top: 8px;" id="percentage-value">النِّسْبَةُ الْمِئَوِيَّةُ: 0%</p>
+            <div id="feedback-msg" style="margin-top: 15px; font-weight: bold; font-size: 1.1rem;"></div>
+        </div>
+
+        <p style="font-size: 0.9rem; color: #e67e22; margin-bottom: 20px;">* ملاحظة: قسم الكتابة الإنشاء (15 درجة) يُقَيَّمُ يَدْوِيًّا من المعلمة ولا يدخل في العلامة التلقائية (90 درجة).</p>
+
+        <button class="btn" onclick="restartQuiz()">إِعَادَةُ الِاخْتِبَارِ | Пройти заново</button>
+    </div>
+
+</div>
+
+<!-- Modal Window 1: Difficult Words Table -->
+<div class="modal-overlay" id="modal-words">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>📘 جَدْوَلُ الْكَلِمَاتِ الصَّعْبَةِ (32 كَلِمَةً) | Таблица сложных слов</h3>
+            <div class="modal-actions">
+                <button class="btn-print" onclick="window.print()">🖨️ طباعة الجدول | Печать</button>
+                <button class="btn-close" onclick="closeModal('modal-words')">✖ إغلاق | Закрыть</button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <table class="vocab-table words-table">
+                <thead>
+                    <tr>
+                        <th style="width: 26%;">الجُمْلَةُ فِي المَقْطَعِ (الكلمة بارزة)</th>
+                        <th style="width: 14%;">الكَلِمَةُ المُجَرَّدَةُ</th>
+                        <th style="width: 18%;">Перевод (الترجمة)</th>
+                        <th style="width: 20%;">الشَّرْحُ بِالعَرَبِيَّةِ البَسِيطَةِ</th>
+                        <th style="width: 22%;">الجُمْلَةُ الجَدِيدَةُ (A2/B1)</th>
+                    </tr>
+                </thead>
+                <tbody id="words-table-body">
+                    <!-- Populated via JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Window 2: Phrases & Collocations Table -->
+<div class="modal-overlay" id="modal-colloc">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>📙 جَدْوَلُ الْعِبَارَاتِ وَالْمُتَلاَزِمَاتِ (18 عِبَارَةً) | Фразы и выражения</h3>
+            <div class="modal-actions">
+                <button class="btn-print" onclick="window.print()">🖨️ طباعة الجدول | Печать</button>
+                <button class="btn-close" onclick="closeModal('modal-colloc')">✖ إغلاق | Закрыть</button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <table class="vocab-table colloc-table">
+                <thead>
+                    <tr>
+                        <th style="width: 26%;">الجُمْلَةُ فِي المَقْطَعِ (العبارة بارزة)</th>
+                        <th style="width: 16%;">العِبَارَةُ / المُتَلاَزِمَةُ</th>
+                        <th style="width: 18%;">Перевод (الترجمة)</th>
+                        <th style="width: 20%;">الشَّرْحُ بِالعَرَبِيَّةِ البَسِيطَةِ</th>
+                        <th style="width: 20%;">الجُمْلَةُ الجَدِيدَةُ (A2/B1)</th>
+                    </tr>
+                </thead>
+                <tbody id="colloc-table-body">
+                    <!-- Populated via JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* Vocabulary Tables Data */
+    const difficultWordsData = [["كَلَّفَنَا الْمُعَلِّمُ بِحِفْظِ خَمْسَةِ أَسْمَاءٍ مِنْ <span class='hl-word'>أَسْمَاءِ اللَّهِ الْحُسْنَى</span>.", "يُكَلِّفُ", "Поручать / Давать задание", "يَطْلُبُ عَمَلًا أَوْ وَاجِبًا مِنْ شَخْصٍ مَا", "<b>يُكَلِّفُ</b> الْمُعَلِّمُ الطُّلاَّبَ بِقِرَاءَةِ كِتَابٍ جَدِيدٍ."], ["مَنْ <span class='hl-word'>أَحْصَاهَا</span> دَخَلَ الْجَنَّةَ.", "يُحْصِي / يَحْفَظُ", "Знать / Понимать и хранить в памяти", "يَحْفَظُ الشَّيْءَ فِي صَدْرِهِ وَيَفْهَمُ مَعْنَاهُ", "<b>يَحْفَظُ</b> الطَّالِبُ الذَّكِيُّ الدُّرُوسَ بِسُهُولَةٍ."], ["وَ<span class='hl-word'>تَفَكَّرَ</span> فِي مَعَانِيهَا وَعَرَفَهَا يَا بُنَيَّ.", "يَتَفَكَّرُ", "Размышлять / Размышлять глубоко", "يُفَكِّرُ بِعُمْقٍ وَهُدُوءٍ فِي الشَّيْءِ", "<b>يَتَفَكَّرُ</b> الْمُسْلِمُ فِي خَلْقِ السَّمَاوَاتِ وَالأَرْضِ."], ["أُحِبُّ أُمِّي لِأَنَّهَا <span class='hl-word'>تَرْعَانِي</span> وَتَحْنُو عَلَيَّ.", "يَرْعَى", "Заботиться / Опекать", "يَهْتَمُّ بِالشَّخْصِ وَيُقَدِّمُ لَهُ الْعِنَايَةَ", "<b>تَرْعَى</b> الأُمُّ أَطْفَالَهَا بِحُبٍّ وَعَطَفٍ."], ["أُحِبُّ أُمِّي لِأَنَّهَا تَرْعَانِي وَ<span class='hl-word'>تَحْنُو</span> عَلَيَّ.", "يَحْنُو", "Проявлять нежность и милосердие", "يُعَامِلُ الآخَرِينَ بِرِقَّةٍ وَعَطْفٍ كَبِيرٍ", "<b>يَحْنُو</b> الأَبُ عَلَى أَبْنَائِهِ الصِّغَارِ."], ["هَذَا <span class='hl-word'>يُقَرِّبُنَا</span> مِنَ اللَّهِ وَيَجْعَلُنَا نَشْعُرُ بِمَحَبَّتِهِ.", "يُقَرِّبُ", "Приближать / Делать ближе", "يَجْعَلُ الْمَسَافَةَ أَوْ الْعَلاَقَةَ أَقْرَبَ", "الْعَمَلُ الصَّالِحُ <b>يُقَرِّبُ</b> الإِنْسَانَ مِنَ الْجَنَّةِ."], ["إِنَّ اللَّهَ هُوَ <span class='hl-word'>الرَّازِقُ</span> فَيَرْزُقُ الْعُصْفُورَ.", "الرَّازِقُ", "Дарующий пропитание (Имя Аллаха)", "الَّذِي يُعْطِي الطَّعَامَ وَالرِّزْقَ لِكُلِّ المَخْلُوقَاتِ", "اللَّهُ هُوَ <b>الرَّازِقُ</b> الَّذِي يُطْعِمُ الطَّيْرَ فِي السَّمَاءِ."], ["بِمَاذَا يُذَكِّرُكَ هَذَا الْجَبَلُ <span class='hl-word'>الشَّاهِقُ</span>؟", "شَاهِقٌ", "Высокий / Возвышающийся", "عَالٍ جِدًّا وَمُرْتَفِعٌ كَبِيرٌ", "رَأَيْتُ جَبَلًا <b>شَاهِقًا</b> تُغَطِّيهِ الثُّلُوجُ."], ["وَإِلَى الْجِبَالِ كَيْفَ <span class='hl-word'>نُصِبَتْ</span>.", "يَنْصِبُ / تُنْصَبُ", "Устанавливать / Воздвигать", "تُثَبَّتُ فِي الأَرْضِ بِقُوَّةٍ وَارْتِفَاعٍ", "<b>تُنْصَبُ</b> الْخِيَامُ فِي الْمُخَيَّمِ الصَّيْفِيِّ."], ["أَعْدَدْتُ لَكُمَا <span class='hl-word'>شَطَائِرَ</span> لَذِيذَةً وَعَصَائِرَ طَازَجَةً.", "شَطِيرَةٌ", "Бутерброд / Сэндвич", "طَعَامٌ خَفِيفٌ يُوضَعُ بَيْنَ قِطْعَتَيْنِ مِنَ الْخُبْزِ", "أَكَلْتُ <b>شَطِيرَةَ</b> جُبْنٍ مَعَ الْغَدَاءِ."], ["الشَّرْحُ كَانَ <span class='hl-word'>سَلْسًا</span> وَسَهْلًا.", "سَلْسٌ", "Гладкий / Понятный и легкий", "سَهْلٌ وَواضِحٌ لاَ صُعُوبَةَ فِيهِ", "قَرَأْتُ كِتَابًا كَانَ أُسْلُوبُهُ <b>سَلْسًا</b> جِدًّا."], ["قِيَمٌ مِنْ أَجْلِهَا <span class='hl-word'>نَلْتَقِي</span>.", "يَلْتَقِي", "Встречаться / Собираться вместе", "يَجْتَمِعُ مَعَ الأَصْحَابِ أَوْ الأَهْلِ", "<b>يَلْتَقِي</b> الأَصْدِقَاءُ فِي الْمَسْجِدِ كُلَّ يَوْمٍ."], ["قِيَمٌ بِهَا <span class='hl-word'>نَتَحَلَّى</span>.", "يَتَحَلَّى", "Украшаться (хорошими качествами)", "يَتَزَيَّنُ بِالأَخْلاَقِ الْحَسَنَةِ وَالصِّفَاتِ الطَّيِّبَةِ", "<b>يَتَحَلَّى</b> الْمُسْلِمُ بِالصِّدْقِ وَالأَمَانَةِ."], ["وَثِمَارُهَا <span class='hl-word'>تَتَجَلَّى</span> فِي حَيَاتِنَا.", "يَتَجَلَّى", "Проявляться / Становиться явным", "يَظْهَرُ بِوُضُوحٍ وَيَكُونُ مَرِئِيًّا", "<b>تَتَجَلَّى</b> حِكْمَةُ اللَّهِ فِي طَبِيعَةِ الْكَوْنِ."], ["مَعَهَا <span class='hl-word'>نَصْعَدُ</span> لِلْقِمَّةِ.", "يَصْعَدُ", "Подниматься / Всходить", "يَرْتَفِعُ إِلَى الأَعْلَى", "<b>يَصْعَدُ</b> الطَّالِبُ الْمُجْتَهِدُ إِلَى المَرَاكِزِ الأُولَى."], ["لِي بِرَسُولِ اللَّهِ <span class='hl-word'>أُسْوَةٌ</span> حَسَنَةٌ.", "أُسْوَةٌ", "Пример для подражания / Образец", "قُدْوَةٌ وَمِثَالٌ يُتَّبَعُ فِي الْخَيْرِ", "الرَّسُولُ كَانَ <b>أُسْوَةً</b> حَسَنَةً لِكُلِّ النَّاسِ."], ["وَمَا مِنْ <span class='hl-word'>دَابَّةٍ</span> فِي الأَرْضِ إِلاَّ عَلَى اللَّهِ رِزْقُهَا.", "دَابَّةٌ", "Живое существо / Животное", "كُلُّ كَائِنٍ حَيٍّ يَدِبُّ وَيَمْشِي عَلَى الأَرْضِ", "يَرْزُقُ اللَّهُ كُلَّ <b>دَابَّةٍ</b> فِي الْغَابَةِ."], ["أَدْعُوهُ فِي <span class='hl-word'>السَّرَّاءِ</span> وَالضَّرَّاءِ.", "السَّرَّاءُ", "Благоденствие / Радость", "أَوْقَاتُ الْفَرَحِ وَالسَّعَادَةِ وَالرَّخَاءِ", "يَشْكُرُ الْمُؤْمِنُ رَبَّهُ فِي <b>السَّرَّاءِ</b>."], ["أَدْعُوهُ فِي السَّرَّاءِ وَ<span class='hl-word'>الضَّرَّاءِ</span>.", "الضَّرَّاءُ", "Невзгоды / Трудности", "أَوْقَاتُ الشِّدَّةِ وَالْمَرَضِ وَالْحُزْنِ", "يَصْبِرُ الْمُسْلِمُ وَيَدْعُو رَبَّهُ فِي <b>الضَّرَّاءِ</b>."], ["ذِكْرُهُ عَلَى لِسَانِي مَنْبَعُهُ مِنْ <span class='hl-word'>وِجْدَانِي</span>.", "وِجْدَانٌ", "Душа / Внутренние чувства", "الْقَلْبُ وَالْمَشَاعِرُ الدَّاخِلِيَّةُ الصَّادِقَةُ", "يَشْعُرُ بِالْفَرَحِ فِي <b>وِجْدَانِهِ</b> عِنْدَ فِعْلِ الْخَيْرِ."], ["فَلَقَدْ <span class='hl-word'>أَدْهَشَنِي</span> عَبْدُ اللَّهِ فِي التَّحَدِّي.", "يُدْهِشُ", "Удивлять / Изумлять", "يَجْعَلُ الشَّخْصَ يَتَعَجَّبُ بِسَبَبِ التَّفَوُّقِ", "<b>يُدْهِشُ</b> الطَّالِبُ الذَّكِيُّ مَعَلِّمَهُ بِإِجَابَاتِهِ."], ["لَدَيَّ <span class='hl-word'>تَحَدٍّ</span> جَدِيدٌ فِي الْمَدْرَسَةِ.", "تَحَدٍّ", "Испытание / Челлендж / Соревнование", "مُسَابَقَةٌ أَوْ عَمَلٌ صَعْبٌ يُطْلَبُ إِتْقَانُهُ", "دَخَلَ الطُّلاَّبُ فِي <b>تَحَدٍّ</b> لِقِرَاءَةِ الْقُرْآنِ."], ["نَجْلِسُ فِي الْحَدِيقَةِ حَيْثُ الْهَوَاءُ <span class='hl-word'>الْمُنْعِشُ</span>.", "مُنْعِشٌ", "Освежающий / Бодрящий", "يُعْطِي النَّشَاطَ وَالرَّاحَةَ لِلْجِسْمِ", "شَرِبْتُ كُوبَ مَاءٍ <b>مُنْعِشٍ</b> فِي الصَّيْفِ."], ["بِالْقِيَمِ <span class='hl-word'>نَرْتَقِي</span> وَنَلْتَقِي.", "يَرْتَقِي", "Развиваться / Возвышаться", "يَرْتَفِعُ فِي الْمَقَامِ وَيَصِيرُ أَفْضَلَ", "<b>يَرْتَقِي</b> الإِنْسَانُ بِالأَخْلاَقِ الْحَسَنَةِ."], ["هَذَا الرَّسْمُ <span class='hl-word'>مُذْهِلٌ</span> وَرَائِعٌ.", "مُذْهِلٌ", "Удивительный / Потрясающий", "عَجِيبٌ وَجَمِيلٌ جِدًّا يَسُرُّ الْمَنْظَرَ", "شَاهَدْنَا مَنْظَرًا <b>مُذْهِلًا</b> لِلْغُرُوبِ."], ["اعْمَلِي فِي <span class='hl-word'>صَمْتٍ</span> حَتَّى أَنْتَهِيَ.", "صَمْتٌ", "Тишина / Молчание", "الْهُدُوءُ وَعَدَمُ التَّكَلُّمِ أَوْ إِصْدَارِ صَوْتٍ", "يَقْرَأُ الطُّلاَّبُ فِي الْمَكْتَبَةِ بِـ<b>صَمْتٍ</b>."], ["أَنَا <span class='hl-word'>فَخُورَةٌ</span> بِكَ يَا بُنَيَّ.", "فَخُورٌ", "Гордый / Гордящийся", "شَاعِرٌ بِالرِّضَا وَالاعْتِزَازِ بِنَجَاحِ آخَرَ", "الأَبُ <b>فَخُورٌ</b> بِبِنْتِهِ الْمُتَفَوِّقَةِ."], ["أَحْمَدُهُ عَلَى النِّعَمِ وَ<span class='hl-word'>أُسَبِّحُهُ</span> دَوْمًا.", "يُسَبِّحُ", "Восхвалять Аллаха / Произносить «Субханаллах»", "يَذْكُرُ اللَّهَ وَيَقُولُ سُبْحَانَ اللَّهِ", "<b>يُسَبِّحُ</b> الْمُؤْمِنُ رَبَّهُ بَعْدَ كُلِّ صَلاَةٍ."], ["نَحْمَدُهُ فِي عُلاَهُ وَ<span class='hl-word'>نَسْتَعِينُ</span> بِهِ.", "يَسْتَعِينُ", "Просить о помощи / Искать помощи", "يَطْلُبُ الْمُسَاعَدَةَ وَالْعَوْنَ مِنَ اللَّهِ", "<b>يَسْتَعِينُ</b> الْمُسْلِمُ بِاللَّهِ فِي كُلِّ أُمُورِهِ."], ["هَيَّا نَجْلِسُ لِـ<span class='hl-word'>نَسْتَرِيحَ</span> وَنَتَحَادَثَ.", "يَسْتَرِيحُ", "Отдыхать / Пересаживаться", "يَأْخُذُ قِسْطًا مِنَ الرَّاحَةِ بَعْدَ التَّعَبِ", "<b>يَسْتَرِيحُ</b> الْعَامِلُ بَعْدَ يَوْمٍ طَوِيلٍ."], ["نَحْنُ غِرَاسٌ طَيِّبَةٌ وَ<span class='hl-word'>ثِمَارُهَا</span> تَتَجَلَّى.", "ثَمَرَةٌ / ثِمَارٌ", "Плоды / Результаты", "الْمَحْصُولُ أَوْ النَّتَائِجُ الطَّيِّبَةُ لِلْعَمَلِ", "النَّجَاحُ هُوَ <b>ثَمَرَةُ</b> الاِجْتِهَادِ فِي الدِّرَاسَةِ."], ["هَيَّا بِـ<span class='hl-word'>فِطْرَتِنَا</span> السَّلِيمَةِ نَغْرِسُ قِيمَةً.", "فِطْرَةٌ", "Врожденная природа / Естество", "الطَّبِيعَةُ النَّقِيَّةُ الَّتِي خَلَقَنَا اللَّهُ عَلَيْهَا", "الْمَوْلُودُ يُولَدُ عَلَى <b>الْفِطْرَةِ</b> السَّلِيمَةِ."]];
+    const collocationsData = [["مَنْ <span class='hl-word'>أَحْصَاهَا دَخَلَ الْجَنَّةَ</span>.", "أَحْصَاهَا دَخَلَ الْجَنَّةَ", "Запомнил их и вошел в Рай", "حَفِظَ أَسْمَاءَ اللَّهِ وَفَهِمَهَا فَنَالَ الْجَنَّةَ", "الْمُسْلِمُ الصَّالِحُ إِذَا <b>أَحْصَاهَا دَخَلَ الْجَنَّةَ</b>."], ["فَلَقَدْ أَوْصَانَا الرَّسُولُ بِـ<span class='hl-word'>أَسْمَاءِ اللَّهِ الْحُسْنَى</span>.", "أَسْمَاءِ اللَّهِ الْحُسْنَى", "Прекрасные Имена Аллаха", "أَسْمَاءُ اللَّهِ المَبَارَكَةُ الَّتِي نَدْعُوهُ بِهَا", "نَتَعَلَّمُ كُلَّ يَوْمٍ مِنْ <b>أَسْمَاءِ اللَّهِ الْحُسْنَى</b>."], ["فَقَالَ تَعَالَى: <span class='hl-word'>وَلِلَّهِ الأَسْمَاءُ الْحُسْنَى</span> فَادْعُوهُ بِهَا.", "وَلِلَّهِ الأَسْمَاءُ الْحُسْنَى", "У Аллаха Прекрасные Имена", "آيَةٌ كَرِيمَةٌ تَبَيِّنُ أَنَّ الأَسْمَاءَ الحُسْنَى لِلَّهِ", "نَتَفَكَّرُ فِي المَعْنَى فَـ<b>وَلِلَّهِ الأَسْمَاءُ الْحُسْنَى</b>."], ["أَعْدَدْتُ لَكُمَا <span class='hl-word'>عَصَائِرَ طَازَجَةً</span> وَشَطَائِرَ.", "عَصَائِرَ طَازَجَةً", "Свежие соки", "مَشْرُوبَاتٌ لَذِيذَةٌ أُعِدَّتْ قَرِيبًا", "نَشْرَبُ فِي الصَّبَاحِ <b>عَصَائِرَ طَازَجَةً</b>."], ["فَقَدْ سَمِعْتُ قَوْلَهُ: <span class='hl-word'>وَمَا مِنْ دَابَّةٍ فِي الأَرْضِ</span> إِلاَّ عَلَى اللَّهِ رِزْقُهَا.", "وَمَا مِنْ دَابَّةٍ فِي الأَرْضِ", "И нет ни одного живого существа на земле", "تَعْبِيرٌ شَرِيعِيٌّ يَعْنِي كُلَّ كَائِنٍ يَمْشِي", "يَرْزُقُ اللَّهُ <b>وَمَا مِنْ دَابَّةٍ فِي الأَرْضِ</b>."], ["بِمَاذَا يُذَكِّرُكَ هَذَا <span class='hl-word'>الْجَبَلُ الشَّاهِقُ</span>؟", "الْجَبَلُ الشَّاهِقُ", "Высокая / Возвышающаяся гора", "جَبَلٌ عَالٍ جِدًّا يَظْهَرُ فِيهِ كِبَرُ الْخَلْقِ", "شَاهَدْنَا <b>الْجَبَلَ الشَّاهِقَ</b> مِنْ بَعِيدٍ."], ["أَدْعُوهُ فِي <span class='hl-word'>السَّرَّاءِ وَالضَّرَّاءِ</span>.", "السَّرَّاءِ وَالضَّرَّاءِ", "В радости и в горе / В любых обстоятельствах", "فِي كُلِّ الأَوْقَاتِ بَيْنَ الْفَرَحِ وَالْحُزْنِ", "يَدْعُو الْمُؤْمِنُ رَبَّهُ فِي <b>السَّرَّاءِ وَالضَّرَّاءِ</b>."], ["أَنَا الْمُسْلِمُ الصَّغِيرُ <span class='hl-word'>غَرْسٌ أَخْضَرُ</span> بِالْخَيْرِ.", "غَرْسٌ أَخْضَرُ", "Зеленый росток / Молодое растение", "تَشْبِيهٌ لِلطِّفْلِ الْمُسْلِمِ بِالنَّبَاتِ الصَّغِيرِ الطَّيِّبِ", "الطِّفْلُ الصَّالِحُ <b>غَرْسٌ أَخْضَرُ</b> فِي الْمُجْتَمَعِ."], ["لِي بِرَسُولِ اللَّهِ أُسْوَةٌ <span class='hl-word'>عَلَى سُنَّتِهِ يَكُونُ السَّيْرُ</span>.", "عَلَى سُنَّتِهِ يَكُونُ السَّيْرُ", "Следование его Сунне (пути)", "اتِّبَاعُ طَرِيقَةِ النَّبِيِّ ﷺ فِي الْحَيَاةِ", "نَتَعَلَّمُ الدِّينَ وَ<b>عَلَى سُنَّتِهِ يَكُونُ السَّيْرُ</b>."], ["أَحْفَظُ أَسْمَاءَهُ وَ<span class='hl-word'>أَسْعَى لِرِضَاهُ</span>.", "أَسْعَى لِرِضَاهُ", "Стремлюсь к Его довольству", "أَعْمَلُ جَاهِدًا لِكَيْ يَكُونَ اللَّهُ رَاضِيًا عَنِّي", "أُطِيعُ وَالِدَيَّ وَ<b>أَسْعَى لِرِضَاهُ</b>."], ["ذِكْرُهُ عَلَى لِسَانِي <span class='hl-word'>مَنْبَعُهُ مِنْ وِجْدَانِي</span>.", "مَنْبَعُهُ مِنْ وِجْدَانِي", "Его источник — из моего сердца/души", "الذِّكْرُ الصَّادِقُ الَّذِي يَخْرُجُ مِنْ أَعْمَاقِ الْقَلْبِ", "يَقْرَأُ الْقُرْآنَ بِحُبٍّ <b>مَنْبَعُهُ مِنْ وِجْدَانِي</b>."], ["أَنَا الْمُسْلِمُ الصَّغِيرُ <span class='hl-word'>بِقَلْبِي حُبٌّ كَبِيرٌ</span>.", "بِقَلْبِي حُبٌّ كَبِيرٌ", "В моем сердце большая любовь", "تَعْبِيرٌ عَنِ الشُّعُورِ بِالمَحَبَّةِ الْعَظِيمَةِ لِلَّهِ", "أَتَذَكَّرُ نِعَمَ اللَّهِ وَ<b>بِقَلْبِي حُبٌّ كَبِيرٌ</b>."], ["قِصَصٌ فِي الْخَيْرِ تَجْمَعُنَا <span class='hl-word'>خَطَوَاتٌ لِلْجَنَّةِ</span>.", "خَطَوَاتٌ لِلْجَنَّةِ", "Шаги к Раю", "الأَعْمَالُ الصَّالِحَةُ الَّتِي تُقَرِّبُ الإِنْسَانَ مِنَ الجَنَّةِ", "حِفْظُ القُرْآنِ وَالصَّدَقَةُ <b>خَطَوَاتٌ لِلْجَنَّةِ</b>."], ["اعْمَلِي <span class='hl-word'>فِي صَمْتٍ</span> رَيْثَمَا انْتَهِي.", "فِي صَمْتٍ", "В тишине / Молча", "بِهُدُوءٍ تَامٍّ دُونَ إِصْدَارِ كَلاَمٍ أَوْ صَوْتٍ", "يَدْرُسُ الطُّلاَّبُ فِي المَكْتَبَةِ <b>فِي صَمْتٍ</b>."], ["لِتَعْرِفُوا اللَّهَ <span class='hl-word'>حَقَّ الْمَعْرِفَةِ</span>.", "حَقَّ الْمَعْرِفَةِ", "Истинное / Полное познание", "مَعْرِفَةٌ كَامِلَةٌ صَادِقَةٌ قَائِمَةٌ عَلَى الفَهْمِ", "نَقْرَأُ الكِتَابَ لِنَعْرِفَ المَوْضُوعَ <b>حَقَّ الْمَعْرِفَةِ</b>."], ["قِيَمٌ <span class='hl-word'>بِفِطْرَتِنَا السَّلِيمَةِ</span> نَغْرِسُهَا.", "بِفِطْرَتِنَا السَّلِيمَةِ", "С нашей чистой врожденной природой", "بِالطَّبِيعَةِ النَّقِيَّةِ الَّتِي خَلَقَنَا اللَّهُ عَلَيْهَا", "نُحِبُّ الخَيْرَ <b>بِفِطْرَتِنَا السَّلِيمَةِ</b>."], ["نَحْنُ <span class='hl-word'>عَائِلَةُ خَيْرٍ</span> بِالْقِيَمِ نَلْتَقِي.", "عَائِلَةُ خَيْرٍ", "Благочестивая / Добрая семья", "أُسْرَةٌ مُتَحَابَّةٌ تُحِبُّ العَمَلَ الصَّالِحَ", "تَجْتَمِعُ <b>عَائِلَةُ خَيْرٍ</b> عَلَى طَاعَةِ اللَّهِ."], ["أَحْمَدُهُ عَلَى النِّعَمِ وَ<span class='hl-word'>أُسَبِّحُهُ دَوْمًا</span>.", "أُسَبِّحُهُ دَوْمًا", "Восхваляю Его всегда", "المُوَاظَبَةُ عَلَى ذِكْرِ اللَّهِ وَتَسْبِيحِهِ بِاسْتِمْرَارٍ", "أَبْدَأُ يَوْمِي بِذِكْرِ اللَّهِ وَ<b>أُسَبِّحُهُ دَوْمًا</b>."]];
+
+    /* Quiz Sections Data */
+    const section1Data = [["مَا هُوَ التَّحَدِّي الَّذِي كَلَّفَ الْمُعَلِّمُ بِهِ عَبْدَ اللَّهِ فِي الْمَدْرَسَةِ؟", ["حِفْظُ خَمْسَةِ أَسْمَاءٍ مِنْ أَسْمَاءِ اللَّهِ الْحُسْنَى", "قِرَاءَةُ قِصَّةٍ كَامِلَةٍ فِي الْمَكْتَبَةِ", "كِتَابَةُ قَصِيدَةٍ عَنِ الْأُمِّ", "رَسْمُ جَبَلٍ شَاهِقٍ فِي كُرَّاسِهِ"], 0, "Какое задание дала учительница Абдулле в школе?"], ["كَمْ عَدَدُ أَسْمَاءِ اللَّهِ الْحُسْنَى الَّتِي ذَكَرَهَا الْحَدِيثُ الشَّرِيفُ؟", ["تِسْعُونَ اسْمًا فَقَطْ", "تِسْعَةٌ وَتِسْعُونَ اسْمًا (مِئَةٌ إِلَّا وَاحِدًا)", "خَمْسُونَ اسْمًا", "مِئَةُ اسْمٍ كَامِلَةٍ"], 1, "Сколько Прекрасных Имен Аллаха упоминается в благородном хадисе?"], ["مَا مَعْنَى «أَحْصَاهَا» كَمَا شَرَحَهَا الْأَبُ لِأَبْنَائِهِ؟", ["كَتَبَهَا عَلَى الْوَرَقِ ثَلاَثَ مَرَّاتٍ", "قَرَأَهَا مَرَّةً وَاحِدَةً فِي الْمَسْجِدِ", "حَفِظَهَا فِي صَدْرِهِ وَتَفَكَّرَ فِي مَعَانِيهَا", "اشْتَرَى كِتَابًا يَتَحَدَّثُ عَنْهَا"], 2, "Что означает «Запомнил их (Ахсаха)», как объяснил отец своим детям?"], ["أَيْنَ قَرَّرَتِ الْعَائِلَةُ الْجُلُوسَ لِلْمُذَاكَرَةِ وَشَرْحِ أَسْمَاءِ اللَّهِ الْحُسْنَى؟", ["فِي الْمَطْبَخِ أَمَامَ الْفُرْنِ", "فِي الْمَكْتَبَةِ الْعَامَّةِ", "فِي غُرْفَةِ النَّوْمِ", "فِي حَدِيقَةِ الْبَيْتِ حَيْثُ الْهَوَاءُ الْمُنْعِشُ"], 3, "Где семья решила сесть, чтобы повторять и объяснять Прекрасные Имена Аллаха?"], ["لِمَاذَا يُحِبُّ عَبْدُ اللَّهِ وَرَهَفُ أُمَّهُمَا كَمَا قَالَ الْأَبُ؟", ["لِأَنَّهَا تَرْعَاهُمَا وَتَحْنُو عَلَيْهِمَا وَتُحِبُّهُمَا", "لِأَنَّهَا تَشْتَرِي لَهُمَا الأَلْعَابَ كُلَّ يَوْمٍ", "لِأَنَّهَا تَلْعَبُ مَعَهُمَا كُرَةَ الْقَدَمِ", "لِأَنَّهَا تُسَافِرُ مَعَهُمَا فِي الْعُطْلَةِ"], 0, "Почему Абдулла и Рахаф любят свою маму, как сказал отец?"], ["بِمَاذَا يُذَكِّرُ الْعُصْفُورُ عَبْدَ اللَّهِ مِنْ أَسْمَاءِ اللَّهِ الْحُسْنَى؟", ["بِأَنَّ اللَّهَ هُوَ الْخَالِقُ وَالرَّازِقُ الَّذِي يَرْزُقُ الطَّيْرَ", "بِأَنَّ اللَّهَ هُوَ الْعَفُوُّ الَّذِي يَغْفِرُ الذُّنُوبَ", "بِأَنَّ اللَّهَ هُوَ الْقَوِيُّ الَّذِي يَهْزِمُ الْأَعْدَاءَ", "بِأَنَّ اللَّهَ هُوَ السَّمِيعُ الَّذِي يَسْمَعُ الْكَلَامَ"], 0, "О каком Имени Аллаха напоминает птичка Абдулле?"], ["بِمَاذَا يُذَكِّرُ الْجَبَلُ الشَّاهِقُ الْأَبَ مِنْ أَسْمَاءِ اللَّهِ؟", ["بِأَنَّ اللَّهَ هُوَ السَّلَامُ الْمُؤْمِنُ", "بِأَنَّ اللَّهَ هُوَ الرَّحْمَنُ الرَّحِيمُ", "بِأَنَّ اللَّهَ هُوَ الْغَفُورُ الشَّكُورُ", "بِأَنَّ اللَّهَ هُوَ الْقَوِيُّ الْجَبَّارُ"], 3, "О каком Имени Аллаха напоминает отцу высокая гоرا?"], ["مَاذَا أَعَدَّتِ الْأُمُّ لِلْأَوْلَادِ بَعْدَ انْتِهَاءِ الشَّرْحِ؟", ["شَطَائِرَ لَذِيذَةً وَعَصَائِرَ طَازَجَةً", "حَلْوَى السُّكَّرِ وَالْكَعْكَ", "أَرُزَّا مَعَ اللَّحْمِ المَشْوِيِّ", "فَوَاكِهَ مُجَفَّفَةً وَمَاءً بَارِدًا"], 0, "Что приготовила мама детям после окончания объяснения?"], ["مَا هِيَ الأَسْمَاءُ الخَمْسَةُ الَّتِي حَفِظَهَا عَبْدُ اللَّهِ وَكَرَّرَهَا لِأُمِّهِ؟", ["الْعَزِيزُ، الْجَبَّارُ، الْمُتَكَبِّرُ، الْخَالِقُ، الْبَارِئُ", "الْغَفُورُ، الشَّكُورُ، الْعَلِيُّ، الْكَبِيرُ، الْحَفِيظُ", "الرَّحْمَنُ، الْخَالِقُ، الْقَوِيُّ، الْجَبَّارُ، الرَّازِقُ", "الْمَلِكُ، الْقُدُّوسُ، السَّلَامُ، الْمُؤْمِنُ، الْمُهَيْمِنُ"], 2, "Какие пять Имен запомнил Абдулла и повторил своей маме?"], ["مَا النَّتِيجَةُ الَّتِي حَقَّقَهَا عَبْدُ اللَّهِ فِي التَّحَدِّي فِي الْمَدْرَسَةِ؟", ["نَسِيَ الْأَسْمَاءَ أَمَامَ الطُّلاَّبِ", "فَازَ بِالْمَرْكَزِ الْأَوَّلِ وَأَدْهَشَ مُعَلِّمَهُ وَزُمَلَاءَهُ", "تَأَخَّرَ عَنِ التَّسْلِيمِ وَلَمْ يَفُزْ", "حَفِظَ اسْمَيْنِ فَقَطْ وَاعْتَذَرَ لِلْمُعَلِّمِ"], 1, "Какой результат получил Абдулла в школьном челендже?"], ["مَا الآيَةُ الَّتِي اسْتَشْهَدَتْ بِهَا رَهَفُ عِنْدَ الْحَدِيثِ عَنْ رِزْقِ الْعُصْفُورِ؟", ["«الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ»", "«وَقُلْ رَبِّ زِدْنِي عِلْمًا»", "«إِنَّ مَعَ الْعُسْرِ يُسْرًا»", "«وَمَا مِنْ دَابَّةٍ فِي الْأَرْضِ إِلَّا عَلَى اللَّهِ رِزْقُهَا»"], 3, "Какую аят процитировала Рахаф, говоря про пропитание птички?"], ["مَا الآيَةُ الَّتِي اسْتَشْهَدَ بِهَا الْأَبُ عِنْدَ الْحَدِيثِ عَنِ الْجِبَالِ؟", ["«وَإِلَى الْجِبَالِ كَيْفَ نُصِبَتْ»", "«إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ»", "«اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ»", "«قُلْ هُوَ اللَّهُ أَحَدٌ»"], 0, "Какую аят процитировал отец, говоря про горы?"], ["مَاذَا كَانَتْ تَفْعَلُ رَهَفُ أثْنَاءَ شَرْحِ الأُمِّ لِأَخِيهَا عَبْدِ اللَّهِ؟", ["كَانَتْ تَكْتُبُ قِصَّةً جَدِيدَةً", "كَانَتْ تَلْعَبُ بِالْكُرَةِ فِي الشَّارِعِ", "كَانَتْ تُلَوِّنُ صُورَةَ الْجَبَلِ فِي صَمْتٍ", "كَانَتْ تَنَامُ فِي غُرْفَتِهَا"], 2, "Чем занималась Рахаф во время объяснения мамы Абдулле?"], ["مَاذَا قَرَّرَ عَبْدُ اللَّهِ وَمُعَلِّمُهُ أَنْ يَفْعَلُوا بَعْدَ فَوْزِهِ بالْمَرْكَزِ الأَوَّلِ؟", ["إِنْهَاءُ التَّحَدِّي وَالتَّوَقُّفُ عَنِ الْحِفْظِ", "الْبَدْءُ فِي مُسَابَقَةِ الرَّكْضِ فِي الْمَلْعَبِ", "مُتَابَعَة التَّحَدِّي حَتَّى يَحْفَظَ كُلُّ طُلاَّبِ الْفَصْلِ أَسْمَاءَ اللَّهِ كَامِلَةً", "السَّفَرُ فِي رِحْلَةٍ خَارِجَ الْمَدِينَةِ"], 2, "Что решили сделать Абдулла и его учитель после победы в соревновании?"], ["كَيْفَ كَانَ شُعُورُ الأُمِّ وَالأَبِ بَعْدَ نَجَاحِ عَبْدِ اللَّهِ فِي التَّحَدِّي؟", ["طَلَبَا مِنْهُ أَنْ يَتْرُكَ الْمَدْرَسَةَ", "شَعَرَا بِالْغَضَبِ وَالْحُزْنِ", "شَعَرَا بِالْفَخْرِ وَالسَّعَادَةِ الْبَالِغَةِ بِابْنِهِمَا", "لَمْ يَهْتَمَّا بِمَا حَدَثَ"], 2, "Что чувствовали мама и папа после успеха Абдуллы в соревновании?"]];
+    const section2Data = [["مَا مَعْنَى كَلِمَةِ «تَحْنُو» فِي جُمْلَةِ: «أُحِبُّ أُمِّي لِأَنَّهَا تَحْنُو عَلَيَّ»؟", ["تَصْرُخُ عَلَيَّ عِنْدَ الْغَضَبِ", "تُعَامِلُنِي بِالْعَطْفِ وَالرَّحْمَةِ وَالرِّقَّةِ", "تَسِيرُ بِبُطْءٍ فِي الشَّارِعِ", "تَطْلُبُ مِنِّي شِرَاءَ الطَّعَامِ"], 1, "Что означает слово «Тахну» в предложении «Я люблю маму, потому что она проявляет нежность ко мне»?"], ["عِبَارَةُ «جَبَلٌ شَاهِقٌ» تُعَبِّرُ عَنْ جَبَلٍ:", ["عَالٍ جِدًّا وَمُرْتَفِعٍ كَبِيرٍ", "مَغْمُورٍ فِي مِيَاهِ الْبَحْرِ", "صَغِيرٍ وَمُنْخَفِضٍ قَرِيبٍ مِنَ الأَرْضِ", "مَلِيءٍ بِالأَشْجَارِ الْخَضْرَاءِ فَقَطْ"], 0, "Выражение «Высокая гора (Джабаль шахик)» описывает гору:"], ["مَا المَقْصُودُ بِكَلِمَةِ «شَطَائِر» فِي جُمْلَةِ: «أَعْدَدْتُ لَكُمَا شَطَائِرَ لَذِيذَةً»؟", ["كُوُوب مِنَ الْعَصِيرِ الْبَارِدِ", "أَطْبَاق مِنَ الْفَوَاكِهِ الطَّازَجَةِ", "سَانْدَوِيتْشَات أَوْ قِطَع خُبْزٍ مَحْشُوَّة", "حَلْوَى مَطْبُوَخَة فِي الْفُرْنِ"], 2, "Что имеется в виду под словом «Шатаир» в предложении «Я приготовила вам вкусные сэндвичи»?"], ["مَا مَعْنَى «الشَّرْحُ كَانَ سَلْسًا»؟", ["كَانَ بِسُرْعَةٍ خَايَالِيَّةٍ", "كَانَ طَوِيلًا وَمُمِلًّا", "كَانَ سَهْلًا وَواضِحًا وَمَفْهُومًا بِسُهُولَةٍ", "كَانَ صَعْبًا وَمُعَقَّدًا جِدًّا"], 2, "Что означает «Объяснение было простыم (Сальсан)»?"], ["مَا مَعْنَى كَلِمَةِ «أُسْوَة» فِي جُمْلَةِ: «لِي بِرَسُولِ اللَّهِ أُسْوَةٌ»؟", ["كِتَابٌ أَقْرَأُ فِيهِ", "مُعَلِّمٌ فِي الْمَدْرَسَةِ", "قُدْوَةٌ حَسَنَةٌ وَمِثَالٌ يُتَّبَعُ", "صَدِيقٌ يَلْعَبُ مَعِي"], 2, "Что означает слово «Усва» в предложении «Посланник Аллаха для меня — пример для подражания»?"], ["مَا المَقْصُودُ بِـ «السَّرَّاءِ وَالضَّرَّاءِ»؟", ["الصَّبَاح والْمَسَاء فَقَطْ", "فَصْل الصَّيْف وَفَصْل الشِّتَاءِ", "أَوْقَات الْفَرَحِ وَأَوْقَات الشِّدَّةِ وَالْحُزْنِ", "الْمَدْرَسَة وَالْبَيْت"], 2, "Что имеется в виду под «Сарра и Дарра»?"], ["مَا مَعْنَى كَلِمَةِ «غَرْس» فِي أُغْنِيَةِ: «أَنَا الْمُسْلِمُ الصَّغِيرُ غَرْسٌ أَخْضَرُ»؟", ["نَبَات أَوْ نَبْتَة صَغِيرَة طَيِّبَة", "عُصْفُور يَطِيرُ فِي السَّمَاءِ", "ثَوْب جَدِيد أَبْيَض", "حَجَر صَلْب فِي الأَرْضِ"], 0, "Что означает слово «Гарс» в песне «Я маленький мусульманин — зеленый росток»?"], ["مَا المَقْصُودُ بِكَلِمَةِ «الرَّازِق»؟", ["الَّذِي يُسَافِرُ بَيْنَ الْمُدُنِ", "الَّذِي يُعْطِي الطَّعَامَ وَالرِّزْقَ لِلْمَخْلُوقَاتِ", "الَّذِي يَكْتُبُ الْكُتُبَ الدِّرَاسِيَّةَ", "الَّذِي يَبْنِي الْبُيُوتَ الكَبِيرَةَ"], 1, "Что означает Имя «Ар-Разик»?"], ["مَا مَعْنَى كَلِمَةِ «تَفَكَّرَ» فِي حَدِيثِ الأَبِ؟", ["تَكَلَّمَ بِصَوْتٍ عَالٍ", "رَسَمَ صُورَةً فِي الْكُرَّاسِ", "فَكَّرَ بِعُمْقٍ فِي الْمَعَانِي وَالتَّأَمُّلِ", "حَفِظَ الْكَلِمَاتِ دُونَ فَهْمٍ"], 2, "Что означает слово «Тафаккара» в словах отца?"], ["مَا المَقْصُودُ بِـ «الْفِطْرَةِ السَّلِيمَةِ»؟", ["الطَّبِيعَةُ النَّقِيَّةُ الصَّافِيَةُ الَّتِي خَلَقَنَا اللَّهُ عَلَيْهَا", "الْمَهَارَةُ فِي الرَّكْضِ وَاللَّعِبِ", "الدِّرَاسَةُ فِي الْمَدْرَسَةِ الْمَسَائِيَّةِ", "الطَّعَامُ المَطْبُوَخُ فِي البَيْتِ"], 0, "Что означает «Чистая врожденная природа (Фитра салима)»?"], ["مَا مَعْنَى كَلِمَةِ «نَرْتَقِي» فِي عِبَارَةِ: «بِالْقِيَمِ نَرْتَقِي»؟", ["نَلْعَبُ فِي الحَدِيقَةِ", "نَرْتَفِعُ وَنَصِيرُ أَفْضَلَ فِي الأخْلَاقِ", "نَشْتَرِي المَلاَبِسَ الجَدِيدَةَ", "نَنَامُ مُبَكِّرًا فِي اللَّيْلِ"], 1, "Что означает слово «Нартаки» в выражении «Благодаря ценностям мы развиваемся/возвышаемся»?"], ["مَا المَقْصُودُ بِـ «عَصَائِرَ طَازَجَةً»؟", ["مَشْرُوبَاتٌ قَدِيمَةٌ مَحْفُوظَةٌ", "مَاءٌ سَاخِنٌ مَعَ السُّكَّرِ", "حَلِيبٌ مَغْلِيٌّ فِي الْمَطْبَخِ", "مَشْرُوبَاتُ فَوَاكِهَ لَذِيذَةٌ أُعِدَّتْ الْآَنَ"], 3, "Что имеется в виду под «Свежими соками (Асаир тазиджа)»?"], ["مَا مَعْنَى «اعْمَلِي فِي صَمْتٍ»؟", ["اعْمَلِي بِهُدُوءٍ تَمَامًا دُونَ صَوْتٍ", "اتْرُكِي الْعَمَلَ وَنَامِي", "اعْمَلِي وَأَنْتِ تُغَنِّينَ", "اعْمَلِي بِسُرْعَةٍ كَبِيرَةٍ"], 0, "Что означает «Работай в тишине (Фи самт)»?"], ["مَا المَقْصُودُ بِكَلِمَةِ «وِجْدَانِي» فِي الأُغْنِيَةِ؟", ["عَقْلِي وَفِكْرِي فَقَطْ", "قَلْبِي وَمَشَاعِرِي الدَّاخِلِيَّةُ الصَّادِقَةُ", "صَوْتِي الْعَالِي", "بَيْتِي وَغُرْفَتِي"], 1, "Что имеется в виду под словом «Виждани» в песне?"], ["مَا مَعْنَى «أَدْهَشَنِي عَبْدُ اللَّهِ»؟", ["جَعَلَنِي أَحْزَنُ مِنْهُ", "طَلَبَ مِنِّي النَّوْمَ", "سَافَرَ بَعِيدًا عَنِّي", "جَعَلَنِي أَتَعَجَّبُ بِسَبَبِ تَفَوُّقِهِ وَذَكَائِهِ"], 3, "Что означает «Абдулла удивил меня (Адхашани)»?"]];
+    const section3Data = [["كَلَّفَ الْمُعَلِّمُ عَبْدَ اللَّهِ بِحِفْظِ عَشَرَةِ أَسْمَاءٍ مِنْ أَسْمَاءِ اللَّهِ الْحُسْنَى.", false, "Учитель поручил Абдулле выучить десять Имен Аллаха."], ["قَالَ الرَّسُولُ ﷺ إِنَّ لِلَّهِ تِسْعَةً وَتِسْعِينَ اسْمًا مَنْ أَحْصَاهَا دَخَلَ الْجَنَّةَ.", true, "Посланник Аллаха ﷺ сказал, что у Аллаха 99 Имен, кто запомнит их — войдет в Рай."], ["شَرَحَ الأَبُ أَنَّ «أَحْصَاهَا» تَعْنِي كِتَابَتَهَا كَثِيرًا عَلَى الْوَرَقِ دُونَ فَهْمٍ.", false, "Отец объяснил, что «Ахсаха» означает многократное написание на бумаге без понимания."], ["جَلَسَتِ الْعَائِلَةُ فِي حَدِيقَةِ الْبَيْتِ لِلْمُذَاكَرَةِ بِسَبَبِ الْهَوَاءِ الْمُنْعِشِ.", true, "Семья села в саду дома для повторения из-за освежающего воздуха."], ["يُحِبُّ عَبْدُ اللَّهِ وَرَهَفُ أُمَّهُمَا لِأَنَّهَا تَرْعَاهُمَا وَتَحْنُو عَلَيْهِمَا.", true, "Абдулла и Рахаف любят маму, потому что она заботится о них и проявляет нежность."], ["قَالَتْ رَهَفُ إِنَّ الْعُصْفُورَ يُذَكِّرُنَا بِأَنَّ اللَّهَ هُوَ الْخَالِقُ وَالرَّازِقُ.", true, "Рахаф сказала, что птичка напоминает нам о том, что Аллах — Создатель и Дарующий пропитание."], ["قَالَ الأَبُ إِنَّ الْجَبَلَ الشَّاهِقَ يُذَكِّرُنَا بِاسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ.", false, "Отец сказал, что высокая гора напоминает об Имени Ар-Рахман Ар-Рахим."], ["أَعْدَدْتِ الأُمُّ لِلْأَوْلَادِ شَطَائِرَ لَذِيذَةً وَعَصَائِرَ طَازَجَةً.", true, "Мама приготовила детям вкусные сэндвичи и свежие соки."], ["الْأَسْمَاءُ الْخَمْسَةُ الَّتِي حَفِظَهَا عَبْدُ اللَّهِ هِيَ: الرَّحْمَنُ، الْخَالِقُ، الْقَوِيُّ، الْجَبَّارُ، الرَّازِقُ.", true, "Пять Имен, которые выучил Абдулла: Ар-Рахман, Аль-Халик, Аль-Кавий, Аль-Джаббар, Ар-Разик."], ["كَانَتْ رَهَفُ تَلْعَبُ بِالْكُرَةِ أثْنَاءَ شَرْحِ الأُمِّ لِعَبْدِ اللَّهِ.", false, "Рахаф играла в мяч во время объяснения мамы Абдулле."], ["فَازَ عَبْدُ اللَّهِ بِالْمَرْكَزِ الْأَوَّلِ فِي التَّحَدِّي فِي الْمَدْرَسَةِ.", true, "Абдулла занял первое место в школьном челендже."], ["قَرَّرَ الْمُعَلِّمُ أَنْ يَتَوَقَّفَ التَّحَدِّي بَعْدَ فَوْزِ عَبْدِ اللَّهِ مُبَاشَرَةً.", false, "Учитель решил остановить соревнование сразу после победы Абдуллы."], ["شَعَرَتِ الأُمُّ بِالْفَخْرِ وَالسَّعَادَةِ عِنْدَمَا كَرَّرَ عَبْدُ اللَّهِ الأَسْمَاءَ الصَّحِيحَةَ.", true, "Мама почувствовала гордость и счастье, когда Абдулла повторил правильные Имена."], ["الْمُسْلِمُ الصَّغِيرُ يَدْعُو اللَّهَ فِي السَّرَّاءِ وَلاَ يَدْعُوهُ فِي الضَّرَّاءِ.", false, "Маленький мусульманин молится Аллаху в радости, но не молится в невзгодах."], ["تَعَلُّمُ أَسْمَاءِ اللَّهِ الْحُسْنَى يُقَرِّبُ الإِنْسَانَ مِنَ اللَّهِ وَيَجْعَلُهُ يَشْعُرُ بِمَحَبَّتِهِ.", true, "Изучение Прекрасных Имен Аллаха приближает человека к Аллаху и заставляет чувствовать Его любовь."]];
+    const section4Data = [["كَلَّفَنَا الْمُعَلِّمُ بِحِفْظِ خَمْسَةِ أَسْمَاءٍ مِنْ أَسْمَاءِ اللَّهِ _______.", "الْحُسْنَى", "Учитель поручил нам выучить пять Имен Аллаха ..."], ["مَنْ _______ دَخَلَ الْجَنَّةَ كَمَا قَالَ الرَّسُولُ ﷺ.", "أَحْصَاهَا", "Кто ... их, тот войдет в Рай, как сказал Посланник ﷺ."], ["أُحِبُّ أُمِّي لِأَنَّهَا _______ وَتَحْنُو عَلَيَّ.", "تَرْعَانِي", "Я люблю маму, потому что она ... за мной и проявляет нежность."], ["هَيَّا نَجْلِسُ فِي الْحَدِيقَةِ حَيْثُ الْهَوَاءُ _______.", "الْمُنْعِشُ", "Давайте сядем в саду, где воздух ..."], ["إِنَّ اللَّهَ هُوَ _______ فَيَرْزُقُ الْعُصْفُورَ الصَّغِيرَ.", "الرَّازِقُ", "Поистине, Аллах — ..., Который дает пропитание маленькой птичке."], ["بِمَاذَا يُذَكِّرُكَ هَذَا الْجَبَلُ _______؟", "الشَّاهِقُ", "О чем напоминает тебе эта ... гора?"], ["أَعْدَدْتُ لَكُمَا _______ لَذِيذَةً وَعَصَائِرَ طَازَجَةً.", "شَطَائِرَ", "Я приготовила вам вкусные ... и свежие соки."], ["اعْمَلِي فِي _______ رَيْثَمَا أَنْتَهِي مِنَ الشَّرْحِ.", "صَمْتٍ", "Работай в ..., пока я не закончу объяснение."], ["أَنَا _______ بِكَ يَا عَبْدَ اللَّهِ لِأَنَّكَ حَفِظْتَ الأَسْمَاءَ.", "فَخُورَةٌ", "Я ... тобой, о Абдулла, потому что ты выучил Имена."], ["أَنَا الْمُسْلِمُ الصَّغِيرُ _______ أَخْضَرُ بِالْخَيْرِ.", "غَرْسٌ", "Я маленький мусульманин — зеленый ... добра."], ["أَحْمَدُهُ عَلَى النِّعَمِ وَ_______ دَوْمًا.", "أُسَبِّحُهُ", "Я хвалю Его за блага и ... Его всегда."], ["أَدْعُوهُ فِي السَّرَّاءِ وَ_______.", "الضَّرَّاءِ", "Я молюсь Ему в радости и ..."], ["ذِكْرُهُ عَلَى لِسَانِي مَنْبَعُهُ مِنْ _______.", "وِجْدَانِي", "Упоминание Его на моем языке, его источник — из моего ..."], ["بِالْقِيَمِ _______ وَمَعَهَا نَصْعَدُ لِلْقِمَّةِ.", "نَرْتَقِي", "Благодаря ценностям мы ..., и с ними поднимаемся к вершине."], ["فَلَقَدْ _______ عَبْدُ اللَّهِ فِي التَّحَدِّي فِي الْمَدْرَسَةِ.", "أَدْهَشَنِي", "Абдулла ... меня в соревновании в школе."]];
+    const section4Words = ["الْحُسْنَى", "أَحْصَاهَا", "تَرْعَانِي", "الْمُنْعِشُ", "الرَّازِقُ", "الشَّاهِقُ", "شَطَائِرَ", "صَمْتٍ", "فَخُورَةٌ", "غَرْسٌ", "أُسَبِّحُهُ", "الضَّرَّاءِ", "وِجْدَانِي", "نَرْتَقِي", "أَدْهَشَنِي"];
+    const section5Data = [[["مِنْ", "الْمُعَلِّمُ", "كَلَّفَنَا", "أَسْمَاءِ", "الَّلِهِ", "خَمْسَةِ", "بِحِفْظِ"], "كَلَّفَنَا الْمُعَلِّمُ بِحِفْظِ خَمْسَةِ أَسْمَاءٍ مِنْ أَسْمَاءِ الَّلِهِ", "Учитель поручил нам выучить пять Имен Аллаха."], [["دَخَلَ", "مَنْ", "الْجَنَّةَ", "أَحْصَاهَا", "كَمَا", "الرَّسُولُ", "قَالَ"], "مَنْ أَحْصَاهَا دَخَلَ الْجَنَّةَ كَمَا قَالَ الرَّسُولُ", "Кто запомнит их, тот войдет в Рай, как сказал Посланник."], [["تَرْعَانِي", "لِأَنَّهَا", "أُمِّي", "أُحِبُّ", "عَلَيَّ", "وَتَحْنُو"], "أُحِبُّ أُمِّي لِأَنَّهَا تَرْعَانِي وَتَحْنُو عَلَيَّ", "Я люблю маму, потому что она заботится обо мне и проявляет нежность."], [["فِي", "نَجْلِسُ", "هَيَّا", "الْهَوَاءُ", "الْمُنْعِشُ", "الْحَدِيقَةِ"], "هَيَّا نَجْلِسُ فِي الْحَدِيقَةِ حَيْثُ الْهَوَاءُ الْمُنْعِشُ", "Давайте сядем в саду, где свежий воздух."], [["يَرْزُقُ", "الَّذِي", "الرَّازِقُ", "الَّلَهُ", "الصَّغِيرَ", "الْعُصْفُورَ"], "الَّلَهُ هُوَ الرَّازِقُ الَّذِي يَرْزُقُ الْعُصْفُورَ الصَّغِيرَ", "Аллах — Дарующий пропитание, Который кормит маленькую птичку."], [["الشَّاهِقُ", "يُذَكِّرُنَا", "الْجَبَلُ", "الْقَوِيِّ", "بِاسْمِ", "الَّلِهِ"], "الْجَبَلُ الشَّاهِقُ يُذَكِّرُنَا بِاسْمِ الَّلِهِ الْقَوِيِّ", "Высокая гора напоминает нам об Имени Аллаха Сильного."], [["أَعْدَدْتُ", "طَازَجَةً", "شَطَائِرَ", "لَذِيذَةً", "وَعَصَائِرَ", "لَكُمَا"], "أَعْدَدْتُ لَكُمَا شَطَائِرَ لَذِيذَةً وَعَصَائِرَ طَازَجَةً", "Я приготовила вам вкусные сэндвичи и свежие соки."], [["صَمْتٍ", "اعْمَلِي", "فِي", "الشَّرْحِ", "مِنَ", "أَنْتَهِيَ", "حَتَّى"], "اعْمَلِي فِي صَمْتٍ حَتَّى أَنْتَهِيَ مِنَ الشَّرْحِ", "Работай в тишине, пока я не закончу объяснение."], [["فَخُورَةٌ", "بِكَ", "أَنَا", "حَفِظْتَ", "لِأَنَّكَ", "الأَسْمَاءَ"], "أَنَا فَخُورَةٌ بِكَ لِأَنَّكَ حَفِظْتَ الأَسْمَاءَ", "Я горжусь тобой, потому что ты выучил Имена."], [["أَنَا", "الصَّغِيرُ", "الْمُسْلِمُ", "أَخْضَرُ", "غَرْسٌ", "بِالْخَيْرِ"], "أَنَا الْمُسْلِمُ الصَّغِيرُ غَرْسٌ أَخْضَرُ بِالْخَيْرِ", "Я маленький мусульманин — зеленый росток добра."], [["أُسَبِّحُهُ", "دَوْمًا", "عَلَى", "أَحْمَدُهُ", "وَ", "النِّعَمِ"], "أَحْمَدُهُ عَلَى النِّعَمِ وَ أُسَبِّحُهُ دَوْمًا", "Я хвалю Его за блага и восхваляю Его всегда."], [["أَدْعُوهُ", "فِي", "وَ", "السَّرَّاءِ", "الضَّرَّاءِ"], "أَدْعُوهُ فِي السَّرَّاءِ وَ الضَّرَّاءِ", "Я молюсь Ему в радости и в невзгодах."], [["مَنْبَعُهُ", "ذِكْرُهُ", "وِجْدَانِي", "مِنْ", "عَلَى", "لِسَانِي"], "ذِكْرُهُ عَلَى لِسَانِي مَنْبَعُهُ مِنْ وِجْدَانِي", "Его упоминание на моем языке, его источник — из моей души."], [["نَرْتَقِي", "بِالْقِيَمِ", "لِلْقِمَّةِ", "نَصْعَدُ", "وَمَعَهَا"], "بِالْقِيَمِ نَرْتَقِي وَمَعَهَا نَصْعَدُ لِلْقِمَّةِ", "Благодаря ценностям мы развиваемся, и с ними поднимаемся к вершине."], [["عَبْدُ", "أَدْهَشَنِي", "الَّلِهِ", "فِي", "الْمَدْرَسَةِ", "التَّحَدِّي"], "أَدْهَشَنِي عَبْدُ الَّلِهِ فِي التَّحَدِّي فِي الْمَدْرَسَةِ", "Аبдулла удивил меня в соревновании в школе."]];
+    const section6Data = [["مَاذَا يَقُولُ الطِّفْلُ فِي أُغْنِيَةِ «أَنَا الْمُسْلِمُ الصَّغِيرُ» عَنْ نَفْسِهِ؟", ["أَنَا طَائِرٌ يَطِيرُ فِي السَّمَاءِ", "أَنَا غَرْسٌ أَخْضَرُ بِالْخَيْرِ", "أَنَا طَبِيبٌ يَعْمَلُ فِي الْمُسْتَشْفَى", "أَنَا رَجُلٌ كَبِيرٌ فِي السُّوقِ"], 1, "Что говорит ребенок в песне «Я маленький мусульманин» о себе?"], ["مَاذَا يَفْعَلُ الْمُسْلِمُ الصَّغِيرُ عِنْدَمَا يَذْكُرُ نِعَمَ اللَّهِ عَلَيْهِ كَمَا فِي الأُغْنِيَةِ؟", ["يَبْكِي وَيَشْتَكِي لِلأَصْدِقَاءِ", "يَنَامُ فِي السَّرِيرِ طَوَالَ النَّهَارِ", "يَخْرُجُ لِلَّعِبِ دُونَ شُكْرٍ", "يَحْمَدُهُ عَلَى النِّعَمِ وَيُسَبِّحُهُ دَوْمًا"], 3, "Что делает маленький мусульманин, когда вспоминает блага Аллаха, как в песне?"], ["كَيْفَ يَدْعُو الْمُسْلِمُ الصَّغِيرُ رَبَّهُ كَمَا جَاءَ فِي كَلِمَاتِ الأُنْشُودَةِ؟", ["يَدْعُوهُ فِي السَّرَّاءِ وَيَدْعُوهُ فِي الضَّرَّاءِ", "يَدْعُوهُ مَرَّةً وَاحِدَةً فِي السَّنَةِ", "يَدْعُوهُ فِي الصَّبَاحِ فَقَطْ", "يَدْعُوهُ عِنْدَمَا يَكُونُ حَزِينًا فَقَطْ"], 0, "Как маленький мусульманин молится своему Господу, как говорится в словах песни?"], ["مِنْ أَيْنَ يَخْرُجُ ذِكْرُ اللَّهِ عِنْدَ الطِّفْلِ كَمَا تَقُولُ الأُغْنِيَةُ؟", ["مِنْ كَلَامِ زُمَلَائِهِ فِي الشَّارِعِ", "مِنَ الْكِتَابِ المَفْتُوحِ أَمَامَهُ", "مَنْبَعُهُ مِنْ وِجْدَانِهِ وَقَلْبِهِ الصَّادِقِ", "مِنْ صَوْتِ الرَّادْيُو فِي الْبَيْتِ"], 2, "Откуда исходит упоминание Аллаха у ребенка, как говорится в песне?"], ["مَاذَا يَقُولُ الطِّفْلُ عَنْ قَلْبِهِ فِي خِتَامِ أُغْنِيَةِ «أَنَا الْمُسْلِمُ الصَّغِيرُ»؟", ["بِقَلْبِي رَغْبَةٌ فِي السَّفَرِ", "بِقَلْبِي حُبٌّ كَبِيرٌ لِلَّهِ الَّذِي خَلَقَنِي", "بِقَلْبِي حُزْنٌ شَدِيدٌ", "بِقَلْبِي خَوْفٌ مِنَ الأَمْتِحَانِ"], 1, "Что говорит ребенок о своем сердце в конце песни «Я маленький мусульманин»?"], ["مَنْ قَالَتْ لِعَبْدِ اللَّهِ: «اعْمَلِي فِي صَمْتٍ رَيْثَمَا أَنْتَهِي مِنَ الشَّرْحِ لِأَخِيكَ»؟", ["الأُمُّ قَالَتْ ذَلِكَ لِلْمُعَلِّمِ", "رَهَفُ قَالَتْ ذَلِكَ لِأَبِيهَا", "الأُمُّ قَالَتْ ذَلِكَ لِرَهَفَ", "المُعَلِّمَةُ قَالَتْ ذَلِكَ لِلطُّلاَّبِ"], 2, "Кто сказал: «Работай в тишине, пока я не закончу объяснение твоему брату»?"], ["مَنْ الَّذِي سَأَلَ عَبْدَ اللَّهِ عَنِ الْجَبَلِ الشَّاهِقِ فِي الْحَدِيقَةِ؟", ["الأُمُّ", "المُعَلِّمُ فِي الْمَدْرَسَةِ", "الأُخْتُ الصَّغِيرَةُ رَهَفُ", "الأَبُ (أَبُو عَبْدِ اللَّهِ)"], 3, "Кто спросил Абдуллу о высокой горе в саду?"], ["مَا الصَّوْتُ الْجَمِيلُ الَّذِي كَانَ يُسْمَعُ فِي بَداَيَةِ الْمَقْطَعِ فِي الْحَدِيقَةِ؟", ["صَوْتُ الْمُكَيِّفِ فِي الْغُرْفَةِ", "صَوْتُ السَّيَّارَاتِ فِي الشَّارِعِ", "صَوْتُ زَقْزَقَةِ الْعَصَافِيرِ وَالْهَوَاءِ الْمُنْعِشِ", "صَوْتُ الْمَطَرِ الشَّدِيدِ"], 2, "Какой красивый звук был слышен в начале ролика в саду?"], ["مَاذَا طَلَبَ المُّعَلِّمُ مِنَ الطُّلاَّبِ عِنْدَمَا فَاَزَ عَبْدُ اللَّهِ فِي التَّحَدِّي؟", ["قَالَ: اغْلِقُوا الْكُتُبَ وَاخْرُجُوا", "قَالَ: ارْكُضُوا فِي الْمَلْعَبِ سَرِيعًا", "قَالَ: اكْتُبُوا الْأَسْمَاءَ عَالِيًا", "قَالَ: صَفِّقُوا جَيِّدًا فَلَقَدْ أَدْهَشَنِي عَبْدُ اللَّهِ"], 3, "Что попросил учитель у учеников, когда Абдулла победил в соревновании?"], ["مَا هُوَ النَّشِيدُ الَّذِي تَنْشُدُهُ الْعَائِلَةُ مَعًا فِي الْمَقْطَعِ؟", ["«يَا طَيِّبَةُ يَا طَيِّبَةُ»", "«أَنَا أُحِبُّ اللَّهَ جَلَّ فِي عُلَاهُ»", "«طَلَعَ الْبَدْرُ عَلَيْنَا»", "«أَهْلًا وسَهْلًا بِالضُّيُوفِ»"], 1, "Какое песнопение поет семья вместе в ролике?"], ["كَيْفَ كَانَتْ نَبْرَةُ صَوْتِ الأُمِّ عِنْدَمَا كَانَتْ تَشْرَحُ الأَسْمَاءَ لِعَبْدِ اللَّهِ؟", ["نَبْرَةٌ هَادِئَةٌ وَحَنُونَةٌ وَمُشَجِّعَةٌ", "نَبْرَةٌ حَزِينَةٌ وَبَاكِيَةٌ", "نَبْرَةٌ غَاضِبَةٌ وَعَالِيَةٌ", "نَبْرَةٌ مُسْتَعْجِلَةٌ وَخَائِفَةٌ"], 0, "Каковым был тон голоса мамы, когда она объясняла Имена Абдулле?"], ["مَاذَا قَالَ عَبْدُ اللَّهِ عِنْدَمَا انْتَهَى مِنْ تَكْرَارِ الأَسْمَاءِ الْخَمْسَةِ بِنَجَاحٍ؟", ["قَالَ: نَسِيتُ الأَسْمَاءَ كُلَّهَا", "قَالَ: لاَ أُرِيدُ الذَّهَابَ لِلْمَدْرَسَةِ", "قَالَ: الْحَمْدُ لِلَّهِ أَنَا سَعِيدٌ لِلْغَايَةِ", "قَالَ: أَنَا تَعِبْتُ وَأَرِيدُ النَّوْمَ"], 2, "Что сказал Абдулла, когда успешно закончил повторение пяти Имен?"], ["مَا الْقِيمَةُ الرَّئِيسِيَّةُ الَّتِي يَدْعُو إِلَيْهَا هَذَا الْمَقْطَعُ كَامِلًا؟", ["شِرَاءُ الشَّطَائِرِ اللَّذِيذَةِ", "مَحَبَّةُ اللَّهِ وَمَعْرِفَةُ أَسْمَائِهِ الْحُسْنَى وَالتَّفَكُّرُ فِي نِعَمِهِ", "الرَّسْمُ وَالتَّلْوِينُ فَقَطْ", "اللَّعِبُ كَثِيرًا فِي الْحَدِيقَةِ"], 1, "Какова главная ценность, к которой призывает весь этот ролик?"], ["مَاذَا نَسْتَفِيدُ مِنْ قَوْلِ الأُمِّ: «لِتَعْرِفُوا اللَّهَ حَقَّ الْمَعْرِفَةِ»؟", ["أَنَّنَا لاَ نَحْتَاجُ إِلَى الدِّرَاسَةِ", "أَنَّ الْمَعْرِفَةَ تَكُونُ بِالْقِرَاءَةِ السَّرِيعَةِ فَقَطْ", "أَنَّ الْأَسْمَاءَ لِلْكِبَارِ فَقَطْ", "أَنَّ حِفْظَ الأَسْمَاءِ مَعَ فَهْمِ مَعَانِيهَا يَجْعَلُنَا نَعْرِفُ اللَّهَ حَقًّا"], 3, "Что мы получаем из слов мамы: «Чтобы вы познали Аллаха истинным познанием»?"], ["كَيْفَ خُتِمَ المَقْطَعُ الصَّوْتِيُّ وَالأُغْنِيَةُ التَّرْبَوِيَّةُ؟", ["بِالْبُكَاءِ وَالْوَدَاعِ الحَزِينِ", "بِالسُّكُوتِ التَّامِّ دُونَ نَشِيدٍ", "بِعِبَارَةِ: «أَنَا الْمُسْلِمُ الصَّغِيرُ وَهَذِهِ عَائِلَةُ خَيْرٍ... دُمْتُمْ دَوْمًا بِخَيْرٍ»", "بِإِغْلَاقِ المَدْرَسَةِ وَالسَّفَرِ"], 2, "Как завершился аудиоролик и воспитательная песня?"]];
+    const section7Data = [["أَسْمَاءُ اللَّهِ الْحُسْنَى", "Имена Аллаха Прекрасные", "وَظِّفِي عِبَارَةَ (أَسْمَاءِ اللَّهِ الْحُسْنَى) فِي جُمْلَةٍ مُفِيدَةٍ مِنْ إِنْشَائِكِ."], ["الرَّازِقُ", "Дарующий пропитание", "اكْتُبِي جُمْلَةً تَسْتَخْدِمِينَ فِيهَا اسْمَ اللَّهِ (الرَّازِقُ)."], ["تَرْعَى / رَعَايَةٌ", "Заботиться / Забота", "صُوغِي جُمْلَةً تَتَحَدَّثِينَ فِيهَا عَنْ رَعَايَةِ الأُمِّ لِأَبْنَائِهَا."], ["تَفَكَّرَ / التَّفَكُّرُ", "Размышлять / Размышление", "اسْتَخْدِمِي الْفِعْلَ (يَتَفَكَّرُ) فِي جُمْلَةٍ عَنْ خَلْقِ اللَّهِ."], ["جَبَلٌ شَاهِقٌ", "Высокая гора", "اكْتُبِي جُمْلَةً تَصِفِينَ فِيهَا (جَبَلًا شَاهِقًا)."], ["شَطَائِرُ لَذِيذَةٌ", "Вкусные сэндвичи", "صُوغِي جُمْلَةً تُعَبِّرِينَ فِيهَا عَنْ إِعْدَادِ (شَطَائِرَ لَذِيذَةٍ)."], ["هَوَاءٌ مُنْعِشٌ", "Освежающий воздух", "اسْتَخْدِمِي عِبَارَةَ (هَوَاءٌ مُنْعِشٌ) فِي جُمْلَةٍ عَنِ الحَدِيقَةِ."], ["أُسْوَةٌ حَسَنَةٌ", "Хороший пример", "اكْتُبِي جُمْلَةً عَنِ النَّبِيِّ ﷺ بِاسْتِخْدَامِ (أُسْوَةٌ حَسَنَةٌ)."], ["السَّرَّاءُ وَالضَّرَّاءُ", "В радости и в горе", "صُوغِي جُمْلَةً تُبَيِّنِينَ فِيهَا دُعَاءَ اللَّهِ فِي (السَّرَّاءِ وَالضَّرَّاءِ)."], ["فَخُورٌ / فَخُورَةٌ", "Гордый / Гордящаяся", "استَخْدِمِي كَلِمَةَ (فَخُورَةٌ) فِي جُمْلَةٍ عَنِ النَّجَاحِ الدِّرَاسِيِّ."], ["الْمُسْلِمُ الصَّغِيرُ", "Маленький мусульманин", "اكْتُبِي جُمْلَةً تُعَبِّرُ عَنْ أَخْلاَقِ (الْمُسْلِمِ الصَّغِيرِ)."], ["نَرْتَقِي بِالْقِيَمِ", "Развиваемся ценностями", "صُوغِي جُمْلَةً عَنْ أَهَمِيَّةِ الأَخْلاَقِ بِاسْتِخْدَامِ (نَرْتَقِي)."], ["عَصَائِرُ طَازَجَةٌ", "Свежие соки", "اسْتَخْدِمِي عِبَارَةَ (عَصَائِرَ طَازَجَةً) فِي جُمْلَةٍ مَفِيدَةٍ."], ["مَحَبَّةُ اللَّهِ", "Любовь к Аллаху", "اكْتُبِي جُمْلَةً عَنْ كَيْفِيَّةِ التَّقَرُّبِ إِلَى اللَّهِ وَنَيْلِ (مَحَبَّتِهِ)."], ["عَائِلَةُ خَيْرٍ", "Добрая семья", "صُوغِي جُمْلَةً تَصِفِينَ فِيهَا (عَائِلَةَ خَيْرٍ) تَتَعَاوَنُ عَلَى الطَّاعَةِ."]];
+
+    const sectionMetadata = [
+        { title: "الْقِسْمُ الْأَوَّلُ: اسْتِيعَابُ الْمَقْطَعِ الصَّوْتِيِّ وَفَهْمُ الْأَحْدَاثِ (15 سُؤَالًا)", translation: "Раздел 1: Понимание сюжета и событий ролика (15 вопросов). Выберите правильный вариант." },
+        { title: "الْقِسْمُ الثَّانِي: الْمُفْرَدَاتُ وَالتَّعَابِيرُ فِي الْمَقْطَعِ (15 سُؤَالًا)", translation: "Раздел 2: Словарный запас и выражения (15 вопросов). Определите лексическое значение." },
+        { title: "الْقِسْمُ الثَّالِثُ: صَحٌّ أَوْ خَطَأٌ - اسْتِيعَابُ الْمَفَاهِيمِ (15 سُؤَالًا)", translation: "Раздел 3: Верно или неверно (15 вопросов). Определите истинность утверждений." },
+        { title: "الْقِسْمُ الرَّابِعُ: اِمْلَأِ الْفَرَاغَ بِالْكَلِمَةِ الْمُنَاسِبَةِ (15 سُؤَالًا)", translation: "Раздел 4: Заполнение пропусков (15 вопросов). Выберите подходящее слово из списка." },
+        { title: "الْقِسْمُ الْخَامِسُ: تَرْتِيبُ الْجُمَلِ وَالْعِبَارَاتِ كَمَا وَرَدَتْ فِي الْمَقْطَعِ (15 سُؤَالًا)", translation: "Раздел 5: Порядок слов (15 вопросов). Составьте оригинальные предложения из ролика." },
+        { title: "الْقِسْمُ السَّادِسُ: نَشَاطُ الِاسْتِمَاعِ وَتَمْيِيزِ الْأَلْحَانِ وَالْقَوَافِي وَالمَوَاقِفِ (15 سُؤَالًا)", translation: "Раздел 6: Активное аудирование — Песни, рифмы и персонажи (15 вопросов)." },
+        { title: "الْقِسْمُ السَّابِعُ: الْإِنْشَاءُ وَالْكِتَابَةُ الْحُرَّةُ (تَقْوِيمٌ يَدْوِيٌّ) (15 سُؤَالًا)", translation: "Раздел 7: Сочинение и свободное письмо (15 вопросов). Напишите предложения с ключевыми словами." }
+    ];
+
+    let currentSectionIndex = 0;
+    let studentName = "";
+    let answers = {
+        section1: Array(section1Data.length).fill(null),
+        section2: Array(section2Data.length).fill(null),
+        section3: Array(section3Data.length).fill(null),
+        section4: Array(section4Data.length).fill(null),
+        section5: Array(section5Data.length).fill(null).map(() => []),
+        section6: Array(section6Data.length).fill(null),
+        section7: Array(section7Data.length).fill("")
+    };
+
+    // Populate Modals on Load
+    function populateModals() {
+        const wordsTbody = document.getElementById('words-table-body');
+        wordsTbody.innerHTML = '';
+        difficultWordsData.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${row[0]}</td>
+                <td>${row[1]}</td>
+                <td>${row[2]}</td>
+                <td>${row[3]}</td>
+                <td>${row[4]}</td>
+            `;
+            wordsTbody.appendChild(tr);
+        });
+
+        const collocTbody = document.getElementById('colloc-table-body');
+        collocTbody.innerHTML = '';
+        collocationsData.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${row[0]}</td>
+                <td>${row[1]}</td>
+                <td>${row[2]}</td>
+                <td>${row[3]}</td>
+                <td>${row[4]}</td>
+            `;
+            collocTbody.appendChild(tr);
+        });
+    }
+
+    function openModal(modalId) {
+        document.getElementById(modalId).classList.add('active');
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove('active');
+    }
+
+    // Initialize Quiz
+    function startQuiz() {
+        const nameInput = document.getElementById('student-name');
+        studentName = nameInput.value.trim() || "الطَّالِبَةُ | Студентка";
+        document.getElementById('welcome-screen').classList.add('hidden');
+        document.getElementById('quiz-area').classList.remove('hidden');
+        renderSection();
+    }
+
+    // Render current section
+    function renderSection() {
+        const container = document.getElementById('questions-container');
+        container.innerHTML = '';
+
+        // Update Title & Progress
+        document.getElementById('section-title').innerText = sectionMetadata[currentSectionIndex].title;
+        document.getElementById('section-translation').innerText = sectionMetadata[currentSectionIndex].translation;
+
+        const progressPercentage = ((currentSectionIndex) / sectionMetadata.length) * 100;
+        document.getElementById('progress-bar').style.width = progressPercentage + '%';
+
+        // Scroll to top of container
+        const mainCont = document.getElementById('main-container');
+        if (mainCont && mainCont.scrollIntoView) {
+            mainCont.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Update Nav buttons
+        document.getElementById('prev-btn').disabled = (currentSectionIndex === 0);
+        const nextBtn = document.getElementById('next-btn');
+        if (currentSectionIndex === sectionMetadata.length - 1) {
+            nextBtn.innerHTML = "إِنْهَاءُ الِاخْتِبَارِ وَعَرْضُ النَّتِيجَةِ | Завершить";
+        } else {
+            nextBtn.innerHTML = "الْقِسْمُ التَّالِي | Далее";
+        }
+
+        // Render Questions based on Section Type
+        switch (currentSectionIndex) {
+            case 0:
+                renderMCQSection(section1Data, 'section1');
+                break;
+            case 1:
+                renderMCQSection(section2Data, 'section2');
+                break;
+            case 2:
+                renderTFSection();
+                break;
+            case 3:
+                renderDropdownSection();
+                break;
+            case 4:
+                renderReorderSection();
+                break;
+            case 5:
+                renderMCQSection(section6Data, 'section6');
+                break;
+            case 6:
+                renderEssaySection();
+                break;
+        }
+    }
+
+    // 1. Render MCQ Section (using Array Destructuring strictly)
+    function renderMCQSection(data, stateKey) {
+        const container = document.getElementById('questions-container');
+        data.forEach((item, qIdx) => {
+            // STRICT ARRAY DESTRUCTURING
+            const [qText, qOptions, qCorrectAnswer, qTranslation] = item;
+
+            const card = document.createElement('div');
+            card.className = "question-card";
+
+            const textEl = document.createElement('div');
+            textEl.className = "question-text";
+            textEl.innerText = `${qIdx + 1}. ${qText}`;
+            card.appendChild(textEl);
+
+            const transEl = document.createElement('div');
+            transEl.className = "question-translation";
+            transEl.innerText = qTranslation;
+            card.appendChild(transEl);
+
+            const optionsUl = document.createElement('ul');
+            optionsUl.className = "options-list";
+
+            qOptions.forEach((optionText, optIdx) => {
+                const optLi = document.createElement('li');
+                optLi.className = "option-item";
+                optLi.innerText = optionText;
+
+                const savedAns = answers[stateKey][qIdx];
+                if (savedAns !== null) {
+                    if (optIdx === qCorrectAnswer) {
+                        optLi.classList.add('correct');
+                    } else if (optIdx === savedAns) {
+                        optLi.classList.add('incorrect');
+                    }
+                }
+
+                optLi.onclick = () => {
+                    if (answers[stateKey][qIdx] !== null) return;
+
+                    answers[stateKey][qIdx] = optIdx;
+                    if (optIdx === qCorrectAnswer) {
+                        optLi.classList.add('correct');
+                    } else {
+                        optLi.classList.add('incorrect');
+                        optionsUl.children[qCorrectAnswer].classList.add('correct');
+                    }
+                };
+
+                optionsUl.appendChild(optLi);
+            });
+
+            card.appendChild(optionsUl);
+            container.appendChild(card);
+        });
+    }
+
+    // 2. Render true/false Section (using Array Destructuring strictly)
+    function renderTFSection() {
+        const container = document.getElementById('questions-container');
+        section3Data.forEach((item, qIdx) => {
+            // STRICT ARRAY DESTRUCTURING
+            const [qText, qCorrectBool, qTranslation] = item;
+
+            const card = document.createElement('div');
+            card.className = "question-card";
+
+            const textEl = document.createElement('div');
+            textEl.className = "question-text";
+            textEl.innerText = `${qIdx + 1}. ${qText}`;
+            card.appendChild(textEl);
+
+            const transEl = document.createElement('div');
+            transEl.className = "question-translation";
+            transEl.innerText = qTranslation;
+            card.appendChild(transEl);
+
+            const btnContainer = document.createElement('div');
+            btnContainer.className = "tf-buttons";
+
+            const trueBtn = document.createElement('button');
+            trueBtn.className = "tf-btn";
+            trueBtn.innerText = "صَحّ (Верно)";
+
+            const falseBtn = document.createElement('button');
+            falseBtn.className = "tf-btn";
+            falseBtn.innerText = "خَطَأ (Неверно)";
+
+            const savedAns = answers.section3[qIdx];
+            if (savedAns !== null) {
+                if (qCorrectBool === true) {
+                    trueBtn.classList.add('correct');
+                    if (savedAns === false) falseBtn.classList.add('incorrect');
+                } else {
+                    falseBtn.classList.add('correct');
+                    if (savedAns === true) trueBtn.classList.add('incorrect');
+                }
+            }
+
+            trueBtn.onclick = () => {
+                if (answers.section3[qIdx] !== null) return;
+                answers.section3[qIdx] = true;
+                if (qCorrectBool === true) {
+                    trueBtn.classList.add('correct');
+                } else {
+                    trueBtn.classList.add('incorrect');
+                    falseBtn.classList.add('correct');
+                }
+            };
+
+            falseBtn.onclick = () => {
+                if (answers.section3[qIdx] !== null) return;
+                answers.section3[qIdx] = false;
+                if (qCorrectBool === false) {
+                    falseBtn.classList.add('correct');
+                } else {
+                    falseBtn.classList.add('incorrect');
+                    trueBtn.classList.add('correct');
+                }
+            };
+
+            btnContainer.appendChild(trueBtn);
+            btnContainer.appendChild(falseBtn);
+            card.appendChild(btnContainer);
+            container.appendChild(card);
+        });
+    }
+
+    // 3. Render Dropdown Section (using Array Destructuring strictly)
+    function renderDropdownSection() {
+        const container = document.getElementById('questions-container');
+        section4Data.forEach((item, qIdx) => {
+            // STRICT ARRAY DESTRUCTURING
+            const [qTextWithBlank, qCorrectWord, qTranslation] = item;
+
+            const card = document.createElement('div');
+            card.className = "question-card";
+
+            const parts = qTextWithBlank.split('_______');
+
+            const questionTextContainer = document.createElement('div');
+            questionTextContainer.className = "question-text";
+            questionTextContainer.appendChild(document.createTextNode(`${qIdx + 1}. ` + parts[0]));
+
+            const selectEl = document.createElement('select');
+            selectEl.className = "select-blank";
+
+            const placeholderOpt = document.createElement('option');
+            placeholderOpt.value = "";
+            placeholderOpt.text = "اخْتَارِي (Выбрать)";
+            selectEl.appendChild(placeholderOpt);
+
+            section4Words.forEach(word => {
+                const opt = document.createElement('option');
+                opt.value = word;
+                opt.text = word;
+                selectEl.appendChild(opt);
+            });
+
+            const savedAns = answers.section4[qIdx];
+            if (savedAns !== null) {
+                selectEl.value = savedAns;
+                selectEl.disabled = true;
+                if (savedAns === qCorrectWord) {
+                    selectEl.classList.add('correct');
+                } else {
+                    selectEl.classList.add('incorrect');
+                }
+            }
+
+            selectEl.onchange = () => {
+                const selectedValue = selectEl.value;
+                if (!selectedValue) return;
+
+                if (selectedValue === qCorrectWord) {
+                    answers.section4[qIdx] = selectedValue;
+                    selectEl.classList.add('correct');
+                    selectEl.disabled = true;
+                } else {
+                    selectEl.classList.add('incorrect');
+                    selectEl.disabled = true;
+                    setTimeout(() => {
+                        selectEl.classList.remove('incorrect');
+                        selectEl.value = "";
+                        selectEl.disabled = false;
+                    }, 1000);
+                }
+            };
+
+            questionTextContainer.appendChild(selectEl);
+            if (parts[1]) {
+                questionTextContainer.appendChild(document.createTextNode(parts[1]));
+            }
+            card.appendChild(questionTextContainer);
+
+            const transEl = document.createElement('div');
+            transEl.className = "question-translation";
+            transEl.innerText = qTranslation;
+            card.appendChild(transEl);
+
+            container.appendChild(card);
+        });
+    }
+
+    // 4. Render Reorder Section (using Array Destructuring strictly)
+    function renderReorderSection() {
+        const container = document.getElementById('questions-container');
+        section5Data.forEach((item, qIdx) => {
+            // STRICT ARRAY DESTRUCTURING
+            const [shuffledWords, correctSentence, qTranslation] = item;
+
+            const card = document.createElement('div');
+            card.className = "question-card";
+
+            const textEl = document.createElement('div');
+            textEl.className = "question-text";
+            textEl.innerText = `${qIdx + 1}. تَرْتِيبُ الْجُمْلَةِ | Соберите предложение:`;
+            card.appendChild(textEl);
+
+            const transEl = document.createElement('div');
+            transEl.className = "question-translation";
+            transEl.innerText = qTranslation;
+            card.appendChild(transEl);
+
+            const wordPool = document.createElement('div');
+            wordPool.className = "word-pool";
+            wordPool.id = `pool-q-${qIdx}`;
+
+            const answerArea = document.createElement('div');
+            answerArea.className = "answer-area";
+            answerArea.id = `answer-q-${qIdx}`;
+
+            const activeWords = [...answers.section5[qIdx]];
+
+            const isCompleted = activeWords.join(' ') === correctSentence;
+            if (isCompleted) {
+                answerArea.classList.add('correct');
+                activeWords.forEach(word => {
+                    const span = document.createElement('span');
+                    span.className = "word-btn";
+                    span.innerText = word;
+                    answerArea.appendChild(span);
+                });
+            } else {
+                shuffledWords.forEach((word, wordIdx) => {
+                    const btn = document.createElement('button');
+                    btn.className = "word-btn";
+                    btn.id = `btn-q-${qIdx}-w-${wordIdx}`;
+                    btn.innerText = word;
+
+                    if (activeWords.includes(word)) {
+                        btn.classList.add('selected');
+                    }
+
+                    btn.onclick = () => {
+                        if (btn.classList.contains('selected') || answerArea.classList.contains('correct')) return;
+
+                        btn.classList.add('selected');
+                        activeWords.push(word);
+                        answers.section5[qIdx] = activeWords;
+
+                        const span = document.createElement('span');
+                        span.className = "word-btn";
+                        span.innerText = word;
+                        answerArea.appendChild(span);
+
+                        if (activeWords.length === shuffledWords.length) {
+                            const combinedAnswer = activeWords.join(' ');
+                            if (combinedAnswer === correctSentence) {
+                                answerArea.classList.add('correct');
+                            } else {
+                                answerArea.classList.add('incorrect');
+                                setTimeout(() => {
+                                    answerArea.classList.remove('incorrect');
+                                    clearReorder(qIdx, shuffledWords);
+                                }, 1200);
+                            }
+                        }
+                    };
+
+                    wordPool.appendChild(btn);
+                });
+
+                const clearBtn = document.createElement('button');
+                clearBtn.className = "clear-reorder-btn";
+                clearBtn.innerText = "مسح الترتيب | Сбросить";
+                clearBtn.onclick = () => clearReorder(qIdx, shuffledWords);
+                card.appendChild(clearBtn);
+            }
+
+            card.appendChild(wordPool);
+            card.appendChild(answerArea);
+            container.appendChild(card);
+        });
+    }
+
+    function clearReorder(qIdx, shuffledWords) {
+        answers.section5[qIdx] = [];
+        const answerArea = document.getElementById(`answer-q-${qIdx}`);
+        answerArea.innerHTML = '';
+        answerArea.className = "answer-area";
+
+        shuffledWords.forEach((word, wordIdx) => {
+            const btn = document.getElementById(`btn-q-${qIdx}-w-${wordIdx}`);
+            if (btn) btn.classList.remove('selected');
+        });
+    }
+
+    // 5. Render Essay/Writing Section (using Array Destructuring strictly)
+    function renderEssaySection() {
+        const container = document.getElementById('questions-container');
+        section7Data.forEach((item, qIdx) => {
+            // STRICT ARRAY DESTRUCTURING
+            const [arabicWord, russianTranslation, instructionText] = item;
+
+            const card = document.createElement('div');
+            card.className = "question-card";
+
+            const textEl = document.createElement('div');
+            textEl.className = "question-text";
+            textEl.innerHTML = `${qIdx + 1}. الْكَلِمَةُ: <strong style="color: var(--secondary-color); font-size: 1.25rem;">${arabicWord}</strong> (${russianTranslation})`;
+            card.appendChild(textEl);
+
+            const instEl = document.createElement('div');
+            instEl.className = "question-translation";
+            instEl.innerText = instructionText;
+            card.appendChild(instEl);
+
+            const textarea = document.createElement('textarea');
+            textarea.className = "essay-textarea";
+            textarea.placeholder = "اكْتُبِي الْجُمْلَةَ هُنَا بِاللُّغَةِ الْعَرَبِيَّةِ...";
+            textarea.value = answers.section7[qIdx];
+            textarea.oninput = () => {
+                answers.section7[qIdx] = textarea.value;
+            };
+            card.appendChild(textarea);
+
+            const note = document.createElement('div');
+            note.className = "essay-note";
+            note.innerText = "* يُقَيَّمُ يَدْوِيًّا (Оценивается вручную)";
+            card.appendChild(note);
+
+            container.appendChild(card);
+        });
+    }
+
+    // Navigation Controls
+    function nextSection() {
+        if (currentSectionIndex === sectionMetadata.length - 1) {
+            calculateAndShowResult();
+        } else {
+            currentSectionIndex++;
+            renderSection();
+        }
+    }
+
+    function prevSection() {
+        if (currentSectionIndex > 0) {
+            currentSectionIndex--;
+            renderSection();
+        }
+    }
+
+    // Calculation & Scores
+    function calculateAndShowResult() {
+        let score = 0;
+        let totalAutomatableQuestions = 90; // 15*6 = 90
+
+        // Section 1 MCQ (15)
+        section1Data.forEach((item, qIdx) => {
+            const [qText, qOpts, qCorrect] = item;
+            if (answers.section1[qIdx] === qCorrect) score++;
+        });
+
+        // Section 2 MCQ (15)
+        section2Data.forEach((item, qIdx) => {
+            const [qText, qOpts, qCorrect] = item;
+            if (answers.section2[qIdx] === qCorrect) score++;
+        });
+
+        // Section 3 TF (15)
+        section3Data.forEach((item, qIdx) => {
+            const [qText, qCorrectBool] = item;
+            if (answers.section3[qIdx] === qCorrectBool) score++;
+        });
+
+        // Section 4 Dropdown (15)
+        section4Data.forEach((item, qIdx) => {
+            const [qText, qCorrectWord] = item;
+            if (answers.section4[qIdx] === qCorrectWord) score++;
+        });
+
+        // Section 5 Reorder (15)
+        section5Data.forEach((item, qIdx) => {
+            const [shuffled, correctSentence] = item;
+            if (answers.section5[qIdx].join(' ') === correctSentence) score++;
+        });
+
+        // Section 6 Listening MCQ (15)
+        section6Data.forEach((item, qIdx) => {
+            const [qText, qOpts, qCorrect] = item;
+            if (answers.section6[qIdx] === qCorrect) score++;
+        });
+
+        // Update UI
+        document.getElementById('quiz-area').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+
+        document.getElementById('student-display-name').innerText = `الطَّالِبَةُ الْمُتَمَيِّزَةُ: ${studentName} | Студентка: ${studentName}`;
+        document.getElementById('score-value').innerText = `${score} / ${totalAutomatableQuestions}`;
+
+        const percentage = Math.round((score / totalAutomatableQuestions) * 100);
+        document.getElementById('percentage-value').innerText = `النِّسْبَةُ الْمِئَوِيَّةُ: ${percentage}% | Результат: ${percentage}%`;
+
+        const feedbackEl = document.getElementById('feedback-msg');
+        if (percentage >= 90) {
+            feedbackEl.innerHTML = "مُمْتَازٌ جِدًّا! لَقَدْ أَثْبَتِّ إِتْقَانًا رَائِعًا لِمَهَارَاتِ الِاسْتِمَاعِ وَالْمُفْرَدَاتِ!<br><span style='font-size:0.95rem; font-weight:normal; color:var(--text-light);'>Отлично! Вы продемонстрировали великолепное владение навыками аудирования и словарного запаса!</span>";
+        } else if (percentage >= 75) {
+            feedbackEl.innerHTML = "جَيِّدٌ جِدًّا! أَدَاؤُكِ رَائِعٌ، وَتَحْتَاجِينَ فَقَطْ إِلَى بَعْضِ التَّرْكِيزِ لِتَحْقِيقِ الْعَلَامَةِ الْكَامِلَةِ.<br><span style='font-size:0.95rem; font-weight:normal; color:var(--text-light);'>Очень хорошо! Отличный результат, вам нужно лишь немного внимания для достижения идеального балла.</span>";
+        } else if (percentage >= 50) {
+            feedbackEl.innerHTML = "مَقْبُولٌ. أَدَاؤُكِ مُتَوَسِّطٌ، نَنْصَحُكِ بِإِعَادَةِ الِاسْتِمَاعِ إِلَى الْمَقْطَعِ الصَّوْتِيِّ مَرَّةً أُخْرَى.<br><span style='font-size:0.95rem; font-weight:normal; color:var(--text-light);'>Удовлетворительно. Средний результат, рекомендуем прослушать аудиозапись еще раз.</span>";
+        } else {
+            feedbackEl.innerHTML = "تَحْتَاجِينَ إِلَى الْمَزِيدِ مِنَ الْمُمَارَسَةِ. حَاوِلِي مَرَّةً أُخْرَى بَعْدَ مُرَاجَعَةِ الْمُفْرَدَاتِ.<br><span style='font-size:0.95rem; font-weight:normal; color:var(--text-light);'>Требуется больше практики. Попробуйте еще раз после повторения слов.</span>";
+        }
+    }
+
+    // Restart Quiz State
+    function restartQuiz() {
+        currentSectionIndex = 0;
+        answers = {
+            section1: Array(section1Data.length).fill(null),
+            section2: Array(section2Data.length).fill(null),
+            section3: Array(section3Data.length).fill(null),
+            section4: Array(section4Data.length).fill(null),
+            section5: Array(section5Data.length).fill(null).map(() => []),
+            section6: Array(section6Data.length).fill(null),
+            section7: Array(section7Data.length).fill("")
+        };
+        document.getElementById('result-screen').classList.add('hidden');
+        document.getElementById('welcome-screen').classList.remove('hidden');
+    }
+
+    window.onload = function() {
+        populateModals();
+    };
+</script>
+
+</body>
+</html>
