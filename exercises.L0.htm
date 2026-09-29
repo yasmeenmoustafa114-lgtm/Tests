@@ -1,0 +1,5047 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الاختبار التفاعلي الشامل في اللغة العربية - المستوى التمهيدي</title>
+    <style>
+        :root {
+            --bg-cream: #faf6f0;
+            --card-bg: #ffffff;
+            --primary-color: #2c5e3b;
+            --primary-light: #e8f5e9;
+            --accent-blue: #e3f2fd;
+            --accent-purple: #f3e5f5;
+            --accent-green: #e8f5e9;
+            --accent-orange: #fff3e0;
+            --correct-bg: #d4edda;
+            --correct-text: #155724;
+            --correct-border: #c3e6cb;
+            --wrong-bg: #fff3cd;
+            --wrong-text: #856404;
+            --wrong-border: #ffeeba;
+            --selected-bg: #e3f2fd;
+            --selected-border: #90caf9;
+            --text-dark: #2b2b2b;
+            --border-color: #e0dace;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Amiri';
+        }
+
+        body {
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 15px;
+            direction: rtl;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            border: 1px solid var(--border-color);
+            margin-bottom: 25px;
+        }
+
+        /* Welcome Screen Styling */
+        .welcome-screen {
+            text-align: center;
+            padding: 35px 20px;
+        }
+
+        .welcome-title {
+            color: var(--primary-color);
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .hadith-box {
+            background-color: #f4efe6;
+            border-right: 5px solid var(--primary-color);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: right;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #1b4332;
+        }
+
+        .russian-translation {
+            direction: ltr;
+            text-align: left;
+            font-style: italic;
+            color: #555;
+            font-size: 15px;
+            margin-top: 10px;
+            background: #ffffff;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .input-group {
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c5e3b;
+        }
+
+        .name-input {
+            width: 80%;
+            max-width: 400px;
+            padding: 14px 20px;
+            font-size: 18px;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            outline: none;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .name-input:focus {
+            box-shadow: 0 0 10px rgba(44, 94, 59, 0.3);
+        }
+
+        /* Header & Navigation Bar */
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .student-info {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 16px;
+        }
+
+        .progress-indicator {
+            font-weight: bold;
+            background: var(--primary-light);
+            padding: 6px 15px;
+            border-radius: 20px;
+            color: var(--primary-color);
+        }
+
+        .section-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 18px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .section-title-ar {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .section-title-ru {
+            direction: ltr;
+            text-align: left;
+            font-size: 15px;
+            opacity: 0.9;
+            font-weight: normal;
+        }
+
+        /* Vocabulary Table */
+        .vocab-box {
+            margin-bottom: 25px;
+        }
+
+        .vocab-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #2c5e3b;
+        }
+
+        .vocab-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #dcdcdc;
+            font-size: 15px;
+        }
+
+        .vocab-table th, .vocab-table td {
+            padding: 10px 12px;
+            text-align: center;
+            border-bottom: 1px solid #e2e2e2;
+        }
+
+        .vocab-table th {
+            font-weight: bold;
+        }
+
+        .col-ar-word { background-color: var(--accent-blue) !important; color: #0d47a1; width: 20%; }
+        .col-ru-word { background-color: var(--accent-purple) !important; color: #4a148c; direction: ltr; width: 25%; }
+        .col-ar-sent { background-color: var(--accent-green) !important; color: #1b5e20; width: 30%; }
+        .col-ru-sent { background-color: var(--accent-orange) !important; color: #e65100; direction: ltr; width: 25%; }
+
+        /* Questions Styling */
+        .question-card {
+            background: #fafafa;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 20px;
+            transition: all 0.2s;
+        }
+
+        .question-num {
+            display: inline-block;
+            background: #2c5e3b;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+
+        .canary-highlight {
+            background-color: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px dashed #f57f17;
+            font-weight: bold;
+        }
+
+        .solved-model-badge {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .options-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .option-item {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 12px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .option-item:hover {
+            border-color: #2c5e3b;
+            background: #f9fbf9;
+        }
+
+        .option-item.correct {
+            background-color: var(--correct-bg) !important;
+            border-color: var(--correct-border) !important;
+            color: var(--correct-text) !important;
+            font-weight: bold;
+        }
+
+        .option-item.wrong {
+            background-color: var(--wrong-bg) !important;
+            border-color: var(--wrong-border) !important;
+            color: var(--wrong-text) !important;
+            font-weight: bold;
+        }
+
+        .option-item input[type="radio"] {
+            margin-left: 12px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .explanation-box {
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 15px;
+            display: none;
+        }
+
+        .explanation-box.visible {
+            display: block;
+            background: #f1f8e9;
+            border-right: 4px solid #2c5e3b;
+            color: #2e7d32;
+        }
+
+        /* Buttons & Footer */
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 17px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background-color: #1e4228;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .alert-toast {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .results-screen {
+            text-align: center;
+            padding: 30px 15px;
+        }
+
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: bold;
+            margin: 20px auto;
+            border: 4px solid var(--primary-color);
+        }
+
+        @media (max-width: 600px) {
+            .vocab-table { font-size: 12px; }
+            .vocab-table th, .vocab-table td { padding: 6px 4px; }
+            .option-item { font-size: 15px; }
+            .question-text { font-size: 16px; }
+        }
+    
+        .word-highlight {
+            background-color: #fff59d;
+            color: #b71c1c;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid #fbc02d;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .mini-vocab-box {
+            margin: 10px 0 15px 0;
+            background: #fffbf5;
+            border: 1px solid #f0e0d0;
+            border-radius: 8px;
+            padding: 8px 12px;
+        }
+
+        .mini-vocab-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #c62828;
+            margin-bottom: 6px;
+        }
+
+        .mini-vocab-table {
+            width: 100%;
+            max-width: 480px;
+            border-collapse: collapse;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #e0d0c0;
+            font-size: 14px;
+        }
+
+        .mini-vocab-table th, .mini-vocab-table td {
+            padding: 5px 10px;
+            text-align: center;
+            border: 1px solid #eee0d0;
+        }
+
+        .mini-th-ar {
+            background-color: #fbe9e7 !important;
+            color: #b71c1c;
+            font-weight: bold;
+            width: 45%;
+        }
+
+        .mini-th-ru {
+            background-color: #f3e5f5 !important;
+            color: #4a148c;
+            font-weight: bold;
+            direction: ltr;
+            width: 55%;
+        }
+
+        .mini-td-ar {
+            background-color: #ffffff;
+            color: #b71c1c;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .mini-td-ru {
+            background-color: #ffffff;
+            color: #311b92;
+            direction: ltr;
+            font-size: 14px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- WELCOME SCREEN -->
+    <div id="welcome-screen" class="card welcome-screen">
+        <div class="welcome-title">الاخْتِبَارُ التَّفَاعُلِيُّ الشَّامِلُ فِي اللُّغَةِ العَرَبِيَّةِ</div>
+        <div style="color: #666; font-size: 16px; margin-bottom: 20px;">Интерактивный комплексный тест по арабскому языку - Начальный уровень</div>
+
+        <div class="hadith-box">
+            <strong>مَرْحَبًا بِوَصِيَّةِ رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ!</strong><br>
+            أَهْلاً وَسَهْلاً بِكِ يا طَالِبَةَ العِلْمِ ومُعَلِّمَةَ الغَدِ. كَانَ الصَّحَابَةُ الكِرَامُ رِضْوَانُ اللَّهِ عَلَيْهِمْ إِذَا رَأَوْا طَالِبَ العِلْمِ قَالُوا: "مَرْحَبًا بِوَصِيَّةِ رَسُولِ اللَّهِ". نَسْأَلُ اللَّهَ لَكِ التَّوْفِيقَ وَالسَّدَادَ فِي رِحْلَتِكِ لِتَعَلُّمِ لُغَةِ القُرْآنِ الكَرِيمِ.
+            
+            <div class="russian-translation">
+                <strong>Добро пожаловать по завету Посланника Аллаха (мир ему и благословение Аллаха)!</strong><br>
+                Добро пожаловать, искательница знаний! Сподвижники Пророка, когда видели искателя знаний, говорили: «Добро пожаловать по завету Посланника Аллаха!». Мы желаем вам успехов и легкого пути в изучении прекрасного арабского языка - языка Корана.
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label for="student-name">اُكْتُبِي اسْمَكِ الكَامِلَ لِلْبَدْءِ / Введите ваше имя для начала:</label>
+            <input type="text" id="student-name" class="name-input" placeholder="اُكْتُبِي اسْمَكِ هُنَا... / Введите имя..." required>
+        </div>
+
+        <button class="btn" onclick="startQuiz()">
+            <span>بَدْءُ الٱخْتِبَارِ / Начать тест</span>
+            <span>➔</span>
+        </button>
+
+        <div id="welcome-alert" class="alert-toast">
+            الرَّجَاءُ كِتَابَةُ الٱسْمِ أَوْلاً لِلتَّمَكُّنِ مِنْ دُخُولِ الٱخْتِبَارِ! <br>
+            Пожалуйста, введите ваше имя перед началом теста!
+        </div>
+    </div>
+
+    <!-- QUIZ CONTAINER (Hidden initially) -->
+    <div id="quiz-container" style="display: none;">
+        
+        <!-- Header Bar -->
+        <div class="header-bar">
+            <div class="student-info">الطَّالِبَةُ: <span id="display-student-name"></span></div>
+            <div class="progress-indicator">القِسْمُ: <span id="current-section-num">1</span> مِنْ 10</div>
+        </div>
+
+        <!-- Section Content Wrapper -->
+        <div id="section-card-wrapper"></div>
+
+        <div id="nav-alert" class="alert-toast"></div>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+            <button id="btn-prev" class="btn btn-secondary" onclick="prevSection()" style="display:none;">
+                <span>⬅ القِسْمُ السَّابِقُ</span>
+            </button>
+            <div style="margin-right:auto;">
+                <button id="btn-next" class="btn" onclick="nextSection()">
+                    <span>القِسْمُ التَّالِي ➔</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESULTS SCREEN (Hidden initially) -->
+    <div id="results-screen" class="card results-screen" style="display: none;">
+        <h2 style="color: var(--primary-color);">🎉 نَتِيجَةُ الٱخْتِبَارِ الشَّامِلِ</h2>
+        <p style="font-size: 18px;">أَحْسَنْتِ يا <strong id="result-student-name" style="color: #2c5e3b;"></strong>!</p>
+        
+        <div class="score-circle" id="score-text">0 / 200</div>
+        
+        <p id="score-message" style="font-size: 18px; font-weight: bold; margin: 20px 0;"></p>
+
+        <button class="btn" onclick="restartQuiz()">
+            <span>إِعَادَةُ الٱخْتِبَارِ 🔄 / Начать заново</span>
+        </button>
+    </div>
+
+</div>
+
+<script>
+const quizData = [
+    {
+        "sectionId": 1,
+        "titleAr": "القِسْمُ الأَوَّلُ: أَسْمَاءُ الإِشَارَةِ (هَذَا / هَذِهِ)",
+        "titleRu": "Раздел 1: Указательные местоимения (هَذَا - этот, هَذِهِ - эта)",
+        "vocab": [
+            {
+                "ar": "طَالِبٌ / طَالِبَةٌ",
+                "ru": "Студент / Студентка",
+                "arSent": "هَذَا طَالِبٌ، وَهَذِهِ طَالِبَةٌ.",
+                "ruSent": "Это студент, а это студентка."
+            },
+            {
+                "ar": "مَدْرَسَةٌ",
+                "ru": "Школа",
+                "arSent": "هَذِهِ مَدْرَسَةٌ كَبِيرَةٌ.",
+                "ruSent": "Это большая школа."
+            },
+            {
+                "ar": "كِتَابٌ",
+                "ru": "Книга",
+                "arSent": "هَذَا كِتَابٌ جَدِيدٌ.",
+                "ruSent": "Это новая книга."
+            },
+            {
+                "ar": "سَيَّارَةٌ",
+                "ru": "Машина / Автомобиль",
+                "arSent": "هَذِهِ سَيَّارَةٌ سَرِيعَةٌ.",
+                "ruSent": "Это быстрая машина."
+            }
+        ],
+        "questions": [
+            {
+                "qNum": 1,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) <span class=\"word-highlight\">طَالِبٌ</span> <span class=\"word-highlight\">نَشِيطٌ</span>.",
+                "options": [
+                    "هَذَا",
+                    "هَذِهِ"
+                ],
+                "correct": 0,
+                "isSolved": true,
+                "solvedText": "نموذج محلول: (هَذَا) طَالِبٌ نَشِيطٌ. [لأن كلمة طَالِبٌ مذكر]",
+                "explanation": "نستخدم اسم الإشارة (هَذَا) مع الاسم المفرد المذكر.",
+                "newWords": [
+                    {
+                        "ar": "طَالِبٌ",
+                        "ru": "Студент"
+                    },
+                    {
+                        "ar": "نَشِيطٌ",
+                        "ru": "Активный"
+                    }
+                ]
+            },
+            {
+                "qNum": 2,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) <span class=\"word-highlight\">طَالِبَةٌ</span> <span class=\"word-highlight\">ذَكِيَّةٌ</span>.",
+                "options": [
+                    "هَذَا",
+                    "هَذِهِ"
+                ],
+                "correct": 1,
+                "explanation": "كلمة (طَالِبَةٌ) مؤنثة؛ لذا نستخدم اسم الإشارة (هَذِهِ).",
+                "newWords": [
+                    {
+                        "ar": "طَالِبٌ",
+                        "ru": "Студент"
+                    },
+                    {
+                        "ar": "طَالِبَةٌ",
+                        "ru": "Студентка"
+                    },
+                    {
+                        "ar": "ذَكِيٌّ",
+                        "ru": "Умный"
+                    },
+                    {
+                        "ar": "ذَكِيَّةٌ",
+                        "ru": "Умная"
+                    }
+                ]
+            },
+            {
+                "qNum": 3,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) <span class=\"word-highlight\">مَدْرَسَةٌ</span> <span class=\"word-highlight\">كَبِيرَةٌ</span>.",
+                "options": [
+                    "هَذِهِ",
+                    "هَذَا"
+                ],
+                "correct": 0,
+                "explanation": "تنتهي كلمة (مَدْرَسَةٌ) بتاء مربوطة فهي مؤنثة؛ ونستخدم معها (هَذِهِ).",
+                "newWords": [
+                    {
+                        "ar": "كَبِيرٌ",
+                        "ru": "Большой"
+                    },
+                    {
+                        "ar": "كَبِيرَةٌ",
+                        "ru": "Большая"
+                    },
+                    {
+                        "ar": "مَدْرَسَةٌ",
+                        "ru": "Школа"
+                    }
+                ]
+            },
+            {
+                "qNum": 4,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) <span class=\"word-highlight\">كِتَابٌ</span> <span class=\"word-highlight\">مُفِيدٌ</span>.",
+                "options": [
+                    "هَذِهِ",
+                    "هَذَا"
+                ],
+                "correct": 1,
+                "explanation": "كلمة (كِتَابٌ) مذكر؛ فنستخدم اسم الإشارة (هَذَا).",
+                "newWords": [
+                    {
+                        "ar": "مُفِيدٌ",
+                        "ru": "Полезный"
+                    },
+                    {
+                        "ar": "كِتَابٌ",
+                        "ru": "Книга"
+                    }
+                ]
+            },
+            {
+                "qNum": 5,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) <span class=\"word-highlight\">سَيَّارَةٌ</span> <span class=\"word-highlight\">جَمِيلَةٌ</span>.",
+                "options": [
+                    "هَذِهِ",
+                    "هَذَا"
+                ],
+                "correct": 0,
+                "explanation": "كلمة (سَيَّارَةٌ) اسم مؤنث؛ يناسبه اسم الإشارة (هَذِهِ).",
+                "newWords": [
+                    {
+                        "ar": "جَمِيلٌ",
+                        "ru": "Красивый"
+                    },
+                    {
+                        "ar": "جَمِيلَةٌ",
+                        "ru": "Красивая"
+                    },
+                    {
+                        "ar": "سَيَّارَةٌ",
+                        "ru": "Машина"
+                    }
+                ]
+            },
+            {
+                "qNum": 6,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) <span class=\"word-highlight\">قَلَمٌ</span> <span class=\"word-highlight\">أَزْرَقُ</span>.",
+                "options": [
+                    "هَذِهِ",
+                    "هَذَا"
+                ],
+                "correct": 1,
+                "explanation": "كلمة (قَلَمٌ) مذكر؛ فنقول: هَذَا قَلَمٌ.",
+                "newWords": [
+                    {
+                        "ar": "أَزْرَقُ",
+                        "ru": "Синий"
+                    },
+                    {
+                        "ar": "قَلَمٌ",
+                        "ru": "Ручка"
+                    }
+                ]
+            },
+            {
+                "qNum": 7,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) <span class=\"word-highlight\">حَقِيبَةٌ</span> <span class=\"word-highlight\">صَغِيرَةٌ</span>.",
+                "options": [
+                    "هَذِهِ",
+                    "هَذَا"
+                ],
+                "correct": 0,
+                "explanation": "كلمة (حَقِيبَةٌ) مؤنث؛ يناسبها (هَذِهِ).",
+                "newWords": [
+                    {
+                        "ar": "صَغِيرٌ",
+                        "ru": "Маленький"
+                    },
+                    {
+                        "ar": "صَغِيرَةٌ",
+                        "ru": "Маленькая"
+                    },
+                    {
+                        "ar": "حَقِيبَةٌ",
+                        "ru": "Сумка"
+                    }
+                ]
+            },
+            {
+                "qNum": 8,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) <span class=\"word-highlight\">بَابٌ</span> <span class=\"word-highlight\">مَفْتُوحٌ</span>.",
+                "options": [
+                    "هَذِهِ",
+                    "هَذَا"
+                ],
+                "correct": 1,
+                "explanation": "كلمة (بَابٌ) مذكر؛ فنقول: هَذَا بَابٌ.",
+                "newWords": [
+                    {
+                        "ar": "مَفْتُوحٌ",
+                        "ru": "Открытый"
+                    },
+                    {
+                        "ar": "بَابٌ",
+                        "ru": "Дверь"
+                    }
+                ]
+            },
+            {
+                "qNum": 9,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) <span class=\"word-highlight\">نَافِذَةٌ</span> <span class=\"word-highlight\">نَظِيفَةٌ</span>.",
+                "options": [
+                    "هَذِهِ",
+                    "هَذَا"
+                ],
+                "correct": 0,
+                "explanation": "كلمة (نَافِذَةٌ) مؤنث؛ فنختار (هَذِهِ).",
+                "newWords": [
+                    {
+                        "ar": "نَظِيفٌ",
+                        "ru": "Чистый"
+                    },
+                    {
+                        "ar": "نَظِيفَةٌ",
+                        "ru": "Чистая"
+                    },
+                    {
+                        "ar": "نَافِذَةٌ",
+                        "ru": "Окно"
+                    }
+                ]
+            },
+            {
+                "qNum": 10,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) <span class=\"word-highlight\">بَيْتٌ</span> <span class=\"word-highlight\">وَاسِعٌ</span>.",
+                "options": [
+                    "هَذِهِ",
+                    "هَذَا"
+                ],
+                "correct": 1,
+                "explanation": "كلمة (بَيْتٌ) مذكر؛ يناسبه اسم الإشارة (هَذَا).",
+                "newWords": [
+                    {
+                        "ar": "وَاسِعٌ",
+                        "ru": "Просторный"
+                    },
+                    {
+                        "ar": "بَيْتٌ",
+                        "ru": "Дом"
+                    }
+                ]
+            },
+            {
+                "qNum": 11,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) <span class=\"word-highlight\">غُرْفَةٌ</span> <span class=\"word-highlight\">مُرَتَّبَةٌ</span>.",
+                "options": [
+                    "هَذِهِ",
+                    "هَذَا"
+                ],
+                "correct": 0,
+                "explanation": "كلمة (غُرْفَةٌ) مؤنث؛ نستخدم معها (هَذِهِ).",
+                "newWords": [
+                    {
+                        "ar": "مُرَتَّبٌ",
+                        "ru": "Аккуратный"
+                    },
+                    {
+                        "ar": "مُرَتَّبَةٌ",
+                        "ru": "Аккуратная"
+                    },
+                    {
+                        "ar": "غُرْفَةٌ",
+                        "ru": "Комната"
+                    }
+                ]
+            },
+            {
+                "qNum": 12,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) <span class=\"word-highlight\">كُرْسِيٌّ</span> <span class=\"word-highlight\">مُرِيحٌ</span>.",
+                "options": [
+                    "هَذِهِ",
+                    "هَذَا"
+                ],
+                "correct": 1,
+                "explanation": "كلمة (كُرْسِيٌّ) مذكر؛ يناسبه اسم الإشارة (هَذَا).",
+                "newWords": [
+                    {
+                        "ar": "مُرِيحٌ",
+                        "ru": "Удобный"
+                    },
+                    {
+                        "ar": "كُرْسِيٌّ",
+                        "ru": "Стуل"
+                    }
+                ]
+            },
+            {
+                "qNum": 13,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) <span class=\"word-highlight\">طَاوِلَةٌ</span> <span class=\"word-highlight\">خَشَبِيَّةٌ</span>.",
+                "options": [
+                    "هَذِهِ",
+                    "هَذَا"
+                ],
+                "correct": 0,
+                "explanation": "كلمة (طَاوِلَةٌ) مؤنث؛ نستخدم اسم الإشارة (هَذِهِ).",
+                "newWords": [
+                    {
+                        "ar": "خَشَبِيَّةٌ",
+                        "ru": "Деревянный"
+                    },
+                    {
+                        "ar": "طَاوِلَةٌ",
+                        "ru": "Стол"
+                    }
+                ]
+            },
+            {
+                "qNum": 14,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) وَلَدٌ <span class=\"word-highlight\">صَالِحٌ</span>.",
+                "options": [
+                    "هَذِهِ",
+                    "هَذَا"
+                ],
+                "correct": 1,
+                "explanation": "كلمة (وَلَدٌ) مذكر؛ نختار (هَذَا).",
+                "newWords": [
+                    {
+                        "ar": "صَالِحٌ",
+                        "ru": "Праведный"
+                    }
+                ]
+            },
+            {
+                "qNum": 15,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) بِنْتٌ <span class=\"word-highlight\">مُؤَدَّبَةٌ</span>.",
+                "options": [
+                    "هَذِهِ",
+                    "هَذَا"
+                ],
+                "correct": 0,
+                "explanation": "كلمة (بِنْتٌ) تدل على المؤنث؛ فنستخدم (هَذِهِ).",
+                "newWords": [
+                    {
+                        "ar": "مُؤَدَّبَةٌ",
+                        "ru": "Воспитанная"
+                    }
+                ]
+            },
+            {
+                "qNum": 16,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) <span class=\"word-highlight\">مُعَلِّمٌ</span> <span class=\"word-highlight\">مَاهِرٌ</span>.",
+                "options": [
+                    "هَذِهِ",
+                    "هَذَا"
+                ],
+                "correct": 1,
+                "explanation": "كلمة (مُعَلِّمٌ) مذكر؛ يناسبها (هَذَا).",
+                "newWords": [
+                    {
+                        "ar": "مُعَلِّمٌ",
+                        "ru": "Учитель"
+                    },
+                    {
+                        "ar": "مَاهِرٌ",
+                        "ru": "Умелый"
+                    }
+                ]
+            },
+            {
+                "qNum": 17,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) <span class=\"word-highlight\">مُعَلِّمَةٌ</span> <span class=\"word-highlight\">مَاهِرَةٌ</span>.",
+                "options": [
+                    "هَذِهِ",
+                    "هَذَا"
+                ],
+                "correct": 0,
+                "explanation": "كلمة (مُعَلِّمَةٌ) مؤنث؛ يناسبها (هَذِهِ).",
+                "newWords": [
+                    {
+                        "ar": "مُعَلِّمٌ",
+                        "ru": "Учитель"
+                    },
+                    {
+                        "ar": "مُعَلِّمَةٌ",
+                        "ru": "Учительница"
+                    },
+                    {
+                        "ar": "مَاهِرٌ",
+                        "ru": "Умелый"
+                    },
+                    {
+                        "ar": "مَاهِرَةٌ",
+                        "ru": "Умелая"
+                    }
+                ]
+            },
+            {
+                "qNum": 18,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) <span class=\"word-highlight\">دَفْتَرٌ</span> <span class=\"word-highlight\">جَمِيلٌ</span>.",
+                "options": [
+                    "هَذِهِ",
+                    "هَذَا"
+                ],
+                "correct": 1,
+                "explanation": "كلمة (دَفْتَرٌ) اسم مذكر؛ نختار (هَذَا).",
+                "newWords": [
+                    {
+                        "ar": "جَمِيلٌ",
+                        "ru": "Красивый"
+                    },
+                    {
+                        "ar": "دَفْتَرٌ",
+                        "ru": "Тетрадь"
+                    }
+                ]
+            },
+            {
+                "qNum": 19,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) <span class=\"word-highlight\">صُورَةٌ</span> <span class=\"word-highlight\">رَائِعَةٌ</span>.",
+                "options": [
+                    "هَذِهِ",
+                    "هَذَا"
+                ],
+                "correct": 0,
+                "explanation": "كلمة (صُورَةٌ) مؤنث؛ نستخدم اسم الإشارة (هَذِهِ).",
+                "newWords": [
+                    {
+                        "ar": "صُورَةٌ",
+                        "ru": "Изображение / Фото"
+                    },
+                    {
+                        "ar": "رَائِعَةٌ",
+                        "ru": "Замечательная"
+                    }
+                ]
+            },
+            {
+                "qNum": 20,
+                "text": "اخْتَرِ اسْمَ الإِشَارَةِ المُنَاسِبَ: (........) <span class=\"word-highlight\">مَسْجِدٌ</span> <span class=\"word-highlight\">كَبِيرٌ</span>.",
+                "options": [
+                    "هَذِهِ",
+                    "هَذَا"
+                ],
+                "correct": 1,
+                "explanation": "كلمة (مَسْجِدٌ) اسم مذكر؛ فنقول: هَذَا مَسْجِدٌ.",
+                "newWords": [
+                    {
+                        "ar": "كَبِيرٌ",
+                        "ru": "Большой"
+                    },
+                    {
+                        "ar": "مَسْجِدٌ",
+                        "ru": "Мечеть"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sectionId": 2,
+        "titleAr": "القِسْمُ الثَّانِي: الضَّمَائِرُ المُنْفَصِلَةُ (أَنَا / أَنْتَ / أَنْتِ / هُوَ / هِيَ / نَحْنُ)",
+        "titleRu": "Раздел 2: Личные местоимения (أَنَا - я, أَنْتَ - ты м., أَنْتِ - ты ж., هُوَ - он, هِيَ - она, نَحْنُ - мы)",
+        "vocab": [
+            {
+                "ar": "طَبِيبٌ / طَبِيبَةٌ",
+                "ru": "Врач (м) / Врач (ж)",
+                "arSent": "هُوَ طَبِيبٌ، وَهِيَ طَبِيبَةٌ.",
+                "ruSent": "Он врач, а она врач."
+            },
+            {
+                "ar": "مُهَنْدِسٌ",
+                "ru": "Инженер",
+                "arSent": "أَنْتَ مُهَنْدِسٌ مَاهِرٌ.",
+                "ruSent": "Ты умелый инженер."
+            },
+            {
+                "ar": "مُعَلِّمَةٌ",
+                "ru": "Учительница",
+                "arSent": "أَنْتِ مُعَلِّمَةٌ طَيِّبَةٌ.",
+                "ruSent": "Ты добрая учительница."
+            },
+            {
+                "ar": "أَصْدِقَاءُ",
+                "ru": "Друзья",
+                "arSent": "نَحْنُ أَصْدِقَاءُ مَاهِرُونَ.",
+                "ruSent": "Мы хорошие друзья."
+            }
+        ],
+        "questions": [
+            {
+                "qNum": 1,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) <span class=\"word-highlight\">طَالِبٌ</span> فِي المَدْرَسَةِ. [المتكلم]",
+                "options": [
+                    "أَنَا",
+                    "هُوَ",
+                    "هِيَ"
+                ],
+                "correct": 0,
+                "isSolved": true,
+                "solvedText": "نموذج محلول: (أَنَا) طَالِبٌ فِي المَدْرَسَةِ. [ضمير المتكلم]",
+                "explanation": "نستخدم الضمير (أَنَا) للمتكلم المفرد مذكرًا كان أو مؤنثًا.",
+                "newWords": [
+                    {
+                        "ar": "طَالِبٌ",
+                        "ru": "Студент"
+                    },
+                    {
+                        "ar": "مَدْرَسَةٌ",
+                        "ru": "Школа"
+                    }
+                ]
+            },
+            {
+                "qNum": 2,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) <span class=\"word-highlight\">طَالِبَةٌ</span> فِي الفَصْلِ. [الغائبة المؤنثة]",
+                "options": [
+                    "هُوَ",
+                    "هِيَ",
+                    "أَنْتَ"
+                ],
+                "correct": 1,
+                "explanation": "نستخدم الضمير (هِيَ) للمفردة الغائبة المؤنثة.",
+                "newWords": [
+                    {
+                        "ar": "طَالِبٌ",
+                        "ru": "Студент"
+                    },
+                    {
+                        "ar": "طَالِبَةٌ",
+                        "ru": "Студентка"
+                    },
+                    {
+                        "ar": "فَصْلٌ",
+                        "ru": "Класс"
+                    }
+                ]
+            },
+            {
+                "qNum": 3,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) وَلَدٌ <span class=\"word-highlight\">ذَكِيٌّ</span>. [الغائب المذكر]",
+                "options": [
+                    "أَنْتِ",
+                    "هِيَ",
+                    "هُوَ"
+                ],
+                "correct": 2,
+                "explanation": "نستخدم الضمير (هُوَ) للمفرد الغائب المذكر.",
+                "newWords": [
+                    {
+                        "ar": "ذَكِيٌّ",
+                        "ru": "Умный"
+                    }
+                ]
+            },
+            {
+                "qNum": 4,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) <span class=\"word-highlight\">مُعَلِّمٌ</span> <span class=\"word-highlight\">مَاهِرٌ</span>. [المخاطب المذكر]",
+                "options": [
+                    "أَنْتَ",
+                    "أَنْتِ",
+                    "هِيَ"
+                ],
+                "correct": 0,
+                "explanation": "نستخدم الضمير (أَنْتَ) للمخاطب المفرد المذكر.",
+                "newWords": [
+                    {
+                        "ar": "مُعَلِّمٌ",
+                        "ru": "Учитель"
+                    },
+                    {
+                        "ar": "مَاهِرٌ",
+                        "ru": "Умелый"
+                    }
+                ]
+            },
+            {
+                "qNum": 5,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) بِنْتٌ <span class=\"word-highlight\">جَمِيلَةٌ</span>. [المخاطبة المؤنثة]",
+                "options": [
+                    "أَنْتَ",
+                    "أَنْتِ",
+                    "هُوَ"
+                ],
+                "correct": 1,
+                "explanation": "نستخدم الضمير (أَنْتِ) بكسر التاء للمخاطبة المؤنثة.",
+                "newWords": [
+                    {
+                        "ar": "جَمِيلٌ",
+                        "ru": "Красивый"
+                    },
+                    {
+                        "ar": "جَمِيلَةٌ",
+                        "ru": "Красивая"
+                    }
+                ]
+            },
+            {
+                "qNum": 6,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) طُلاَّبٌ مُجْتَهِدُونَ. [جماعة المتكلمين]",
+                "options": [
+                    "أَنَا",
+                    "هُوَ",
+                    "نَحْنُ"
+                ],
+                "correct": 2,
+                "explanation": "نستخدم الضمير (نَحْنُ) للمتكلمين الجمع.",
+                "newWords": [
+                    {
+                        "ar": "مُجْتَهِدٌ",
+                        "ru": "Прилежный"
+                    }
+                ]
+            },
+            {
+                "qNum": 7,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) <span class=\"word-highlight\">طَبِيبَةٌ</span> <span class=\"word-highlight\">نَشِيطَةٌ</span>. [الغائبة]",
+                "options": [
+                    "هِيَ",
+                    "هُوَ",
+                    "أَنْتَ"
+                ],
+                "correct": 0,
+                "explanation": "(طَبِيبَةٌ) اسم مؤنث يناسبه الضمير (هِيَ).",
+                "newWords": [
+                    {
+                        "ar": "طَبِيبٌ",
+                        "ru": "Врач (мужчина)"
+                    },
+                    {
+                        "ar": "طَبِيبَةٌ",
+                        "ru": "Врач (женщина)"
+                    },
+                    {
+                        "ar": "نَشِيطٌ",
+                        "ru": "Активный"
+                    },
+                    {
+                        "ar": "نَشِيطَةٌ",
+                        "ru": "Активная"
+                    }
+                ]
+            },
+            {
+                "qNum": 8,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) <span class=\"word-highlight\">مَرِيضٌ</span> فِي المُسْتَشْفَى. [الغائب]",
+                "options": [
+                    "هِيَ",
+                    "هُوَ",
+                    "أَنْتِ"
+                ],
+                "correct": 1,
+                "explanation": "كلمة (مَرِيضٌ) مذكر؛ فنقول: هُوَ مَرِيضٌ.",
+                "newWords": [
+                    {
+                        "ar": "مَرِيضٌ",
+                        "ru": "Больной"
+                    },
+                    {
+                        "ar": "مُسْتَشْفَى",
+                        "ru": "Больница"
+                    }
+                ]
+            },
+            {
+                "qNum": 9,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) صَدِيقِي العَزِيزُ. [المخاطب المذكر]",
+                "options": [
+                    "أَنْتِ",
+                    "هِيَ",
+                    "أَنْتَ"
+                ],
+                "correct": 2,
+                "explanation": "(صَدِيقِي) مذكر مخاطب؛ نستخدم معه (أَنْتَ).",
+                "newWords": [
+                    {
+                        "ar": "صَدِيقٌ",
+                        "ru": "Друг"
+                    }
+                ]
+            },
+            {
+                "qNum": 10,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) صَدِيقَتِي الوَفِيَّةُ. [المخاطبة المؤنثة]",
+                "options": [
+                    "أَنْتِ",
+                    "أَنْتَ",
+                    "هُوَ"
+                ],
+                "correct": 0,
+                "explanation": "(صَدِيقَتِي) مؤنث مخاطب؛ نستخدم معها (أَنْتِ).",
+                "newWords": [
+                    {
+                        "ar": "صَدِيقٌ",
+                        "ru": "Друг"
+                    }
+                ]
+            },
+            {
+                "qNum": 11,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) <span class=\"word-highlight\">نَكْتُبُ</span> الدَّرْسَ نَشَاطاً. [جماعة المتكلمين]",
+                "options": [
+                    "أَنَا",
+                    "نَحْنُ",
+                    "هُوَ"
+                ],
+                "correct": 1,
+                "explanation": "الفعل المضارع يبدأ بالنون (نَكْتُبُ) فيناسبه الضمير (نَحْنُ).",
+                "newWords": [
+                    {
+                        "ar": "نَكْتُبُ",
+                        "ru": "Пишем (мы)"
+                    }
+                ]
+            },
+            {
+                "qNum": 12,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) <span class=\"word-highlight\">أَكْتُبُ</span> الواجِبَ. [المتكلم المفرد]",
+                "options": [
+                    "نَحْنُ",
+                    "هِيَ",
+                    "أَنَا"
+                ],
+                "correct": 2,
+                "explanation": "الفعل المضارع المبدوء بالهمزة (أَكْتُبُ) يناسبه الضمير (أَنَا).",
+                "newWords": [
+                    {
+                        "ar": "وَاجِبٌ",
+                        "ru": "Домашнее задание"
+                    },
+                    {
+                        "ar": "أَكْتُبُ",
+                        "ru": "Пишу (я)"
+                    }
+                ]
+            },
+            {
+                "qNum": 13,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) تَكْتُبِينَ القِصَّةَ. [المخاطبة المؤنثة]",
+                "options": [
+                    "أَنْتِ",
+                    "أَنْتَ",
+                    "هُوَ"
+                ],
+                "correct": 0,
+                "explanation": "الفعل المضارع المنتهي بـ (ـِينَ) يناسبه الضمير (أَنْتِ).",
+                "newWords": [
+                    {
+                        "ar": "قِصَّةٌ",
+                        "ru": "Рассказ"
+                    },
+                    {
+                        "ar": "تَكْتُبُ",
+                        "ru": "Пишет (она)"
+                    }
+                ]
+            },
+            {
+                "qNum": 14,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) يَقْرَأُ القُرْآنَ. [الغائب المذكر]",
+                "options": [
+                    "هِيَ",
+                    "هُوَ",
+                    "أَنْتِ"
+                ],
+                "correct": 1,
+                "explanation": "الفعل المضارع المبدوء بالياء (يَقْرَأُ) يناسبه الضمير (هُوَ).",
+                "newWords": [
+                    {
+                        "ar": "قُرْآنٌ",
+                        "ru": "Коран"
+                    }
+                ]
+            },
+            {
+                "qNum": 15,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) تَقْرَأُ القِصَّةَ. [الغائبة المؤنثة]",
+                "options": [
+                    "أَنْتَ",
+                    "هُوَ",
+                    "هِيَ"
+                ],
+                "correct": 2,
+                "explanation": "الفعل المضارع المبدوء بالتاء للغائبة (تَقْرَأُ) يناسبه الضمير (هِيَ).",
+                "newWords": [
+                    {
+                        "ar": "قِصَّةٌ",
+                        "ru": "Рассказ"
+                    }
+                ]
+            },
+            {
+                "qNum": 16,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) <span class=\"word-highlight\">مُهَنْدِسَةٌ</span> <span class=\"word-highlight\">مَاهِرَةٌ</span>. [المخاطبة المؤنثة]",
+                "options": [
+                    "أَنْتِ",
+                    "أَنْتَ",
+                    "هُوَ"
+                ],
+                "correct": 0,
+                "explanation": "(مُهَنْدِسَةٌ) اسم مؤنث يناسبه الضمير (أَنْتِ).",
+                "newWords": [
+                    {
+                        "ar": "مُهَنْدِسٌ",
+                        "ru": "Инженер (м)"
+                    },
+                    {
+                        "ar": "مُهَنْدِسَةٌ",
+                        "ru": "Инженер (ж)"
+                    },
+                    {
+                        "ar": "مَاهِرٌ",
+                        "ru": "Умелый"
+                    },
+                    {
+                        "ar": "مَاهِرَةٌ",
+                        "ru": "Умелая"
+                    }
+                ]
+            },
+            {
+                "qNum": 17,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) <span class=\"word-highlight\">سائِقٌ</span> <span class=\"word-highlight\">حَذِرٌ</span>. [الغائب المذكر]",
+                "options": [
+                    "هِيَ",
+                    "هُوَ",
+                    "أَنْتِ"
+                ],
+                "correct": 1,
+                "explanation": "(سائِقٌ) مذكر غائب يناسبه الضمير (هُوَ).",
+                "newWords": [
+                    {
+                        "ar": "سَائِقٌ",
+                        "ru": "Водитель"
+                    },
+                    {
+                        "ar": "حَذِرٌ",
+                        "ru": "Осторожный"
+                    }
+                ]
+            },
+            {
+                "qNum": 18,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) أُسْرَةٌ <span class=\"word-highlight\">سَعِيدَةٌ</span>. [المتكلمون]",
+                "options": [
+                    "أَنَا",
+                    "هُوَ",
+                    "نَحْنُ"
+                ],
+                "correct": 2,
+                "explanation": "للجمع والمتكلمين نقول: نَحْنُ أُسْرَةٌ سَعِيدَةٌ.",
+                "newWords": [
+                    {
+                        "ar": "سَعِيدَةٌ",
+                        "ru": "Счастливая"
+                    }
+                ]
+            },
+            {
+                "qNum": 19,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) طَابِخَةٌ فِي المَطْبَخِ. [المخاطبة المؤنثة]",
+                "options": [
+                    "أَنْتِ",
+                    "أَنْتَ",
+                    "هُوَ"
+                ],
+                "correct": 0,
+                "explanation": "للمؤنث المخاطب نختار الضمير (أَنْتِ).",
+                "newWords": [
+                    {
+                        "ar": "مَطْبَخٌ",
+                        "ru": "Кухня"
+                    }
+                ]
+            },
+            {
+                "qNum": 20,
+                "text": "اخْتَرِ الضَّمِيرَ المُنَاسِبَ: (........) <span class=\"word-highlight\">حَارِسٌ</span> أَمِينٌ. [المخاطب المذكر]",
+                "options": [
+                    "أَنْتِ",
+                    "أَنْتَ",
+                    "هِيَ"
+                ],
+                "correct": 1,
+                "explanation": "للمذكر المخاطب نختار الضمير (أَنْتَ).",
+                "newWords": [
+                    {
+                        "ar": "حَارِسٌ",
+                        "ru": "Охранник"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sectionId": 3,
+        "titleAr": "القِسْمُ الثَّالِثُ: تَصْرِيفُ الفِعْلِ المُضَارِعِ",
+        "titleRu": "Раздел 3: Спряжение глаголов настоящего времени (يَكْتُبُ - пишет, تَكْتُبُ - пишешь/пишет ж., أَكْتُبُ - пишу, نَكْتُبُ - пишем)",
+        "vocab": [
+            {
+                "ar": "كِتَابَةٌ",
+                "ru": "Письмо / Запись",
+                "arSent": "يَكْتُبُ الطَّالِبُ الدَّرْسَ.",
+                "ruSent": "Студент пишет урок."
+            },
+            {
+                "ar": "قِرَاءَةٌ",
+                "ru": "Чтение",
+                "arSent": "تَقْرَأُ البِنْتُ القِصَّةَ.",
+                "ruSent": "Девочка читает историю."
+            },
+            {
+                "ar": "أَكْلٌ",
+                "ru": "Еда / Прием пищи",
+                "arSent": "نَأْكُلُ الطَّعَامَ فِي المَطْعَمِ.",
+                "ruSent": "Мы едим еду в ресторане."
+            },
+            {
+                "ar": "شُرْبٌ",
+                "ru": "Питье",
+                "arSent": "أَشْرَبُ المَاءَ النَّقِيَّ.",
+                "ruSent": "Я пью чистую воду."
+            }
+        ],
+        "questions": [
+            {
+                "qNum": 1,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: أَحْمَدُ (........) الرِّسَالَةَ. [هو]",
+                "options": [
+                    "يَكْتُبُ",
+                    "تَكْتُبُ",
+                    "أَكْتُبُ"
+                ],
+                "correct": 0,
+                "isSolved": true,
+                "solvedText": "نموذج محلول: أَحْمَدُ (يَكْتُبُ) الرِّسَالَةَ. [تَصْرِيفُ المَذَكَّرِ الغَائِبِ]",
+                "explanation": "مع المذكر الغائب (أَحْمَدُ) يبدأ الفعل المضارع بـ (الياء).",
+                "newWords": [
+                    {
+                        "ar": "رِسَالَةٌ",
+                        "ru": "Письмо"
+                    }
+                ]
+            },
+            {
+                "qNum": 2,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: فَاطِمَةُ (........) القِصَّةَ. [هي]",
+                "options": [
+                    "يَقْرَأُ",
+                    "تَقْرَأُ",
+                    "أَقْرَأُ"
+                ],
+                "correct": 1,
+                "explanation": "مع المؤنث الغائب (فَاطِمَةُ) يبدأ الفعل المضارع بـ (التاء).",
+                "newWords": [
+                    {
+                        "ar": "قِصَّةٌ",
+                        "ru": "Рассказ"
+                    }
+                ]
+            },
+            {
+                "qNum": 3,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: أَنَا (........) العَصِيرَ الصَّابِحَ.",
+                "options": [
+                    "تَشْرَبُ",
+                    "يَشْرَبُ",
+                    "أَشْرَبُ"
+                ],
+                "correct": 2,
+                "explanation": "مع الضمير (أَنَا) يبدأ الفعل المضارع بـ (الهمزة).",
+                "newWords": [
+                    {
+                        "ar": "عَصِيرٌ",
+                        "ru": "Сок"
+                    }
+                ]
+            },
+            {
+                "qNum": 4,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: نَحْنُ (........) الكُرَةَ فِي المَلْعَبِ.",
+                "options": [
+                    "نَلْعَبُ",
+                    "يَلْعَبُ",
+                    "أَلْعَبُ"
+                ],
+                "correct": 0,
+                "explanation": "مع الضمير (نَحْنُ) يبدأ الفعل المضارع بـ (النون).",
+                "newWords": [
+                    {
+                        "ar": "كُرَةٌ",
+                        "ru": "Мяч"
+                    },
+                    {
+                        "ar": "مَلْعَبٌ",
+                        "ru": "Стадион"
+                    }
+                ]
+            },
+            {
+                "qNum": 5,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: أَنْتِ (........) الواجِبَ بِدِقَّةٍ.",
+                "options": [
+                    "تَكْتُبُ",
+                    "تَكْتُبِينَ",
+                    "يَكْتُبُ"
+                ],
+                "correct": 1,
+                "explanation": "مع المفردة المؤنثة المخاطبة (أَنْتِ) ينتهي الفعل المضارع بـ (ياء ونون - تَكْتُبِينَ).",
+                "newWords": [
+                    {
+                        "ar": "وَاجِبٌ",
+                        "ru": "Домашнее задание"
+                    }
+                ]
+            },
+            {
+                "qNum": 6,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: أَنْتَ (........) إِلَى المَدْرَسَةِ صباحاً.",
+                "options": [
+                    "تَذْهَبُ",
+                    "تَذْهَبِينَ",
+                    "أَذْهَبُ"
+                ],
+                "correct": 0,
+                "explanation": "مع المفرد المذكر المخاطب (أَنْتَ) يبدأ الفعل المضارع بـ (التاء) ولا يزيد نوناً.",
+                "newWords": [
+                    {
+                        "ar": "مَدْرَسَةٌ",
+                        "ru": "Школа"
+                    }
+                ]
+            },
+            {
+                "qNum": 7,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: أُمِّي (........) الطَّعَامَ اللَّذِيذَ.",
+                "options": [
+                    "يَطْبُخُ",
+                    "تَطْبُخُ",
+                    "أَطْبُخُ"
+                ],
+                "correct": 1,
+                "explanation": "(أُمِّي) مؤنث؛ الفعل المضارع المناسب هو (تَطْبُخُ).",
+                "newWords": [
+                    {
+                        "ar": "لَذِيذٌ",
+                        "ru": "Вкусный"
+                    },
+                    {
+                        "ar": "طَعَامٌ",
+                        "ru": "Еда"
+                    }
+                ]
+            },
+            {
+                "qNum": 8,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: طَارِقٌ (........) التَّلْفَازَ فِي المَسَاءِ.",
+                "options": [
+                    "تُشَاهِدُ",
+                    "أُشَاهِدُ",
+                    "يُشَاهِدُ"
+                ],
+                "correct": 2,
+                "explanation": "(طَارِقٌ) مذكر غائب؛ يناسبه الفعل المبدوء بـ (الياء) -> يُشَاهِدُ.",
+                "newWords": [
+                    {
+                        "ar": "مَسَاءٌ",
+                        "ru": "Вечер"
+                    },
+                    {
+                        "ar": "تَلْفَازٌ",
+                        "ru": "Телевизор"
+                    }
+                ]
+            },
+            {
+                "qNum": 9,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: الطِّفْلُ (........) فِي السَّرِيرِ.",
+                "options": [
+                    "يَنَامُ",
+                    "تَنَامُ",
+                    "أَنَامُ"
+                ],
+                "correct": 0,
+                "explanation": "الطفل اسم مذكر غائب يناسبه (يَنَامُ).",
+                "newWords": [
+                    {
+                        "ar": "سَرِيرٌ",
+                        "ru": "Кровать"
+                    }
+                ]
+            },
+            {
+                "qNum": 10,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: خَوْلَةُ (........) غُرْفَتَهَا <span class=\"word-highlight\">نَظِيفَةً</span>.",
+                "options": [
+                    "يُرَتِّبُ",
+                    "تُرَتِّبُ",
+                    "أُرَتِّبُ"
+                ],
+                "correct": 1,
+                "explanation": "(خَوْلَةُ) اسم علم مؤنث فتأخذ الفعل المضارع المبدوء بـ (التاء).",
+                "newWords": [
+                    {
+                        "ar": "نَظِيفٌ",
+                        "ru": "Чистый"
+                    },
+                    {
+                        "ar": "نَظِيفَةٌ",
+                        "ru": "Чистая"
+                    }
+                ]
+            },
+            {
+                "qNum": 11,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: أَنَا (........) القرآنَ الكريمَ.",
+                "options": [
+                    "يَقْرَأُ",
+                    "تَقْرَأُ",
+                    "أَقْرَأُ"
+                ],
+                "correct": 2,
+                "explanation": "الضمير (أَنَا) يستلزم الفعل المبدوء بـ (الهمزة).",
+                "newWords": [
+                    {
+                        "ar": "قُرْآنٌ",
+                        "ru": "Коран"
+                    }
+                ]
+            },
+            {
+                "qNum": 12,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: نَحْنُ (........) اللُّغَةَ العَرَبِيَّةَ.",
+                "options": [
+                    "نَتَعَلَّمُ",
+                    "يَتَعَلَّمُ",
+                    "أَتَعَلَّمُ"
+                ],
+                "correct": 0,
+                "explanation": "الضمير (نَحْنُ) يستلزم الفعل المبدوء بـ (النون).",
+                "newWords": [
+                    {
+                        "ar": "لُغَةٌ",
+                        "ru": "Язык"
+                    },
+                    {
+                        "ar": "عَرَبِيَّةٌ",
+                        "ru": "Арабский"
+                    }
+                ]
+            },
+            {
+                "qNum": 13,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: أَنْتِ (........) المَاءَ النَّقِيَّ.",
+                "options": [
+                    "تَشْرَبُ",
+                    "تَشْرَبِينَ",
+                    "أَشْرَبُ"
+                ],
+                "correct": 1,
+                "explanation": "المخاطبة المؤنثة (أَنْتِ) تأخذ الفعل (تَشْرَبِينَ).",
+                "newWords": [
+                    {
+                        "ar": "نَقِيٌّ",
+                        "ru": "Чистый / Свежий"
+                    }
+                ]
+            },
+            {
+                "qNum": 14,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: الأَبُ (........) السَّيَّارَةَ فِي الشَّارِعِ.",
+                "options": [
+                    "تَقُودُ",
+                    "أَقُودُ",
+                    "يَقُودُ"
+                ],
+                "correct": 2,
+                "explanation": "الأب مذكر؛ الفعل المضارع المناسب (يَقُودُ).",
+                "newWords": [
+                    {
+                        "ar": "سَيَّارَةٌ",
+                        "ru": "Машина"
+                    },
+                    {
+                        "ar": "شَارِعٌ",
+                        "ru": "Улица"
+                    }
+                ]
+            },
+            {
+                "qNum": 15,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: البِنْتُ (........) مَعَ القِطَّةِ.",
+                "options": [
+                    "تَلْعَبُ",
+                    "يَلْعَبُ",
+                    "أَلْعَبُ"
+                ],
+                "correct": 0,
+                "explanation": "البنت مؤنث غائب؛ يناسبها الفعل (تَلْعَبُ).",
+                "newWords": [
+                    {
+                        "ar": "قِطَّةٌ",
+                        "ru": "Кошка"
+                    }
+                ]
+            },
+            {
+                "qNum": 16,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: الطَّالِبُ (........) البَابَ.",
+                "options": [
+                    "تَفْتَحُ",
+                    "يَفْتَحُ",
+                    "أَفْتَحُ"
+                ],
+                "correct": 1,
+                "explanation": "الطالب مذكر؛ يناسبه الفعل (يَفْتَحُ).",
+                "newWords": [
+                    {
+                        "ar": "طَالِبٌ",
+                        "ru": "Студент"
+                    },
+                    {
+                        "ar": "بَابٌ",
+                        "ru": "Дверь"
+                    }
+                ]
+            },
+            {
+                "qNum": 17,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: أَنَا (........) الحَالَةَ المَادِيَّةَ.",
+                "options": [
+                    "يَفْهَمُ",
+                    "تَفْهَمُ",
+                    "أَفْهَمُ"
+                ],
+                "correct": 2,
+                "explanation": "الضمير (أَنَا) يناسبه الفعل (أَفْهَمُ)."
+            },
+            {
+                "qNum": 18,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: نَحْنُ (........) إِلَى المَسْجِدِ.",
+                "options": [
+                    "نَمْشِي",
+                    "يَمْشِي",
+                    "أَمْشِي"
+                ],
+                "correct": 0,
+                "explanation": "الضمير (نَحْنُ) يناسبه الفعل (نَمْشِي).",
+                "newWords": [
+                    {
+                        "ar": "مَسْجِدٌ",
+                        "ru": "Мечеть"
+                    }
+                ]
+            },
+            {
+                "qNum": 19,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: أَنْتَ (........) البَابَ بِرِفْقٍ.",
+                "options": [
+                    "يَغْلِقُ",
+                    "تَغْلِقُ",
+                    "تَغْلِقِينَ"
+                ],
+                "correct": 1,
+                "explanation": "المخاطب المذكر (أَنْتَ) يناسبه الفعل (تَغْلِقُ).",
+                "newWords": [
+                    {
+                        "ar": "بَابٌ",
+                        "ru": "Дверь"
+                    }
+                ]
+            },
+            {
+                "qNum": 20,
+                "text": "اخْتَرِ الفِعْلَ المُنَاسِبَ: المُرَاقِبُ (........) فِي الفَنَاءِ.",
+                "options": [
+                    "تَقِفُ",
+                    "أَقِفُ",
+                    "يَقِفُ"
+                ],
+                "correct": 2,
+                "explanation": "المراقب اسم مذكر غائب يناسبه الفعل (يَقِفُ).",
+                "newWords": [
+                    {
+                        "ar": "مُرَاقِبٌ",
+                        "ru": "Контроلёр"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sectionId": 4,
+        "titleAr": "القِسْمُ الرَّابِعُ: حُرُوفُ الجَرِّ وَظُرُوفُ المَكَانِ",
+        "titleRu": "Раздел 4: Предлоги и предлоги места (فِي - в, عَلَى - на, مِنْ - из/от, إِلَى - в/к, فَوْقَ - над, تَحْتَ - под, أَمَامَ - перед, خَلْفَ - за)",
+        "vocab": [
+            {
+                "ar": "طَاوِلَةٌ",
+                "ru": "Стол / Письменный стол",
+                "arSent": "الكِتَابُ عَلَى الطَّاوِلَةِ.",
+                "ruSent": "Книга на столе."
+            },
+            {
+                "ar": "حَقِيبَةٌ",
+                "ru": "Сумка / Рюкзак",
+                "arSent": "القَلَمُ فِي الحَقِيبَةِ.",
+                "ruSent": "Ручка в сумке."
+            },
+            {
+                "ar": "شَجَرَةٌ",
+                "ru": "Дерево",
+                "arSent": "العُصْفُورُ فَوْقَ الشَّجَرَةِ.",
+                "ruSent": "Птица на дереве."
+            },
+            {
+                "ar": "سَرِيرٌ",
+                "ru": "Кровать",
+                "arSent": "القِطُّ تَحْتَ السَّرِيرِ.",
+                "ruSent": "Кот под кроватью."
+            }
+        ],
+        "questions": [
+            {
+                "qNum": 1,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: الكِتَابُ (........) الطَّاوِلَةِ.",
+                "options": [
+                    "عَلَى",
+                    "فِي",
+                    "إِلَى"
+                ],
+                "correct": 0,
+                "isSolved": true,
+                "solvedText": "نموذج محلول: الكِتَابُ (عَلَى) الطَّاوِلَةِ. [الٱسْتِعْلاَءُ وَالوُجُودُ فَوْقَ السَّطْحِ]",
+                "explanation": "نستخدم حرف الجر (عَلَى) للدلالة على الاستعلاء والوجود فوق السطح.",
+                "newWords": [
+                    {
+                        "ar": "طَاوِلَةٌ",
+                        "ru": "Стол"
+                    },
+                    {
+                        "ar": "كِتَابٌ",
+                        "ru": "Книга"
+                    }
+                ]
+            },
+            {
+                "qNum": 2,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: القَلَمُ (........) الحَقِيبَةِ.",
+                "options": [
+                    "عَلَى",
+                    "فِي",
+                    "مِنْ"
+                ],
+                "correct": 1,
+                "explanation": "نستخدم (فِي) للدلالة على الظرفية والوجود داخل الشيء.",
+                "newWords": [
+                    {
+                        "ar": "حَقِيبَةٌ",
+                        "ru": "Сумка"
+                    },
+                    {
+                        "ar": "قَلَمٌ",
+                        "ru": "Ручка"
+                    }
+                ]
+            },
+            {
+                "qNum": 3,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: <span class=\"word-highlight\">يَذْهَبُ</span> الطَّالِبُ (........) المَدْرَسَةِ.",
+                "options": [
+                    "عَلَى",
+                    "فِي",
+                    "إِلَى"
+                ],
+                "correct": 2,
+                "explanation": "نستخدم حرف الجر (إِلَى) للدلالة على انتهاء الغاية والتوجه للمكان.",
+                "newWords": [
+                    {
+                        "ar": "طَالِبٌ",
+                        "ru": "Студент"
+                    },
+                    {
+                        "ar": "مَدْرَسَةٌ",
+                        "ru": "Школа"
+                    },
+                    {
+                        "ar": "يَذْهَبُ",
+                        "ru": "Идёт (он)"
+                    }
+                ]
+            },
+            {
+                "qNum": 4,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: <span class=\"word-highlight\">يَرْجِعُ</span> أَبِي (........) العَمَلِ <span class=\"word-highlight\">مَسَاءً</span>.",
+                "options": [
+                    "مِنْ",
+                    "إِلَى",
+                    "فِي"
+                ],
+                "correct": 0,
+                "explanation": "نستخدم (مِنْ) للدلالة على ابتداء الغاية والصدور من المكان.",
+                "newWords": [
+                    {
+                        "ar": "يَرْجِعُ",
+                        "ru": "Возвращается"
+                    },
+                    {
+                        "ar": "مَسَاءٌ",
+                        "ru": "Вечер"
+                    }
+                ]
+            },
+            {
+                "qNum": 5,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: العُصْفُورُ (........) الشَّجَرَةِ.",
+                "options": [
+                    "تَحْتَ",
+                    "فَوْقَ",
+                    "فِي"
+                ],
+                "correct": 1,
+                "explanation": "نستخدم (فَوْقَ) للدلالة على العلو والارتفاع دون ملامسة.",
+                "newWords": [
+                    {
+                        "ar": "شَجَرَةٌ",
+                        "ru": "Дерево"
+                    },
+                    {
+                        "ar": "عُصْفُورٌ",
+                        "ru": "Птичка"
+                    }
+                ]
+            },
+            {
+                "qNum": 6,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: القِطُّ (........) السَّرِيرِ.",
+                "options": [
+                    "فَوْقَ",
+                    "أَمَامَ",
+                    "تَحْتَ"
+                ],
+                "correct": 2,
+                "explanation": "نستخدم (تَحْتَ) للدلالة على الانخفاض والوجود في الأسفل.",
+                "newWords": [
+                    {
+                        "ar": "سَرِيرٌ",
+                        "ru": "Кровать"
+                    }
+                ]
+            },
+            {
+                "qNum": 7,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: تَقِفُ السَّيَّارَةُ (........) البَيْتِ.",
+                "options": [
+                    "أَمَامَ",
+                    "تَحْتَ",
+                    "فِي"
+                ],
+                "correct": 0,
+                "explanation": "نستخدم (أَمَامَ) للدلالة على المواجهة والوجود في الناحية الأمامية.",
+                "newWords": [
+                    {
+                        "ar": "سَيَّارَةٌ",
+                        "ru": "Машина"
+                    },
+                    {
+                        "ar": "بَيْتٌ",
+                        "ru": "Дом"
+                    }
+                ]
+            },
+            {
+                "qNum": 8,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: تَقَعُ الحَدِيقَةُ (........) المَسْجِدِ.",
+                "options": [
+                    "فَوْقَ",
+                    "خَلْفَ",
+                    "عَلَى"
+                ],
+                "correct": 1,
+                "explanation": "نستخدم (خَلْفَ) للدلالة على الوجود في الناحية الخلفية.",
+                "newWords": [
+                    {
+                        "ar": "مَسْجِدٌ",
+                        "ru": "Мечеть"
+                    },
+                    {
+                        "ar": "حَدِيقَةٌ",
+                        "ru": "Сад"
+                    }
+                ]
+            },
+            {
+                "qNum": 9,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: <span class=\"word-highlight\">يَلْعَبُ</span> الوَلَدُ (........) صَدِيقِهِ.",
+                "options": [
+                    "فِي",
+                    "إِلَى",
+                    "مَعَ"
+                ],
+                "correct": 2,
+                "explanation": "نستخدم (مَعَ) للدلالة على المصاحبة والمشاركة.",
+                "newWords": [
+                    {
+                        "ar": "صَدِيقٌ",
+                        "ru": "Друг"
+                    },
+                    {
+                        "ar": "يَلْعَبُ",
+                        "ru": "Играет"
+                    }
+                ]
+            },
+            {
+                "qNum": 10,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: يُصَلِّي المُلْسِمُ (........) المَسْجِدِ.",
+                "options": [
+                    "فِي",
+                    "عَلَى",
+                    "مِنْ"
+                ],
+                "correct": 0,
+                "explanation": "الصلاة تكون داخل المسجد فنقول: (فِي) المسجد.",
+                "newWords": [
+                    {
+                        "ar": "مَسْجِدٌ",
+                        "ru": "Мечеть"
+                    }
+                ]
+            },
+            {
+                "qNum": 11,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: نَضَعُ المَفْرَشَ (........) الطَّاوِلَةِ.",
+                "options": [
+                    "فِي",
+                    "عَلَى",
+                    "إِلَى"
+                ],
+                "correct": 1,
+                "explanation": "بسط المفروشات فوق السطح يناسبه الحرف (عَلَى).",
+                "newWords": [
+                    {
+                        "ar": "طَاوِلَةٌ",
+                        "ru": "Стол"
+                    }
+                ]
+            },
+            {
+                "qNum": 12,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: سَافَرَتْ عَائِشَةُ (........) <span class=\"word-highlight\">مَكَّةَ</span>.",
+                "options": [
+                    "مِنْ",
+                    "فِي",
+                    "إِلَى"
+                ],
+                "correct": 2,
+                "explanation": "السفر نحو الوجهة نستخدم له الحرف (إِلَى).",
+                "newWords": [
+                    {
+                        "ar": "مَكَّةُ",
+                        "ru": "Мекка"
+                    }
+                ]
+            },
+            {
+                "qNum": 13,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: الطَّائِرَةُ <span class=\"word-highlight\">تُحَلِّقُ</span> (........) السَّحَابِ.",
+                "options": [
+                    "فَوْقَ",
+                    "تَحْتَ",
+                    "فِي"
+                ],
+                "correct": 0,
+                "explanation": "التحليق المرتفع يناسبه (فَوْقَ).",
+                "newWords": [
+                    {
+                        "ar": "طَائِرَةٌ",
+                        "ru": "Самолёт"
+                    },
+                    {
+                        "ar": "تُحَلِّقُ",
+                        "ru": "Летит / Парит"
+                    },
+                    {
+                        "ar": "سَحَابٌ",
+                        "ru": "Облака"
+                    }
+                ]
+            },
+            {
+                "qNum": 14,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: الحَذَاءِ (........) الكُرْسِيِّ.",
+                "options": [
+                    "فِي",
+                    "تَحْتَ",
+                    "إِلَى"
+                ],
+                "correct": 1,
+                "explanation": "الوجود في الأسفل يناسبه (تَحْتَ).",
+                "newWords": [
+                    {
+                        "ar": "كُرْسِيٌّ",
+                        "ru": "Стуل"
+                    },
+                    {
+                        "ar": "حِذَاءٌ",
+                        "ru": "Обувь"
+                    }
+                ]
+            },
+            {
+                "qNum": 15,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: يَتَكَلَّمُ الأُسْتَاذُ (........) الطُّلاَّبِ.",
+                "options": [
+                    "تَحْتَ",
+                    "فَوْقَ",
+                    "أَمَامَ"
+                ],
+                "correct": 2,
+                "explanation": "الوقوف والمواجهة يناسبها الظرف (أَمَامَ)."
+            },
+            {
+                "qNum": 16,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: <span class=\"word-highlight\">يَنَامُ</span> الطِّفْلُ (........) السَّرِيرِ.",
+                "options": [
+                    "عَلَى",
+                    "مِنْ",
+                    "إِلَى"
+                ],
+                "correct": 0,
+                "explanation": "النوم فوق سطح السرير يناسبه الحرف (عَلَى).",
+                "newWords": [
+                    {
+                        "ar": "سَرِيرٌ",
+                        "ru": "Кровать"
+                    },
+                    {
+                        "ar": "يَنَامُ",
+                        "ru": "Спит"
+                    }
+                ]
+            },
+            {
+                "qNum": 17,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: نَأْخُذُ الحَلِيبَ (........) البَقَرَةِ.",
+                "options": [
+                    "إِلَى",
+                    "مِنْ",
+                    "فَوْقَ"
+                ],
+                "correct": 1,
+                "explanation": "الأخذ والابتداء يناسبه الحرف (مِنْ).",
+                "newWords": [
+                    {
+                        "ar": "حَلِيبٌ",
+                        "ru": "Молоко"
+                    },
+                    {
+                        "ar": "بَقَرَةٌ",
+                        "ru": "Корова"
+                    }
+                ]
+            },
+            {
+                "qNum": 18,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: نَشْتَرِي الخُبْزَ (........) المَخْبَزِ.",
+                "options": [
+                    "فِي",
+                    "إِلَى",
+                    "مِنْ"
+                ],
+                "correct": 2,
+                "explanation": "الشراء من المصدر يناسبه الحرف (مِنْ).",
+                "newWords": [
+                    {
+                        "ar": "خُبْزٌ",
+                        "ru": "Хлеб"
+                    },
+                    {
+                        "ar": "مَخْبَزٌ",
+                        "ru": "Пекарня"
+                    }
+                ]
+            },
+            {
+                "qNum": 19,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: السَّجَّادَةُ (........) الأَرْضِ.",
+                "options": [
+                    "عَلَى",
+                    "فِي",
+                    "مِنْ"
+                ],
+                "correct": 0,
+                "explanation": "بسط الشيء على الأرض يناسبه (عَلَى).",
+                "newWords": [
+                    {
+                        "ar": "سَجَّادَةٌ",
+                        "ru": "Ковёр"
+                    }
+                ]
+            },
+            {
+                "qNum": 20,
+                "text": "اخْتَرِ حَرْفَ الجَرِّ أَوْ الظَّرْفَ المُنَاسِبَ: القَمَرُ <span class=\"word-highlight\">يَظْهَرُ</span> (........) السَّمَاءِ.",
+                "options": [
+                    "عَلَى",
+                    "فِي",
+                    "إِلَى"
+                ],
+                "correct": 1,
+                "explanation": "الظهور والوجود داخل جو السماء يناسبه (فِي).",
+                "newWords": [
+                    {
+                        "ar": "قَمَرٌ",
+                        "ru": "Луна"
+                    },
+                    {
+                        "ar": "يَظْهَرُ",
+                        "ru": "Появляется"
+                    },
+                    {
+                        "ar": "سَمَاءٌ",
+                        "ru": "Небо"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sectionId": 5,
+        "titleAr": "القِسْمُ الخَامِسُ: أَدَوَاتُ الٱسْتِفْهَامِ المُنَاسِبَةُ",
+        "titleRu": "Раздел 5: Вопросительные слова (مَنْ - кто, مَا - что, أَيْنَ - где, كَيْفَ - как, هَلْ - ли)",
+        "vocab": [
+            {
+                "ar": "حَالٌ",
+                "ru": "Состояние / Здоровье",
+                "arSent": "كَيْفَ حَالُكَ؟",
+                "ruSent": "Как твои дела?"
+            },
+            {
+                "ar": "اسْمٌ",
+                "ru": "Имя",
+                "arSent": "مَا اسْمُكَ؟",
+                "ruSent": "Как тебя зовут?"
+            },
+            {
+                "ar": "مَفْتَاحٌ",
+                "ru": "Ключ",
+                "arSent": "أَيْنَ المِفْتَاحُ؟",
+                "ruSent": "Где ключ?"
+            },
+            {
+                "ar": "رَجُلٌ",
+                "ru": "Мужчина",
+                "arSent": "مَنْ هَذَا الرَّجُلُ؟",
+                "ruSent": "Кто этот мужчина?"
+            }
+        ],
+        "questions": [
+            {
+                "qNum": 1,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) هَذَا؟ - هَذَا صَدِيقِي خَالِدٌ.",
+                "options": [
+                    "مَنْ",
+                    "مَا",
+                    "أَيْنَ"
+                ],
+                "correct": 0,
+                "isSolved": true,
+                "solvedText": "نموذج محلول: (مَنْ) هَذَا؟ - هَذَا صَدِيقِي خَالِدٌ. [لِلسُّؤَالِ عَنِ العَاقِلِ]",
+                "explanation": "نستخدم (مَنْ) للسؤال عن الأشخاص والأشخاص العقلاء.",
+                "newWords": [
+                    {
+                        "ar": "صَدِيقٌ",
+                        "ru": "Друг"
+                    }
+                ]
+            },
+            {
+                "qNum": 2,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) هَذَا؟ - هَذَا <span class=\"word-highlight\">كِتَابُ</span> اللُّغَةِ العَرَبِيَّةِ.",
+                "options": [
+                    "مَنْ",
+                    "مَا",
+                    "أَيْنَ"
+                ],
+                "correct": 1,
+                "explanation": "نستخدم (مَا) للسؤال عن الأشياء وغير العاقل.",
+                "newWords": [
+                    {
+                        "ar": "لُغَةٌ",
+                        "ru": "Язык"
+                    },
+                    {
+                        "ar": "عَرَبِيَّةٌ",
+                        "ru": "Арабский"
+                    },
+                    {
+                        "ar": "كِتَابٌ",
+                        "ru": "Книга"
+                    }
+                ]
+            },
+            {
+                "qNum": 3,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) المَفْتَاحُ؟ - المَفْتَاحُ عَلَى الطَّاوِلَةِ.",
+                "options": [
+                    "مَنْ",
+                    "مَا",
+                    "أَيْنَ"
+                ],
+                "correct": 2,
+                "explanation": "نستخدم (أَيْنَ) للسؤال عن المكان والموقع.",
+                "newWords": [
+                    {
+                        "ar": "طَاوِلَةٌ",
+                        "ru": "Стол"
+                    },
+                    {
+                        "ar": "مِفْتَاحٌ",
+                        "ru": "Ключ"
+                    }
+                ]
+            },
+            {
+                "qNum": 4,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) حَالُكَ يا طَارِقُ؟ - أَنَا بِخَيْرٍ، الحَمْدُ لِلَّهِ.",
+                "options": [
+                    "كَيْفَ",
+                    "أَيْنَ",
+                    "مَنْ"
+                ],
+                "correct": 0,
+                "explanation": "نستخدم (كَيْفَ) للسؤال عن الحال والصحة."
+            },
+            {
+                "qNum": 5,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) أَنْتَ <span class=\"word-highlight\">طَالِبٌ</span> <span class=\"word-highlight\">جَدِيدٌ</span>؟ - نَعَمْ، أَنَا <span class=\"word-highlight\">طَالِبٌ</span> <span class=\"word-highlight\">جَدِيدٌ</span>.",
+                "options": [
+                    "مَنْ",
+                    "هَلْ",
+                    "أَيْنَ"
+                ],
+                "correct": 1,
+                "explanation": "نستخدم (هَلْ) للأسئلة التي تكون إجابتها بنعم أو لا.",
+                "newWords": [
+                    {
+                        "ar": "طَالِبٌ",
+                        "ru": "Студент"
+                    },
+                    {
+                        "ar": "جَدِيدٌ",
+                        "ru": "Новый"
+                    }
+                ]
+            },
+            {
+                "qNum": 6,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) اسْمُكِ يا <span class=\"word-highlight\">طَالِبَةُ</span>؟ - اسْمِي صَفِيَّةُ.",
+                "options": [
+                    "مَنْ",
+                    "أَيْنَ",
+                    "مَا"
+                ],
+                "correct": 2,
+                "explanation": "نستخدم (مَا) للسؤال عن الاسم (مَا اسْمُكِ؟).",
+                "newWords": [
+                    {
+                        "ar": "طَالِبٌ",
+                        "ru": "Студент"
+                    },
+                    {
+                        "ar": "طَالِبَةٌ",
+                        "ru": "Студентка"
+                    }
+                ]
+            },
+            {
+                "qNum": 7,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) تَسْكُنُ يا عُمَرُ؟ - أَسْكُنُ فِي <span class=\"word-highlight\">مَدِينَةِ</span> الرِّيَاضِ.",
+                "options": [
+                    "أَيْنَ",
+                    "كَيْفَ",
+                    "مَنْ"
+                ],
+                "correct": 0,
+                "explanation": "السؤال عن مكان السكن والاقامة بـ (أَيْنَ).",
+                "newWords": [
+                    {
+                        "ar": "مَدِينَةٌ",
+                        "ru": "Город"
+                    }
+                ]
+            },
+            {
+                "qNum": 8,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) تَلْعَبُ مَعَ صَدِيقِكَ؟ - نَعَمْ، أَلْعَبُ مَعَهُ.",
+                "options": [
+                    "مَا",
+                    "هَلْ",
+                    "أَيْنَ"
+                ],
+                "correct": 1,
+                "explanation": "الإجابة بـ (نَعَمْ) تتطلب سؤالاً بـ (هَلْ).",
+                "newWords": [
+                    {
+                        "ar": "صَدِيقٌ",
+                        "ru": "Друг"
+                    }
+                ]
+            },
+            {
+                "qNum": 9,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) هَذِهِ المَرْأَةُ؟ - هَذِهِ أُمِّي.",
+                "options": [
+                    "مَا",
+                    "كَيْفَ",
+                    "مَنْ"
+                ],
+                "correct": 2,
+                "explanation": "السؤال عن الشخص العاقل نستخدم له (مَنْ).",
+                "newWords": [
+                    {
+                        "ar": "اِمْرَأَةٌ",
+                        "ru": "Женщина"
+                    }
+                ]
+            },
+            {
+                "qNum": 10,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) هَذِهِ الصُّورَةُ؟ - هَذِهِ <span class=\"word-highlight\">صُورَةُ</span> المَدْرَسَةِ.",
+                "options": [
+                    "مَا",
+                    "مَنْ",
+                    "أَيْنَ"
+                ],
+                "correct": 0,
+                "explanation": "الصورة شيء غير عاقل؛ نسأل عنها بـ (مَا).",
+                "newWords": [
+                    {
+                        "ar": "صُورَةٌ",
+                        "ru": "Изображение / Фото"
+                    },
+                    {
+                        "ar": "مَدْرَسَةٌ",
+                        "ru": "Школа"
+                    }
+                ]
+            },
+            {
+                "qNum": 11,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) <span class=\"word-highlight\">تَذْهَبُ</span> إِلَى المَدْرَسَةِ؟ - مَشْياً عَلَى الأَقْدَامِ.",
+                "options": [
+                    "أَيْنَ",
+                    "كَيْفَ",
+                    "مَنْ"
+                ],
+                "correct": 1,
+                "explanation": "السؤال عن الوسيلة والحال يكون بـ (كَيْفَ).",
+                "newWords": [
+                    {
+                        "ar": "مَدْرَسَةٌ",
+                        "ru": "Школа"
+                    },
+                    {
+                        "ar": "تَذْهَبُ",
+                        "ru": "Идёт (она)"
+                    }
+                ]
+            },
+            {
+                "qNum": 12,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) القَلَمُ؟ - القَلَمُ فِي الحَقِيبَةِ.",
+                "options": [
+                    "مَنْ",
+                    "مَا",
+                    "أَيْنَ"
+                ],
+                "correct": 2,
+                "explanation": "مكان القلم نسأل عنه بـ (أَيْنَ).",
+                "newWords": [
+                    {
+                        "ar": "حَقِيبَةٌ",
+                        "ru": "Сумка"
+                    },
+                    {
+                        "ar": "قَلَمٌ",
+                        "ru": "Ручка"
+                    }
+                ]
+            },
+            {
+                "qNum": 13,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) <span class=\"word-highlight\">تُحِبُّ</span> القِرَاءَةَ؟ - نَعَمْ، أُحِبُّ القِرَاءَةَ.",
+                "options": [
+                    "هَلْ",
+                    "مَا",
+                    "أَيْنَ"
+                ],
+                "correct": 0,
+                "explanation": "التأكيد والجواب بنعم يناسبه (هَلْ).",
+                "newWords": [
+                    {
+                        "ar": "قِرَاءَةٌ",
+                        "ru": "Чтение"
+                    },
+                    {
+                        "ar": "تُحِبُّ",
+                        "ru": "Любишь / Любит"
+                    }
+                ]
+            },
+            {
+                "qNum": 14,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) <span class=\"word-highlight\">يَعْمَلُ</span> أَبُوكَ؟ - <span class=\"word-highlight\">يَعْمَلُ</span> فِي المُسْتَشْفَى.",
+                "options": [
+                    "مَنْ",
+                    "أَيْنَ",
+                    "مَا"
+                ],
+                "correct": 1,
+                "explanation": "مكان العمل يسأل عنه بـ (أَيْنَ).",
+                "newWords": [
+                    {
+                        "ar": "مُسْتَشْفَى",
+                        "ru": "Больница"
+                    },
+                    {
+                        "ar": "يَعْمَلُ",
+                        "ru": "Работает"
+                    }
+                ]
+            },
+            {
+                "qNum": 15,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) هَذَا الوَلَدُ الصَّغِيرُ؟ - هَذَا أَخِي أَحْمَدُ.",
+                "options": [
+                    "مَا",
+                    "كَيْفَ",
+                    "مَنْ"
+                ],
+                "correct": 2,
+                "explanation": "السؤال عن هوية الطفل العاقل بـ (مَنْ).",
+                "newWords": [
+                    {
+                        "ar": "صَغِيرٌ",
+                        "ru": "Маленький"
+                    }
+                ]
+            },
+            {
+                "qNum": 16,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) فِي الحَقِيبَةِ؟ - فِي الحَقِيبَةِ <span class=\"word-highlight\">كِتَابٌ</span>.",
+                "options": [
+                    "مَاذَا",
+                    "مَنْ",
+                    "كَيْفَ"
+                ],
+                "correct": 0,
+                "explanation": "السؤال عن محتوى الشيء غير العاقل بـ (مَا) أو (مَاذَا).",
+                "newWords": [
+                    {
+                        "ar": "حَقِيبَةٌ",
+                        "ru": "Сумка"
+                    },
+                    {
+                        "ar": "كِتَابٌ",
+                        "ru": "Книга"
+                    }
+                ]
+            },
+            {
+                "qNum": 17,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) الطَبِيبُ؟ - الطَبِيبُ فِي العِيَادَةِ.",
+                "options": [
+                    "مَنْ",
+                    "أَيْنَ",
+                    "مَا"
+                ],
+                "correct": 1,
+                "explanation": "تحديد موقع الطبيب بـ (أَيْنَ).",
+                "newWords": [
+                    {
+                        "ar": "طَبِيبٌ",
+                        "ru": "Врач (мужчина)"
+                    },
+                    {
+                        "ar": "عِيَادَةٌ",
+                        "ru": "Клиника"
+                    }
+                ]
+            },
+            {
+                "qNum": 18,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) هَذَا اللَّوْنُ؟ - هَذَا <span class=\"word-highlight\">لَوْنٌ</span> <span class=\"word-highlight\">أَحْمَرُ</span>.",
+                "options": [
+                    "مَنْ",
+                    "أَيْنَ",
+                    "مَا"
+                ],
+                "correct": 2,
+                "explanation": "السؤال عن ماهية اللون بـ (مَا).",
+                "newWords": [
+                    {
+                        "ar": "لَوْنٌ",
+                        "ru": "Цвет"
+                    },
+                    {
+                        "ar": "أَحْمَرُ",
+                        "ru": "Красный"
+                    }
+                ]
+            },
+            {
+                "qNum": 19,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) شَرِبْتَ الحَلِيبَ؟ - نَعَمْ، شَرِبْتُهُ.",
+                "options": [
+                    "هَلْ",
+                    "أَيْنَ",
+                    "مَنْ"
+                ],
+                "correct": 0,
+                "explanation": "السؤال الاستفهامي للتأكيد بـ (هَلْ).",
+                "newWords": [
+                    {
+                        "ar": "شُرْبٌ",
+                        "ru": "Питье"
+                    },
+                    {
+                        "ar": "حَلِيبٌ",
+                        "ru": "Молоко"
+                    }
+                ]
+            },
+            {
+                "qNum": 20,
+                "text": "اخْتَرِ أَدَاةَ الٱسْتِفْهَامِ المُنَاسِبَةَ: (........) كَتَبَ هَذَا الدَّرْسَ؟ - كَتَبَهُ خَالِدٌ.",
+                "options": [
+                    "مَا",
+                    "مَنْ",
+                    "أَيْنَ"
+                ],
+                "correct": 1,
+                "explanation": "السؤال عن فاعل الفعل العاقل بـ (مَنْ)."
+            }
+        ]
+    },
+    {
+        "sectionId": 6,
+        "titleAr": "القِسْمُ السَّادِسُ: مُطَابَقَةُ الصِّفَةِ (النَّعْتِ) لِلْمَوْصُوفِ",
+        "titleRu": "Раздел 6: Согласование прилагательных с существительными (мужской и женский род)",
+        "vocab": [
+            {
+                "ar": "كَبِيرٌ / كَبِيرَةٌ",
+                "ru": "Большой / Большая",
+                "arSent": "بَيْتٌ كَبِيرٌ، مَدْرَسَةٌ كَبِيرَةٌ.",
+                "ruSent": "Большой дом, большая школа."
+            },
+            {
+                "ar": "جَدِيدٌ / جَدِيدَةٌ",
+                "ru": "Новый / Новая",
+                "arSent": "كِتَابٌ جَدِيدٌ، سَيَّارَةٌ جَدِيدَةٌ.",
+                "ruSent": "Новая книга, новая машина."
+            },
+            {
+                "ar": "نَشِيطٌ / نَشِيطَةٌ",
+                "ru": "Активный / Активная",
+                "arSent": "طَالِبٌ نَشِيطٌ، طَالِبَةٌ نَشِيطَةٌ.",
+                "ruSent": "Активный студент, активная студентка."
+            },
+            {
+                "ar": "جَمِيلٌ / جَمِيلَةٌ",
+                "ru": "Краسيвый / Красивая",
+                "arSent": "وَلَدٌ جَمِيلٌ، بِنْتٌ جَمِيلَةٌ.",
+                "ruSent": "Красивый мальчик, красивая девочка."
+            }
+        ],
+        "questions": [
+            {
+                "qNum": 1,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذَا <span class=\"word-highlight\">بَيْتٌ</span> (........).",
+                "options": [
+                    "كَبِيرٌ",
+                    "كَبِيرَةٌ"
+                ],
+                "correct": 0,
+                "isSolved": true,
+                "solvedText": "نموذج محلول: هَذَا بَيْتٌ (كَبِيرٌ). [تَطَابُقُ المَذَكَّرِ]",
+                "explanation": "كلمة (بَيْتٌ) مذكر؛ فتكون صفته مذكر (كَبِيرٌ).",
+                "newWords": [
+                    {
+                        "ar": "بَيْتٌ",
+                        "ru": "Дом"
+                    }
+                ]
+            },
+            {
+                "qNum": 2,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذِهِ <span class=\"word-highlight\">سَيَّارَةٌ</span> (........).",
+                "options": [
+                    "جَدِيدٌ",
+                    "جَدِيدَةٌ"
+                ],
+                "correct": 1,
+                "explanation": "كلمة (سَيَّارَةٌ) مؤنث؛ فتكون صفتها مؤنثة بتاء مربوطة (جَدِيدَةٌ).",
+                "newWords": [
+                    {
+                        "ar": "سَيَّارَةٌ",
+                        "ru": "Машина"
+                    }
+                ]
+            },
+            {
+                "qNum": 3,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذَا <span class=\"word-highlight\">طَالِبٌ</span> (........).",
+                "options": [
+                    "مُجْتَهِدَةٌ",
+                    "مُجْتَهِدٌ"
+                ],
+                "correct": 1,
+                "explanation": "كلمة (طَالِبٌ) مذكر؛ فتكون صفته مذكر (مُجْتَهِدٌ).",
+                "newWords": [
+                    {
+                        "ar": "طَالِبٌ",
+                        "ru": "Студент"
+                    }
+                ]
+            },
+            {
+                "qNum": 4,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذِهِ <span class=\"word-highlight\">طَالِبَةٌ</span> (........).",
+                "options": [
+                    "مُجْتَهِدَةٌ",
+                    "مُجْتَهِدٌ"
+                ],
+                "correct": 0,
+                "explanation": "كلمة (طَالِبَةٌ) مؤنث؛ صفته مؤنثة (مُجْتَهِدَةٌ).",
+                "newWords": [
+                    {
+                        "ar": "طَالِبٌ",
+                        "ru": "Студент"
+                    },
+                    {
+                        "ar": "طَالِبَةٌ",
+                        "ru": "Студентка"
+                    }
+                ]
+            },
+            {
+                "qNum": 5,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذَا <span class=\"word-highlight\">قَلَمٌ</span> (........).",
+                "options": [
+                    "زَرْقَاءُ",
+                    "أَزْرَقُ"
+                ],
+                "correct": 1,
+                "explanation": "صفة اللون للمذكر (أَزْرَقُ).",
+                "newWords": [
+                    {
+                        "ar": "قَلَمٌ",
+                        "ru": "Ручка"
+                    }
+                ]
+            },
+            {
+                "qNum": 6,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذِهِ <span class=\"word-highlight\">حَقِيبَةٌ</span> (........).",
+                "options": [
+                    "حَمْرَاءُ",
+                    "أَحْمَرُ"
+                ],
+                "correct": 0,
+                "explanation": "صفة اللون للمؤنث (حَمْرَاءُ).",
+                "newWords": [
+                    {
+                        "ar": "حَقِيبَةٌ",
+                        "ru": "Сумка"
+                    }
+                ]
+            },
+            {
+                "qNum": 7,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذَا <span class=\"word-highlight\">كِتَابٌ</span> (........).",
+                "options": [
+                    "مُفِيدَةٌ",
+                    "مُفِيدٌ"
+                ],
+                "correct": 1,
+                "explanation": "كلمة (كِتَابٌ) مذكر؛ نختار (مُفِيدٌ).",
+                "newWords": [
+                    {
+                        "ar": "كِتَابٌ",
+                        "ru": "Книга"
+                    }
+                ]
+            },
+            {
+                "qNum": 8,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذِهِ <span class=\"word-highlight\">قِصَّةٌ</span> (........).",
+                "options": [
+                    "مُفِيدَةٌ",
+                    "مُفِيدٌ"
+                ],
+                "correct": 0,
+                "explanation": "كلمة (قِصَّةٌ) مؤنث؛ نختار (مُفِيدَةٌ).",
+                "newWords": [
+                    {
+                        "ar": "قِصَّةٌ",
+                        "ru": "Рассказ"
+                    }
+                ]
+            },
+            {
+                "qNum": 9,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذَا وَلَدٌ (........).",
+                "options": [
+                    "صَغِيرَةٌ",
+                    "صَغِيرٌ"
+                ],
+                "correct": 1,
+                "explanation": "(وَلَدٌ) مذكر يناسبه (صَغِيرٌ)."
+            },
+            {
+                "qNum": 10,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذِهِ بِنْتٌ (........).",
+                "options": [
+                    "صَغِيرَةٌ",
+                    "صَغِيرٌ"
+                ],
+                "correct": 0,
+                "explanation": "(بِنْتٌ) مؤنث يناسبه (صَغِيرَةٌ)."
+            },
+            {
+                "qNum": 11,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذِهِ <span class=\"word-highlight\">حَدِيقَةٌ</span> (........).",
+                "options": [
+                    "جَمِيلٌ",
+                    "جَمِيلَةٌ"
+                ],
+                "correct": 1,
+                "explanation": "كلمة (حَدِيقَةٌ) مؤنث فتأخذ (جَمِيلَةٌ).",
+                "newWords": [
+                    {
+                        "ar": "حَدِيقَةٌ",
+                        "ru": "Сад"
+                    }
+                ]
+            },
+            {
+                "qNum": 12,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذَا <span class=\"word-highlight\">بَابٌ</span> (........).",
+                "options": [
+                    "مَفْتُوحٌ",
+                    "مَفْتُوحَةٌ"
+                ],
+                "correct": 0,
+                "explanation": "كلمة (بَابٌ) مذكر؛ تأخذ (مَفْتُوحٌ).",
+                "newWords": [
+                    {
+                        "ar": "بَابٌ",
+                        "ru": "Дверь"
+                    }
+                ]
+            },
+            {
+                "qNum": 13,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذِهِ <span class=\"word-highlight\">نَافِذَةٌ</span> (........).",
+                "options": [
+                    "مَغْلُوقٌ",
+                    "مَغْلُوقَةٌ"
+                ],
+                "correct": 1,
+                "explanation": "كلمة (نَافِذَةٌ) مؤنث؛ تأخذ (مَغْلُوقَةٌ).",
+                "newWords": [
+                    {
+                        "ar": "نَافِذَةٌ",
+                        "ru": "Окно"
+                    }
+                ]
+            },
+            {
+                "qNum": 14,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذَا الشَّايُ (........).",
+                "options": [
+                    "سَاخِنٌ",
+                    "سَاخِنَةٌ"
+                ],
+                "correct": 0,
+                "explanation": "كلمة (الشَّايُ) مذكر؛ تأخذ (سَاخِنٌ).",
+                "newWords": [
+                    {
+                        "ar": "شَايٌ",
+                        "ru": "Чай"
+                    }
+                ]
+            },
+            {
+                "qNum": 15,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذِهِ القَهْوَةُ (........).",
+                "options": [
+                    "سَاخِنٌ",
+                    "سَاخِنَةٌ"
+                ],
+                "correct": 1,
+                "explanation": "كلمة (القَهْوَةُ) مؤنث؛ تأخذ (سَاخِنَةٌ).",
+                "newWords": [
+                    {
+                        "ar": "قَهْوَةٌ",
+                        "ru": "Кофе"
+                    }
+                ]
+            },
+            {
+                "qNum": 16,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذَا <span class=\"word-highlight\">رَجُلٌ</span> (........).",
+                "options": [
+                    "طَوِيلٌ",
+                    "طَوِيلَةٌ"
+                ],
+                "correct": 0,
+                "explanation": "(رَجُلٌ) مذكر يأخذ (طَوِيلٌ).",
+                "newWords": [
+                    {
+                        "ar": "رَجُلٌ",
+                        "ru": "Мужчина"
+                    }
+                ]
+            },
+            {
+                "qNum": 17,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذِهِ <span class=\"word-highlight\">اِمْرَأَةٌ</span> (........).",
+                "options": [
+                    "طَوِيلٌ",
+                    "طَوِيلَةٌ"
+                ],
+                "correct": 1,
+                "explanation": "(اِمْرَأَةٌ) مؤنث تأخذ (طَوِيلَةٌ).",
+                "newWords": [
+                    {
+                        "ar": "اِمْرَأَةٌ",
+                        "ru": "Женщина"
+                    }
+                ]
+            },
+            {
+                "qNum": 18,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذَا الكُرْسِيُّ (........).",
+                "options": [
+                    "مُرِيحٌ",
+                    "مُرِيحَةٌ"
+                ],
+                "correct": 0,
+                "explanation": "كلمة (الكُرْسِيُّ) مذكر تأخذ (مُرِيحٌ).",
+                "newWords": [
+                    {
+                        "ar": "كُرْسِيٌّ",
+                        "ru": "Стуل"
+                    }
+                ]
+            },
+            {
+                "qNum": 19,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذِهِ الطَّاوِلَةُ (........).",
+                "options": [
+                    "نَظِيفٌ",
+                    "نَظِيفَةٌ"
+                ],
+                "correct": 1,
+                "explanation": "كلمة (الطَّاوِلَةُ) مؤنث تأخذ (نَظِيفَةٌ).",
+                "newWords": [
+                    {
+                        "ar": "طَاوِلَةٌ",
+                        "ru": "Стол"
+                    }
+                ]
+            },
+            {
+                "qNum": 20,
+                "text": "اخْتَرِ الصِّفَةَ المُنَاسِبَةَ: هَذَا <span class=\"word-highlight\">دَفْتَرٌ</span> (........).",
+                "options": [
+                    "مُرَتَّبٌ",
+                    "مُرَتَّبَةٌ"
+                ],
+                "correct": 0,
+                "explanation": "كلمة (دَفْتَرٌ) مذكر تأخذ (مُرَتَّبٌ).",
+                "newWords": [
+                    {
+                        "ar": "دَفْتَرٌ",
+                        "ru": "Тетрадь"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sectionId": 7,
+        "titleAr": "القِسْمُ السَّابِعُ: تَرْتِيبُ الكَلِمَاتِ لِتَكْوِينِ جُمْلَةٍ مُفِيدَةٍ",
+        "titleRu": "Раздел 7: Составление правильных предложений из слов",
+        "vocab": [
+            {
+                "ar": "يَكْتُبُ",
+                "ru": "Пишет",
+                "arSent": "يَكْتُبُ الطَّالِبُ الدَّرْسَ.",
+                "ruSent": "Студент пишет урок."
+            },
+            {
+                "ar": "يَشْرَبُ",
+                "ru": "Пьёт",
+                "arSent": "يَشْرَبُ الوَلَدُ الحَلِيبَ.",
+                "ruSent": "Мальчик пьет молоко."
+            },
+            {
+                "ar": "تَطْبُخُ",
+                "ru": "Готовит",
+                "arSent": "تَطْبُخُ الأُمُّ الطَّعَامَ.",
+                "ruSent": "Мама готовит еду."
+            },
+            {
+                "ar": "يَنَامُ",
+                "ru": "Спит",
+                "arSent": "يَنَامُ الطِّفْلُ فِي السَّرِيرِ.",
+                "ruSent": "Ребенок спит в кровати."
+            }
+        ],
+        "questions": [
+            {
+                "qNum": 1,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (الدَّرْسَ / أَحْمَدُ / <span class=\"word-highlight\">يَكْتُبُ</span>)",
+                "options": [
+                    "يَكْتُبُ أَحْمَدُ الدَّرْسَ.",
+                    "الدَّرْسَ يَكْتُبُ أَحْمَدُ.",
+                    "أَحْمَدُ الدَّرْسَ يَكْتُبُ."
+                ],
+                "correct": 0,
+                "isSolved": true,
+                "solvedText": "نموذج محلول: (يَكْتُبُ أَحْمَدُ الدَّرْسَ.) [فِعْلٌ + فَاعِلٌ + مَفْعُولٌ بِهِ]",
+                "explanation": "الترتيب الصحيح للجملة الفعلية: الفعل (يَكْتُبُ) + الفاعل (أَحْمَدُ) + المفعول (الدَّرْسَ).",
+                "newWords": [
+                    {
+                        "ar": "يَكْتُبُ",
+                        "ru": "Пишет (он)"
+                    }
+                ]
+            },
+            {
+                "qNum": 2,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (الحَلِيبَ / الوَلَدُ / <span class=\"word-highlight\">يَشْرَبُ</span>)",
+                "options": [
+                    "الحَلِيبَ يَشْرَبُ الوَلَدُ.",
+                    "يَشْرَبُ الوَلَدُ الحَلِيبَ.",
+                    "الوَلَدُ الحَلِيبَ يَشْرَبُ."
+                ],
+                "correct": 1,
+                "explanation": "الترتيب الصحيح للجملة: الفعل (يَشْرَبُ) + الفاعل (الوَلَدُ) + المفعول (الحَلِيبَ).",
+                "newWords": [
+                    {
+                        "ar": "شُرْبٌ",
+                        "ru": "Питье"
+                    },
+                    {
+                        "ar": "حَلِيبٌ",
+                        "ru": "Молоко"
+                    },
+                    {
+                        "ar": "يَشْرَبُ",
+                        "ru": "Пьёт (он)"
+                    }
+                ]
+            },
+            {
+                "qNum": 3,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (المَدْرَسَةِ / إِلَى / <span class=\"word-highlight\">يَذْهَبُ</span> / خَالِدٌ)",
+                "options": [
+                    "إِلَى المَدْرَسَةِ خَالِدٌ يَذْهَبُ.",
+                    "خَالِدٌ إِلَى يَذْهَبُ المَدْرَسَةِ.",
+                    "يَذْهَبُ خَالِدٌ إِلَى المَدْرَسَةِ."
+                ],
+                "correct": 2,
+                "explanation": "الترتيب الصحيح: الفعل (يَذْهَبُ) + الفاعل (خَالِدٌ) + جار ومجرور (إِلَى المَدْرَسَةِ).",
+                "newWords": [
+                    {
+                        "ar": "مَدْرَسَةٌ",
+                        "ru": "Школа"
+                    },
+                    {
+                        "ar": "يَذْهَبُ",
+                        "ru": "Идёт (он)"
+                    }
+                ]
+            },
+            {
+                "qNum": 4,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (فَاطِمَةُ / فِي / تَعْمَلُ / المُسْتَشْفَى)",
+                "options": [
+                    "تَعْمَلُ فَاطِمَةُ فِي المُسْتَشْفَى.",
+                    "فِي المُسْتَشْفَى فَاطِمَةُ تَعْمَلُ.",
+                    "فَاطِمَةُ المُسْتَشْفَى فِي تَعْمَلُ."
+                ],
+                "correct": 0,
+                "explanation": "الترتيب الصحيح: (تَعْمَلُ فَاطِمَةُ فِي المُسْتَشْفَى).",
+                "newWords": [
+                    {
+                        "ar": "مُسْتَشْفَى",
+                        "ru": "Больница"
+                    }
+                ]
+            },
+            {
+                "qNum": 5,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (الكِتَابَ / مَرْيَمُ / تَقْرَأُ)",
+                "options": [
+                    "الكِتَابَ تَقْرَأُ مَرْيَمُ.",
+                    "تَقْرَأُ مَرْيَمُ الكِتَابَ.",
+                    "مَرْيَمُ الكِتَابَ تَقْرَأُ."
+                ],
+                "correct": 1,
+                "explanation": "الترتيب الصحيح: (تَقْرَأُ مَرْيَمُ الكِتَابَ).",
+                "newWords": [
+                    {
+                        "ar": "كِتَابٌ",
+                        "ru": "Книга"
+                    }
+                ]
+            },
+            {
+                "qNum": 6,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (المَطْبَخِ / فِي / أُمِّي / <span class=\"word-highlight\">تَطْبُخُ</span>)",
+                "options": [
+                    "فِي المَطْبَخِ تَطْبُخُ أُمِّي.",
+                    "أُمِّي فِي تَطْبُخُ المَطْبَخِ.",
+                    "تَطْبُخُ أُمِّي فِي المَطْبَخِ."
+                ],
+                "correct": 2,
+                "explanation": "الترتيب القياسي: (تَطْبُخُ أُمِّي فِي المَطْبَخِ).",
+                "newWords": [
+                    {
+                        "ar": "مَطْبَخٌ",
+                        "ru": "Кухня"
+                    },
+                    {
+                        "ar": "تَطْبُخُ",
+                        "ru": "Готовит"
+                    }
+                ]
+            },
+            {
+                "qNum": 7,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (<span class=\"word-highlight\">طَالِبٌ</span> / طَارِقٌ / <span class=\"word-highlight\">نَشِيطٌ</span>)",
+                "options": [
+                    "طَارِقٌ طَالِبٌ نَشِيطٌ.",
+                    "نَشِيطٌ طَارِقٌ طَالِبٌ.",
+                    "طَالِبٌ نَشِيطٌ طَارِقٌ."
+                ],
+                "correct": 0,
+                "explanation": "جملة اسمية: المبتدأ (طَارِقٌ) + الخبر (طَالِبٌ) + الصفة (نَشِيطٌ).",
+                "newWords": [
+                    {
+                        "ar": "طَالِبٌ",
+                        "ru": "Студент"
+                    },
+                    {
+                        "ar": "نَشِيطٌ",
+                        "ru": "Активный"
+                    }
+                ]
+            },
+            {
+                "qNum": 8,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (<span class=\"word-highlight\">كَبِيرَةٌ</span> / هَذِهِ / <span class=\"word-highlight\">مَدْرَسَةٌ</span>)",
+                "options": [
+                    "كَبِيرَةٌ هَذِهِ مَدْرَسَةٌ.",
+                    "هَذِهِ مَدْرَسَةٌ كَبِيرَةٌ.",
+                    "مَدْرَسَةٌ كَبِيرَةٌ هَذِهِ."
+                ],
+                "correct": 1,
+                "explanation": "الترتيب الصحيح: اسم الإشارة (هَذِهِ) + المشار إليه (مَدْرَسَةٌ) + الصفة (كَبِيرَةٌ).",
+                "newWords": [
+                    {
+                        "ar": "كَبِيرٌ",
+                        "ru": "Большой"
+                    },
+                    {
+                        "ar": "كَبِيرَةٌ",
+                        "ru": "Большая"
+                    },
+                    {
+                        "ar": "مَدْرَسَةٌ",
+                        "ru": "Школа"
+                    }
+                ]
+            },
+            {
+                "qNum": 9,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (الكُرَةَ / المَلْعَبِ / فِي / <span class=\"word-highlight\">يَلْعَبُ</span> / الوَلَدُ)",
+                "options": [
+                    "فِي المَلْعَبِ الكُرَةَ يَلْعَبُ الوَلَدُ.",
+                    "الوَلَدُ فِي يَلْعَبُ المَلْعَبِ الكُرَةَ.",
+                    "يَلْعَبُ الوَلَدُ الكُرَةَ فِي المَلْعَبِ."
+                ],
+                "correct": 2,
+                "explanation": "الترتيب السليم: (يَلْعَبُ الوَلَدُ الكُرَةَ فِي المَلْعَبِ).",
+                "newWords": [
+                    {
+                        "ar": "كُرَةٌ",
+                        "ru": "Мяч"
+                    },
+                    {
+                        "ar": "مَلْعَبٌ",
+                        "ru": "Стадион"
+                    },
+                    {
+                        "ar": "يَلْعَبُ",
+                        "ru": "Играет"
+                    }
+                ]
+            },
+            {
+                "qNum": 10,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (التَّلْفَازَ / أَبِي / <span class=\"word-highlight\">يُشَاهِدُ</span> / المَسَاءِ / فِي)",
+                "options": [
+                    "يُشَاهِدُ أَبِي التَّلْفَازَ فِي المَسَاءِ.",
+                    "فِي المَسَاءِ أَبِي يُشَاهِدُ التَّلْفَازَ.",
+                    "التَّلْفَازَ يُشَاهِدُ فِي أَبِي المَسَاءِ."
+                ],
+                "correct": 0,
+                "explanation": "الترتيب السليم: (يُشَاهِدُ أَبِي التَّلْفَازَ فِي المَسَاءِ).",
+                "newWords": [
+                    {
+                        "ar": "مَسَاءٌ",
+                        "ru": "Вечер"
+                    },
+                    {
+                        "ar": "تَلْفَازٌ",
+                        "ru": "Телевизор"
+                    },
+                    {
+                        "ar": "يُشَاهِدُ",
+                        "ru": "Смотрит"
+                    }
+                ]
+            },
+            {
+                "qNum": 11,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (السَّرِيرِ / فَوْقَ / <span class=\"word-highlight\">يَنَامُ</span> / الطِّفْلُ)",
+                "options": [
+                    "فَوْقَ السَّرِيرِ يَنَامُ الطِّفْلُ.",
+                    "يَنَامُ الطِّفْلُ فَوْقَ السَّرِيرِ.",
+                    "الطِّفْلُ السَّرِيرِ فَوْقَ يَنَامُ."
+                ],
+                "correct": 1,
+                "explanation": "الترتيب الصحيح: (يَنَامُ الطِّفْلُ فَوْقَ السَّرِيرِ).",
+                "newWords": [
+                    {
+                        "ar": "سَرِيرٌ",
+                        "ru": "Кровать"
+                    },
+                    {
+                        "ar": "يَنَامُ",
+                        "ru": "Спит"
+                    }
+                ]
+            },
+            {
+                "qNum": 12,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (البَابَ / المُرَاقِبُ / يَفْتَحُ)",
+                "options": [
+                    "البَابَ يَفْتَحُ المُرَاقِبُ.",
+                    "المُرَاقِبُ البَابَ يَفْتَحُ.",
+                    "يَفْتَحُ المُرَاقِبُ البَابَ."
+                ],
+                "correct": 2,
+                "explanation": "الترتيب الصحيح: (يَفْتَحُ المُرَاقِبُ البَابَ).",
+                "newWords": [
+                    {
+                        "ar": "بَابٌ",
+                        "ru": "Дверь"
+                    },
+                    {
+                        "ar": "مُرَاقِبٌ",
+                        "ru": "Контроلёр"
+                    }
+                ]
+            },
+            {
+                "qNum": 13,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (العَصِيرَ / خَوْلَةُ / <span class=\"word-highlight\">تَشْرَبُ</span>)",
+                "options": [
+                    "تَشْرَبُ خَوْلَةُ العَصِيرَ.",
+                    "العَصِيرَ تَشْرَبُ خَوْلَةُ.",
+                    "خَوْلَةُ العَصِيرَ تَشْرَبُ."
+                ],
+                "correct": 0,
+                "explanation": "الترتيب الصحيح: (تَشْرَبُ خَوْلَةُ العَصِيرَ).",
+                "newWords": [
+                    {
+                        "ar": "شُرْبٌ",
+                        "ru": "Питье"
+                    },
+                    {
+                        "ar": "عَصِيرٌ",
+                        "ru": "Сок"
+                    },
+                    {
+                        "ar": "تَشْرَبُ",
+                        "ru": "Пьёт (она)"
+                    }
+                ]
+            },
+            {
+                "qNum": 14,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (<span class=\"word-highlight\">جَدِيدٌ</span> / هَذَا / <span class=\"word-highlight\">كِتَابٌ</span>)",
+                "options": [
+                    "كِتَابٌ جَدِيدٌ هَذَا.",
+                    "هَذَا كِتَابٌ جَدِيدٌ.",
+                    "جَدِيدٌ هَذَا كِتَابٌ."
+                ],
+                "correct": 1,
+                "explanation": "الترتيب الصحيح: (هَذَا كِتَابٌ جَدِيدٌ).",
+                "newWords": [
+                    {
+                        "ar": "جَدِيدٌ",
+                        "ru": "Новый"
+                    },
+                    {
+                        "ar": "كِتَابٌ",
+                        "ru": "Книга"
+                    }
+                ]
+            },
+            {
+                "qNum": 15,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (المَاءِ / <span class=\"word-highlight\">كَأْسَ</span> / يَنَالُ / الوَلَدُ)",
+                "options": [
+                    "كَأْسَ المَاءِ يَنَالُ الوَلَدُ.",
+                    "الوَلَدُ المَاءِ كَأْسَ يَنَالُ.",
+                    "يَنَالُ الوَلَدُ كَأْسَ المَاءِ."
+                ],
+                "correct": 2,
+                "explanation": "الترتيب الصحيح: (يَنَالُ الوَلَدُ كَأْسَ المَاءِ).",
+                "newWords": [
+                    {
+                        "ar": "كَأْسٌ",
+                        "ru": "Стакан"
+                    }
+                ]
+            },
+            {
+                "qNum": 16,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (الرِّيَاضِ / فِي / أَسْكُنُ / <span class=\"word-highlight\">مَدِينَةِ</span>)",
+                "options": [
+                    "أَسْكُنُ فِي مَدِينَةِ الرِّيَاضِ.",
+                    "فِي مَدِينَةِ الرِّيَاضِ أَسْكُنُ.",
+                    "مَدِينَةِ الرِّيَاضِ فِي أَسْكُنُ."
+                ],
+                "correct": 0,
+                "explanation": "الترتيب الصحيح: (أَسْكُنُ فِي مَدِينَةِ الرِّيَاضِ).",
+                "newWords": [
+                    {
+                        "ar": "مَدِينَةٌ",
+                        "ru": "Город"
+                    }
+                ]
+            },
+            {
+                "qNum": 17,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (اللُّغَةَ / أَتَعَلَّمُ / العَرَبِيَّةَ)",
+                "options": [
+                    "اللُّغَةَ العَرَبِيَّةَ أَتَعَلَّمُ.",
+                    "أَتَعَلَّمُ اللُّغَةَ العَرَبِيَّةَ.",
+                    "العَرَبِيَّةَ أَتَعَلَّمُ اللُّغَةَ."
+                ],
+                "correct": 1,
+                "explanation": "الترتيب الصحيح: (أَتَعَلَّمُ اللُّغَةَ العَرَبِيَّةَ).",
+                "newWords": [
+                    {
+                        "ar": "لُغَةٌ",
+                        "ru": "Язык"
+                    },
+                    {
+                        "ar": "عَرَبِيَّةٌ",
+                        "ru": "Арабский"
+                    }
+                ]
+            },
+            {
+                "qNum": 18,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (السيارَةُ / أَمَامَ / تَقِفُ / البَيْتِ)",
+                "options": [
+                    "أَمَامَ البَيْتِ تَقِفُ السيارَةُ.",
+                    "السيارَةُ البَيْتِ أَمَامَ تَقِفُ.",
+                    "تَقِفُ السيارَةُ أَمَامَ البَيْتِ."
+                ],
+                "correct": 2,
+                "explanation": "الترتيب الصحيح: (تَقِفُ السيارَةُ أَمَامَ البَيْتِ).",
+                "newWords": [
+                    {
+                        "ar": "سَيَّارَةٌ",
+                        "ru": "Машина"
+                    },
+                    {
+                        "ar": "بَيْتٌ",
+                        "ru": "Дом"
+                    }
+                ]
+            },
+            {
+                "qNum": 19,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (صَدِيقِي / هُوَ / المَاهِرُ / الطَّبِيبُ)",
+                "options": [
+                    "هُوَ صَدِيقِي الطَّبِيبُ المَاهِرُ.",
+                    "الطَّبِيبُ المَاهِرُ هُوَ صَدِيقِي.",
+                    "صَدِيقِي هُوَ المَاهِرُ الطَّبِيبُ."
+                ],
+                "correct": 0,
+                "explanation": "الترتيب الصحيح: (هُوَ صَدِيقِي الطَّبِيبُ المَاهِرُ).",
+                "newWords": [
+                    {
+                        "ar": "طَبِيبٌ",
+                        "ru": "Врач (мужчина)"
+                    },
+                    {
+                        "ar": "مَاهِرٌ",
+                        "ru": "Умелый"
+                    },
+                    {
+                        "ar": "صَدِيقٌ",
+                        "ru": "Друг"
+                    }
+                ]
+            },
+            {
+                "qNum": 20,
+                "text": "رَتِّبِ الكَلِمَاتِ لِتَكْوِينَ جُمْلَةٍ صَحِيحَةٍ: (الخَضْرَاوَاتِ / البَقَّالِ / مِنْ / نَشْتَرِي)",
+                "options": [
+                    "مِنْ البَقَّالِ نَشْتَرِي الخَضْرَاوَاتِ.",
+                    "نَشْتَرِي الخَضْرَاوَاتِ مِنْ البَقَّالِ.",
+                    "الخَضْرَاوَاتِ مِنْ نَشْتَرِي البَقَّالِ."
+                ],
+                "correct": 1,
+                "explanation": "الترتيب الصحيح: (نَشْتَرِي الخَضْرَاوَاتِ مِنْ البَقَّالِ).",
+                "newWords": [
+                    {
+                        "ar": "خَضْرَاوَاتٌ",
+                        "ru": "Овощи"
+                    },
+                    {
+                        "ar": "بَقَّالٌ",
+                        "ru": "Бакалея / Продавец"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sectionId": 8,
+        "titleAr": "القِسْمُ الثَّامِنُ: اكْتِشَافُ الخَطَأِ النَّحْوِيِّ وَتَصْحِيحُهُ",
+        "titleRu": "Раздел 8: Поиск и исправление грамматических ошибок",
+        "vocab": [
+            {
+                "ar": "قِرَاءَةٌ",
+                "ru": "Чтение",
+                "arSent": "تَقْرَأُ القِصَّةَ.",
+                "ruSent": "Она читает историю."
+            },
+            {
+                "ar": "كِتَابَةٌ",
+                "ru": "Письмо / Запись",
+                "arSent": "يَكْتُبُ الرِّسَالَةَ.",
+                "ruSent": "Он пишет письмо."
+            },
+            {
+                "ar": "حافِلَةٌ",
+                "ru": "Автобус",
+                "arSent": "الحَافِلَةُ كَبِيرَةٌ.",
+                "ruSent": "Автобус большой."
+            },
+            {
+                "ar": "شَارِعٌ",
+                "ru": "Улица",
+                "arSent": "الشَّارِعُ وَاسِعٌ.",
+                "ruSent": "Улица широкая."
+            }
+        ],
+        "questions": [
+            {
+                "qNum": 1,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (فَاطِمَةُ يَقْرَأُ القِصَّةَ.)",
+                "options": [
+                    "فَاطِمَةُ تَقْرَأُ القِصَّةَ.",
+                    "فَاطِمَةُ أَقْرَأُ القِصَّةَ.",
+                    "فَاطِمَةُ يَقْرَأُ القِصَّةَ."
+                ],
+                "correct": 0,
+                "isSolved": true,
+                "solvedText": "نموذج محلول: التصحيح (فَاطِمَةُ تَقْرَأُ القِصَّةَ) [لأن فاطمة مؤنث فتأخذ الفعل بتاء التأنيث]",
+                "explanation": "فَاطِمَةُ مؤنث؛ فيجب تصنيف الفعل مع حرف التاء (تَقْرَأُ) وليس الياء.",
+                "newWords": [
+                    {
+                        "ar": "قِصَّةٌ",
+                        "ru": "Рассказ"
+                    }
+                ]
+            },
+            {
+                "qNum": 2,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (هَذَا <span class=\"word-highlight\">مَدْرَسَةٌ</span> <span class=\"word-highlight\">كَبِيرَةٌ</span>.)",
+                "options": [
+                    "هَذَا مَدْرَسَةٌ كَبِيرٌ.",
+                    "هَذِهِ مَدْرَسَةٌ كَبِيرَةٌ.",
+                    "هَذِهِ مَدْرَسَةٌ كَبِيرٌ."
+                ],
+                "correct": 1,
+                "explanation": "كلمة (مَدْرَسَةٌ) مؤنث؛ فيجب استخدام اسم الإشارة (هَذِهِ).",
+                "newWords": [
+                    {
+                        "ar": "كَبِيرٌ",
+                        "ru": "Большой"
+                    },
+                    {
+                        "ar": "كَبِيرَةٌ",
+                        "ru": "Большая"
+                    },
+                    {
+                        "ar": "مَدْرَسَةٌ",
+                        "ru": "Школа"
+                    }
+                ]
+            },
+            {
+                "qNum": 3,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (أَحْمَدُ <span class=\"word-highlight\">تَكْتُبُ</span> الدَّرْسَ.)",
+                "options": [
+                    "أَحْمَدُ أَكْتُبُ الدَّرْسَ.",
+                    "أَحْمَدُ نَكْتُبُ الدَّرْسَ.",
+                    "أَحْمَدُ يَكْتُبُ الدَّرْسَ."
+                ],
+                "correct": 2,
+                "explanation": "أَحْمَدُ مذكر غائب؛ فيجب تصريف الفعل بـ (يَكْتُبُ).",
+                "newWords": [
+                    {
+                        "ar": "تَكْتُبُ",
+                        "ru": "Пишет (она)"
+                    }
+                ]
+            },
+            {
+                "qNum": 4,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (هَذِهِ <span class=\"word-highlight\">كِتَابٌ</span> <span class=\"word-highlight\">جَدِيدٌ</span>.)",
+                "options": [
+                    "هَذَا كِتَابٌ جَدِيدٌ.",
+                    "هَذِهِ كِتَابٌ جَدِيدَةٌ.",
+                    "هَذَا كِتَابٌ جَدِيدَةٌ."
+                ],
+                "correct": 0,
+                "explanation": "كلمة (كِتَابٌ) مذكر؛ فيجب استخدام اسم الإشارة (هَذَا).",
+                "newWords": [
+                    {
+                        "ar": "جَدِيدٌ",
+                        "ru": "Новый"
+                    },
+                    {
+                        "ar": "كِتَابٌ",
+                        "ru": "Книга"
+                    }
+                ]
+            },
+            {
+                "qNum": 5,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (هُوَ <span class=\"word-highlight\">طَالِبَةٌ</span> <span class=\"word-highlight\">نَشِيطَةٌ</span>.)",
+                "options": [
+                    "هُوَ طَالِبٌ نَشِيطَةٌ.",
+                    "هِيَ طَالِبَةٌ نَشِيطَةٌ.",
+                    "أَنْتَ طَالِبَةٌ نَشِيطَةٌ."
+                ],
+                "correct": 1,
+                "explanation": "(طَالِبَةٌ) مؤنث؛ فيستلزم الضمير (هِيَ).",
+                "newWords": [
+                    {
+                        "ar": "طَالِبٌ",
+                        "ru": "Студент"
+                    },
+                    {
+                        "ar": "طَالِبَةٌ",
+                        "ru": "Студентка"
+                    },
+                    {
+                        "ar": "نَشِيطٌ",
+                        "ru": "Активный"
+                    },
+                    {
+                        "ar": "نَشِيطَةٌ",
+                        "ru": "Активная"
+                    }
+                ]
+            },
+            {
+                "qNum": 6,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (أَنَا <span class=\"word-highlight\">يَشْرَبُ</span> الحَلِيبَ.)",
+                "options": [
+                    "أَنَا تَشْرَبُ الحَلِيبَ.",
+                    "أَنَا نَشْرَبُ الحَلِيبَ.",
+                    "أَنَا أَشْرَبُ الحَلِيبَ."
+                ],
+                "correct": 2,
+                "explanation": "الضمير (أَنَا) يتطلب الفعل المبدوء بالهمزة (أَشْرَبُ).",
+                "newWords": [
+                    {
+                        "ar": "شُرْبٌ",
+                        "ru": "Питье"
+                    },
+                    {
+                        "ar": "حَلِيبٌ",
+                        "ru": "Молоко"
+                    },
+                    {
+                        "ar": "يَشْرَبُ",
+                        "ru": "Пьёт (он)"
+                    }
+                ]
+            },
+            {
+                "qNum": 7,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (الكِتَابُ فِي المَكْتَبِ.) [المقصود الاستعلاء]",
+                "options": [
+                    "الكِتَابُ عَلَى المَكْتَبِ.",
+                    "الكِتَابُ إِلَى المَكْتَبِ.",
+                    "الكِتَابُ مِنْ المَكْتَبِ."
+                ],
+                "correct": 0,
+                "explanation": "الوضع فوق سطح المكتب يستخدم له الحرف (عَلَى).",
+                "newWords": [
+                    {
+                        "ar": "مَكْتَبٌ",
+                        "ru": "Письменный стол"
+                    },
+                    {
+                        "ar": "كِتَابٌ",
+                        "ru": "Книга"
+                    }
+                ]
+            },
+            {
+                "qNum": 8,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (طَارِقٌ <span class=\"word-highlight\">يَلْعَبُ</span> فِي البِنْتُ.)",
+                "options": [
+                    "طَارِقٌ يَلْعَبُ عَلَى البِنْتِ.",
+                    "طَارِقٌ يَلْعَبُ مَعَ البِنْتِ.",
+                    "طَارِقٌ يَلْعَبُ إِلَى البِنْتِ."
+                ],
+                "correct": 1,
+                "explanation": "المعيّة والمشاركة تستخدم لها المظروف (مَعَ).",
+                "newWords": [
+                    {
+                        "ar": "يَلْعَبُ",
+                        "ru": "Играет"
+                    }
+                ]
+            },
+            {
+                "qNum": 9,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (هَذَا <span class=\"word-highlight\">طَالِبَةٌ</span> <span class=\"word-highlight\">ذَكِيَّةٌ</span>.)",
+                "options": [
+                    "هَذَا طَالِبٌ ذَكِيَّةٌ.",
+                    "هَذِهِ طَالِبٌ ذَكِيٌّ.",
+                    "هَذِهِ طَالِبَةٌ ذَكِيَّةٌ."
+                ],
+                "correct": 2,
+                "explanation": "استخدام (هَذِهِ) للمفرد المؤنث.",
+                "newWords": [
+                    {
+                        "ar": "طَالِبٌ",
+                        "ru": "Студент"
+                    },
+                    {
+                        "ar": "طَالِبَةٌ",
+                        "ru": "Студентка"
+                    },
+                    {
+                        "ar": "ذَكِيٌّ",
+                        "ru": "Умный"
+                    },
+                    {
+                        "ar": "ذَكِيَّةٌ",
+                        "ru": "Умная"
+                    }
+                ]
+            },
+            {
+                "qNum": 10,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (فَاطِمَةُ <span class=\"word-highlight\">يَذْهَبُ</span> إِلَى المَدْرَسَةِ.)",
+                "options": [
+                    "فَاطِمَةُ تَذْهَبُ إِلَى المَدْرَسَةِ.",
+                    "فَاطِمَةُ أَذْهَبُ إِلَى المَدْرَسَةِ.",
+                    "فَاطِمَةُ نَذْهَبُ إِلَى المَدْرَسَةِ."
+                ],
+                "correct": 0,
+                "explanation": "تأنيث الفعل المضارع بـ (تَذْهَبُ).",
+                "newWords": [
+                    {
+                        "ar": "مَدْرَسَةٌ",
+                        "ru": "Школа"
+                    },
+                    {
+                        "ar": "يَذْهَبُ",
+                        "ru": "Идёт (он)"
+                    }
+                ]
+            },
+            {
+                "qNum": 11,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (أَنْتَ تَكْتُبِينَ الدَّرْسَ.) [المخاطب مذكر]",
+                "options": [
+                    "أَنْتَ يَكْتُبُ الدَّرْسَ.",
+                    "أَنْتَ تَكْتُبُ الدَّرْسَ.",
+                    "أَنْتَ أَكْتُبُ الدَّرْسَ."
+                ],
+                "correct": 1,
+                "explanation": "المخاطب المذكر يناسبه (تَكْتُبُ) وليس (تَكْتُبِينَ).",
+                "newWords": [
+                    {
+                        "ar": "تَكْتُبُ",
+                        "ru": "Пишет (она)"
+                    }
+                ]
+            },
+            {
+                "qNum": 12,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (أَنْتِ <span class=\"word-highlight\">تَكْتُبُ</span> الدَّرْسَ.) [المخاطب مؤنث]",
+                "options": [
+                    "أَنْتِ يَكْتُبُ الدَّرْسَ.",
+                    "أَنْتِ أَكْتُبُ الدَّرْسَ.",
+                    "أَنْتِ تَكْتُبِينَ الدَّرْسَ."
+                ],
+                "correct": 2,
+                "explanation": "المخاطبة المؤنثة يناسبها (تَكْتُبِينَ).",
+                "newWords": [
+                    {
+                        "ar": "تَكْتُبُ",
+                        "ru": "Пишет (она)"
+                    }
+                ]
+            },
+            {
+                "qNum": 13,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (هَذِهِ <span class=\"word-highlight\">سَيَّارَةٌ</span> سَرِيعٌ.)",
+                "options": [
+                    "هَذِهِ سَيَّارَةٌ سَرِيعَةٌ.",
+                    "هَذَا سَيَّارَةٌ سَرِيعٌ.",
+                    "هَذِهِ سَيَّارَةٌ أَسْرَعُ."
+                ],
+                "correct": 0,
+                "explanation": "تطابق الصفة والموصوف في التأنيث (سَرِيعَةٌ).",
+                "newWords": [
+                    {
+                        "ar": "سَيَّارَةٌ",
+                        "ru": "Машина"
+                    }
+                ]
+            },
+            {
+                "qNum": 14,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (هَذَا <span class=\"word-highlight\">بَابٌ</span> <span class=\"word-highlight\">مَفْتُوحَةٌ</span>.)",
+                "options": [
+                    "هَذِهِ بَابٌ مَفْتُوحَةٌ.",
+                    "هَذَا بَابٌ مَفْتُوحٌ.",
+                    "هَذَا بَابٌ فَتَحَ."
+                ],
+                "correct": 1,
+                "explanation": "تطابق الصفة والموصوف في التذكير (مَفْتُوحٌ).",
+                "newWords": [
+                    {
+                        "ar": "مَفْتُوحٌ",
+                        "ru": "Открытый"
+                    },
+                    {
+                        "ar": "مَفْتُوحَةٌ",
+                        "ru": "Открытая"
+                    },
+                    {
+                        "ar": "بَابٌ",
+                        "ru": "Дверь"
+                    }
+                ]
+            },
+            {
+                "qNum": 15,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (<span class=\"word-highlight\">يَذْهَبُ</span> الوَلَدُ مِنْ المَدْرَسَةِ.) [المقصد الذهاب للداخل]",
+                "options": [
+                    "يَذْهَبُ الوَلَدُ فِي المَدْرَسَةِ.",
+                    "يَذْهَبُ الوَلَدُ عَلَى المَدْرَسَةِ.",
+                    "يَذْهَبُ الوَلَدُ إِلَى المَدْرَسَةِ."
+                ],
+                "correct": 2,
+                "explanation": "الوجهة والتنقل إلى مكان يناسبها الحرف (إِلَى).",
+                "newWords": [
+                    {
+                        "ar": "مَدْرَسَةٌ",
+                        "ru": "Школа"
+                    },
+                    {
+                        "ar": "يَذْهَبُ",
+                        "ru": "Идёт (он)"
+                    }
+                ]
+            },
+            {
+                "qNum": 16,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (<span class=\"word-highlight\">يَرْجِعُ</span> العَامِلُ إِلَى العَمَلِ <span class=\"word-highlight\">مَسَاءً</span>.) [المقصد العودة من المكان]",
+                "options": [
+                    "يَرْجِعُ العَامِلُ مِنْ العَمَلِ مَسَاءً.",
+                    "يَرْجِعُ العَامِلُ فِي العَمَلِ مَسَاءً.",
+                    "يَرْجِعُ العَامِلُ عَلَى العَمَلِ مَسَاءً."
+                ],
+                "correct": 0,
+                "explanation": "الرجوع والصدور من المكان يناسبه الحرف (مِنْ).",
+                "newWords": [
+                    {
+                        "ar": "يَرْجِعُ",
+                        "ru": "Возвращается"
+                    },
+                    {
+                        "ar": "مَسَاءٌ",
+                        "ru": "Вечер"
+                    },
+                    {
+                        "ar": "عَامِلٌ",
+                        "ru": "Рабочий"
+                    }
+                ]
+            },
+            {
+                "qNum": 17,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (هِيَ <span class=\"word-highlight\">مُعَلِّمٌ</span> <span class=\"word-highlight\">مَاهِرٌ</span>.)",
+                "options": [
+                    "هُوَ مُعَلِّمَةٌ مَاهِرَةٌ.",
+                    "هِيَ مُعَلِّمَةٌ مَاهِرَةٌ.",
+                    "هِيَ مُعَلِّمٌ مَاهِرَةٌ."
+                ],
+                "correct": 1,
+                "explanation": "تطابق المبتدأ والخبر والصفة في التأنيث.",
+                "newWords": [
+                    {
+                        "ar": "مُعَلِّمٌ",
+                        "ru": "Учитель"
+                    },
+                    {
+                        "ar": "مَاهِرٌ",
+                        "ru": "Умелый"
+                    }
+                ]
+            },
+            {
+                "qNum": 18,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (مَنْ هَذَا؟ - هَذَا <span class=\"word-highlight\">كِتَابٌ</span>.)",
+                "options": [
+                    "أَيْنَ هَذَا؟ - هَذَا كِتَابٌ.",
+                    "كَيْفَ هَذَا؟ - هَذَا كِتَابٌ.",
+                    "مَا هَذَا؟ - هَذَا كِتَابٌ."
+                ],
+                "correct": 2,
+                "explanation": "الكتاب غير عاقل؛ فيستلزم أداة الاستفهام (مَا).",
+                "newWords": [
+                    {
+                        "ar": "كِتَابٌ",
+                        "ru": "Книга"
+                    }
+                ]
+            },
+            {
+                "qNum": 19,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (مَا هَذَا؟ - هَذَا أُسْتَاذِي خَالِدٌ.)",
+                "options": [
+                    "مَنْ هَذَا؟ - هَذَا أُسْتَاذِي خَالِدٌ.",
+                    "أَيْنَ هَذَا؟ - هَذَا أُسْتَاذِي خَالِدٌ.",
+                    "كَيْفَ هَذَا؟ - هَذَا أُسْتَاذِي خَالِدٌ."
+                ],
+                "correct": 0,
+                "explanation": "الأستاذ عاقل؛ فيستلزم أداة الاستفهام (مَنْ)."
+            },
+            {
+                "qNum": 20,
+                "text": "اِكْتَشِفِ الخَطَأَ النَّحْوِيَّ فِي الجُمْلَةِ: (نَحْنُ أَقْرَأُ القُرْآنَ.)",
+                "options": [
+                    "نَحْنُ يَقْرَأُ القُرْآنَ.",
+                    "نَحْنُ نَقْرَأُ القُرْآنَ.",
+                    "نَحْنُ تَقْرَأُ القُرْآنَ."
+                ],
+                "correct": 1,
+                "explanation": "الضمير (نَحْنُ) يناسبه الفعل المبدوء بالنون (نَقْرَأُ).",
+                "newWords": [
+                    {
+                        "ar": "قُرْآنٌ",
+                        "ru": "Коран"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sectionId": 9,
+        "titleAr": "القِسْمُ التَّاسِعُ: الفَهْمُ وَالقِرَاءَةُ (نَصُّ صَفِيَّةَ) وَٱخْتِيَارُ الجُمْلَةِ المُنَاسِبَةِ",
+        "titleRu": "Раздел 9: Чтение и понимание текста с описанием ситуаций",
+        "vocab": [
+            {
+                "ar": "تَسْتَيْقِظُ",
+                "ru": "Просыпается",
+                "arSent": "تَسْتَيْقِظُ صَفِيَّةُ مُبَكِّراً.",
+                "ruSent": "София просыпается рано."
+            },
+            {
+                "ar": "تَغْسِلُ",
+                "ru": "Моет / Умывает",
+                "arSent": "تَغْسِلُ وَجْهَهَا بالـمَاءِ.",
+                "ruSent": "Она моет лицо водой."
+            },
+            {
+                "ar": "تَنَاوَلُ",
+                "ru": "Принимает / Кушает",
+                "arSent": "تَتَنَاوَلُ الفَطُورَ.",
+                "ruSent": "Она завтракает."
+            },
+            {
+                "ar": "تُرَتِّبُ",
+                "ru": "Убирает / Наводит порядок",
+                "arSent": "تُرَتِّبُ غُرْفَتَهَا.",
+                "ruSent": "Она убирает свою комнату."
+            }
+        ],
+        "questions": [
+            {
+                "qNum": 1,
+                "text": "اقْرَأِ النَّصَّ: <span class='canary-highlight'>تَسْتَيْقِظُ</span> صَفِيَّةُ فِي الصَّبَاحِ، وَ<span class='canary-highlight'>تَغْسِلُ</span> وَجْهَهَا، ثُمَّ <span class='canary-highlight'>تَتَنَاوَلُ</span> الفَطُورَ. مَاذَا تَفْعَلُ صَفِيَّةُ فِي الصَّبَاحِ؟",
+                "options": [
+                    "تَسْتَيْقِظُ وَتَغْسِلُ وَجْهَهَا وَتَتَنَاوَلُ الفَطُورَ.",
+                    "تَنَامُ فِي السَّرِيرِ.",
+                    "تَلْعَبُ فِي المَلْعَبِ."
+                ],
+                "correct": 0,
+                "isSolved": true,
+                "solvedText": "نموذج محلول: الجواب الصحيح هو الاختيار الأول المأخوذ من النص المظلل.",
+                "explanation": "النص يذكر أفعال الصباح لصفية بالترتيب.",
+                "newWords": [
+                    {
+                        "ar": "تَسْتَيْقِظُ",
+                        "ru": "Просыпается"
+                    },
+                    {
+                        "ar": "وَجْهٌ",
+                        "ru": "Лицо"
+                    },
+                    {
+                        "ar": "تَتَنَاوَلُ",
+                        "ru": "Завтракает / Кушает"
+                    },
+                    {
+                        "ar": "فَطُورٌ",
+                        "ru": "Завтрак"
+                    }
+                ]
+            },
+            {
+                "qNum": 2,
+                "text": "اخْتَرِ الجُمْلَةَ الصَّحِيحَةَ لِوَصْفِ المَوْقِفِ: (وَلَدٌ <span class=\"word-highlight\">يَشْرَبُ</span> المَاءَ).",
+                "options": [
+                    "تَأْكُلُ البِنْتُ الطَّعَامَ.",
+                    "يَشْرَبُ الوَلَدُ المَاءَ.",
+                    "يَنَامُ الطِّفْلُ فِي السَّرِيرِ."
+                ],
+                "correct": 1,
+                "explanation": "الجملة المطابقة للموقف هي (يَشْرَبُ الوَلَدُ المَاءَ).",
+                "newWords": [
+                    {
+                        "ar": "شُرْبٌ",
+                        "ru": "Питье"
+                    },
+                    {
+                        "ar": "يَشْرَبُ",
+                        "ru": "Пьёт (он)"
+                    }
+                ]
+            },
+            {
+                "qNum": 3,
+                "text": "اخْتَرِ الجُمْلَةَ الصَّحِيحَةَ لِوَصْفِ المَوْقِفِ: (بِنْتٌ <span class=\"word-highlight\">تَكْتُبُ</span> الواجِبَ).",
+                "options": [
+                    "يَقْرَأُ الوَلَدُ الكِتَابَ.",
+                    "يَشْرَبُ الأَبُ الشَّايَ.",
+                    "تَكْتُبُ البِنْتُ الواجِبَ."
+                ],
+                "correct": 2,
+                "explanation": "الجملة المطابقة هي (تَكْتُبُ البِنْتُ الواجِبَ).",
+                "newWords": [
+                    {
+                        "ar": "وَاجِبٌ",
+                        "ru": "Домашнее задание"
+                    },
+                    {
+                        "ar": "تَكْتُبُ",
+                        "ru": "Пишет (она)"
+                    }
+                ]
+            },
+            {
+                "qNum": 4,
+                "text": "اخْتَرِ الجُمْلَةَ الصَّحِيحَةَ لِوَصْفِ المَوْقِفِ: (أُمِّي فِي المَطْبَخِ).",
+                "options": [
+                    "تَطْبُخُ أُمِّي الطَّعَامَ فِي المَطْبَخِ.",
+                    "يَلْعَبُ الوَلَدُ فِي الشَّارِعِ.",
+                    "يَقْرَأُ المعلم القُرْآنَ."
+                ],
+                "correct": 0,
+                "explanation": "الجملة المطابقة هي (تَطْبُخُ أُمِّي الطَّعَامَ فِي المَطْبَخِ).",
+                "newWords": [
+                    {
+                        "ar": "مَطْبَخٌ",
+                        "ru": "Кухня"
+                    }
+                ]
+            },
+            {
+                "qNum": 5,
+                "text": "اخْتَرِ الجُمْلَةَ الصَّحِيحَةَ لِوَصْفِ المَوْقِفِ: (<span class=\"word-highlight\">طَالِبٌ</span> <span class=\"word-highlight\">يَذْهَبُ</span> إِلَى المَدْرَسَةِ).",
+                "options": [
+                    "يَنَامُ الطَّالِبُ فِي الغُرْفَةِ.",
+                    "يَذْهَبُ الطَّالِبُ إِلَى المَدْرَسَةِ.",
+                    "تَشْرَبُ الطَّالِبَةُ العَصِيرَ."
+                ],
+                "correct": 1,
+                "explanation": "الجملة المطابقة للموقف.",
+                "newWords": [
+                    {
+                        "ar": "طَالِبٌ",
+                        "ru": "Студент"
+                    },
+                    {
+                        "ar": "مَدْرَسَةٌ",
+                        "ru": "Школа"
+                    },
+                    {
+                        "ar": "يَذْهَبُ",
+                        "ru": "Идёт (он)"
+                    }
+                ]
+            },
+            {
+                "qNum": 6,
+                "text": "مَا المَعْنَى المُنَاسِبُ لِلْفِعْلِ <span class='canary-highlight'>تُسَاعِدُ</span> فِي الجُمْلَةِ: (صَفِيَّةُ <span class=\"word-highlight\">تُسَاعِدُ</span> أُمَّهَا فِي البَيْتِ)؟",
+                "options": [
+                    "Любит (تُحِبُّ)",
+                    "Пишет (تَكْتُبُ)",
+                    "Помогает (تُسَاعِدُ)"
+                ],
+                "correct": 2,
+                "explanation": "معنى الفعل المظلل بالعربية هو Помогает بالروسية.",
+                "newWords": [
+                    {
+                        "ar": "تُسَاعِدُ",
+                        "ru": "Помогает"
+                    },
+                    {
+                        "ar": "بَيْتٌ",
+                        "ru": "Дом"
+                    }
+                ]
+            },
+            {
+                "qNum": 7,
+                "text": "اخْتَرِ الجُمْلَةَ الصَّحِيحَةَ: (<span class=\"word-highlight\">طَبِيبٌ</span> <span class=\"word-highlight\">يَعْمَلُ</span> فِي المُسْتَشْفَى).",
+                "options": [
+                    "يُعَالِجُ الطَّبِيبُ المَرْضَى فِي المُسْتَشْفَى.",
+                    "يَكْتُبُ المُهَنْدِسُ الدَّرْسَ.",
+                    "تَطْبُخُ المعلمة الطَّعَامَ."
+                ],
+                "correct": 0,
+                "explanation": "الجملة المناسبة لوظيفة الطبيب.",
+                "newWords": [
+                    {
+                        "ar": "طَبِيبٌ",
+                        "ru": "Врач (мужчина)"
+                    },
+                    {
+                        "ar": "مُسْتَشْفَى",
+                        "ru": "Больница"
+                    },
+                    {
+                        "ar": "يَعْمَلُ",
+                        "ru": "Работает"
+                    }
+                ]
+            },
+            {
+                "qNum": 8,
+                "text": "اخْتَرِ الجُمْلَةَ الصَّحِيحَةَ لِوَصْفِ الصورة: (<span class=\"word-highlight\">سَيَّارَةٌ</span> <span class=\"word-highlight\">حَمْرَاءُ</span> أَمَامَ البَيْتِ).",
+                "options": [
+                    "يَذْهَبُ القِطُّ تَحْتَ السَّرِيرِ.",
+                    "تَقِفُ السَّيَّارَةُ الحَمْرَاءُ أَمَامَ البَيْتِ.",
+                    "تَشْرَبُ البِنْتُ الحَلِيبَ."
+                ],
+                "correct": 1,
+                "explanation": "وصف موقف السيارة أمام البيت.",
+                "newWords": [
+                    {
+                        "ar": "صُورَةٌ",
+                        "ru": "Изображение / Фото"
+                    },
+                    {
+                        "ar": "سَيَّارَةٌ",
+                        "ru": "Машина"
+                    },
+                    {
+                        "ar": "حَمْرَاءُ",
+                        "ru": "Красная"
+                    },
+                    {
+                        "ar": "بَيْتٌ",
+                        "ru": "Дом"
+                    }
+                ]
+            },
+            {
+                "qNum": 9,
+                "text": "مَاذَا تَقُولُ عِنْدَ التَّرْحِيبِ بِصَدِيقِكَ فِي الصَّبَاحِ؟",
+                "options": [
+                    "مَسَاءُ الخَيْرِ!",
+                    "مَعَ السَّلاَمَةِ!",
+                    "صَبَاحُ الخَيْرِ!"
+                ],
+                "correct": 2,
+                "explanation": "التحية الصباحية المعتمدة هي (صَبَاحُ الخَيْرِ!).",
+                "newWords": [
+                    {
+                        "ar": "تَرْحِيبٌ",
+                        "ru": "Приветствие"
+                    },
+                    {
+                        "ar": "صَدِيقٌ",
+                        "ru": "Друг"
+                    }
+                ]
+            },
+            {
+                "qNum": 10,
+                "text": "مَاذَا تَقُولُ عِنْدَ التَّرْحِيبِ فِي المَسَاءِ؟",
+                "options": [
+                    "مَسَاءُ الخَيْرِ!",
+                    "صَبَاحُ الخَيْرِ!",
+                    "أَهْلاً وَسَهْلاً!"
+                ],
+                "correct": 0,
+                "explanation": "التحية المسائية المعتمدة هي (مَسَاءُ الخَيْرِ!).",
+                "newWords": [
+                    {
+                        "ar": "مَسَاءٌ",
+                        "ru": "Вечер"
+                    },
+                    {
+                        "ar": "تَرْحِيبٌ",
+                        "ru": "Приветствие"
+                    }
+                ]
+            },
+            {
+                "qNum": 11,
+                "text": "اخْتَرِ الجُمْلَةَ الصَّحِيحَةَ: (الوَلَدُ <span class=\"word-highlight\">يَنَامُ</span> مُبَكِّراً).",
+                "options": [
+                    "يَأْكُلُ الوَلَدُ التَّلْفَازَ.",
+                    "يَنَامُ الوَلَدُ فِي السَّرِيرِ مُبَكِّراً.",
+                    "تَشْرَبُ الأُمُّ المَدْرَسَةَ."
+                ],
+                "correct": 1,
+                "explanation": "الجملة السليمة معنوياً ونحوياً.",
+                "newWords": [
+                    {
+                        "ar": "يَنَامُ",
+                        "ru": "Спит"
+                    }
+                ]
+            },
+            {
+                "qNum": 12,
+                "text": "اخْتَرِ الجُمْلَةَ الصَّحِيحَةَ: (<span class=\"word-highlight\">مُعَلِّمٌ</span> يَشْرَحُ الدَّرْسَ).",
+                "options": [
+                    "تَغْسِلُ المُعَلِّمَةُ السَّيَّارَةَ.",
+                    "يَشْرَبُ الكِتَابُ المَاءَ.",
+                    "يَشْرَحُ المُعَلِّمُ الدَّرْسَ فِي الفَصْلِ."
+                ],
+                "correct": 2,
+                "explanation": "شرح الدرس مسؤولية المعلم في الفصل.",
+                "newWords": [
+                    {
+                        "ar": "مُعَلِّمٌ",
+                        "ru": "Учитель"
+                    }
+                ]
+            },
+            {
+                "qNum": 13,
+                "text": "مَاذَا تَقُولُ عِنْدَ الٱنْتِهَاءِ مِنَ الطَّعَامِ؟",
+                "options": [
+                    "الحَمْدُ لِلَّهِ!",
+                    "بِسْمِ اللَّهِ!",
+                    "مَعَ السَّلاَمَةِ!"
+                ],
+                "correct": 0,
+                "explanation": "حمدُ الله بعد الفراغ من الأكل والنعمة.",
+                "newWords": [
+                    {
+                        "ar": "طَعَامٌ",
+                        "ru": "Еда"
+                    }
+                ]
+            },
+            {
+                "qNum": 14,
+                "text": "مَاذَا تَقُولُ قَبْلَ البَدْءِ فِي الأَكْلِ أَوْ الشُّرْبِ؟",
+                "options": [
+                    "الحَمْدُ لِلَّهِ!",
+                    "بِسْمِ اللَّهِ!",
+                    "أَهْلاً وَسَهْلاً!"
+                ],
+                "correct": 1,
+                "explanation": "التسمية بالقول (بِسْمِ اللَّهِ!) قبل الأكل.",
+                "newWords": [
+                    {
+                        "ar": "أَكْلٌ",
+                        "ru": "Прием пищи"
+                    },
+                    {
+                        "ar": "شُرْبٌ",
+                        "ru": "Питье"
+                    }
+                ]
+            },
+            {
+                "qNum": 15,
+                "text": "اخْتَرِ الجُمْلَةَ المطابقة لـ: (صَفِيَّةُ <span class='canary-highlight'>تُرَتِّبُ</span> غُرْفَتَهَا).",
+                "options": [
+                    "София читает книгу",
+                    "София идет в школу",
+                    "София убирает свою комнату"
+                ],
+                "correct": 2,
+                "explanation": "الترجمة الصحيحة للجملة المظللة.",
+                "newWords": [
+                    {
+                        "ar": "تُرَتِّبُ",
+                        "ru": "Убирает"
+                    }
+                ]
+            },
+            {
+                "qNum": 16,
+                "text": "اخْتَرِ الجُمْلَةَ الصَّحِيحَةَ: (العُصْفُورُ <span class=\"word-highlight\">يُغَرِّدُ</span> فَوْقَ الشَّجَرَةِ).",
+                "options": [
+                    "يُغَرِّدُ العُصْفُورُ فَوْقَ الشَّجَرَةِ.",
+                    "تَسْبَحُ السَّمَكَةُ فِي السَّمَاءِ.",
+                    "يَكْتُبُ الفِيلُ بالْقَلَمِ."
+                ],
+                "correct": 0,
+                "explanation": "الجملة المنطقية والصحيحة معنوياً.",
+                "newWords": [
+                    {
+                        "ar": "شَجَرَةٌ",
+                        "ru": "Дерево"
+                    },
+                    {
+                        "ar": "يُغَرِّدُ",
+                        "ru": "Поёт / Щебечет"
+                    },
+                    {
+                        "ar": "عُصْفُورٌ",
+                        "ru": "Птичка"
+                    }
+                ]
+            },
+            {
+                "qNum": 17,
+                "text": "اخْتَرِ الجُمْلَةَ الصَّحِيحَةَ: (السَّمَكَةُ <span class=\"word-highlight\">تَسْبَحُ</span> فِي المَاءِ).",
+                "options": [
+                    "تَطِيرُ السَّمَكَةُ فِي الهَوَاءِ.",
+                    "تَسْبَحُ السَّمَكَةُ فِي المَاءِ.",
+                    "تَمْشِي السَّمَكَةُ عَلَى الأَرْضِ."
+                ],
+                "correct": 1,
+                "explanation": "السمكة تعيش وتسبح في الماء.",
+                "newWords": [
+                    {
+                        "ar": "مَكَّةُ",
+                        "ru": "Мекка"
+                    },
+                    {
+                        "ar": "تَسْبَحُ",
+                        "ru": "Плавает"
+                    },
+                    {
+                        "ar": "سَمَكَةٌ",
+                        "ru": "Рыба"
+                    }
+                ]
+            },
+            {
+                "qNum": 18,
+                "text": "اخْتَرِ الجُمْلَةَ الصَّحِيحَةَ: (الأُسْتَاذُ يَقِفُ أَمَامَ الطُّلاَّبِ).",
+                "options": [
+                    "يَنَامُ الأُسْتَاذُ تَحْتَ الطَّاوِلَةِ.",
+                    "يَطْبُخُ الأُسْتَاذُ السَّيَّارَةَ.",
+                    "يَقِفُ الأُسْتَاذُ أَمَامَ الطُّلاَّبِ فِي الفَصْلِ."
+                ],
+                "correct": 2,
+                "explanation": "وقوف المعلم أمام الطلاب في الفصل."
+            },
+            {
+                "qNum": 19,
+                "text": "مَاذَا تَقُولُ عِنْدَ الودَاعِ؟",
+                "options": [
+                    "مَعَ السَّلاَمَةِ!",
+                    "صَبَاحُ الخَيْرِ!",
+                    "مَسَاءُ الخَيْرِ!"
+                ],
+                "correct": 0,
+                "explanation": "عبارة الوداع المعتمدة (مَعَ السَّلاَمَةِ!)."
+            },
+            {
+                "qNum": 20,
+                "text": "اخْتَرِ الجُمْلَةَ الصَّحِيحَةَ لِوَصْفِ العَائِلَةِ: (<span class=\"word-highlight\">عَائِلَةٌ</span> <span class=\"word-highlight\">سَعِيدَةٌ</span> فِي البَيْتِ).",
+                "options": [
+                    "تَشْرَبُ العَائِلَةُ الشَّارِعَ.",
+                    "تَعِيشُ العَائِلَةُ فِي بَيْتٍ جَمِيلٍ وَسَعِيدٍ.",
+                    "تَكْتُبُ العَائِلَةُ المَطْبَخَ."
+                ],
+                "correct": 1,
+                "explanation": "وصف العائلة السعيدة في البيت.",
+                "newWords": [
+                    {
+                        "ar": "سَعِيدَةٌ",
+                        "ru": "Счастливая"
+                    },
+                    {
+                        "ar": "عَائِلَةٌ",
+                        "ru": "Семья"
+                    },
+                    {
+                        "ar": "بَيْتٌ",
+                        "ru": "Дом"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sectionId": 10,
+        "titleAr": "القِسْمُ العَاشِرُ: الضَّمَائِرُ المُلْتَصِقَةُ (المُتَّصِلَةُ) بِالأَسْمَاءِ",
+        "titleRu": "Раздел 10: Притяжательные суффиксы (ـي - мой, ـكَ - твой м.р., ـكِ - твой ж.р., ـهُ - его, ـهَا - её)",
+        "vocab": [
+            {
+                "ar": "كِتَابِي",
+                "ru": "Моя книга",
+                "arSent": "هَذَا كِتَابِي.",
+                "ruSent": "Это моя книга."
+            },
+            {
+                "ar": "اسْمُكَ",
+                "ru": "Твоё имя (м)",
+                "arSent": "مَا اسْمُكَ؟",
+                "ruSent": "Как тебя зовут?"
+            },
+            {
+                "ar": "اسْمُكِ",
+                "ru": "Твоё имя (ж)",
+                "arSent": "مَا اسْمُكِ؟",
+                "ruSent": "Как тебя зовут?"
+            },
+            {
+                "ar": "بَيْتُهُ",
+                "ru": "Его дом",
+                "arSent": "هَذَا بَيْتُهُ.",
+                "ruSent": "Это его дом."
+            }
+        ],
+        "questions": [
+            {
+                "qNum": 1,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: هَذَا الكِتَابُ لِي، هُوَ كِتَابِـ(........).",
+                "options": [
+                    "ـي",
+                    "ـكَ",
+                    "ـهَا"
+                ],
+                "correct": 0,
+                "isSolved": true,
+                "solvedText": "نموذج محلول: كِتَابِي (ـي) [يَاءُ المُمَتَكَلِّمِ لِلْمِلْكِيَّةِ]",
+                "explanation": "ياء المتكلم (ـي) تتصل بالاسم للدلالة على الملكية الشخصية.",
+                "newWords": [
+                    {
+                        "ar": "كِتَابٌ",
+                        "ru": "Книга"
+                    }
+                ]
+            },
+            {
+                "qNum": 2,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: مَا اسْمُـ(........) يا طَارِقُ؟ [للمخاطب المذكر]",
+                "options": [
+                    "ـكِ",
+                    "ـكَ",
+                    "ـهَا"
+                ],
+                "correct": 1,
+                "explanation": "كاف الخطاب للمذكر تكون مفتوحة (ـكَ)."
+            },
+            {
+                "qNum": 3,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: مَا اسْمُـ(........) يا خَوْلَةُ؟ [للمخاطبة المؤنثة]",
+                "options": [
+                    "ـكَ",
+                    "ـهُ",
+                    "ـكِ"
+                ],
+                "correct": 2,
+                "explanation": "كاف الخطاب للمؤنث تكون مكسورة (ـكِ)."
+            },
+            {
+                "qNum": 4,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: هَذَا أَحْمَدُ، وَهَذِهِ حَقِيبَتُـ(........).",
+                "options": [
+                    "ـهُ",
+                    "ـهَا",
+                    "ـي"
+                ],
+                "correct": 0,
+                "explanation": "هاء الغائب للمذكر (ـهُ)."
+            },
+            {
+                "qNum": 5,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: هَذِهِ فَاطِمَةُ، وَهَذَا <span class=\"word-highlight\">دَفْتَرُ</span>(........).",
+                "options": [
+                    "ـهُ",
+                    "ـهَا",
+                    "ـكَ"
+                ],
+                "correct": 1,
+                "explanation": "هاء الغائبة للمؤنث (ـهَا).",
+                "newWords": [
+                    {
+                        "ar": "دَفْتَرٌ",
+                        "ru": "Тетрадь"
+                    }
+                ]
+            },
+            {
+                "qNum": 6,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: أَنَا أُحِبُّ أُمِّـ(........).",
+                "options": [
+                    "ـكَ",
+                    "ـهُ",
+                    "ـي"
+                ],
+                "correct": 2,
+                "explanation": "ياء المتكلم (أُمِّي)."
+            },
+            {
+                "qNum": 7,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: أَيْنَ بَيْتُـ(........) يا خَالِدُ؟",
+                "options": [
+                    "ـكَ",
+                    "ـكِ",
+                    "ـهَا"
+                ],
+                "correct": 0,
+                "explanation": "مخاطب مذكر (بَيْتُكَ).",
+                "newWords": [
+                    {
+                        "ar": "بَيْتٌ",
+                        "ru": "Дом"
+                    }
+                ]
+            },
+            {
+                "qNum": 8,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: أَيْنَ سَيَّارَتُـ(........) يا مَرْيَمُ؟",
+                "options": [
+                    "ـكَ",
+                    "ـكِ",
+                    "ـهُ"
+                ],
+                "correct": 1,
+                "explanation": "مخاطبة مؤنثة (سَيَّارَتُكِ)."
+            },
+            {
+                "qNum": 9,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: هَذَا صَدِيقِي، اسْمُـ(........) عُمَرُ.",
+                "options": [
+                    "ـهَا",
+                    "ـكِ",
+                    "ـهُ"
+                ],
+                "correct": 2,
+                "explanation": "غائب مذكر (اسْمُهُ).",
+                "newWords": [
+                    {
+                        "ar": "صَدِيقٌ",
+                        "ru": "Друг"
+                    }
+                ]
+            },
+            {
+                "qNum": 10,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: هَذِهِ صَدِيقَتِي، اسْمُـ(........) زَيْنَبُ.",
+                "options": [
+                    "ـهَا",
+                    "ـهُ",
+                    "ـكَ"
+                ],
+                "correct": 0,
+                "explanation": "غائبة مؤنثة (اسْمُهَا).",
+                "newWords": [
+                    {
+                        "ar": "صَدِيقٌ",
+                        "ru": "Друг"
+                    }
+                ]
+            },
+            {
+                "qNum": 11,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: هَذَا قَلَمِـ(........) أَنَا.",
+                "options": [
+                    "ـكَ",
+                    "ـي",
+                    "ـهُ"
+                ],
+                "correct": 1,
+                "explanation": "ياء المتكلم (قَلَمِي).",
+                "newWords": [
+                    {
+                        "ar": "قَلَمٌ",
+                        "ru": "Ручка"
+                    }
+                ]
+            },
+            {
+                "qNum": 12,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: أَيْنَ غُرْفَتُـ(........) يا عَائِشَةُ؟",
+                "options": [
+                    "ـكَ",
+                    "ـهُ",
+                    "ـكِ"
+                ],
+                "correct": 2,
+                "explanation": "مخاطبة مؤنثة (غُرْفَتُكِ)."
+            },
+            {
+                "qNum": 13,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: الطَّالِبُ كَتَبَ وَاجِبَـ(........).",
+                "options": [
+                    "ـهُ",
+                    "ـهَا",
+                    "ـي"
+                ],
+                "correct": 0,
+                "explanation": "غائب مذكر (وَاجِبَهُ).",
+                "newWords": [
+                    {
+                        "ar": "طَالِبٌ",
+                        "ru": "Студент"
+                    },
+                    {
+                        "ar": "وَاجِبٌ",
+                        "ru": "Домашнее задание"
+                    }
+                ]
+            },
+            {
+                "qNum": 14,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: الطَّالِبَةُ كَتَبَتْ وَاجِبَـ(........).",
+                "options": [
+                    "ـهُ",
+                    "ـهَا",
+                    "ـكَ"
+                ],
+                "correct": 1,
+                "explanation": "غائبة مؤنثة (وَاجِبَهَا).",
+                "newWords": [
+                    {
+                        "ar": "طَالِبٌ",
+                        "ru": "Студент"
+                    },
+                    {
+                        "ar": "طَالِبَةٌ",
+                        "ru": "Студентка"
+                    },
+                    {
+                        "ar": "وَاجِبٌ",
+                        "ru": "Домашнее задание"
+                    }
+                ]
+            },
+            {
+                "qNum": 15,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: هَذِهِ المَدْرَسَةُ جَمِيلَةٌ، فَصْلُـ(........) <span class=\"word-highlight\">وَاسِعٌ</span>.",
+                "options": [
+                    "ـهُ",
+                    "ـي",
+                    "ـهَا"
+                ],
+                "correct": 2,
+                "explanation": "مؤنث غير عاقل (فَصْلُهَا).",
+                "newWords": [
+                    {
+                        "ar": "جَمِيلٌ",
+                        "ru": "Красивый"
+                    },
+                    {
+                        "ar": "جَمِيلَةٌ",
+                        "ru": "Красивая"
+                    },
+                    {
+                        "ar": "وَاسِعٌ",
+                        "ru": "Просторный"
+                    },
+                    {
+                        "ar": "مَدْرَسَةٌ",
+                        "ru": "Школа"
+                    },
+                    {
+                        "ar": "فَصْلٌ",
+                        "ru": "Класс"
+                    }
+                ]
+            },
+            {
+                "qNum": 16,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: هَذَا البَيْتُ كَبِيرٌ، بَابُـ(........) <span class=\"word-highlight\">مَفْتُوحٌ</span>.",
+                "options": [
+                    "ـهُ",
+                    "ـهَا",
+                    "ـكِ"
+                ],
+                "correct": 0,
+                "explanation": "مذكر غير عاقل (بَابُهُ).",
+                "newWords": [
+                    {
+                        "ar": "كَبِيرٌ",
+                        "ru": "Большой"
+                    },
+                    {
+                        "ar": "مَفْتُوحٌ",
+                        "ru": "Открытый"
+                    },
+                    {
+                        "ar": "بَابٌ",
+                        "ru": "Дверь"
+                    },
+                    {
+                        "ar": "بَيْتٌ",
+                        "ru": "Дом"
+                    }
+                ]
+            },
+            {
+                "qNum": 17,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: كَيْفَ حَالُـ(........) يا أُسْتَاذِي؟",
+                "options": [
+                    "ـكِ",
+                    "ـكَ",
+                    "ـهَا"
+                ],
+                "correct": 1,
+                "explanation": "مخاطب مذكر للتعظيم والاحتـرام (حَالُكَ)."
+            },
+            {
+                "qNum": 18,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: كَيْفَ حَالُـ(........) يا أُسْتَاذَتِي؟",
+                "options": [
+                    "ـكَ",
+                    "ـهُ",
+                    "ـكِ"
+                ],
+                "correct": 2,
+                "explanation": "مخاطبة مؤنثة (حَالُكِ)."
+            },
+            {
+                "qNum": 19,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: أَنَا وَأَخِي نَحْنُ فِي بَيْتِـ(........).",
+                "options": [
+                    "ـنَا",
+                    "ـي",
+                    "ـهُ"
+                ],
+                "correct": 0,
+                "explanation": "ضمير الجماعة المتكلمين (بَيْتِنَا).",
+                "newWords": [
+                    {
+                        "ar": "بَيْتٌ",
+                        "ru": "Дом"
+                    }
+                ]
+            },
+            {
+                "qNum": 20,
+                "text": "اخْتَرِ الضَّمِيرَ المُتَّصِلَ المُنَاسِبَ: هَذِهِ عائِلَتِي، أَنَا أُحِبُّ عائِلَتِـ(........).",
+                "options": [
+                    "ـكَ",
+                    "ـي",
+                    "ـهَا"
+                ],
+                "correct": 1,
+                "explanation": "ياء المتكلم (عائِلَتِي)."
+            }
+        ]
+    }
+];
+
+// App State
+let studentName = "";
+let currentSectionIndex = 0;
+let userAnswers = {}; // { 'sec1_q1': optionIndex, ... }
+
+function startQuiz() {
+    const input = document.getElementById("student-name");
+    const alertBox = document.getElementById("welcome-alert");
+    
+    if (!input.value.trim()) {
+        alertBox.style.display = "block";
+        input.focus();
+        return;
+    }
+
+    alertBox.style.display = "none";
+    studentName = input.value.trim();
+
+    document.getElementById("display-student-name").innerText = studentName;
+    document.getElementById("welcome-screen").style.display = "none";
+    document.getElementById("quiz-container").style.display = "block";
+
+    renderSection(currentSectionIndex);
+}
+
+function renderSection(index) {
+    const section = quizData[index];
+    document.getElementById("current-section-num").innerText = section.sectionId;
+    
+    const wrapper = document.getElementById("section-card-wrapper");
+    wrapper.innerHTML = "";
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    // Section Title
+    let html = `
+        <div class="section-header">
+            <div class="section-title-ar">${section.titleAr}</div>
+            <div class="section-title-ru">${section.titleRu}</div>
+            ${section.titleRule ? `<div style="margin-top:8px; font-size:14px; background:rgba(255,255,255,0.2); padding:5px 10px; border-radius:6px;">${section.titleRule}</div>` : ''}
+        </div>
+    `;
+
+    // Vocab Table
+    if (section.vocab && section.vocab.length > 0) {
+        html += `
+            <div class="vocab-box">
+                <div class="vocab-title">📚 جَدْوَلُ المُفْرَدَاتِ المَحْوَرِيَّةِ / Таблица ключевых слов:</div>
+                <table class="vocab-table">
+                    <thead>
+                        <tr>
+                            <th class="col-ar-word">🔵 الكَلِمَةُ بالضَّبْطِ</th>
+                            <th class="col-ru-word">🟣 Перевод</th>
+                            <th class="col-ar-sent">🟢 الجُمْلَةُ المبسّطة</th>
+                            <th class="col-ru-sent">🟠 Перевод предложения</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+        section.vocab.forEach(v => {
+            html += `
+                <tr>
+                    <td class="col-ar-word"><strong>${v.ar}</strong></td>
+                    <td class="col-ru-word">${v.ru}</td>
+                    <td class="col-ar-sent">${v.arSent}</td>
+                    <td class="col-ru-sent">${v.ruSent}</td>
+                </tr>
+            `;
+        });
+        html += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+    }
+
+    // Questions List
+    section.questions.forEach((q, qIndex) => {
+        const qKey = `sec${section.sectionId}_q${q.qNum}`;
+        const selectedOpt = userAnswers[qKey];
+        const isAnswered = (selectedOpt !== undefined) || q.isSolved;
+
+        html += `
+            <div class="question-card" id="card-${qKey}">
+                ${q.isSolved ? `<div class="solved-model-badge">🟢 ${q.solvedText}</div>` : ''}
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="question-num">سؤال ${q.qNum} من 20</span>
+                </div>
+                <div class="question-text">${q.text}</div>
+                ${(q.newWords && q.newWords.length > 0) ? `
+                    <div class="mini-vocab-box">
+                        <div class="mini-vocab-title">📌 كَلِمَةٌ جَدِيدَةٌ فِي السُّؤَالِ / Таблица новых слов в вопросе:</div>
+                        <table class="mini-vocab-table">
+                            <thead>
+                                <tr>
+                                    <th class="mini-th-ar">🔴 الكَلِمَةُ بالضَّبْطِ</th>
+                                    <th class="mini-th-ru">Перевод (الترجمة)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${q.newWords.map(nw => `
+                                    <tr>
+                                        <td class="mini-td-ar"><strong>${nw.ar}</strong></td>
+                                        <td class="mini-td-ru">${nw.ru}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                ` : ''}
+                <div class="options-list">
+        `;
+
+        q.options.forEach((optText, optIdx) => {
+            let optionClass = "option-item";
+            let isCheckedAttr = "";
+
+            if (q.isSolved) {
+                if (optIdx === q.correct) {
+                    optionClass += " correct";
+                    isCheckedAttr = "checked disabled";
+                } else {
+                    isCheckedAttr = "disabled";
+                }
+            } else if (isAnswered) {
+                isCheckedAttr = (selectedOpt === optIdx) ? "checked disabled" : "disabled";
+                if (optIdx === q.correct) {
+                    optionClass += " correct"; // Light Green 🟢 #d4edda
+                } else if (selectedOpt === optIdx && selectedOpt !== q.correct) {
+                    optionClass += " wrong"; // Light Yellow 🟡 #fff3cd
+                }
+            }
+
+            html += `
+                <label class="${optionClass}" id="opt-lbl-${qKey}-${optIdx}" onclick="selectOption(${section.sectionId}, ${q.qNum}, ${optIdx})">
+                    <input type="radio" name="${qKey}" value="${optIdx}" ${isCheckedAttr}>
+                    <span>${optText}</span>
+                </label>
+            `;
+        });
+
+        const showExp = isAnswered ? "visible" : "";
+        html += `
+                </div>
+                <div class="explanation-box ${showExp}" id="exp-${qKey}">
+                    💡 <strong>التَّصْحِيحُ وَالشَّرْحُ:</strong> ${q.explanation}
+                </div>
+            </div>
+        `;
+    });
+
+    card.innerHTML = html;
+    wrapper.appendChild(card);
+
+    // Update Nav Buttons
+    document.getElementById("btn-prev").style.display = (index === 0) ? "none" : "inline-flex";
+    document.getElementById("btn-next").innerText = (index === quizData.length - 1) ? "إِنْهَاءُ الٱخْتِبَارِ 🏁 / Завершить" : "القِسْمُ التَّالِي ➔";
+    
+    document.getElementById("nav-alert").style.display = "none";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectOption(secId, qNum, optIdx) {
+    const sectionIndex = secId - 1;
+    const qData = quizData[sectionIndex].questions[qNum - 1];
+    if (qData.isSolved) return; // solved model cannot be changed
+
+    const qKey = `sec${secId}_q${qNum}`;
+    if (userAnswers[qKey] !== undefined) return; // Already answered
+
+    userAnswers[qKey] = optIdx;
+
+    // Apply INSTANT green/yellow highlighting to options
+    qData.options.forEach((_, idx) => {
+        const lbl = document.getElementById(`opt-lbl-${qKey}-${idx}`);
+        if (!lbl) return;
+
+        const radio = lbl.querySelector('input[type="radio"]');
+        if (radio) {
+            radio.disabled = true;
+            if (idx === optIdx) radio.checked = true;
+        }
+
+        if (idx === qData.correct) {
+            lbl.classList.add("correct"); // Light Green 🟢 #d4edda
+        } else if (idx === optIdx && optIdx !== qData.correct) {
+            lbl.classList.add("wrong"); // Light Yellow 🟡 #fff3cd
+        }
+    });
+
+    // Show Explanation box immediately
+    const expBox = document.getElementById(`exp-${qKey}`);
+    if (expBox) {
+        expBox.classList.add("visible");
+    }
+
+    document.getElementById("nav-alert").style.display = "none";
+}
+
+function validateSectionAnswers(index) {
+    const section = quizData[index];
+    let unansweredCount = 0;
+
+    section.questions.forEach(q => {
+        if (q.isSolved) return;
+        const qKey = `sec${section.sectionId}_q${q.qNum}`;
+        if (userAnswers[qKey] === undefined) {
+            unansweredCount++;
+        }
+    });
+
+    return unansweredCount;
+}
+
+function nextSection() {
+    const missing = validateSectionAnswers(currentSectionIndex);
+    const navAlert = document.getElementById("nav-alert");
+
+    if (missing > 0) {
+        navAlert.innerHTML = `⚠️ يَرْجَى الإِجَابَةُ عَنْ جَمِيعِ الأسْئِلَةِ (بَقِيَ ${missing} سؤالاً) قَبْلَ الٱنْتِقَالِ لِلْقِسْمِ التَّالِي!<br>Пожалуйста, ответьте на все вопросы (осталось ${missing}) перед переходом!`;
+        navAlert.style.display = "block";
+        return;
+    }
+
+    navAlert.style.display = "none";
+
+    if (currentSectionIndex < quizData.length - 1) {
+        currentSectionIndex++;
+        renderSection(currentSectionIndex);
+    } else {
+        finishQuiz();
+    }
+}
+
+function prevSection() {
+    if (currentSectionIndex > 0) {
+        currentSectionIndex--;
+        renderSection(currentSectionIndex);
+    }
+}
+
+function finishQuiz() {
+    let score = 0;
+    const totalQuestions = 200;
+
+    quizData.forEach(section => {
+        section.questions.forEach(q => {
+            const qKey = `sec${section.sectionId}_q${q.qNum}`;
+            const userChoice = userAnswers[qKey];
+            if (q.isSolved || userChoice === q.correct) {
+                score++;
+            }
+        });
+    });
+
+    document.getElementById("quiz-container").style.display = "none";
+    document.getElementById("results-screen").style.display = "block";
+    document.getElementById("result-student-name").innerText = studentName;
+    document.getElementById("score-text").innerText = `${score} / ${totalQuestions}`;
+
+    const msg = document.getElementById("score-message");
+    const percent = (score / totalQuestions) * 100;
+
+    if (percent >= 90) {
+        msg.innerHTML = "🌟 مُمْتَازٌ جِدّاً! نَتِيجَةٌ مُبْهِرَةٌ وَفَهْمٌ عَمِيقٌ لِلْقَوَاعِدِ.<br>Отличный результат! Превосходное понимание грамматики!";
+        msg.style.color = "#2e7d32";
+    } else if (percent >= 75) {
+        msg.innerHTML = "👏 جَيِّدٌ جِدّاً! إِنْجَازٌ رَائِعٌ وَمَجْهُودٌ مَشْكُورٌ.<br>Очень хорошо! Прекрасный прогресс!";
+        msg.style.color = "#1565c0";
+    } else {
+        msg.innerHTML = "💪 بَدايَةٌ طَيِّبَةٌ! يُنْصَحُ بِمُرَاجَعَةِ الأَقْسَامِ المَطْلُوبَةِ لِتَعْزِيزِ الفَهْمِ.<br>Хорошее начало! Рекомендуется повторить пройденный материал.";
+        msg.style.color = "#e65100";
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartQuiz() {
+    currentSectionIndex = 0;
+    userAnswers = {};
+    document.getElementById("results-screen").style.display = "none";
+    document.getElementById("welcome-screen").style.display = "block";
+    document.getElementById("student-name").value = "";
+}
+</script>
+
+</body>
+</html>
